@@ -15,6 +15,8 @@ import { setJWT } from './actions';
 import { parseJWTFromURLParams } from './functions';
 import logger from './logger';
 
+import { setUserdata } from '../../lag/userdata/actions';
+
 /**
  * Middleware to parse token data upon setting a new room URL.
  *
@@ -102,6 +104,8 @@ function _setConfigOrLocationURL({ dispatch, getState }: IStore, next: Function,
 
     dispatch(
         setJWT(locationURL ? parseJWTFromURLParams(locationURL) : undefined));
+
+    dispatch(setUserdata(locationURL ? parseJWTFromURLParams(locationURL) : undefined));
 
     return result;
 }
