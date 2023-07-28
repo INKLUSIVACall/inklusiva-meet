@@ -15,6 +15,7 @@ import { getIndicatorsTooltipPosition } from '../../functions.web';
 import AudioMutedIndicator from './AudioMutedIndicator';
 import ModeratorIndicator from './ModeratorIndicator';
 import ScreenShareIndicator from './ScreenShareIndicator';
+import VideoMutedIndicator from './VideoMutedIndicator';
 
 /**
  * The type of the React {@code Component} props of {@link StatusIndicators}.
@@ -25,6 +26,11 @@ interface IProps {
      * Indicates if the audio muted indicator should be visible or not.
      */
     _showAudioMutedIndicator: Boolean;
+
+    /**
+     * Indicates if the video muted indicator should be visible or not.
+     */
+    _showVideoMutedIndicator: Boolean;
 
     /**
      * Indicates if the moderator indicator should be visible or not.
@@ -62,6 +68,7 @@ class StatusIndicators extends Component<IProps> {
     render() {
         const {
             _showAudioMutedIndicator,
+            _showVideoMutedIndicator,
             _showModeratorIndicator,
             _showScreenShareIndicator,
             thumbnailType
@@ -70,6 +77,7 @@ class StatusIndicators extends Component<IProps> {
 
         return (
             <>
+                { _showVideoMutedIndicator && <VideoMutedIndicator tooltipPosition = { tooltipPosition } /> }
                 { _showAudioMutedIndicator && <AudioMutedIndicator tooltipPosition = { tooltipPosition } /> }
                 { _showModeratorIndicator && <ModeratorIndicator tooltipPosition = { tooltipPosition } />}
                 { _showScreenShareIndicator && <ScreenShareIndicator tooltipPosition = { tooltipPosition } /> }
@@ -86,6 +94,7 @@ class StatusIndicators extends Component<IProps> {
  * @private
  * @returns {{
  *     _showAudioMutedIndicator: boolean,
+ *     _showVideoMutedIndicator: boolean,
  *     _showModeratorIndicator: boolean,
  *     _showScreenShareIndicator: boolean
  * }}
@@ -98,22 +107,26 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
     const tracks = state['features/base/tracks'];
 
     let isAudioMuted = true;
+    let isVideoMuted = true;
     let isScreenSharing = false;
 
     if (participant?.local) {
         isAudioMuted = isLocalTrackMuted(tracks, MEDIA_TYPE.AUDIO);
+        isVideoMuted = isLocalTrackMuted(tracks, MEDIA_TYPE.VIDEO);
     } else if (!participant?.fakeParticipant || isScreenShareParticipantById(state, participantID)) {
         // remote participants excluding shared video
         const track = getVideoTrackByParticipant(state, participant);
 
         isScreenSharing = track?.videoType === 'desktop';
         isAudioMuted = isRemoteTrackMuted(tracks, MEDIA_TYPE.AUDIO, participantID);
+        isVideoMuted = isRemoteTrackMuted(tracks, MEDIA_TYPE.VIDEO, participantID);
     }
 
     const { disableModeratorIndicator } = state['features/base/config'];
 
     return {
         _showAudioMutedIndicator: isAudioMuted && audio,
+        _showVideoMutedIndicator: isVideoMuted,
         _showModeratorIndicator:
             !disableModeratorIndicator && participant && participant.role === PARTICIPANT_ROLE.MODERATOR && moderator,
         _showScreenShareIndicator: isScreenSharing && screenshare
