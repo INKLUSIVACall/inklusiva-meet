@@ -63,6 +63,7 @@ import ThumbnailAudioIndicator from './ThumbnailAudioIndicator';
 import ThumbnailBottomIndicators from './ThumbnailBottomIndicators';
 import ThumbnailTopIndicators from './ThumbnailTopIndicators';
 import VirtualScreenshareParticipant from './VirtualScreenshareParticipant';
+import ActiveSpeakerIndicator from './ActiveSpeakerIndicator';
 
 /**
  * The type of the React {@code Component} state of {@link Thumbnail}.
@@ -1151,8 +1152,9 @@ class Thumbnail extends Component<IProps, IState> {
                     className = { clsx(classes.borderIndicator,
                     _gifSrc && classes.borderIndicatorOnTop,
                     'raised-hand-border') } />
-                <div
-                    className = { clsx(classes.borderIndicator,
+                <ActiveSpeakerIndicator
+                    _audioTrack = { _audioTrack }
+                    _className = { clsx(classes.borderIndicator,
                     _gifSrc && classes.borderIndicatorOnTop,
                     'active-speaker-indicator') } />
                 {_gifSrc && (
