@@ -83,6 +83,8 @@ import { IVisitorsState } from '../visitors/reducer';
 import { IWebHid } from '../web-hid/reducer';
 import { IWhiteboardState } from '../whiteboard/reducer';
 
+import { IUserdataState} from '../lag/userdata/reducer';
+
 export interface IStore {
     dispatch: ThunkDispatch<IReduxState, void, AnyAction>;
     getState: () => IReduxState;
