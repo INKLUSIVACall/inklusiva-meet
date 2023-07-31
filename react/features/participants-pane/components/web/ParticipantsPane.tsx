@@ -28,6 +28,8 @@ import LobbyParticipants from './LobbyParticipants';
 import MeetingParticipants from './MeetingParticipants';
 
 
+import { BREAKOUTROOM_BUTTON_STATUS, BREAKOUTROOM_LIST_STATUS } from '../../constants';
+
 const useStyles = makeStyles()(theme => {
     return {
         container: {
@@ -150,8 +152,8 @@ const ParticipantsPane = () => {
                     <MeetingParticipants
                         searchString = { searchString }
                         setSearchString = { setSearchString } />
-                    {isBreakoutRoomsSupported && <RoomList searchString = { searchString } />}
-                    {showAddRoomButton && <AddBreakoutRoomButton />}
+                    { BREAKOUTROOM_LIST_STATUS && isBreakoutRoomsSupported && <RoomList searchString = { searchString } />}
+                    { BREAKOUTROOM_BUTTON_STATUS && showAddRoomButton && <AddBreakoutRoomButton />}
                 </div>
                 {showFooter && (
                     <div className = { classes.footer }>
