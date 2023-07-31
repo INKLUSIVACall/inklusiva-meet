@@ -22,7 +22,7 @@ import { toState } from '../base/redux/functions';
 import { normalizeAccents } from '../base/util/strings';
 import { isInBreakoutRoom } from '../breakout-rooms/functions';
 
-import { MEDIA_STATE, QUICK_ACTION_BUTTON, REDUCER_KEY } from './constants';
+import { MEDIA_STATE, QUICK_ACTION_BUTTON, REDUCER_KEY, INVITE_BUTTON_STATUS, MUTE_ALL_BUTTON_STATUS } from './constants';
 
 /**
  * Checks if a participant is force muted.
@@ -174,7 +174,7 @@ export const shouldRenderInviteButton = (state: IReduxState) => {
     const flagEnabled = getFeatureFlag(state, INVITE_ENABLED, true);
     const inBreakoutRoom = isInBreakoutRoom(state);
 
-    return flagEnabled && !disableInviteFunctions && !inBreakoutRoom;
+    return flagEnabled && !disableInviteFunctions && !inBreakoutRoom && INVITE_BUTTON_STATUS;
 };
 
 /**
@@ -280,5 +280,5 @@ export const isMuteAllVisible = (state: IReduxState) => {
     const inBreakoutRoom = isInBreakoutRoom(state);
     const { hideMuteAllButton } = getParticipantsPaneConfig(state);
 
-    return inBreakoutRoom ? false : !hideMuteAllButton && isLocalModerator;
+    return inBreakoutRoom ? false : !hideMuteAllButton && isLocalModerator && MUTE_ALL_BUTTON_STATUS;
 };

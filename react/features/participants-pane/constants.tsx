@@ -114,3 +114,38 @@ export const VideoStateIcons = {
  * Mobile web context menu avatar size.
  */
 export const AVATAR_SIZE = 20;
+
+
+
+
+
+
+
+/**
+ * Default user invitation button status.
+ */
+export const INVITE_BUTTON_STATUS = false;
+
+
+/**
+ * Default participants searchbar status.
+ */
+export const SEARCH_PARTICIPANTS_STATUS = false;
+
+
+/**
+ * Default breakoutroom button status.
+ */
+export const BREAKOUTROOM_BUTTON_STATUS = false;
+
+
+/**
+ * Default breakoutroom list status.
+ */
+export const BREAKOUTROOM_LIST_STATUS = false;
+
+
+/**
+ * Default mute all button status.
+ */
+export const MUTE_ALL_BUTTON_STATUS = false;
