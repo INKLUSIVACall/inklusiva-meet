@@ -9,8 +9,8 @@ const useStyles = makeStyles()(theme => {
         indicator: {
             backgroundColor: theme.palette.warning02,
             borderRadius: `${Number(theme.shape.borderRadius) / 2}px`,
-            height: '24px',
-            width: '24px'
+            height: '20px',
+            width: '20px'
         }
     };
 });

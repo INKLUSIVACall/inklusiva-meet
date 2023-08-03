@@ -1,6 +1,7 @@
 import React, { ReactNode, useCallback } from 'react';
 import { WithTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
+import clsx from 'clsx';
 
 import Avatar from '../../../base/avatar/components/Avatar';
 import { translate } from '../../../base/i18n/functions';
@@ -12,7 +13,19 @@ import {
     AudioStateIcons,
     MEDIA_STATE,
     MediaState,
-    VideoStateIcons
+    VideoStateIcons,
+    MeetingStateIcons,
+    ConnectionStateIcons,
+    MeetingRoleIcons,
+    TechnicalSupportIcons,
+    EscortIcons,
+    SupportOfferIcons,
+    TECHNICAL_SUPPORT_REQUIRED,
+    ESCORT_REQUIRED,
+    SUPPORT_OFFERED,
+    ACTIVE_CONNECTION,
+    DEFAULT_MEETING_STATE,
+    DEFAULT_MEETING_ROLE
 } from '../../constants';
 
 import { RaisedHandIndicator } from './RaisedHandIndicator';
@@ -167,6 +180,16 @@ function ParticipantItem({
                     {displayName}
                 </div>
                 {local ? <span>&nbsp;({youText})</span> : null}
+
+                <div className = 'LeftPlacedIcons'>
+                    {MeetingRoleIcons[DEFAULT_MEETING_ROLE]}
+                    {TECHNICAL_SUPPORT_REQUIRED && TechnicalSupportIcons}
+                    {ESCORT_REQUIRED && EscortIcons}
+                    {SUPPORT_OFFERED && SupportOfferIcons}
+                    {ACTIVE_CONNECTION && ConnectionStateIcons}
+                    {raisedHand && <RaisedHandIndicator />}
+                </div>
+
             </div>
             {isModerator && !disableModeratorIndicator && <div className = { classes.moderatorLabel }>
                 {t('videothumbnail.moderator')}
@@ -176,9 +199,13 @@ function ParticipantItem({
 
     const indicators = (
         <>
-            {raisedHand && <RaisedHandIndicator />}
-            {VideoStateIcons[videoMediaState]}
-            {AudioStateIcons[audioMediaState]}
+            <div className = 'MiddlePlacedIcons'>
+                {VideoStateIcons[videoMediaState]}
+                {AudioStateIcons[audioMediaState]}
+            </div>
+            <div className = 'RightPlacedIcons'>
+                {MeetingStateIcons[DEFAULT_MEETING_STATE]}
+            </div>
         </>
     );
 

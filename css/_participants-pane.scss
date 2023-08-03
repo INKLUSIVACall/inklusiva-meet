@@ -21,6 +21,16 @@
     }
 }
 
+
+.LeftPlacedIcons {
+    display: flex;
+    padding-left: 2px;
+}
+
+.LeftPlacedIcons div {
+    padding: 2px 4px;
+}
+
 @media (max-width: 580px) {
     .participants_pane {
         height: 100vh;
