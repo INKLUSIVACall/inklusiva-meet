@@ -31,6 +31,11 @@
     padding: 2px 4px;
 }
 
+.raised-hand-indicator div {
+    padding: 0 !important;
+    margin: 2px;
+}
+
 @media (max-width: 580px) {
     .participants_pane {
         height: 100vh;
