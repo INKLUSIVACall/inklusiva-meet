@@ -30,18 +30,16 @@ function _setUserdata(store: IStore, next: Function, action: AnyAction) {
             let jwtPayload;
 
             try {
-                jwtPayload = jwtDecode(jwt);
+                jwtPayload = jwtDecod(jwt);
             } catch (e) {
-                //logger.error(e);
+                logger.error(e);
             }
 
             if (jwtPayload) {
                 const { context, iss, sub } = jwtPayload;
-                debugger;
                 if (context) {
                     action.userData = _parseUserData(context.userData);
                 }
-                debugger;
             }
         } else if (typeof APP === 'undefined') {
             // The logic of restoring JWT overrides make sense only on mobile.
@@ -60,26 +58,186 @@ function _setUserdata(store: IStore, next: Function, action: AnyAction) {
 interface ISupport {
     eyesight: string;
     hearing: string;
+    senses: boolean;
+    learning_difficulties: boolean;
+}
+
+interface IUI {
+    fontSize: number;
+    iconSize: number;
+    screenreader: boolean;
+    visualCues: boolean;
+    acousticCues: boolean;
+}
+
+interface IVideo {
+    otherParticipants: boolean;
+    contrast: number;
+    brightness: number;
+    dimming: number;
+    saturation: number;
+    zoom: number;
+    fps: number;
+}
+
+interface IAudio {
+    otherParticipants: boolean;
+    volume: number;
+    highFreq: number;
+    amplify: number;
+    balance: number;
+    background: boolean;
+    output: string;
+}
+
+interface IDistressButton {
+    active: boolean;
+    dimming: number;
+    volume: number;
+    message: boolean;
+    messageText: string;
+}
+
+interface IAssistant {
+    signLang: {
+        active: boolean;
+        display: string;
+        windowSize: number;
+    },
+    transcription: {
+        active: boolean;
+        fontSize: number;
+        history: number;
+    }
 }
 
 interface IUserData {
     support: ISupport;
+    ui: IUI;
+    video: IVideo;
+    audio: IAudio;
+    distressbutton: IDistressButton;
+    assistant: IAssistant;
 }
 
 function _parseUserData(ud: IUserData) {
     const userData: {
         support: {
-            sehen?: string;
-            hören?: string;
+            eyesight?: string;
+            hearing?: string;
+            senses?: boolean;
+            learning_difficulties?: boolean;
+        },
+        ui: {
+            fontSize?: number;
+            iconSize?: number;
+            screenreader?: boolean;
+            visualCues?: boolean;
+            acousticCues?: boolean;
+        },
+        video: {
+            otherParticipants?: boolean;
+            contrast?: number;
+            brightness?: number;
+            dimming?: number;
+            saturation?: number;
+            zoom?: number;
+            fps?: number;
+        },
+        audio: {
+            otherParticipants?: boolean;
+            volume?: number;
+            highFrequency?: number;
+            amplify?: number;
+            balance?: number;
+            background?: boolean;
+            output?: string;
+        },
+        distressbutton: {
+            active?: boolean;
+            dimming?: number;
+            volume?: number;
+            message?: boolean;
+            messageText?: string;
+        },
+        assistant: {
+            signLanguage: {
+                active?: boolean;
+                display?: string;
+                windowSize?: number;
+            },
+            transcription: {
+                active?: boolean;
+                fontSize?: number;
+                history?: number;
+            }
         }
-    } = {support: {}};
 
-    if (typeof ud.support.eyesight === 'string') {
-        userData.support.sehen = ud.support.eyesight.trim();
-    }
+    } = {support: {}, ui: {}, video: {}, audio: {}, distressbutton: {}, assistant: {signLanguage: {}, transcription: {}}};
 
-    if (typeof ud.support.hearing === 'string') {
-        userData.support.hören = ud.support.hearing.trim();
-    }
+    userData.support.eyesight = parseString(ud.support.eyesight);
+    userData.support.hearing = parseString(ud.support.hearing);
+    userData.support.senses = parseBoolean(ud.support.senses);
+    userData.support.learning_difficulties = parseBoolean(ud.support.learning_difficulties);
+    userData.ui.fontSize = parseNumber(ud.ui.fontSize);
+    userData.ui.iconSize = parseNumber(ud.ui.iconSize);
+    userData.ui.screenreader = parseBoolean(ud.ui.screenreader);
+    userData.ui.visualCues = parseBoolean(ud.ui.visualCues);
+    userData.ui.acousticCues = parseBoolean(ud.ui.acousticCues);
+    userData.video.otherParticipants = parseBoolean(ud.video.otherParticipants);
+    userData.video.contrast = parseNumber(ud.video.contrast);
+    userData.video.brightness = parseNumber(ud.video.brightness);
+    userData.video.dimming = parseNumber(ud.video.dimming);
+    userData.video.saturation = parseNumber(ud.video.saturation);
+    userData.video.zoom = parseNumber(ud.video.zoom);
+    userData.video.fps = parseNumber(ud.video.fps);
+    userData.audio.otherParticipants = parseBoolean(ud.audio.otherParticipants);
+    userData.audio.volume = parseNumber(ud.audio.volume);
+    userData.audio.highFrequency = parseNumber(ud.audio.highFreq);
+    userData.audio.amplify = parseNumber(ud.audio.amplify);
+    userData.audio.balance = parseNumber(ud.audio.balance);
+    userData.audio.background = parseBoolean(ud.audio.background);
+    userData.audio.output = parseString(ud.audio.output);
+    userData.distressbutton.active = parseBoolean(ud.distressbutton.active);
+    userData.distressbutton.dimming = parseNumber(ud.distressbutton.dimming);
+    userData.distressbutton.volume = parseNumber(ud.distressbutton.volume);
+    userData.distressbutton.message = parseBoolean(ud.distressbutton.message);
+    userData.distressbutton.messageText = parseString(ud.distressbutton.messageText);
+    userData.assistant.signLanguage.active = parseBoolean(ud.assistant.signLang.active);
+    userData.assistant.signLanguage.display = parseString(ud.assistant.signLang.display);
+    userData.assistant.signLanguage.windowSize = parseNumber(ud.assistant.signLang.windowSize);
+    userData.assistant.transcription.active = parseBoolean(ud.assistant.transcription.active);
+    userData.assistant.transcription.fontSize = parseNumber(ud.assistant.transcription.fontSize);
+    userData.assistant.transcription.history = parseNumber(ud.assistant.transcription.history);
+
     return Object.keys(userData).length ? userData : undefined;
+}
+
+function parseNumber(value: any): number | null | undefined {
+    if (typeof value === 'number' || value === null || value === undefined) {
+        return value;
+    }
+    if (typeof value === 'string') {
+        const parsedFloat = parseFloat(value.trim());
+        return isNaN(parsedFloat) ? null : parsedFloat;
+    }
+    return value;
+}
+
+function parseString(value: any): string | null | undefined {
+    if (typeof value === 'string' || value === null || value === undefined) {
+        return value;
+    }
+    return String(value);
+}
+
+function parseBoolean(value: any): boolean | null | undefined {
+    if(typeof value === 'boolean' || value === null || value === undefined) {
+        return value;
+    }
+
+    if(typeof value === 'string') {
+        return value.trim() === '1' ? true : false;
+    }
+    return Boolean(value);
 }
