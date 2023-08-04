@@ -5,9 +5,56 @@ import { SET_USERDATA } from './actionTypes';
 
 export interface IUserdataState {
     userData?: {
-        support?: {
-            sehen: string;
-            hören: string;
+        name: string;
+        support: {
+            eyesight: string;
+            hearing: string;
+            senses: boolean;
+            learning_difficulties: boolean;
+        },
+        ui: {
+            fontSize: number;
+            iconSize: number;
+            screenreader: boolean;
+            visualCues: boolean;
+            acousticCues: boolean;
+        },
+        video: {
+            otherParticipants: boolean;
+            contrast: number;
+            brightness: number;
+            dimming: number;
+            saturation: number;
+            zoom: number;
+            fps: number;
+        },
+        audio: {
+            otherParticipants: boolean;
+            volume: number;
+            highFrequency: number;
+            amplify: boolean;
+            balance: number;
+            background: boolean;
+            output: string;
+        },
+        distressbutton: {
+            active: boolean;
+            dimming: number;
+            volume: number;
+            message: boolean;
+            messageText: string;
+        },
+        assistant: {
+            signLanguage: {
+                active: boolean;
+                display: string;
+                windowSize: number;
+            },
+            transcription: {
+                active: boolean;
+                fontSize: number;
+                history: number;
+            }
         }
     };
 }
