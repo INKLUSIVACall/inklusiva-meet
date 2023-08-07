@@ -24,8 +24,7 @@ import { AddBreakoutRoomButton } from '../breakout-rooms/components/web/AddBreak
 import { RoomList } from '../breakout-rooms/components/web/RoomList';
 
 import { FooterContextMenu } from './FooterContextMenu';
-import LobbyParticipants from './LobbyParticipants';
-import MeetingParticipants from './MeetingParticipants';
+import AllParticipants from './AllParticipants';
 
 
 import { BREAKOUTROOM_BUTTON_STATUS, BREAKOUTROOM_LIST_STATUS } from '../../constants';
@@ -147,9 +146,7 @@ const ParticipantsPane = () => {
                         onClick = { onClosePane } />
                 </div>
                 <div className = { classes.container }>
-                    <LobbyParticipants />
-                    <br className = { classes.antiCollapse } />
-                    <MeetingParticipants
+                    <AllParticipants
                         searchString = { searchString }
                         setSearchString = { setSearchString } />
                     { BREAKOUTROOM_LIST_STATUS && isBreakoutRoomsSupported && <RoomList searchString = { searchString } />}

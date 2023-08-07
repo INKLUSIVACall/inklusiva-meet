@@ -179,7 +179,7 @@ export const MeetingStateIcons = {
     ['inConference']: null
 };
 
-export const DEFAULT_MEETING_STATE = 'helpInWaitingroom';
+export const DEFAULT_MEETING_STATE = 'inConference';
 
 
 
@@ -193,7 +193,7 @@ export const ConnectionStateIcons = (
         src = { IconLink } />
 );
 
-export const ACTIVE_CONNECTION = true;
+export const ACTIVE_CONNECTION = false;
 
 
 
@@ -221,7 +221,7 @@ export const MeetingRoleIcons = {
     ['participant']: null
 };
 
-export const DEFAULT_MEETING_ROLE = 'moderator';
+export const DEFAULT_MEETING_ROLE = 'participant';
 
 
 
