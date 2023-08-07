@@ -1,6 +1,7 @@
 import React, { ReactNode, useCallback } from 'react';
 import { WithTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
+import clsx from 'clsx';
 
 import Avatar from '../../../base/avatar/components/Avatar';
 import { translate } from '../../../base/i18n/functions';
@@ -105,6 +106,12 @@ interface IProps extends WithTranslation {
      * The translated "you" text.
      */
     youText?: string;
+
+
+    /**
+     * True if the user is in the Lobby
+     */
+    inLobby: boolean;
 }
 
 const useStyles = makeStyles()(theme => {
@@ -154,7 +161,8 @@ function ParticipantItem({
     raisedHand,
     t,
     videoMediaState = MEDIA_STATE.NONE,
-    youText
+    youText,
+    inLobby
 }: IProps) {
     const onClick = useCallback(
         () => openDrawerForParticipant?.({
@@ -175,10 +183,14 @@ function ParticipantItem({
     const text = (
         <>
             <div className = { classes.nameContainer }>
-                <div className = { classes.name }>
+                {inLobby && <div className = { clsx(classes.name, "lobby-participant-name") }>
                     {displayName}
-                </div>
+                </div>}
+                {!inLobby && <div className = { classes.name }>
+                    {displayName}
+                </div>}
                 {local ? <span>&nbsp;({youText})</span> : null}
+
 
                 <div className = 'LeftPlacedIcons'>
                     {MeetingRoleIcons[DEFAULT_MEETING_ROLE]}
