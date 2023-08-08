@@ -12,9 +12,9 @@ import {
     IconEmptyStar,
     IconHalfStar,
     IconLifeSaver,
-    IconHandshake,
-    IconHighfive,
-    IconHelper
+    IconContact,
+    IconGridPlus,
+    IconBullhorn
 } from '../base/icons/svg';
 
 /**
@@ -216,7 +216,8 @@ export const MeetingRoleIcons = {
     ['assistant']: (
         <Icon
             size = { 16 }
-            src = { IconHandshake } />
+            color = { '#' }
+            src = { IconContact } />
     ),
     ['participant']: null
 };
@@ -246,7 +247,7 @@ export const EscortIcons = (
     <Icon
         size = { 16 }
         color = {'#'}
-        src = { IconHighfive } />
+        src = { IconGridPlus } />
 );
 
 export const ESCORT_REQUIRED = false;
@@ -260,7 +261,7 @@ export const SupportOfferIcons = (
     <Icon
         size = { 16 }
         color = {'#'}
-        src = { IconHelper } />
+        src = { IconBullhorn } />
 )
 
 export const SUPPORT_OFFERED = false;
