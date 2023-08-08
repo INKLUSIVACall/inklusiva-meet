@@ -13,7 +13,6 @@ const useStyles = makeStyles()(theme => {
             height: '20px',
             width: '20px',
             padding:'0 !important',
-            margin: '2px'
         }
     };
 });

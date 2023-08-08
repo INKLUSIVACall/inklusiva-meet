@@ -172,6 +172,11 @@ function ParticipantItem({
 
     const { classes } = useStyles();
 
+    var meeting_role = DEFAULT_MEETING_ROLE;
+    if (isModerator) {
+        meeting_role = "moderator";
+    }
+
     const icon = (
         <Avatar
             className = { classes.avatar }
@@ -193,7 +198,7 @@ function ParticipantItem({
 
 
                 <div className = 'LeftPlacedIcons'>
-                    {MeetingRoleIcons[DEFAULT_MEETING_ROLE]}
+                    {MeetingRoleIcons[meeting_role]}
                     {TECHNICAL_SUPPORT_REQUIRED && TechnicalSupportIcons}
                     {ESCORT_REQUIRED && EscortIcons}
                     {SUPPORT_OFFERED && SupportOfferIcons}
@@ -202,9 +207,9 @@ function ParticipantItem({
                 </div>
 
             </div>
-            {isModerator && !disableModeratorIndicator && <div className = { classes.moderatorLabel }>
+            {/*{isModerator && !disableModeratorIndicator && <div className = { classes.moderatorLabel }>
                 {t('videothumbnail.moderator')}
-            </div>}
+            </div>}*/}
         </>
     );
 
