@@ -51,6 +51,11 @@ function _connectionEstablished(store: IStore, next: Function, action: AnyAction
     // @ts-ignore
     const { history, location } = window;
 
+    // if keepUrlParameters is enabled, we skip the url cleanup in order to keep our urlparams.
+    if(store.getState()['features/base/config'].keepUrlParameters) {
+        return;
+    }
+
     if (inIframe()) {
         return;
     }
