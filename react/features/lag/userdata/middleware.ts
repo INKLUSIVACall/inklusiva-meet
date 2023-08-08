@@ -30,7 +30,7 @@ function _setUserdata(store: IStore, next: Function, action: AnyAction) {
             let jwtPayload;
 
             try {
-                jwtPayload = jwtDecod(jwt);
+                jwtPayload = jwtDecode(jwt);
             } catch (e) {
                 logger.error(e);
             }
