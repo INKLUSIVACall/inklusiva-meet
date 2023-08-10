@@ -23,6 +23,13 @@
     overflow: hidden;
 }
 
+.component.sidebar-container{
+    display: flex;
+    height: 100%;
+    width: 390px;
+    background-color: darkslategrey;
+}
+
 #largeVideoBackgroundContainer,
 .large-video-background {
     height: 100%;
