@@ -13,6 +13,11 @@ import { setScreenshareFramerate } from '../screen-share/actions';
 import { getAudioDeviceSelectionDialogProps, getVideoDeviceSelectionDialogProps } from './functions';
 import logger from './logger';
 
+import {
+    toggleOwnAudioInput,
+    toggleOthersAudioInput,
+} from '../lag/userdata/actions';
+
 /**
  * Submits the settings related to audio device selection.
  *
@@ -57,6 +62,10 @@ export function submitAudioDeviceSelectionTab(newState: any, isDisplayedOnWelcom
 
         if (newState.noiseSuppressionEnabled !== currentState.noiseSuppressionEnabled) {
             dispatch(toggleNoiseSuppression());
+        }
+
+        if(newState.othersAudio !== currentState.othersAudio) {
+            dispatch(toggleOthersAudioInput());
         }
     };
 }

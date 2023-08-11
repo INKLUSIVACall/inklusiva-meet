@@ -12,6 +12,7 @@ import AbstractDialogTab, {
 import { translate } from '../../base/i18n/functions';
 import { createLocalTrack } from '../../base/lib-jitsi-meet/functions.web';
 import Checkbox from '../../base/ui/components/web/Checkbox';
+import Slider from '../../base/ui/components/web/Slider';
 import { iAmVisitor as iAmVisitorCheck } from '../../visitors/functions';
 import logger from '../logger';
 
@@ -20,6 +21,7 @@ import AudioOutputPreview from './AudioOutputPreview';
 import DeviceHidContainer from './DeviceHidContainer.web';
 import DeviceSelector from './DeviceSelector.web';
 
+import { isOthersAudioInputEnabled } from '../../../features/lag/userdata/functions';
 /**
  * The type of the React {@code Component} props of {@link AudioDevicesSelection}.
  */
@@ -112,6 +114,41 @@ interface IProps extends AbstractDialogTabProps, WithTranslation {
      * The id of the audio output device to preview.
      */
     selectedAudioOutputId: string;
+
+    /**
+     * Whether or not the users own audio is active.
+     */
+    ownAudioActive: boolean;
+
+    /**
+     * Whether or not others audio is active.
+     */
+    othersAudio: boolean;
+
+    /**
+     * The volume of others audio.
+     */
+    othersVolume: number;
+
+    /**
+     * The volume of high frequencies.
+     */
+    highFrequencies: number;
+
+    /**
+     * The amount of amplification.
+     */
+    amplify: number;
+
+    /**
+     * the balance between left and right.
+     */
+    balance: number;
+
+    /**
+     * Whether to reduce background noise or not.
+     */
+    background: boolean;
 }
 
 /**
@@ -149,7 +186,15 @@ const styles = (theme: Theme) => {
         },
 
         noiseSuppressionContainer: {
+            marginBottom: theme.spacing(3)
+        },
+
+        ownAudioActiveContainer: {
             marginBottom: theme.spacing(5)
+        },
+
+        othersAudioActiveContainer: {
+            marginBottom: theme.spacing(3)
         }
     };
 };
@@ -243,6 +288,13 @@ class AudioDevicesSelection extends AbstractDialogTab<IProps, IState> {
             iAmVisitor,
             noiseSuppressionEnabled,
             selectedAudioOutputId,
+            ownAudioActive,
+            othersAudio,
+            othersVolume,
+            highFrequencies,
+            amplify,
+            balance,
+            background,
             t
         } = this.props;
         const { audioInput, audioOutput } = this._getSelectors();
@@ -279,6 +331,81 @@ class AudioDevicesSelection extends AbstractDialogTab<IProps, IState> {
                 )}
                 {!hideDeviceHIDContainer && !iAmVisitor
                     && <DeviceHidContainer />}
+                    <div className = { classes.ownAudioActiveContainer }>
+                        <Checkbox
+                            checked = { ownAudioActive }
+                            label = { t('toolbar.activateOwnAudio') }
+                            // eslint-disable-next-line react/jsx-no-bind
+                            onChange = { () => super._onChange({
+                                ownAudioActive: !ownAudioActive
+                            }) } />
+                    </div>
+                    <div className = { classes.othersAudioActiveContainer }>
+                        <Checkbox
+                            checked = { othersAudio }
+                            label = { t('toolbar.activateOthersAudio') }
+                            // eslint-disable-next-line react/jsx-no-bind
+                            onChange = { () => super._onChange({
+                                othersAudio: !othersAudio
+                            }) } />
+                    </div>
+                    <div className = { classes.othersVolume }>
+                        <Slider
+                            label = { t('toolbar.othersVolume') }
+                            min = { 0 }
+                            max = { 100 }
+                            step = { 1 }
+                            defaultValue = { othersVolume }
+                            // eslint-disable-next-line react/jsx-no-bind
+                            onChange = { (event) => super._onChange({
+                                othersVolume: event.target.value
+                            }) } />
+                    </div>
+                    <div className = { classes.highFrequencies }>
+                        <Slider
+                            label = { t('toolbar.highFrequencies') }
+                            min = { 0 }
+                            max = { 100 }
+                            step = { 1 }
+                            defaultValue = { highFrequencies }
+                            // eslint-disable-next-line react/jsx-no-bind
+                            onChange = { (event) => super._onChange({
+                                highFrequencies: event.target.value
+                            }) } />
+                    </div>
+                    <div className = { classes.amplify }>
+                        <Slider
+                            label = { t('toolbar.amplify') }
+                            min = { 0 }
+                            max = { 100 }
+                            step = { 1 }
+                            defaultValue = { amplify }
+                            // eslint-disable-next-line react/jsx-no-bind
+                            onChange = { (event) => super._onChange({
+                                amplify: event.target.value
+                            }) } />
+                    </div>
+                    <div className = { classes.balance }>
+                        <Slider
+                            label = { t('toolbar.balance') }
+                            min = { 0 }
+                            max = { 100 }
+                            step = { 1 }
+                            defaultValue = { balance }
+                            // eslint-disable-next-line react/jsx-no-bind
+                            onChange = { (event) => super._onChange({
+                                balance: event.target.value
+                            }) } />
+                    </div>
+                    <div className = { classes.background }>
+                        <Checkbox
+                            checked = { background }
+                            label = { t('toolbar.backgroundNoises') }
+                            // eslint-disable-next-line react/jsx-no-bind
+                            onChange = { () => super._onChange({
+                                background: !background
+                            }) } />
+                    </div>
             </div>
         );
     }
@@ -388,7 +515,13 @@ class AudioDevicesSelection extends AbstractDialogTab<IProps, IState> {
 const mapStateToProps = (state: IReduxState) => {
     return {
         availableDevices: state['features/base/devices'].availableDevices ?? {},
-        iAmVisitor: iAmVisitorCheck(state)
+        iAmVisitor: iAmVisitorCheck(state),
+        //othersAudioActive: isOthersAudioInputEnabled(state),
+        //othersVolume: state['features/lag/userdata'].userData?.audio?.volume ?? 100,
+        highFrequencies: state['features/lag/userdata'].userData?.audio?.highFrequency ?? 100,
+        amplify: state['features/lag/userdata'].userData?.audio?.amplify ?? 100,
+        balance: state['features/lag/userdata'].userData?.audio?.balance ?? 100,
+        background: state['features/lag/userdata'].userData?.audio?.background ?? false,
     };
 };
 
