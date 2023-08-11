@@ -162,7 +162,8 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
                     ...newProps,
                     noiseSuppressionEnabled: tabState.noiseSuppressionEnabled,
                     selectedAudioInputId: tabState.selectedAudioInputId,
-                    selectedAudioOutputId: tabState.selectedAudioOutputId
+                    selectedAudioOutputId: tabState.selectedAudioOutputId,
+                    othersAudio: tabState.othersAudio
                 };
             },
             submit: (newState: any) => submitAudioDeviceSelectionTab(newState, isDisplayedOnWelcomePage),

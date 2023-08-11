@@ -1,7 +1,7 @@
 import ReducerRegistry from '../../base/redux/ReducerRegistry';
 import { equals } from '../../base/redux/functions';
 
-import { SET_USERDATA } from './actionTypes';
+import { SET_USERDATA, SET_OTHERS_AUDIO_INPUT_ENABLED } from './actionTypes';
 
 export interface IUserdataState {
     userData?: {
@@ -78,10 +78,16 @@ ReducerRegistry.register<IUserdataState>(
             const nextState = {
                 ...payload
             };
-
             return equals(state, nextState) ? state : nextState;
         }
-        }
+        case SET_OTHERS_AUDIO_INPUT_ENABLED:
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { type, ...payload } = action;
+            const nextState = state;
+            nextState.userData.audio.otherParticipants = payload.enabled;
+            return nextState;
+        default:
 
         return state;
-    });
+        }
+});
