@@ -31,20 +31,20 @@ export function getDistressBtnVolumeValue(state: IReduxstate): number{
 }
 
 /**
- *  Returns state of distressbutton
+ *  Returns state of distressbutton message
  * @param state 
- * @returns whether distress button is enabled or disabled
+ * @returns whether distress button message is enabled or disabled
  */
 export function isDistressBtnMessageEnabled(state: IReduxState): boolean {
     return state['features/lag/userdata'].userData?.distressbutton?.message;
 }
 
 /**
- *  Gets value for volume
+ *  Gets value for message text
  * @param state 
  * @returns 
  */
-export function getDistressBtnMessageTextValue(state: IReduxstate): number{
+export function getDistressBtnMessageText(state: IReduxstate): string{
     return state['features/lag/userdata'].userData?.distressbutton?.message_text;
 }
 
@@ -58,7 +58,8 @@ export function getDistressBtnTabProps(stateful: IStateful) {
     const dimming = getDistressBtnDimmingValue(state);
     const volume = getDistressBtnVolumeValue(state);
     const message = isDistressBtnMessageEnabled(state);
-    const message_text = getDistressBtnMessageTextValue(state);
+    const message_text = getDistressBtnMessageText(state);
+
     return{
         active,
         dimming,

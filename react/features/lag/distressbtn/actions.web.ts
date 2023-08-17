@@ -7,7 +7,7 @@ import {
     SET_DISTRESSBTN_DIMMING_VALUE, 
     SET_DISTRESSBTN_VOLUME_VALUE, 
     SET_DISTRESSBTN_MESSAGE_ENABLED, 
-    SET_DISTRESSBTN_MESSAGE_TEXT_VALUE 
+    SET_DISTRESSBTN_MESSAGE_TEXT
 } from './actionTypes';
 import { getDistressBtnTabProps, isDistressBtnEnabled, isDistressBtnMessageEnabled } from './functions.web';
 
@@ -16,6 +16,7 @@ import { getDistressBtnTabProps, isDistressBtnEnabled, isDistressBtnMessageEnabl
  *  Submits new values to the state inside the project store
  */
 export function submitNewDistressBtnTab(newState: any) {
+    
     return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
         const currentState = getDistressBtnTabProps(getState());
         if(newState.active !== currentState.active) {
@@ -29,6 +30,9 @@ export function submitNewDistressBtnTab(newState: any) {
         }
         if(newState.volume !== currentState.volume){
             dispatch(setDistressBtnVolumeValue(newState.volume));
+        }
+        if(newState.message_text !== currentState.message_text){
+            dispatch(setDistressBtnMessageText(newState.message_text));
         }
     };
 }
@@ -80,9 +84,9 @@ export function setDistressBtnMessageEnabled(enabled: boolean): any{
     }
 }
 
-export function setDistressBtnMessageTextValue(text: string): any{
+export function setDistressBtnMessageText(text: string): any{
     return{
-        type: SET_DISTRESSBTN_MESSAGE_TEXT_VALUE,
+        type: SET_DISTRESSBTN_MESSAGE_TEXT,
         text
     }
 }

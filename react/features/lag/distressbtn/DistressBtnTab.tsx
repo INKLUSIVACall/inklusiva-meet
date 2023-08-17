@@ -6,11 +6,8 @@ import { translate } from '../../base/i18n/functions';
 import React from 'react';
 import Checkbox from '../../base/ui/components/web/Checkbox';
 import Slider from '../../base/ui/components/web/Slider';
-
-
-import { isDistressBtnEnabled } from './functions.web';
 import { withStyles } from '@mui/styles';
-import { Theme } from '@mui/material';
+import { Theme,TextareaAutosize  } from '@mui/material';
 import { connect } from 'react-redux';
 
 /**
@@ -67,14 +64,12 @@ const styles = (theme: Theme) => {
         headline: {
             marginBottom: theme.spacing(3)
         },
-        headlineContainer: {
-            marginBottom: theme.spacing(3)
+        inputElement: {
+            marginBottom: theme.spacing(1),
+            fontWeight: 'bold',
         },
-        inputContainer: {
+        description: {
             marginBottom: theme.spacing(3)
-        },
-        contextContainer: {
-            marginBottom: theme.spacing(5)
         },
         inputblockContainer: {
             marginBottom: theme.spacing(5)
@@ -113,27 +108,25 @@ class DistressBtnTab extends AbstractDialogTab<IProps, any> {
         return (
         <div className={ classes.container}>
             <div className = { classes.inputblockContainer } >
-                <div className={ classes.headlineContainer }>
-                <b>Ich möchte einen Notfallbutton</b>
-                </div>
-                <div className={ classes.inputContainer }>
+                <b className={ classes.headline }>Ich möchte einen Notfallbutton</b>
                         <Checkbox
+                            className={ classes.inputElement }
                             label = "Notfallbutton aktivieren"
                             // eslint-disable-next-line react/jsx-no-bind
                             checked= { active }
                             onChange = { () => super._onChange({
                                 active: !active
                             }) } />
-                </div>
-                    <div className={ classes.contextContainer }>
+                
+                    <div className={ classes.description }>
                         Der Notfallbutton ermöglicht einen sofortigen Einfluss auf die Audio- und Videoübertragung im meeting.
                         Einer bestimmten Begleitperson kann eine vorab geschriebene Nachricht übermittelt werden.
                     </div>
             </div>
             <div className = { classes.inputblockContainer }>
                 <b className={ classes.headline }>Aktionen nach dem Klick:</b>
-                <div className={ classes.inputContainer }>
                     <Slider
+                        className={ classes.inputElement }
                         label = "Kacheln dimmen"
                         min = { 0 }
                         max = { 100 }
@@ -143,9 +136,10 @@ class DistressBtnTab extends AbstractDialogTab<IProps, any> {
                         onChange = { (event) => super._onChange({
                             dimming: event.target.value
                         }) } />
-                </div>
-                <div className={ classes.inputContainer }>
+                
+                
                     <Slider
+                        className={ classes.inputElement }
                         label = "Lautstärke anpassen"
                         min = { 0 }
                         max = { 100 }
@@ -155,25 +149,33 @@ class DistressBtnTab extends AbstractDialogTab<IProps, any> {
                         onChange = { (event) => super._onChange({
                             volume: event.target.value
                         }) } />
-                    </div>    
             </div>
             <div className={ classes.inputblockContainer }>
-                <div className={ classes.inputContainer }>
                         <Checkbox
+                            className={ classes.inputElement }
                             label = "Nachricht versenden"
                             // eslint-disable-next-line react/jsx-no-bind
                             checked= { message }
                             onChange = { () => super._onChange({
                                 message: !message
                             }) } />
-                </div>
-                <div className={ classes.contextContainer }>
+                
+                <div className={ classes.description}>
                     Nach dem Klick auf den Notfallbutton wird eine private Nachricht an eine Begleitperson gesendet. 
                     Vorerst ist das der Moderator.
                     Im Meeting kann eine bevorzugte Begleitperson eingestellt werden.
                 </div>
+                <div>
                 <b className={ classes.headline }>Nachricht verfassen </b>
-                Hier eine Textarea vom Mui einfügen
+                </div>
+                <textarea id="distress_message"
+                aria-label="Arialabel" 
+                className={ classes.inputElement }
+                defaultValue= { message_text }
+                placeholder={ message_text }
+                onChange = {(event) => super._onChange({
+                    message_text: event.target.value })}                
+                    />
             </div>
         </div>
         );
