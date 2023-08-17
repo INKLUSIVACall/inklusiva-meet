@@ -5,6 +5,7 @@ import { makeStyles } from 'tss-react/mui';
 import { IReduxState, IStore } from '../../../app/types';
 import {
     IconBell,
+    IconBellConcierge,
     IconCalendar,
     IconGear,
     IconImage,
@@ -12,7 +13,7 @@ import {
     IconShortcuts,
     IconUser,
     IconVideo,
-    IconVolumeUp
+    IconVolumeUp,
 } from '../../../base/icons/svg';
 import DialogWithTabs, { IDialogTab } from '../../../base/ui/components/web/DialogWithTabs';
 import { isCalendarEnabled } from '../../../calendar-sync/functions.web';
@@ -41,7 +42,7 @@ import {
     getNotificationsTabProps,
     getProfileTabProps,
     getShortcutsTabProps,
-    getVirtualBackgroundTabProps
+    getVirtualBackgroundTabProps,
 } from '../../functions';
 
 import CalendarTab from './CalendarTab';
@@ -51,6 +52,9 @@ import NotificationsTab from './NotificationsTab';
 import ProfileTab from './ProfileTab';
 import ShortcutsTab from './ShortcutsTab';
 import VirtualBackgroundTab from './VirtualBackgroundTab';
+import DistressBtnTab from '../../../lag/distressbtn/DistressBtnTab';
+import { getDistressBtnTabProps, isDistressBtnEnabled } from '../../../lag/distressbtn/functions.web';
+import { submitNewDistressBtnTab } from '../../../lag/distressbtn/actions.web';
 
 /**
  * The type of the React {@code Component} props of
@@ -145,6 +149,10 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
     const tabs: IDialogTab<any>[] = [];
     const _iAmVisitor = iAmVisitor(state);
 
+    const isDistressBtnActive = isDistressBtnEnabled(state);
+    const distressBtnTabProps = getDistressBtnTabProps(state);
+
+    
     if (showDeviceSettings) {
         tabs.push({
             name: SETTINGS_TABS.AUDIO,
@@ -180,7 +188,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
                 // current user selected devices. If this were not done, the
                 // tab would keep using a copy of the initial props it received,
                 // leaving the device list to become stale.
-
+                
                 return {
                     ...newProps,
                     currentFramerate: tabState?.currentFramerate,
@@ -192,7 +200,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
             icon: IconVideo
         });
     }
-
+    
     if (virtualBackgroundSupported && !_iAmVisitor && enableVirtualBackground) {
         tabs.push({
             name: SETTINGS_TABS.VIRTUAL_BACKGROUND,
@@ -200,8 +208,8 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
             labelKey: 'virtualBackground.title',
             props: getVirtualBackgroundTabProps(state, isDisplayedOnWelcomePage),
             propsUpdateFunction: (tabState: any, newProps: ReturnType<typeof getVirtualBackgroundTabProps>,
-                    tabStates: any) => {
-                const videoTabState = tabStates[tabs.findIndex(tab => tab.name === SETTINGS_TABS.VIDEO)];
+                tabStates: any) => {
+                    const videoTabState = tabStates[tabs.findIndex(tab => tab.name === SETTINGS_TABS.VIDEO)];
 
                 return {
                     ...newProps,
@@ -212,7 +220,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
             submit: (newState: any) => submitVirtualBackgroundTab(newState),
             cancel: () => {
                 const { options } = getVirtualBackgroundTabProps(state, isDisplayedOnWelcomePage);
-
+                
                 return submitVirtualBackgroundTab({
                     options: {
                         backgroundType: options.backgroundType,
@@ -226,7 +234,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
             icon: IconImage
         });
     }
-
+    
     if ((showSoundsSettings || showNotificationsSettings) && !_iAmVisitor) {
         tabs.push({
             name: SETTINGS_TABS.NOTIFICATIONS,
@@ -249,7 +257,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
             icon: IconBell
         });
     }
-
+    
     if (showModeratorSettings && !_iAmVisitor) {
         tabs.push({
             name: SETTINGS_TABS.MODERATOR,
@@ -258,7 +266,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
             props: moderatorTabProps,
             propsUpdateFunction: (tabState: any, newProps: typeof moderatorTabProps) => {
                 // Updates tab props, keeping users selection
-
+                
                 return {
                     ...newProps,
                     followMeEnabled: tabState?.followMeEnabled,
@@ -271,7 +279,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
             icon: IconModerator
         });
     }
-
+    
     if (showProfileSettings) {
         tabs.push({
             name: SETTINGS_TABS.PROFILE,
@@ -280,6 +288,29 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
             props: getProfileTabProps(state),
             submit: submitProfileTab,
             icon: IconUser
+        });
+    }
+    
+    if(true) {
+        tabs.push({
+        name: SETTINGS_TABS.DISTRESSBTN_TAB,
+        component: DistressBtnTab,
+        labelKey: 'settings.distressBtnTab', // muss in Sprachdatei gesetzt werden
+        props: getDistressBtnTabProps(state),
+        propsUpdateFunction: (tabState: any, newProps: typeof distressBtnTabProps) => {
+            // Updates tab props, keeping users selection
+
+            return {
+                ...newProps,
+                active: tabState?.active,
+                dimming: tabState?.dimming,
+                volume: tabState?.volume,
+                message: tabState?.message,
+                message_text: tabState?.message_text,
+            };
+        },
+        submit: submitNewDistressBtnTab,
+        icon: IconBellConcierge
         });
     }
 
