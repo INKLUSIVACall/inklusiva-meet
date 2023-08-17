@@ -5,7 +5,7 @@ import {
     SET_DISTRESSBTN_VOLUME_VALUE,
     SET_DISTRESSBTN_DIMMING_VALUE, 
     SET_DISTRESSBTN_MESSAGE_ENABLED,
-    SET_DISTRESSBTN_MESSAGE_TEXT_VALUE,
+    SET_DISTRESSBTN_MESSAGE_TEXT,
  } from '../distressbtn/actionTypes';
 
 import { SET_USERDATA, SET_OTHERS_AUDIO_INPUT_ENABLED } from './actionTypes';
@@ -87,6 +87,7 @@ ReducerRegistry.register<IUserdataState>(
             const nextState = {
                 ...payload
             };
+
             return equals(state, nextState) ? state : nextState;
         }
         case SET_OTHERS_AUDIO_INPUT_ENABLED:
@@ -111,11 +112,11 @@ ReducerRegistry.register<IUserdataState>(
             nextState.userData.distressbutton.volume = payload.value;
             return nextState;
             
-        case SET_DISTRESSBTN_MESSAGE_TEXT_VALUE:
+        case SET_DISTRESSBTN_MESSAGE_TEXT:
             nextState.userData.distressbutton.message_text = payload.text;
             return nextState;
 
         default:
-           return state;
+            return state;
     }
 });

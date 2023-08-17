@@ -95,7 +95,7 @@ interface IDistressButton {
     dimming: number;
     volume: number;
     message: boolean;
-    messageText: string;
+    message_text: string;
 }
 
 interface IAssistant {
@@ -158,7 +158,7 @@ function _parseUserData(ud: IUserData) {
             dimming?: number;
             volume?: number;
             message?: boolean;
-            messageText?: string;
+            message_text?: string;
         },
         assistant: {
             signLanguage: {
@@ -202,7 +202,7 @@ function _parseUserData(ud: IUserData) {
     userData.distressbutton.dimming = parseNumber(ud.distressbutton.dimming);
     userData.distressbutton.volume = parseNumber(ud.distressbutton.volume);
     userData.distressbutton.message = parseBoolean(ud.distressbutton.message);
-    userData.distressbutton.messageText = parseString(ud.distressbutton.messageText);
+    userData.distressbutton.message_text = parseString(ud.distressbutton.message_text);
     userData.assistant.signLanguage.active = parseBoolean(ud.assistant.signLang.active);
     userData.assistant.signLanguage.display = parseString(ud.assistant.signLang.display);
     userData.assistant.signLanguage.windowSize = parseNumber(ud.assistant.signLang.windowSize);
