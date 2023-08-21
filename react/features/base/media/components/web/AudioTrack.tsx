@@ -5,6 +5,7 @@ import { createAudioPlayErrorEvent, createAudioPlaySuccessEvent } from '../../..
 import { sendAnalytics } from '../../../../analytics/functions';
 import { IReduxState } from '../../../../app/types';
 import { ITrack } from '../../../tracks/types';
+import { AudioFilters } from './filters/AudioFilters';
 import logger from '../../logger';
 
 /**
@@ -49,9 +50,20 @@ interface IProps {
  */
 class AudioTrack extends Component<IProps> {
     /**
+     * Static references to existing audio filters just to ensure the references wouldn't get lost
+     * when reassigning them.
+     */
+    private static MediaStreamFilters = new Map<HTMLAudioElement, AudioFilters>();
+
+    /**
      * Reference to the HTML audio element, stored until the file is ready.
      */
     _ref: HTMLAudioElement | null;
+
+    /**
+     * Audio filters for the selected context..
+     */
+    _audioFilters?: AudioFilters | null;
 
     /**
      * The current timeout ID for play() retries.
@@ -189,7 +201,9 @@ class AudioTrack extends Component<IProps> {
             return;
         }
 
+            
         track.jitsiTrack.attach(this._ref);
+        
         this._play();
     }
 
@@ -242,6 +256,16 @@ class AudioTrack extends Component<IProps> {
             // case the audio may not autoplay.
             this._ref.play()
             .then(() => {
+                //Attach the filders once the track is playing.
+                /*if (this._ref) {
+                    if (AudioTrack.MediaStreamFilters.has(this._ref)) {
+                        this._audioFilters = AudioTrack.MediaStreamFilters.get(this._ref);
+                    } else {
+                        this._audioFilters = new AudioFilters(this._ref);
+                        AudioTrack.MediaStreamFilters.set(this._ref, this._audioFilters);
+                    }    
+                }*/
+
                 if (retries !== 0) {
                     // success after some failures
                     this._playTimeout = undefined;
@@ -273,7 +297,7 @@ class AudioTrack extends Component<IProps> {
      * @returns {void}
      */
     _setRef(audioElement: HTMLAudioElement | null) {
-        this._ref = audioElement;
+        this._ref = audioElement;        
     }
 }
 
