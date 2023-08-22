@@ -7,6 +7,7 @@ import {
     IconBell,
     IconCalendar,
     IconGear,
+    IconHands,
     IconImage,
     IconModerator,
     IconShortcuts,
@@ -43,6 +44,7 @@ import {
     getShortcutsTabProps,
     getVirtualBackgroundTabProps
 } from '../../functions';
+import { getSignLangTabProps } from '../../../lag/userdata/signLang/functions.web';
 
 import CalendarTab from './CalendarTab';
 import ModeratorTab from './ModeratorTab';
@@ -51,6 +53,7 @@ import NotificationsTab from './NotificationsTab';
 import ProfileTab from './ProfileTab';
 import ShortcutsTab from './ShortcutsTab';
 import VirtualBackgroundTab from './VirtualBackgroundTab';
+import SignLangTab from '../../../lag/userdata/signLang/SignLangTab';
 
 /**
  * The type of the React {@code Component} props of
@@ -144,6 +147,8 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
     const enableVirtualBackground = checkVirtualBackgroundEnabled(state);
     const tabs: IDialogTab<any>[] = [];
     const _iAmVisitor = iAmVisitor(state);
+
+    const signLangTabProps = getSignLangTabProps(state);
 
     if (showDeviceSettings) {
         tabs.push({
@@ -331,7 +336,28 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
         });
     }
 
+    // ggf mit Anzeigebedingung (bspw. in config schauen ob Einstellungen vorgenommen werden dürfen)
+    if(true) {
+        tabs.push({
+            name: SETTINGS_TABS.SIGNLANG_TAB,
+            component: SignLangTab,
+            labelKey: 'settings.SignLangTab', // muss in Sprachdatei gesetzt werden
+            props: signLangTabProps,
+            propsUpdateFunction: (tabState: any, newProps: typeof signLangTabProps) => {
+                // Updates tab props, keeping users selection
+
+                return {
+                    ...signLangTabProps,
+                    
+                };
+            },
+            
+            icon: IconHands
+        });
+    }
+
     return { _tabs: tabs };
 }
+
 
 export default connect(_mapStateToProps)(SettingsDialog);
