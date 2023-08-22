@@ -173,7 +173,7 @@ const Checkbox = ({
                     size = { 18 }
                     src = { IconCheck } />
             </div>
-            <label aria-hidden={true} >{label}</label>
+            <label htmlFor={`${ name }_id`} aria-hidden={true} >{label}</label>
         </div>
     );
 };
