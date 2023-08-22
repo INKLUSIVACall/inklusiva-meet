@@ -156,12 +156,14 @@ const Checkbox = ({
     const isMobile = isMobileBrowser();
 
     return (
-        <label className = { cx(styles.formControl, isMobile && 'is-mobile', className) }>
+        <div className = { cx(styles.formControl, isMobile && 'is-mobile', className) }>
             <div className = { cx(styles.activeArea, isMobile && 'is-mobile', disabled && styles.disabled) }>
                 <input
+                    aria-label={label}
                     checked = { checked }
                     disabled = { disabled }
                     name = { name }
+                    id= {`${ name }_id`}
                     onChange = { onChange }
                     type = 'checkbox' />
                 <Icon
@@ -171,8 +173,8 @@ const Checkbox = ({
                     size = { 18 }
                     src = { IconCheck } />
             </div>
-            <div>{label}</div>
-        </label>
+            <label aria-hidden={true} >{label}</label>
+        </div>
     );
 };
 
