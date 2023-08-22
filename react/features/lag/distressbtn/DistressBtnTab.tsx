@@ -7,7 +7,7 @@ import React from 'react';
 import Checkbox from '../../base/ui/components/web/Checkbox';
 import Slider from '../../base/ui/components/web/Slider';
 import { withStyles } from '@mui/styles';
-import { Theme,TextareaAutosize  } from '@mui/material';
+import { Theme } from '@mui/material';
 import { connect } from 'react-redux';
 
 /**
@@ -68,6 +68,9 @@ const styles = (theme: Theme) => {
             marginBottom: theme.spacing(1),
             fontWeight: 'bold',
         },
+        textareaElement: {
+            marginBottom: theme.spacing(1),
+        },
         description: {
             marginBottom: theme.spacing(3)
         },
@@ -102,32 +105,33 @@ class DistressBtnTab extends AbstractDialogTab<IProps, any> {
             dimming, 
             volume, 
             message, 
-            message_text
+            message_text,
+            t
         } = this.props;
 
         return (
         <div className={ classes.container}>
             <div className = { classes.inputblockContainer } >
-                <b className={ classes.headline }>Ich möchte einen Notfallbutton</b>
+                <b className={ classes.headline }>{ t("toolbar.distressbtn.btn_engage_headline") }</b>
                         <Checkbox
                             className={ classes.inputElement }
-                            label = "Notfallbutton aktivieren"
+                            label = {t("toolbar.distressbtn.btn_engage_label")}
                             // eslint-disable-next-line react/jsx-no-bind
+                            name='distressbtn_enable'
                             checked= { active }
                             onChange = { () => super._onChange({
                                 active: !active
                             }) } />
                 
                     <div className={ classes.description }>
-                        Der Notfallbutton ermöglicht einen sofortigen Einfluss auf die Audio- und Videoübertragung im meeting.
-                        Einer bestimmten Begleitperson kann eine vorab geschriebene Nachricht übermittelt werden.
+                        {t("toolbar.distressbtn.btn_engage_desc")}
                     </div>
             </div>
             <div className = { classes.inputblockContainer }>
-                <b className={ classes.headline }>Aktionen nach dem Klick:</b>
+                <b className={ classes.headline }>{t("toolbar.distressbtn.sliders_headline")}</b>
                     <Slider
                         className={ classes.inputElement }
-                        label = "Kacheln dimmen"
+                        label = {t("toolbar.distressbtn.dimlights_label")}
                         min = { 0 }
                         max = { 100 }
                         step = { 1 }
@@ -140,7 +144,7 @@ class DistressBtnTab extends AbstractDialogTab<IProps, any> {
                 
                     <Slider
                         className={ classes.inputElement }
-                        label = "Lautstärke anpassen"
+                        label = {t("toolbar.distressbtn.setvolume_label")}
                         min = { 0 }
                         max = { 100 }
                         step = { 1 }
@@ -153,24 +157,27 @@ class DistressBtnTab extends AbstractDialogTab<IProps, any> {
             <div className={ classes.inputblockContainer }>
                         <Checkbox
                             className={ classes.inputElement }
-                            label = "Nachricht versenden"
+                            label = {t("toolbar.distressbtn.messagebtn_enable_label")}
                             // eslint-disable-next-line react/jsx-no-bind
+                            name='messagebtn_enable'
                             checked= { message }
                             onChange = { () => super._onChange({
                                 message: !message
                             }) } />
                 
                 <div className={ classes.description}>
-                    Nach dem Klick auf den Notfallbutton wird eine private Nachricht an eine Begleitperson gesendet. 
-                    Vorerst ist das der Moderator.
-                    Im Meeting kann eine bevorzugte Begleitperson eingestellt werden.
+                    {t("toolbar.distressbtn.messagebtn_enable_desc")}
                 </div>
                 <div>
-                <b className={ classes.headline }>Nachricht verfassen </b>
+                <b className={ classes.headline }>{t("toolbar.distressbtn.message_headline")} </b>
+                </div>
+                <div className={classes.description} id="textarea_desc" aria-hidden="true">
+                {t("toolbar.distressbtn.message_desc")}
                 </div>
                 <textarea id="distress_message"
-                aria-label="Arialabel" 
-                className={ classes.inputElement }
+                aria-label="Notfallnachricht"
+                aria-describedby='textarea_desc'
+                className={ classes.textareaElement }
                 defaultValue= { message_text }
                 placeholder={ message_text }
                 onChange = {(event) => super._onChange({
