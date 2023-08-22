@@ -44,6 +44,7 @@ export { default as IconFavoriteSolid } from './favorite-solid.svg';
 export { default as IconFeedback } from './feedback.svg';
 export { default as IconGear } from './gear.svg';
 export { default as IconGoogle } from './google.svg';
+export { default as IconHands } from './hands.svg';
 export { default as IconHangup } from './hangup.svg';
 export { default as IconHelp } from './help.svg';
 export { default as IconHighlight } from './highlight.svg';
