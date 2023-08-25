@@ -1,5 +1,6 @@
 import ReducerRegistry from '../../base/redux/ReducerRegistry';
 import { equals } from '../../base/redux/functions';
+import { SET_SIGNLANG_DISPLAY_STRING, SET_SIGNLANG_ENABLED, SET_SIGNLANG_WINDOWSIZE_VALUE } from '../signLang/actionTypes';
 
 import { SET_USERDATA, SET_OTHERS_AUDIO_INPUT_ENABLED } from './actionTypes';
 
@@ -71,6 +72,8 @@ export interface IUserdataState {
 ReducerRegistry.register<IUserdataState>(
     'features/lag/userdata',
     (state = {}, action): IUserdataState => {
+        const { type, ...payload } = action;
+        const nextState = state;
         switch (action.type) {
         case SET_USERDATA: {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -82,9 +85,19 @@ ReducerRegistry.register<IUserdataState>(
         }
         case SET_OTHERS_AUDIO_INPUT_ENABLED:
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { type, ...payload } = action;
-            const nextState = state;
             nextState.userData.audio.otherParticipants = payload.enabled;
+            return nextState;
+
+        case SET_SIGNLANG_ENABLED:
+            nextState.userData.assistant.signLanguage.active = payload.enabled;
+            return nextState;
+
+        case SET_SIGNLANG_DISPLAY_STRING:
+            nextState.userData.assistant.signLanguage.display = payload.displayValue;
+            return nextState;
+            
+        case SET_SIGNLANG_WINDOWSIZE_VALUE:
+            nextState.userData.assistant.signLanguage.windowSize = payload.value;
             return nextState;
         default:
 

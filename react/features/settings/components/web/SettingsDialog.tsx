@@ -44,7 +44,7 @@ import {
     getShortcutsTabProps,
     getVirtualBackgroundTabProps
 } from '../../functions';
-import { getSignLangTabProps } from '../../../lag/userdata/signLang/functions.web';
+import { getSignLangTabProps, isSignLangEnabled } from '../../../lag/signLang/functions.web';
 
 import CalendarTab from './CalendarTab';
 import ModeratorTab from './ModeratorTab';
@@ -53,7 +53,8 @@ import NotificationsTab from './NotificationsTab';
 import ProfileTab from './ProfileTab';
 import ShortcutsTab from './ShortcutsTab';
 import VirtualBackgroundTab from './VirtualBackgroundTab';
-import SignLangTab from '../../../lag/userdata/signLang/SignLangTab';
+import SignLangTab from '../../../lag/signLang/SignLangTab';
+import { submitSignLangTabProps } from '../../../lag/signLang/actions.web';
 
 /**
  * The type of the React {@code Component} props of
@@ -149,6 +150,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
     const _iAmVisitor = iAmVisitor(state);
 
     const signLangTabProps = getSignLangTabProps(state);
+    const isSignLangActive = isSignLangEnabled(state);
 
     if (showDeviceSettings) {
         tabs.push({
@@ -336,22 +338,22 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
         });
     }
 
-    // ggf mit Anzeigebedingung (bspw. in config schauen ob Einstellungen vorgenommen werden dürfen)
     if(true) {
         tabs.push({
             name: SETTINGS_TABS.SIGNLANG_TAB,
             component: SignLangTab,
-            labelKey: 'settings.SignLangTab', // muss in Sprachdatei gesetzt werden
+            labelKey: 'settings.SignLangTab', 
             props: signLangTabProps,
             propsUpdateFunction: (tabState: any, newProps: typeof signLangTabProps) => {
                 // Updates tab props, keeping users selection
-
                 return {
-                    ...signLangTabProps,
-                    
+                    ...newProps,
+                    active: tabState?.active,
+                    display: tabState?.display,
+                    windowSize: tabState?.windowSize,
                 };
             },
-            
+            submit: submitSignLangTabProps,
             icon: IconHands
         });
     }

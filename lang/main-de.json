@@ -1044,6 +1044,7 @@
         "selectMic": "Mikrofon",
         "selfView": "Eigene Ansicht",
         "shortcuts": "Tastaturkürzel",
+        "SignLangTab": "Gebärdensprachen-Assistent",
         "speakers": "Lautsprecher",
         "startAudioMuted": "Alle Personen treten stummgeschaltet bei",
         "startReactionsMuted": "Interaktionstöne für alle deaktivieren",
@@ -1209,6 +1210,16 @@
             "videomute": "„Video stummschalten“ ein-/ausschalten",
             "videomuteGUMPending": "Verbinde Ihre Kamera",
             "videounmute": "Kamera einschalten"
+        },
+        "signlangtab":{
+            "btn_engage_headline": "Ich möchte den Assistenten Gebärdensprache nutzen",
+            "btn_engage_label": "Gebärdensprachen-Assistent",
+            "btn_engage_desc": "Der Assistent Gebärdensprache ermöglicht die Videoanzeige eines Gebärdensprache Dolmetscher:in.",
+            "display_headline": "Darstellung Dolmetscher:in",
+            "display_option1": "als übergeordnetes Fenster",
+            "display_option2": "als eine Kachel wie alle Teilnehmer",
+            "windowsize_headline": "Fenstergröße festlegen",
+            "windowsize_label": "100%"
         },
         "activateOwnAudio": "Audio-Übertragung aktiv",
         "activateOthersAudio": "Teilnehmer Audio aktiv",
