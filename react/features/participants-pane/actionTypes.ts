@@ -12,3 +12,8 @@ export const PARTICIPANTS_PANE_OPEN = 'PARTICIPANTS_PANE_OPEN';
  * Action type to set the volume of the participant.
  */
 export const SET_VOLUME = 'SET_VOLUME';
+
+/**
+ * Action type to set the frequency filter setting of the participant.
+ */
+export const SET_FREQUENCY_FILTER_SETTING = 'SET_FREQUENCY_FILTER_SETTING';
