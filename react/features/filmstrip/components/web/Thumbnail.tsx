@@ -63,6 +63,7 @@ import ThumbnailAudioIndicator from './ThumbnailAudioIndicator';
 import ThumbnailBottomIndicators from './ThumbnailBottomIndicators';
 import ThumbnailTopIndicators from './ThumbnailTopIndicators';
 import VirtualScreenshareParticipant from './VirtualScreenshareParticipant';
+import FadeOutOverlay from './FadeOutOverlay';
 
 /**
  * The type of the React {@code Component} state of {@link Thumbnail}.
@@ -311,7 +312,7 @@ const defaultStyles = (theme: Theme) => {
             width: '100%',
             borderRadius: '4px',
             backgroundColor: theme.palette.ui02
-        },
+        },        
 
         borderIndicator: {
             position: 'absolute' as const,
@@ -1106,6 +1107,10 @@ class Thumbnail extends Component<IProps, IState> {
                     ? <span id = 'localVideoWrapper'>{video}</span>
                     : video)}
                 <div className = { classes.containerBackground } />
+                <FadeOutOverlay
+                    local = { local }
+                    participantId = { id }
+                />
                 {/* put the bottom container before the top container in the dom,
                 because it contains the participant name that should be announced first by screen readers */}
                 <div

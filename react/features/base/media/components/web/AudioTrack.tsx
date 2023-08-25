@@ -5,7 +5,6 @@ import { createAudioPlayErrorEvent, createAudioPlaySuccessEvent } from '../../..
 import { sendAnalytics } from '../../../../analytics/functions';
 import { IReduxState } from '../../../../app/types';
 import { ITrack } from '../../../tracks/types';
-import { AudioFilters } from './filters/AudioFilters';
 import logger from '../../logger';
 
 /**
@@ -22,6 +21,11 @@ interface IProps {
      * Represents volume property of the underlying audio element.
      */
     _volume?: number | boolean;
+
+    /**
+     * Represents the frequency filter setting of the underlying JitsiTrack.
+     */
+    _frequencySetting?: number;
 
     /**
      * The audio track.
@@ -50,20 +54,14 @@ interface IProps {
  */
 class AudioTrack extends Component<IProps> {
     /**
-     * Static references to existing audio filters just to ensure the references wouldn't get lost
-     * when reassigning them.
+     * Frequency cut off configuration.
      */
-    private static MediaStreamFilters = new Map<HTMLAudioElement, AudioFilters>();
+    private const FREQUENCY_CUT_OFFS: number[] = [22050, 4000, 2000, 1000, 700, 400];
 
     /**
      * Reference to the HTML audio element, stored until the file is ready.
      */
     _ref: HTMLAudioElement | null;
-
-    /**
-     * Audio filters for the selected context..
-     */
-    _audioFilters?: AudioFilters | null;
 
     /**
      * The current timeout ID for play() retries.
@@ -120,6 +118,36 @@ class AudioTrack extends Component<IProps> {
             // @ts-ignore
             this._ref.addEventListener('error', this._errorHandler);
         }
+
+
+        if (this.props.audioTrack) {
+            const { _frequencySetting } = this.props;
+
+            if (typeof _frequencySetting === 'number') {
+                this._setFrequencyCutOff(_frequencySetting);
+            }            
+        }
+    }
+
+    /**
+     * Applies the frequency setting to the underlaying Jitsi Track.
+     * @param frequencySetting 
+     */
+    _setFrequencyCutOff(frequencySetting : number) {
+        if (this.props.audioTrack) {
+            let setting = Math.floor(frequencySetting);
+            if (setting < 0 || setting > this.FREQUENCY_CUT_OFFS.length) {
+                setting = 0;
+            }
+
+            const cutOffFrequency = this.FREQUENCY_CUT_OFFS[setting];
+
+            const oldSetting = this.props.audioTrack.jitsiTrack.audioFilter.frequency.value;
+
+            if (oldSetting != cutOffFrequency) {
+                this.props.audioTrack.jitsiTrack.audioFilter.frequency.value = cutOffFrequency;
+            }            
+        }        
     }
 
     /**
@@ -168,6 +196,11 @@ class AudioTrack extends Component<IProps> {
                 this._ref.muted = nextMuted;
             }
         }
+        
+        const nextFilterSetting = nextProps._frequencySetting;
+        if (typeof nextFilterSetting === 'number' && !isNaN(nextFilterSetting)) {
+            this._setFrequencyCutOff(nextFilterSetting);
+        }
 
         return false;
     }
@@ -201,7 +234,6 @@ class AudioTrack extends Component<IProps> {
             return;
         }
 
-            
         track.jitsiTrack.attach(this._ref);
         
         this._play();
@@ -256,16 +288,6 @@ class AudioTrack extends Component<IProps> {
             // case the audio may not autoplay.
             this._ref.play()
             .then(() => {
-                //Attach the filders once the track is playing.
-                /*if (this._ref) {
-                    if (AudioTrack.MediaStreamFilters.has(this._ref)) {
-                        this._audioFilters = AudioTrack.MediaStreamFilters.get(this._ref);
-                    } else {
-                        this._audioFilters = new AudioFilters(this._ref);
-                        AudioTrack.MediaStreamFilters.set(this._ref, this._audioFilters);
-                    }    
-                }*/
-
                 if (retries !== 0) {
                     // success after some failures
                     this._playTimeout = undefined;
@@ -310,11 +332,12 @@ class AudioTrack extends Component<IProps> {
  * @returns {IProps}
  */
 function _mapStateToProps(state: IReduxState, ownProps: any) {
-    const { participantsVolume } = state['features/filmstrip'];
+    const { participantsVolume, participantsFrequencySetting } = state['features/filmstrip'];
 
     return {
         _muted: state['features/base/config'].startSilent,
-        _volume: participantsVolume[ownProps.participantId]
+        _volume: participantsVolume[ownProps.participantId],
+        _frequencySetting: participantsFrequencySetting[ownProps.participantId]
     };
 }
 
