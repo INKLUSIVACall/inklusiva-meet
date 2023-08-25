@@ -90,10 +90,8 @@ const Slider = ({
 
     return (
         <div className = { cx(styles.formControl, isMobile && 'is-mobile', className) }>
-            <label  aria-hidden='true'
-            className={ cx(styles.label, isMobile && 'is-mobile', className) }>{label}</label>
+            <label className={ cx(styles.label, isMobile && 'is-mobile', className) }>{label}</label>
             <input
-                aria-label={label}
                 disabled = { disabled }
                 name = { name }
                 //value = { value }
