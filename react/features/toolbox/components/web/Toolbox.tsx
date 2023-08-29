@@ -388,7 +388,8 @@ const Toolbox = ({
                             <Content
                                 { ...rest }
                                 buttonKey = { key }
-                                key = { key } />))}
+                                key = { key } />)
+                        )}
 
                         {Boolean(overflowMenuButtons.length) && (
                             <OverflowMenuButton

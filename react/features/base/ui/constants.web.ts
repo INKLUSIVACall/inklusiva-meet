@@ -212,10 +212,11 @@ export const commonStyles = (theme: Theme) => {
             display: 'flex',
             borderRadius: 3,
             flexDirection: 'column' as const,
+            border: '1px solid #a0a0a054',
             fontSize: 24,
             height: 48,
             justifyContent: 'center',
-            width: 48,
+            width: '120px',
 
             '@media (hover: hover) and (pointer: fine)': {
                 '&:hover': {
@@ -264,6 +265,7 @@ export const commonStyles = (theme: Theme) => {
 
             '& > div': {
                 marginRight: theme.spacing(2),
+                marginTop: theme.spacing(),
 
                 '&:last-of-type': {
                     marginRight: 0
