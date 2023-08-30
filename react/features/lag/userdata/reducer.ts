@@ -1,5 +1,12 @@
 import ReducerRegistry from '../../base/redux/ReducerRegistry';
 import { equals } from '../../base/redux/functions';
+import { 
+    SET_DISTRESSBTN_ENABLED, 
+    SET_DISTRESSBTN_VOLUME_VALUE,
+    SET_DISTRESSBTN_DIMMING_VALUE, 
+    SET_DISTRESSBTN_MESSAGE_ENABLED,
+    SET_DISTRESSBTN_MESSAGE_TEXT,
+ } from '../distressbtn/actionTypes';
 
 import { SET_USERDATA, SET_OTHERS_AUDIO_INPUT_ENABLED } from './actionTypes';
 
@@ -42,7 +49,7 @@ export interface IUserdataState {
             dimming: number;
             volume: number;
             message: boolean;
-            messageText: string;
+            message_text: string;
         },
         assistant: {
             signLanguage: {
@@ -71,6 +78,8 @@ export interface IUserdataState {
 ReducerRegistry.register<IUserdataState>(
     'features/lag/userdata',
     (state = {}, action): IUserdataState => {
+        const { type, ...payload } = action;
+        const nextState = state;
         switch (action.type) {
         case SET_USERDATA: {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -78,16 +87,36 @@ ReducerRegistry.register<IUserdataState>(
             const nextState = {
                 ...payload
             };
+
             return equals(state, nextState) ? state : nextState;
         }
         case SET_OTHERS_AUDIO_INPUT_ENABLED:
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { type, ...payload } = action;
-            const nextState = state;
             nextState.userData.audio.otherParticipants = payload.enabled;
             return nextState;
-        default:
 
-        return state;
-        }
+        case SET_DISTRESSBTN_ENABLED:
+            nextState.userData.distressbutton.active = payload.enabled;
+            return nextState;
+
+
+        case SET_DISTRESSBTN_MESSAGE_ENABLED:
+            nextState.userData.distressbutton.message = payload.enabled;
+            return nextState;
+            
+        case SET_DISTRESSBTN_DIMMING_VALUE:
+            nextState.userData.distressbutton.dimming = payload.value;
+            return nextState;
+            
+        case SET_DISTRESSBTN_VOLUME_VALUE:
+            nextState.userData.distressbutton.volume = payload.value;
+            return nextState;
+            
+        case SET_DISTRESSBTN_MESSAGE_TEXT:
+            nextState.userData.distressbutton.message_text = payload.text;
+            return nextState;
+
+        default:
+            return state;
+    }
 });
