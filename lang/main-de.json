@@ -1218,8 +1218,7 @@
             "display_headline": "Darstellung Dolmetscher:in",
             "display_option1": "als übergeordnetes Fenster",
             "display_option2": "als eine Kachel wie alle Teilnehmer",
-            "windowsize_headline": "Fenstergröße festlegen",
-            "windowsize_label": "100%"
+            "windowsize_label": "Fenstergröße festlegen"
         },
         "activateOwnAudio": "Audio-Übertragung aktiv",
         "activateOthersAudio": "Teilnehmer Audio aktiv",
