@@ -140,6 +140,7 @@ class DistressBtnTab extends AbstractDialogTab<IProps, any> {
                         onChange = { (event) => super._onChange({
                             dimming: event.target.value
                         }) } />
+                        <span>{ dimming }%</span>
                 
                 
                     <Slider
@@ -153,6 +154,7 @@ class DistressBtnTab extends AbstractDialogTab<IProps, any> {
                         onChange = { (event) => super._onChange({
                             volume: event.target.value
                         }) } />
+                        <span>{ volume }%</span>
             </div>
             <div className={ classes.inputblockContainer }>
                         <Checkbox
@@ -180,6 +182,8 @@ class DistressBtnTab extends AbstractDialogTab<IProps, any> {
                 className={ classes.textareaElement }
                 defaultValue= { message_text }
                 placeholder={ message_text }
+                rows={10}
+                cols={35}
                 onChange = {(event) => super._onChange({
                     message_text: event.target.value })}                
                     />
