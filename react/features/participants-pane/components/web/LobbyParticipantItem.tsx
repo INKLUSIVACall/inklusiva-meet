@@ -81,6 +81,7 @@ export const LobbyParticipantItem = ({
 
     return (
         <ParticipantItem
+            inLobby = { true }
             actionsTrigger = { ACTION_TRIGGER.PERMANENT }
             audioMediaState = { MEDIA_STATE.NONE }
             displayName = { p.name }

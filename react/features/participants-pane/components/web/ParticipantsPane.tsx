@@ -24,9 +24,10 @@ import { AddBreakoutRoomButton } from '../breakout-rooms/components/web/AddBreak
 import { RoomList } from '../breakout-rooms/components/web/RoomList';
 
 import { FooterContextMenu } from './FooterContextMenu';
-import LobbyParticipants from './LobbyParticipants';
-import MeetingParticipants from './MeetingParticipants';
+import AllParticipants from './AllParticipants';
 
+
+import { BREAKOUTROOM_BUTTON_STATUS, BREAKOUTROOM_LIST_STATUS } from '../../constants';
 
 const useStyles = makeStyles()(theme => {
     return {
@@ -145,13 +146,11 @@ const ParticipantsPane = () => {
                         onClick = { onClosePane } />
                 </div>
                 <div className = { classes.container }>
-                    <LobbyParticipants />
-                    <br className = { classes.antiCollapse } />
-                    <MeetingParticipants
+                    <AllParticipants
                         searchString = { searchString }
                         setSearchString = { setSearchString } />
-                    {isBreakoutRoomsSupported && <RoomList searchString = { searchString } />}
-                    {showAddRoomButton && <AddBreakoutRoomButton />}
+                    { BREAKOUTROOM_LIST_STATUS && isBreakoutRoomsSupported && <RoomList searchString = { searchString } />}
+                    { BREAKOUTROOM_BUTTON_STATUS && showAddRoomButton && <AddBreakoutRoomButton />}
                 </div>
                 {showFooter && (
                     <div className = { classes.footer }>

@@ -3,6 +3,18 @@ import { useTranslation } from 'react-i18next';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
 
+import Avatar from '../../../base/avatar/components/Avatar';
+import Icon from '../../../base/icons/components/Icon';
+import { IconCheck, IconCloseLarge } from '../../../base/icons/svg';
+import { admitMultiple } from '../../../lobby/actions.web';
+import { getKnockingParticipants, getLobbyEnabled } from '../../../lobby/functions';
+import Drawer from '../../../toolbox/components/web/Drawer';
+import JitsiPortal from '../../../toolbox/components/web/JitsiPortal';
+import { useLobbyActions } from '../../hooks';
+
+import LobbyParticipantItems from './LobbyParticipantItems';
+
+
 import { IReduxState } from '../../../app/types';
 import { rejectParticipantAudio, rejectParticipantVideo } from '../../../av-moderation/actions';
 import participantsPaneTheme from '../../../base/components/themes/participantsPaneTheme.json';
@@ -47,6 +59,42 @@ const useStyles = makeStyles()(theme => {
                 textAlign: 'center',
                 paddingRight: '16px'
             }
+        },
+
+
+        drawerActions: {
+            listStyleType: 'none',
+            margin: 0,
+            padding: 0
+        },
+        drawerItem: {
+            alignItems: 'center',
+            color: theme.palette.text01,
+            display: 'flex',
+            padding: '12px 16px',
+            ...withPixelLineHeight(theme.typography.bodyShortRegularLarge),
+
+            '&:first-child': {
+                marginTop: '15px'
+            },
+
+            '&:hover': {
+                cursor: 'pointer',
+                background: theme.palette.action02
+            }
+        },
+        icon: {
+            marginRight: 16
+        },
+        headingContainer: {
+            alignItems: 'center',
+            display: 'flex',
+            justifyContent: 'space-between'
+        },
+        link: {
+            ...withPixelLineHeight(theme.typography.labelBold),
+            color: theme.palette.link01,
+            cursor: 'pointer'
         }
     };
 });
@@ -71,7 +119,7 @@ interface IProps {
  *
  * @returns {ReactNode} - The component.
  */
-function MeetingParticipants({
+function AllParticipants({
     currentRoom,
     overflowDrawer,
     participantsCount,
@@ -83,6 +131,14 @@ function MeetingParticipants({
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
+
+    const participants = useSelector(getKnockingParticipants);
+    const { classes } = useStyles();
+    const admitAll = useCallback(() => {
+        dispatch(admitMultiple(participants));
+    }, [ dispatch, participants ]);
+
+
     const [ lowerMenu, , toggleMenu, menuEnter, menuLeave, raiseContext ] = useContextMenu<string>();
     const muteAudio = useCallback(id => () => {
         dispatch(muteRemote(id, MEDIA_TYPE.AUDIO));
@@ -93,6 +149,8 @@ function MeetingParticipants({
         dispatch(rejectParticipantVideo(id));
     }, [ dispatch ]);
     const [ drawerParticipant, closeDrawer, openDrawerForParticipant ] = useParticipantDrawer();
+
+    const [ admit, reject ] = useLobbyActions(drawerParticipant, closeDrawer);
 
     // FIXME:
     // It seems that useTranslation is not very scalable. Unmount 500 components that have the useTranslation hook is
@@ -107,23 +165,37 @@ function MeetingParticipants({
 
     const { classes: styles, cx } = useStyles();
 
+    var allParticipantsCount = participants.length;
+    if (participantsCount!=undefined) {
+        allParticipantsCount += participantsCount;
+    }
+
     return (
         <>
-            <span
-                aria-level = { 1 }
-                className = 'sr-only'
-                role = 'heading'>
-                { t('participantsPane.title') }
-            </span>
-            {visitorsCount > 0 && (
-                <div className = { cx(styles.heading, styles.headingW) }>
-                    {t('participantsPane.headings.visitors', { count: visitorsCount })}
+            <div className = { classes.headingContainer }>
+                <span
+                    aria-level = { 1 }
+                    className = 'sr-only'
+                    role = 'heading'>
+                    { t('participantsPane.title') }
+                </span>
+                {visitorsCount > 0 && (
+                    <div className = { cx(styles.heading, styles.headingW) }>
+                        {t('participantsPane.headings.visitors', { count: visitorsCount })}
+                    </div>
+                )}
+                <div className = { styles.heading }>
+                    {currentRoom?.name
+                        ? `${currentRoom.name} (${participantsCount})`
+                        : t('participantsPane.headings.participantsList', { count: allParticipantsCount })}
+                    
                 </div>
-            )}
-            <div className = { styles.heading }>
-                {currentRoom?.name
-                    ? `${currentRoom.name} (${participantsCount})`
-                    : t('participantsPane.headings.participantsList', { count: participantsCount })}
+                {
+                    participants.length > 1
+                    && <div
+                        className = { classes.link }
+                        onClick = { admitAll }>{t('lobby.admitAll')}</div>
+                }
             </div>
             {showInviteButton && <InviteButton />}
             {SEARCH_PARTICIPANTS_STATUS && <Input
@@ -147,6 +219,46 @@ function MeetingParticipants({
                     stopVideo = { stopVideo }
                     toggleMenu = { toggleMenu }
                     youText = { youText } />
+
+
+                <LobbyParticipantItems
+                    openDrawerForParticipant = { openDrawerForParticipant }
+                    overflowDrawer = { overflowDrawer }
+                    participants = { participants } />
+                <JitsiPortal>
+                    <Drawer
+                        isOpen = { Boolean(drawerParticipant && overflowDrawer) }
+                        onClose = { closeDrawer }>
+                        <ul className = { classes.drawerActions }>
+                            <li className = { classes.drawerItem }>
+                                <Avatar
+                                    className = { classes.icon }
+                                    participantId = { drawerParticipant?.participantID }
+                                    size = { 20 } />
+                                <span>{ drawerParticipant?.displayName }</span>
+                            </li>
+                            <li
+                                className = { classes.drawerItem }
+                                onClick = { admit }>
+                                <Icon
+                                    className = { classes.icon }
+                                    size = { 20 }
+                                    src = { IconCheck } />
+                                <span>{ t('lobby.admit') }</span>
+                            </li>
+                            <li
+                                className = { classes.drawerItem }
+                                onClick = { reject }>
+                                <Icon
+                                    className = { classes.icon }
+                                    size = { 20 }
+                                    src = { IconCloseLarge } />
+                                <span>{ t('lobby.reject')}</span>
+                            </li>
+                        </ul>
+                    </Drawer>
+                </JitsiPortal>
+                    
             </div>
             <MeetingParticipantContextMenu
                 closeDrawer = { closeDrawer }
@@ -158,6 +270,7 @@ function MeetingParticipants({
                 onSelect = { lowerMenu }
                 overflowDrawer = { overflowDrawer }
                 participantID = { raiseContext?.entity } />
+
         </>
     );
 }
@@ -196,4 +309,4 @@ function _mapStateToProps(state: IReduxState) {
     };
 }
 
-export default connect(_mapStateToProps)(MeetingParticipants);
+export default connect(_mapStateToProps)(AllParticipants);

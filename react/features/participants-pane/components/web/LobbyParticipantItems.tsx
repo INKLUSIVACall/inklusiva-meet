@@ -26,7 +26,7 @@ interface IProps {
 const useStyles = makeStyles()(theme => {
     return {
         container: {
-            margin: `${theme.spacing(3)} 0`
+            margin: `0 0`
         }
     };
 });
