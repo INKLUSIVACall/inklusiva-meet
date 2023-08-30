@@ -1,6 +1,7 @@
 import React, { ReactNode, useCallback } from 'react';
 import { WithTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
+import clsx from 'clsx';
 
 import Avatar from '../../../base/avatar/components/Avatar';
 import { translate } from '../../../base/i18n/functions';
@@ -12,7 +13,19 @@ import {
     AudioStateIcons,
     MEDIA_STATE,
     MediaState,
-    VideoStateIcons
+    VideoStateIcons,
+    MeetingStateIcons,
+    ConnectionStateIcons,
+    MeetingRoleIcons,
+    TechnicalSupportIcons,
+    EscortIcons,
+    SupportOfferIcons,
+    TECHNICAL_SUPPORT_REQUIRED,
+    ESCORT_REQUIRED,
+    SUPPORT_OFFERED,
+    ACTIVE_CONNECTION,
+    DEFAULT_MEETING_STATE,
+    DEFAULT_MEETING_ROLE
 } from '../../constants';
 
 import { RaisedHandIndicator } from './RaisedHandIndicator';
@@ -93,6 +106,12 @@ interface IProps extends WithTranslation {
      * The translated "you" text.
      */
     youText?: string;
+
+
+    /**
+     * True if the user is in the Lobby
+     */
+    inLobby: boolean;
 }
 
 const useStyles = makeStyles()(theme => {
@@ -142,7 +161,8 @@ function ParticipantItem({
     raisedHand,
     t,
     videoMediaState = MEDIA_STATE.NONE,
-    youText
+    youText,
+    inLobby
 }: IProps) {
     const onClick = useCallback(
         () => openDrawerForParticipant?.({
@@ -151,6 +171,11 @@ function ParticipantItem({
         }), []);
 
     const { classes } = useStyles();
+
+    var meeting_role = DEFAULT_MEETING_ROLE;
+    if (isModerator) {
+        meeting_role = "moderator";
+    }
 
     const icon = (
         <Avatar
@@ -163,22 +188,40 @@ function ParticipantItem({
     const text = (
         <>
             <div className = { classes.nameContainer }>
-                <div className = { classes.name }>
+                {inLobby && <div className = { clsx(classes.name, "lobby-participant-name") }>
                     {displayName}
-                </div>
+                </div>}
+                {!inLobby && <div className = { classes.name }>
+                    {displayName}
+                </div>}
                 {local ? <span>&nbsp;({youText})</span> : null}
+
+
+                <div className = 'LeftPlacedIcons'>
+                    {MeetingRoleIcons[meeting_role]}
+                    {TECHNICAL_SUPPORT_REQUIRED && TechnicalSupportIcons}
+                    {ESCORT_REQUIRED && EscortIcons}
+                    {SUPPORT_OFFERED && SupportOfferIcons}
+                    {ACTIVE_CONNECTION && ConnectionStateIcons}
+                    {raisedHand && <RaisedHandIndicator />}
+                </div>
+
             </div>
-            {isModerator && !disableModeratorIndicator && <div className = { classes.moderatorLabel }>
+            {/*{isModerator && !disableModeratorIndicator && <div className = { classes.moderatorLabel }>
                 {t('videothumbnail.moderator')}
-            </div>}
+            </div>}*/}
         </>
     );
 
     const indicators = (
         <>
-            {raisedHand && <RaisedHandIndicator />}
-            {VideoStateIcons[videoMediaState]}
-            {AudioStateIcons[audioMediaState]}
+            <div className = 'MiddlePlacedIcons'>
+                {VideoStateIcons[videoMediaState]}
+                {AudioStateIcons[audioMediaState]}
+            </div>
+            <div className = 'RightPlacedIcons'>
+                {MeetingStateIcons[DEFAULT_MEETING_STATE]}
+            </div>
         </>
     );
 

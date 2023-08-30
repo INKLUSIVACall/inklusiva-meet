@@ -21,6 +21,29 @@
     }
 }
 
+
+.LeftPlacedIcons {
+    display: flex;
+    padding-left: 4px;
+}
+
+.LeftPlacedIcons div {
+    padding: 2px 2px;
+}
+
+.raised-hand-indicator div {
+    padding: 0 !important;
+    margin: 2px;
+}
+
+.RightPlacedIcons {
+    width: 22px;
+}
+
+.lobby-participant-name {
+    color: #858585;
+}
+
 @media (max-width: 580px) {
     .participants_pane {
         height: 100vh;

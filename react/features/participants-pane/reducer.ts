@@ -15,7 +15,7 @@ export interface IParticipantsPaneState {
 }
 
 const DEFAULT_STATE = {
-    isOpen: false,
+    isOpen: true,
     participantsVolume: {}
 };
 

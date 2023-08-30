@@ -106,3 +106,13 @@ export { default as IconWifi1Bar } from './wifi-1.svg';
 export { default as IconWifi2Bars } from './wifi-2.svg';
 export { default as IconWifi3Bars } from './wifi-3.svg';
 export { default as IconYahoo } from './yahoo.svg';
+
+export { default as IconEmptyHourglass } from './empty-hourglass.svg';
+export { default as IconFullHourglass } from './full-hourglass.svg';
+export { default as IconLink } from './link.svg'
+export { default as IconEmptyStar } from './empty-star.svg'
+export { default as IconHalfStar } from './half-star.svg'
+export { default as IconLifeSaver } from './life-saver.svg'
+export { default as IconContact } from './contact.svg'
+export { default as IconGridPlus} from './grid-plus.svg'
+export { default as IconBullhorn } from './bullhorn.svg'
