@@ -114,35 +114,42 @@ class SignLangTab extends AbstractDialogTab<IProps, any> {
                     })} />
                 </div>
 
-                <b id="display_headline" className={ classes.headline }>{t("toolbar.signlangtab.display_headline")}</b>
                 <div className={ classes.inputblockContainer }>
                     
+                    <fieldset>
+                <legend >
+                    {t("toolbar.signlangtab.display_headline")}
+                </legend>
                     <div role='radiogroup' aria-labelledby='display_headline'>
-                        <input id="opt1" 
-                        type='radio' 
-                        className='radio' 
-                        name="display_radiogroup" 
-                        value="window"
-                        checked={ display === "window" }
-                        onChange={ (event) => super._onChange({
-                            display: event.target.value
-                        })} />
+                        <div>
+                            <input id="opt1" 
+                            type='radio' 
+                            className='radio' 
+                            name="display_radiogroup" 
+                            value="window"
+                            checked={ display === "window" }
+                            onChange={ (event) => super._onChange({
+                                display: event.target.value
+                            })} />
+                            <label htmlFor="opt1">{t("toolbar.signlangtab.display_option1")}</label>
+                        </div>
 
-                        <label htmlFor="opt1">{t("toolbar.signlangtab.display_option1")}</label>
-                        <input id="opt2" 
-                        type='radio' 
-                        className='radio' 
-                        name="display_radiogroup" 
-                        value="tile"
-                        checked={ display === "tile" }
-                        onChange={ (event) => super._onChange({
-                            display: event.target.value
-                        })} />
-                        <label htmlFor='opt2'>{t("toolbar.signlangtab.display_option2")}</label>
+                        <div>
+                            <input id="opt2" 
+                            type='radio' 
+                            className='radio' 
+                            name="display_radiogroup" 
+                            value="tile"
+                            checked={ display === "tile" }
+                            onChange={ (event) => super._onChange({
+                                display: event.target.value
+                            })} />
+                            <label htmlFor='opt2'>{t("toolbar.signlangtab.display_option2")}</label>
+                        </div>
                     </div>
+                </fieldset>
                 </div>
 
-                    <b className={ classes.headline }>{t("toolbar.signlangtab.windowsize_headline")}</b>
                 <div className={ classes.inputblockContainer }>
                     <Slider
                     className={ classes.inputElement }
@@ -155,6 +162,7 @@ class SignLangTab extends AbstractDialogTab<IProps, any> {
                     onChange = { (event) => super._onChange({
                         windowSize: event.target.value
                     }) } />
+                    <span>{ windowSize }%</span>
                 </div>
             </div>
             );
