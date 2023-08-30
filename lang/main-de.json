@@ -1015,6 +1015,7 @@
             "signedIn": "Momentan wird auf Kalendertermine von {{email}} zugegriffen. Klicken Sie auf die folgende Schaltfläche „Trennen“, um den Zugriff auf die Kalendertermine zu stoppen.",
             "title": "Kalender"
         },
+        "distressBtnTab": "Notfallbutton",
         "desktopShareFramerate": "Framerate für Bildschirmfreigabe",
         "desktopShareHighFpsWarning": "Eine höhere Framerate könnte sich auf Ihre Datenrate auswirken. Sie müssen die Bildschirmfreigabe neustarten, damit die Einstellung übernommen wird.",
         "desktopShareWarning": "Sie müssen die Bildschirmfreigabe neustarten, damit die Einstellung übernommen wird.",
@@ -1312,7 +1313,19 @@
         "videoSettings": "Kameraeinstellungen",
         "videomute": "Kamera stoppen",
         "videomuteGUMPending": "Verbinde Ihre Kamera",
-        "videounmute": "Kamera einschalten"
+        "videounmute": "Kamera einschalten",
+        "distressbtn": {
+            "btn_engage_headline": "Ich möchte einen Notfallbutton",
+            "btn_engage_label": "Notfallbutton aktivieren",
+            "btn_engage_desc": "Der Notfallbutton ermöglicht einen sofortigen Einfluss auf die Audio- und Videoübertragung im meeting. Einer bestimmten Begleitperson kann eine vorab geschriebene Nachricht übermittelt werden.",
+            "dimlights_label": "Kacheln dimmen",
+            "setvolume_label": "Lautstärke anpassen",
+            "messagebtn_enable_label": "Nachricht versenden",
+            "sliders_headline": "Aktionen nach dem Klick:",
+            "messagebtn_enable_desc": "Nach dem Klick auf den Notfallbutton wird eine private Nachricht an eine Begleitperson gesendet. Vorerst ist das der Moderator. Im Meeting kann eine bevorzugte Begleitperson eingestellt werden.",
+            "message_headline": "Nachricht verfassen",
+            "message_desc": "In diesem Feld kann eine eigene Notfallnachricht verfasst werden."
+        }
     },
     "transcribing": {
         "ccButtonTooltip": "Untertitel ein-/ausschalten",
