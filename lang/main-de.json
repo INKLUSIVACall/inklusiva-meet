@@ -1049,6 +1049,7 @@
         "startAudioMuted": "Alle Personen treten stummgeschaltet bei",
         "startReactionsMuted": "Interaktionstöne für alle deaktivieren",
         "startVideoMuted": "Alle Personen treten ohne Video bei",
+        "supportTab": "Unterstützungsbedarf",
         "talkWhileMuted": "Wenn bei Stummschaltung gesprochen wird",
         "title": "Einstellungen",
         "video": "Kamera"
@@ -1325,7 +1326,22 @@
             "messagebtn_enable_desc": "Nach dem Klick auf den Notfallbutton wird eine private Nachricht an eine Begleitperson gesendet. Vorerst ist das der Moderator. Im Meeting kann eine bevorzugte Begleitperson eingestellt werden.",
             "message_headline": "Nachricht verfassen",
             "message_desc": "In diesem Feld kann eine eigene Notfallnachricht verfasst werden."
-        }
+        },
+        "support":{
+                "eyesight_headline": "Angaben zu Sehen",
+                "eyesight_option1_label": "Ich bin blind und habe Unterstützungsbedarf",
+                "eyesight_option2_label": "Ich habe Seheinschränkungen und habe Unterstützungsbedarf",
+                "eyesight_option3_label": "Ich habe keinen Unterstützungsbedarf",
+                "hearing_headline": "Angaben zu Hören",
+                "hearing_option1_label": "Ich bin taub und habe Unterstützungsbedarf",
+                "hearing_option2_label": "Ich habe Höreinschränkungen und habe Unterstützungsbedarf",
+                "hearing_option3_label": "Ich habe keinen Unterstützungsbedarf",
+                "screenreader_label": "Ich nutze einen Screenreader",
+                "senses_label": "Ich bin schnell überreizt",
+                "learning_difficulties_label": "Ich habe Dyslexie, Legasthenie und/ oder Lernschwierigkeiten",
+                "warning_headline": "Achtung",
+                "warning_text": "Änderungen des Unterstützungsbedarfs hat eventuell Einfluss auf bereits hinterlegte Einstellungen."
+        },
     },
     "transcribing": {
         "ccButtonTooltip": "Untertitel ein-/ausschalten",

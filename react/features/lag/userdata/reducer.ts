@@ -7,6 +7,12 @@ import {
     SET_DISTRESSBTN_MESSAGE_ENABLED,
     SET_DISTRESSBTN_MESSAGE_TEXT,
  } from '../distressbtn/actionTypes';
+ import { SET_EYESIGHT_STRING, 
+    SET_HEARING_STRING, 
+    SET_LEARNING_DIFFICULTIES_ENABLED, 
+    SET_SCREENREADER_ENABLED, 
+    SET_SENSES_ENABLED 
+} from '../support/actionTypes';
 
 import { SET_USERDATA, SET_OTHERS_AUDIO_INPUT_ENABLED } from './actionTypes';
 
@@ -115,6 +121,27 @@ ReducerRegistry.register<IUserdataState>(
         case SET_DISTRESSBTN_MESSAGE_TEXT:
             nextState.userData.distressbutton.message_text = payload.text;
             return nextState;
+
+        case SET_EYESIGHT_STRING:
+            nextState.userData.support.eyesight = payload.supportEyesightString;
+            return nextState;
+            
+        case SET_HEARING_STRING:
+            nextState.userData.support.hearing = payload.supportHearingString;
+            return nextState;
+
+        case SET_SENSES_ENABLED
+            nextState.userData.support.senses = payload.supportSensesEnabled;
+            return nextState;
+
+        case SET_LEARNING_DIFFICULTIES_ENABLED
+            nextState.userData.support.learning_difficulties = payload.supportLearningDifficultiesEnabled;
+            return nextState;
+
+        case SET_SCREENREADER_ENABLED
+            nextState.userData.ui.screenreader = payload.supportScreenreaderEnabled;
+            return nextState;
+
 
         default:
             return state;
