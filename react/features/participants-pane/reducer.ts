@@ -5,7 +5,8 @@ import {
     PARTICIPANTS_PANE_OPEN,
     SET_VOLUME,
     SET_FREQUENCY_FILTER_SETTING,
-    SET_PARTICIPANT_OPACITY
+    SET_PARTICIPANT_OPACITY,
+    SET_PARTICIPANT_ZOOM_LEVEL
 } from './actionTypes';
 import { REDUCER_KEY } from './constants';
 
@@ -18,9 +19,12 @@ export interface IParticipantsPaneState {
         [participantId: string]: number;
     };
     participantsOpacity: {
-        [particpantId: string]: number;
-    }
+        [participantId: string]: number;
+    };
     localOpacity: number|null;
+    participantZoomLevel: {
+        [participantId: string]: number;
+    };
 }
 
 const DEFAULT_STATE = {
@@ -28,7 +32,8 @@ const DEFAULT_STATE = {
     participantsVolume: {},
     participantsFrequencySetting: {},
     participantsOpacity: {},
-    localOpacity: 1
+    localOpacity: 1,
+    participantZoomLevel: {}
 };
 
 /**
@@ -82,6 +87,15 @@ ReducerRegistry.register(
                         [action.participantId]: action.opacity
                     }
                 };
+            }
+        case SET_PARTICIPANT_ZOOM_LEVEL:
+            return {
+                ...state,
+                participantZoomLevel: {
+                    ...state.participantZoomLevel,
+
+                    [action.participantId]: action.zoomLevel
+                }
             }
         default:
             return state;

@@ -29,6 +29,7 @@ import {
     SET_VOLUME,
     SET_FREQUENCY_FILTER_SETTING,
     SET_PARTICIPANT_OPACITY,
+    SET_PARTICIPANT_ZOOM_LEVEL,
     TOGGLE_PIN_STAGE_PARTICIPANT
 } from './actionTypes';
 import {
@@ -436,6 +437,24 @@ export function setParticipantOpacitySetting(local:boolean|undefined, participan
     };
 }
 
+/**
+ * Sets the opacity for a thumbnails video.
+ *
+ * @param {string} participantId - The participant ID associated with the audio.
+ * @param {number} zoomLevel - Opacity of the user.
+ * @returns {{
+*     type: SET_PARTICIPANT_ZOOM_LEVEL,
+*     participantId: string,
+*     zoomLevel: number
+* }}
+*/
+export function setParticipantZoomLevel(participantId: string, zoomLevel: number) {
+    return {
+       type: SET_PARTICIPANT_ZOOM_LEVEL,
+       participantId,
+       zoomLevel
+    };
+}
 /**
  * Sets the top filmstrip's height.
  *

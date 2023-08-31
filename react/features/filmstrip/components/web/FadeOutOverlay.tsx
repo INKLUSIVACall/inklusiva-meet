@@ -94,8 +94,6 @@ function _mapStateToProps(state: IReduxState, ownProps: any): any {
     if (local) {
         resultOpacity = localOpacity ?? 1;
     } else {
-        console.log(participantsOpacity);
-        console.log(participantId);
         resultOpacity = participantsOpacity ? (participantsOpacity[participantId] ?? 1):1;
     }
 
