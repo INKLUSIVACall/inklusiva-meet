@@ -260,6 +260,11 @@ export interface IProps extends WithTranslation {
      * there is empty space.
      */
     width?: number;
+
+    /**
+     * Zoom value of the video tag.
+     */
+    _videoZoomLevel: number;
 }
 
 const defaultStyles = (theme: Theme) => {
@@ -674,7 +679,8 @@ class Thumbnail extends Component<IProps, IState> {
             _videoTrack,
             _width,
             horizontalOffset,
-            style
+            style,
+            _videoZoomLevel
         } = this.props;
 
         const isTileType = _thumbnailType === THUMBNAIL_TYPE.TILE;
@@ -717,6 +723,8 @@ class Thumbnail extends Component<IProps, IState> {
         if (videoStyles.objectFit === 'cover') {
             videoStyles.objectPosition = _videoObjectPosition;
         }
+        
+        videoStyles.transform = "scale(" + String(_videoZoomLevel) + ")";
 
         styles = {
             thumbnail: {
@@ -1049,7 +1057,7 @@ class Thumbnail extends Component<IProps, IState> {
         const videoEventListeners: any = {};
         const pinButtonLabel = t(pinned ? 'unpinParticipant' : 'pinParticipant', {
             participantName: name
-        });
+        });                
 
         if (local) {
             if (_isMobilePortrait) {
@@ -1265,6 +1273,13 @@ function _mapStateToProps(state: IReduxState, ownProps: any): Object {
     const activeParticipants = getActiveParticipantsIds(state);
     const tileType = getThumbnailTypeFromLayout(_currentLayout, filmstripType);
 
+
+    const { participantZoomLevel } = state['features/filmstrip'];
+    let zoomLevel = 1;
+    if (participantZoomLevel[participantID]) {
+        zoomLevel = participantZoomLevel[participantID];
+    }
+
     switch (tileType) {
     case THUMBNAIL_TYPE.VERTICAL:
     case THUMBNAIL_TYPE.HORIZONTAL: {
@@ -1281,7 +1296,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any): Object {
                 remote: { width: undefined,
                     height: undefined },
                 gridView: {}
-            }
+            }            
         } = state['features/filmstrip'];
         const _verticalViewGrid = showGridInVerticalView(state);
         const { local, remote }
@@ -1400,7 +1415,8 @@ function _mapStateToProps(state: IReduxState, ownProps: any): Object {
         _videoObjectPosition: getVideoObjectPosition(state, participant?.id),
         _videoTrack,
         ...size,
-        _gifSrc: mode === 'chat' ? null : gifSrc
+        _gifSrc: mode === 'chat' ? null : gifSrc,
+        _videoZoomLevel: zoomLevel
     };
 }
 

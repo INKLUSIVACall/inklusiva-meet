@@ -113,6 +113,17 @@ export const SET_FREQUENCY_FILTER_SETTING = 'SET_FREQUENCY_FILTER_SETTING';
 export const SET_PARTICIPANT_OPACITY = 'SET_PARTICIPANT_OPACITY';
 
 /**
+ * The type of (redux) action which sets the zoom level for a thumnail's video.
+ *
+ * {
+ *     type: SET_PARTICIPANT_OPACITY,
+ *     participantId: string,
+ *     zoomLevel: number
+ * }
+ */
+export const SET_PARTICIPANT_ZOOM_LEVEL = 'SET_PARTICIPANT_ZOOM_LEVEL';
+
+/**
  * The type of the action which sets the list of visible remote participants in the filmstrip by storing the start and
  * end index in the remote participants array.
  *

@@ -18,7 +18,7 @@ import ContextMenuItemGroup from '../../../base/ui/components/web/ContextMenuIte
 import { getBreakoutRooms, getCurrentRoomId, isInBreakoutRoom } from '../../../breakout-rooms/functions';
 import { IRoom } from '../../../breakout-rooms/types';
 import { displayVerification } from '../../../e2ee/functions';
-import { setVolume, setFrequencyFilterSetting, setParticipantOpacitySetting } from '../../../filmstrip/actions.web';
+import { setVolume, setFrequencyFilterSetting, setParticipantOpacitySetting, setParticipantZoomLevel } from '../../../filmstrip/actions.web';
 import { isStageFilmstripAvailable } from '../../../filmstrip/functions.web';
 import { QUICK_ACTION_BUTTON } from '../../../participants-pane/constants';
 import { getQuickActionButtonType, isForceMuted } from '../../../participants-pane/functions';
@@ -46,6 +46,7 @@ import VolumeSlider from './VolumeSlider';
 import FrequencyFilterSlider from './FrequencyFilterSlider';
 import OpacityAdjustSlider from './OpacityAdjustSlider';
 import { participantPendingAudio } from '../../../av-moderation/actions';
+import ZoomSlider from './ZoomSlider';
 
 interface IProps {
 
@@ -145,13 +146,15 @@ const ParticipantContextMenu = ({
         = useSelector((state: IReduxState) => state['features/base/config']);
     const visitorsMode = useSelector((state: IReduxState) => iAmVisitor(state));
     const { disableKick, disableGrantModerator, disablePrivateChat } = remoteVideoMenu;
-    const { participantsVolume, participantsFrequencySetting, participantsOpacity, localOpacity } = useSelector((state: IReduxState) => state['features/filmstrip']);
+    const { participantsVolume, participantsFrequencySetting, participantsOpacity, localOpacity, participantZoomLevel } = useSelector((state: IReduxState) => state['features/filmstrip']);
     const _volume = (participant?.local ?? true ? undefined
         : participant?.id ? participantsVolume[participant?.id] : undefined) ?? 1;
     const _frequencySliderSetting = (participant?.local ?? true ? undefined
         : participant?.id ? participantsFrequencySetting[participant?.id] : undefined) ?? 0;
     const _opacitySliderSetting = (participant?.local ?? true ? localOpacity
             : participant?.id ? participantsOpacity[participant?.id] : undefined) ?? 1;
+    const _zoomSliderValue = (participant?.local ?? true ? undefined
+        : participant?.id ? participantZoomLevel[participant?.id] : undefined) ?? 1;
     const isBreakoutRoom = useSelector(isInBreakoutRoom);
     const isModerationSupported = useSelector((state: IReduxState) => isAvModerationSupported()(state));
     const stageFilmstrip = useSelector(isStageFilmstripAvailable);
@@ -171,7 +174,11 @@ const ParticipantContextMenu = ({
 
     const _onParticipantOpacityAdjustChange = useCallback(value => {
         dispatch(setParticipantOpacitySetting(participant.local, participant.id, value / 100.0));
-    }, [ setFrequencyFilterSetting, dispatch ]);
+    }, [ setParticipantOpacitySetting, dispatch ]);
+
+    const _onZoomLevelChange = useCallback(value => {
+        dispatch(setParticipantZoomLevel(participant.id, value));
+    }, [ setParticipantZoomLevel, dispatch ]);
 
     const _getCurrentParticipantId = useCallback(() => {
         const drawer = _overflowDrawer && !thumbnailMenu;
@@ -373,6 +380,10 @@ const ParticipantContextMenu = ({
                     initialValue = { _opacitySliderSetting * 100 }
                     key = 'opacity-adjust-slider'
                     onChange = { _onParticipantOpacityAdjustChange } />
+                <ZoomSlider
+                    initialValue= { _zoomSliderValue }
+                    key = 'zoom-slider'
+                    onChange = { _onZoomLevelChange } />
             </ContextMenuItemGroup>
             {breakoutRoomsButtons.length > 0 && (
                 <ContextMenuItemGroup>
