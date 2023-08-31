@@ -2,6 +2,7 @@ import ReducerRegistry from '../../base/redux/ReducerRegistry';
 import { equals } from '../../base/redux/functions';
 
 import { SET_USERDATA, SET_OTHERS_AUDIO_INPUT_ENABLED } from './actionTypes';
+import { SET_TRANSCRIPTION_ENABLED, SET_TRANSCRIPTION_FONTSIZE_VALUE, SET_TRANSCRIPTION_HISTORY_VALUE } from '../transcription/actionTypes';
 
 export interface IUserdataState {
     userData?: {
@@ -71,6 +72,8 @@ export interface IUserdataState {
 ReducerRegistry.register<IUserdataState>(
     'features/lag/userdata',
     (state = {}, action): IUserdataState => {
+        const { type, ...payload } = action;
+        const nextState = state;
         switch (action.type) {
         case SET_USERDATA: {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -80,13 +83,24 @@ ReducerRegistry.register<IUserdataState>(
             };
             return equals(state, nextState) ? state : nextState;
         }
-        case SET_OTHERS_AUDIO_INPUT_ENABLED:
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { type, ...payload } = action;
-            const nextState = state;
-            nextState.userData.audio.otherParticipants = payload.enabled;
-            return nextState;
-        default:
+            case SET_OTHERS_AUDIO_INPUT_ENABLED:
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                nextState.userData.audio.otherParticipants = payload.enabled;
+                return nextState;
+
+            case SET_TRANSCRIPTION_ENABLED:
+                nextState.userData.assistant.transcription.active = payload.transcriptionEnabled;
+                return nextState;
+        
+            case SET_TRANSCRIPTION_FONTSIZE_VALUE:    
+                nextState.userData.assistant.transcription.fontSize = payload.fontSizeValue;
+                return nextState;
+
+            case SET_TRANSCRIPTION_HISTORY_VALUE:
+                nextState.userData.assistant.transcription.history = payload.historyValue;
+                return nextState;
+
+                default:
 
         return state;
         }
