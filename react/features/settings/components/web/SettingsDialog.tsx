@@ -5,6 +5,7 @@ import { makeStyles } from 'tss-react/mui';
 import { IReduxState, IStore } from '../../../app/types';
 import {
     IconBell,
+    IconBubble,
     IconCalendar,
     IconGear,
     IconImage,
@@ -51,6 +52,9 @@ import NotificationsTab from './NotificationsTab';
 import ProfileTab from './ProfileTab';
 import ShortcutsTab from './ShortcutsTab';
 import VirtualBackgroundTab from './VirtualBackgroundTab';
+import { getTranscriptionTabProps } from '../../../lag/transcription/functions.web'; 
+import TranscriptionTab from '../../../lag/transcription/components/TranscriptionTab';
+import { submitTranscriptionTabProps } from '../../../lag/transcription/actions.web';
 
 /**
  * The type of the React {@code Component} props of
@@ -144,6 +148,8 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
     const enableVirtualBackground = checkVirtualBackgroundEnabled(state);
     const tabs: IDialogTab<any>[] = [];
     const _iAmVisitor = iAmVisitor(state);
+
+    const transcriptionTabProps = getTranscriptionTabProps(state);
 
     if (showDeviceSettings) {
         tabs.push({
@@ -330,6 +336,28 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
             icon: IconGear
         });
     }
+
+    if(true){
+        tabs.push({
+            name: SETTINGS_TABS.TRANSCRIPTION,
+            component: TranscriptionTab,
+            labelKey: 'settings.transcriptionTab', 
+            props: transcriptionTabProps,
+            propsUpdateFunction: (tabState: any, newProps: typeof transcriptionTabProps) => {
+    
+                return {
+                    ...newProps,
+                    active: tabState?.active,
+                    fontSize: tabState?.fontSize,
+                    history: tabState?.history,
+
+                };
+            },
+            submit: submitTranscriptionTabProps,
+            icon: IconBubble
+    
+    });
+}
 
     return { _tabs: tabs };
 }
