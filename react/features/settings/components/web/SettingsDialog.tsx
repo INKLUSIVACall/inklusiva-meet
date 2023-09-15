@@ -8,6 +8,7 @@ import {
     IconBellConcierge,
     IconCalendar,
     IconGear,
+    IconHandHoldingHand,
     IconImage,
     IconModerator,
     IconShortcuts,
@@ -55,6 +56,16 @@ import VirtualBackgroundTab from './VirtualBackgroundTab';
 import DistressBtnTab from '../../../lag/distressbtn/DistressBtnTab';
 import { getDistressBtnTabProps, isDistressBtnEnabled } from '../../../lag/distressbtn/functions.web';
 import { submitNewDistressBtnTab } from '../../../lag/distressbtn/actions.web';
+import SupportTab from '../../../lag/support/components/SupportTab';
+import { submitSupportTabProps } from '../../../lag/support/actions.web';
+import { 
+    getEyesight,
+    getHearing, 
+    getSupportTabProps, 
+    isScreenreaderEnabled, 
+    areLearningDifficultiesEnabled, 
+    areSensesEnabled 
+} from '../../../lag/support/functions.web';
 
 /**
  * The type of the React {@code Component} props of
@@ -151,6 +162,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
 
     const isDistressBtnActive = isDistressBtnEnabled(state);
     const distressBtnTabProps = getDistressBtnTabProps(state);
+    const supportTabProps = getSupportTabProps(state);
 
 
     if (showDeviceSettings) {
@@ -311,6 +323,29 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
         },
         submit: submitNewDistressBtnTab,
         icon: IconBellConcierge
+        });
+    }
+
+    if(true) {
+        tabs.push({
+        name: SETTINGS_TABS.SUPPORT_TAB,
+        component: SupportTab,
+        labelKey: 'settings.supportTab', // muss in Sprachdatei gesetzt werden
+        props: getSupportTabProps(state),
+        propsUpdateFunction: (tabState: any, newProps: typeof supportTabProps) => {
+            // Updates tab props, keeping users selection
+
+            return {
+                ...newProps,
+                eyesight: tabState?.eyesight,
+                hearing: tabState?.hearing,
+                senses: tabState?.senses,
+                learning_difficulties: tabState?.learning_difficulties,
+                screenreader: tabState?.screenreader,
+            };
+        },
+        submit: submitSupportTabProps,
+        icon: IconHandHoldingHand
         });
     }
 

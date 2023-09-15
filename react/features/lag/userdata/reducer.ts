@@ -6,7 +6,14 @@ import {
     SET_DISTRESSBTN_DIMMING_VALUE,
     SET_DISTRESSBTN_MESSAGE_ENABLED,
     SET_DISTRESSBTN_MESSAGE_TEXT,
-} from "../distressbtn/actionTypes";
+ } from '../distressbtn/actionTypes';
+
+ import { SET_EYESIGHT_STRING, 
+    SET_HEARING_STRING, 
+    SET_LEARNING_DIFFICULTIES_ENABLED, 
+    SET_SCREENREADER_ENABLED, 
+    SET_SENSES_ENABLED 
+} from '../support/actionTypes';
 
 import { SET_USERDATA, SET_OTHERS_AUDIO_INPUT_ENABLED } from "./actionTypes";
 
@@ -109,33 +116,54 @@ ReducerRegistry.register<IUserData>(
 
                 return equals(state, nextState) ? state : nextState;
             }
-            case SET_OTHERS_AUDIO_INPUT_ENABLED:
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                nextState.audio.otherParticipants = payload.enabled;
-                return nextState;
 
-            case SET_DISTRESSBTN_ENABLED:
-                nextState.distressbutton.active = payload.enabled;
-                return nextState;
+        case SET_OTHERS_AUDIO_INPUT_ENABLED:
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            nextState.audio.otherParticipants = payload.enabled;
+            return nextState;
 
-            case SET_DISTRESSBTN_MESSAGE_ENABLED:
-                nextState.distressbutton.message = payload.enabled;
-                return nextState;
+        case SET_DISTRESSBTN_ENABLED:
+            nextState.distressbutton.active = payload.enabled;
+            return nextState;
 
-            case SET_DISTRESSBTN_DIMMING_VALUE:
-                nextState.distressbutton.dimming = payload.value;
-                return nextState;
+        case SET_DISTRESSBTN_MESSAGE_ENABLED:
+            nextState.distressbutton.message = payload.enabled;
+            return nextState;
+            
+        case SET_DISTRESSBTN_DIMMING_VALUE:
+            nextState.distressbutton.dimming = payload.value;
+            return nextState;
+            
+        case SET_DISTRESSBTN_VOLUME_VALUE:
+            nextState.distressbutton.volume = payload.value;
+            return nextState;
+            
+        case SET_DISTRESSBTN_MESSAGE_TEXT:
+            nextState.distressbutton.message_text = payload.text;
+            return nextState;
 
-            case SET_DISTRESSBTN_VOLUME_VALUE:
-                nextState.distressbutton.volume = payload.value;
-                return nextState;
+        case SET_EYESIGHT_STRING:
+            nextState.support.eyesight = payload.supportEyesightString;
+            return nextState;
+            
+        case SET_HEARING_STRING:
+            nextState.support.hearing = payload.supportHearingString;
+            return nextState;
 
-            case SET_DISTRESSBTN_MESSAGE_TEXT:
-                nextState.distressbutton.message_text = payload.text;
-                return nextState;
+        case SET_SENSES_ENABLED:
+            nextState.support.senses = payload.supportSensesEnabled;
+            return nextState;
 
-            default:
-                return state;
-        }
-    },
-);
+        case SET_LEARNING_DIFFICULTIES_ENABLED:
+            nextState.support.learning_difficulties = payload.supportLearningDifficultiesEnabled;
+            return nextState;
+
+        case SET_SCREENREADER_ENABLED:
+            nextState.ui.screenreader = payload.supportScreenreaderEnabled;
+            return nextState;
+
+
+        default:
+            return state;
+    }
+});
