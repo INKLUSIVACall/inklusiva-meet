@@ -17,7 +17,7 @@ export interface ISessionData {
  * specified {@code action}.
  */
 ReducerRegistry.register<ISessionData>(
-    "features/lag/sessiondata",
+    "features/inklusiva/sessiondata",
     (
         state = {
             inDistress: false,

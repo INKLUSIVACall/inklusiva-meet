@@ -293,8 +293,6 @@ export default class AbstractButton<P extends IProps, S=any> extends Component<P
             };
         }
 
-        console.log("buttonStyles", buttonStyles, this._isToggled());
-
         return buttonStyles;
     }
 

@@ -6,25 +6,25 @@ export function isOwnAudioInputEnabled(_: IReduxState): boolean {
 }
 
 export function isOthersAudioInputEnabled(state: IReduxState): boolean {
-    return state["features/lag/userdata"].audio?.otherParticipants;
+    return state["features/inklusiva/userdata"].audio?.otherParticipants;
 }
 
 export function isFilterBackgroundNoiseEnabled(state: IReduxState): boolean {
-    return state["features/lag/userdata"].audio?.background;
+    return state["features/inklusiva/userdata"].audio?.background;
 }
 
 export function getVolumeValue(state: IReduxState): number {
-    return state["features/lag/userdata"].audio?.volume;
+    return state["features/inklusiva/userdata"].audio?.volume;
 }
 
 export function getHighFrequenciesValue(state: IReduxState): number {
-    return state["features/lag/userdata"].audio?.highFreq;
+    return state["features/inklusiva/userdata"].audio?.highFreq;
 }
 
 export function getBalanceValue(state: IReduxState): number {
-    return state["features/lag/userdata"].audio?.balance;
+    return state["features/inklusiva/userdata"].audio?.balance;
 }
 
 export function getAmplifyValue(state: IReduxState): number {
-    return state["features/lag/userdata"].audio?.amplify;
+    return state["features/inklusiva/userdata"].audio?.amplify;
 }

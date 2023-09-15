@@ -8,7 +8,7 @@ import { toState } from "../../base/redux/functions";
  * @returns whether distress button is enabled or disabled
  */
 export function isDistressBtnEnabled(state: IReduxState): boolean {
-    return state["features/lag/userdata"].distressbutton?.active;
+    return state["features/inklusiva/userdata"].distressbutton?.active;
 }
 
 /**
@@ -17,7 +17,7 @@ export function isDistressBtnEnabled(state: IReduxState): boolean {
  * @returns
  */
 export function getDistressBtnDimmingValue(state: IReduxState): number {
-    return state["features/lag/userdata"].distressbutton?.dimming;
+    return state["features/inklusiva/userdata"].distressbutton?.dimming;
 }
 
 /**
@@ -26,7 +26,7 @@ export function getDistressBtnDimmingValue(state: IReduxState): number {
  * @returns
  */
 export function getDistressBtnVolumeValue(state: IReduxState): number {
-    return state["features/lag/userdata"].distressbutton?.volume;
+    return state["features/inklusiva/userdata"].distressbutton?.volume;
 }
 
 /**
@@ -35,7 +35,7 @@ export function getDistressBtnVolumeValue(state: IReduxState): number {
  * @returns whether distress button message is enabled or disabled
  */
 export function isDistressBtnMessageEnabled(state: IReduxState): boolean {
-    return state["features/lag/userdata"].distressbutton?.message;
+    return state["features/inklusiva/userdata"].distressbutton?.message;
 }
 
 /**
@@ -44,7 +44,7 @@ export function isDistressBtnMessageEnabled(state: IReduxState): boolean {
  * @returns
  */
 export function getDistressBtnMessageText(state: IReduxState): string {
-    return state["features/lag/userdata"].distressbutton
+    return state["features/inklusiva/userdata"].distressbutton
         ?.message_text;
 }
 

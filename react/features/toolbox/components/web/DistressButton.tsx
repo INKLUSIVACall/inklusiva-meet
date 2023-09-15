@@ -5,7 +5,7 @@ import { translate } from "../../../base/i18n/functions";
 import AbstractButton from "../../../base/toolbox/components/AbstractButton";
 import { IProps as AbstractButtonProps } from "../../../base/toolbox/components/AbstractButton";
 import { IconSecurityOff, IconSecurityOn } from "../../../base/icons/svg";
-import { toggleInDistress } from "../../../lag/sessiondata/actions";
+import { toggleInDistress } from "../../../inklusiva/sessiondata/actions";
 import { connect } from "react-redux";
 
 const styles = () => {
@@ -130,8 +130,7 @@ class DistressButton extends AbstractButton<IProps> {
  * }}
  */
 function _mapStateToProps(state: IReduxState) {
-    const inDistress = state["features/lag/sessiondata"]?.inDistress ?? false;
-    console.log(state['features/base/participants']);
+    const inDistress = state["features/inklusiva/sessiondata"]?.inDistress ?? false;
 
     return {
         _inDistress: inDistress,

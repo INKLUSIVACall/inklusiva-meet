@@ -157,6 +157,7 @@
     "babel-plugin-optional-require": "0.3.1",
     "circular-dependency-plugin": "5.2.0",
     "clean-css-cli": "4.3.0",
+    "concurrently": "^8.2.1",
     "css-loader": "3.6.0",
     "eslint": "8.40.0",
     "eslint-plugin-import": "2.27.5",
@@ -200,7 +201,7 @@
     "validate": "npm ls",
     "tsc-test:web": "tsc --project tsconfig.web.json --listFilesOnly | grep -v node_modules | grep native",
     "tsc-test:native": "tsc --project tsconfig.native.json --listFilesOnly | grep -v node_modules | grep web",
-    "start": "make dev"
+    "start": "concurrently \"./start-dev.sh\" \"npm-watch\""
   },
   "resolutions": {
     "@types/react": "17.0.14",

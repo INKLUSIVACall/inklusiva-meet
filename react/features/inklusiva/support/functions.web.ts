@@ -4,54 +4,54 @@ import { IStateful } from "../../base/app/types";
 
 
 /**
- * 
- * @param state 
+ *
+ * @param state
  * @returns a string indicating how severely eyesight is impaired or not
 */
 export function getEyesight(state: IReduxState): string{
-    return state['features/lag/userdata'].userData?.support?.eyesight;
+    return state['features/inklusiva/userdata'].support?.eyesight;
 }
 
 /**
- * 
- *  
- * @param state 
+ *
+ *
+ * @param state
  * @returns a string indicating how severely hearing is impaired or not
 */
 export function getHearing(state: IReduxState): string{
-    return state['features/lag/userdata'].userData?.support.hearing;
+    return state['features/inklusiva/userdata'].support.hearing;
 }
 
 /**
- * 
- * @param state 
+ *
+ * @param state
  * @returns whether or not senses are impaired
  */
 export function areSensesEnabled(state: IReduxState): boolean {
-    return state['features/lag/userdata'].userData?.support?.senses;
+    return state['features/inklusiva/userdata'].support?.senses;
 }
 
 /**
- * 
- * @param state 
+ *
+ * @param state
  * @returns whether learning difficulties are TRUE
  */
 export function areLearningDifficultiesEnabled(state: IReduxState): boolean {
-    return state['features/lag/userdata'].userData?.support?.learning_difficulties;
+    return state['features/inklusiva/userdata'].support?.learning_difficulties;
 }
 
 /**
- * 
- * @param state 
+ *
+ * @param state
  * @returns whether Screenreader is enabled
  */
 export function isScreenreaderEnabled(state: IReduxState): boolean {
-    return state['features/lag/userdata'].userData?.ui?.screenreader;
+    return state['features/inklusiva/userdata'].ui?.screenreader;
 }
 
 /**
  *  Returns all states of SupportTab
- * @param stateful 
+ * @param stateful
  */
 export function getSupportTabProps(stateful: IStateful) {
     const state = toState(stateful);
@@ -59,8 +59,8 @@ export function getSupportTabProps(stateful: IStateful) {
     const hearing = getHearing(state);
     const senses = areSensesEnabled(state);
     const learning_difficulties = areLearningDifficultiesEnabled(state);
-    const screenreader = isScreenreaderEnabled(state); 
-    
+    const screenreader = isScreenreaderEnabled(state);
+
     return {
         eyesight,
         hearing,

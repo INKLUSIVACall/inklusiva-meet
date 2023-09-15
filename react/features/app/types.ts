@@ -83,8 +83,8 @@ import { IVisitorsState } from '../visitors/reducer';
 import { IWebHid } from '../web-hid/reducer';
 import { IWhiteboardState } from '../whiteboard/reducer';
 
-import { IUserData} from '../lag/userdata/reducer';
-import { ISessionData } from '../lag/sessiondata/reducer';
+import { IUserData} from '../inklusiva/userdata/reducer';
+import { ISessionData } from '../inklusiva/sessiondata/reducer';
 
 export interface IStore {
     dispatch: ThunkDispatch<IReduxState, void, AnyAction>;
@@ -177,8 +177,8 @@ export interface IReduxState {
     'features/visitors': IVisitorsState;
     'features/web-hid': IWebHid;
     'features/whiteboard': IWhiteboardState;
-    'features/lag/userdata': IUserData;
-    'features/lag/sessiondata': ISessionData;
+    'features/inklusiva/userdata': IUserData;
+    'features/inklusiva/sessiondata': ISessionData;
 }
 
 export interface IReloadNowOptions {
