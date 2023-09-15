@@ -1052,6 +1052,7 @@
         "supportTab": "Unterstützungsbedarf",
         "talkWhileMuted": "Wenn bei Stummschaltung gesprochen wird",
         "title": "Einstellungen",
+        "transcriptionTab": "Schriftdolmetschen-Assistent",
         "video": "Kamera"
     },
     "settingsView": {
@@ -1211,6 +1212,16 @@
             "videomute": "„Video stummschalten“ ein-/ausschalten",
             "videomuteGUMPending": "Verbinde Ihre Kamera",
             "videounmute": "Kamera einschalten"
+        },
+        "transcription": {
+            "btn_engage_headline": "Ich möchte den Assistenten Schriftdolmetscher nutzen",
+            "btn_engage_desc": "Der ASsistent Schriftdolmetschen ermöglicht die Ausgabe von Texten eines Schrift-Dolmetschers:in.",
+            "btn_engage_label": "Assistent Schriftdolmetscher aktivieren",
+            "fontsize_label": "Schriftgröße",
+            "history_label": "Länge vergangener Text",
+            "history_textlength_long": "lang",
+            "history_textlength_medium": "mittel",
+            "history_textlength_short": "kurz"
         },
         "activateOwnAudio": "Audio-Übertragung aktiv",
         "activateOthersAudio": "Teilnehmer Audio aktiv",

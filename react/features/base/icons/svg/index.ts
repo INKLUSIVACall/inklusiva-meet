@@ -10,6 +10,7 @@ export { default as IconAudioOnlyOff } from './visibility-off.svg';
 export { default as IconBluetooth } from './bluetooth.svg';
 export { default as IconBell } from './bell.svg';
 export { default as IconBellConcierge } from './bell-concierge.svg';
+export { default as IconBubble } from './bubbleSquare.svg';
 export { default as IconCalendar } from './calendar.svg';
 export { default as IconCameraRefresh } from './camera-refresh.svg';
 export { default as IconCar } from './car.svg';
