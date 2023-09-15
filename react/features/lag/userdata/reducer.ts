@@ -7,6 +7,9 @@ import {
     SET_DISTRESSBTN_MESSAGE_ENABLED,
     SET_DISTRESSBTN_MESSAGE_TEXT,
  } from '../distressbtn/actionTypes';
+import ReducerRegistry from '../../base/redux/ReducerRegistry';
+import { equals } from '../../base/redux/functions';
+import { SET_SIGNLANG_DISPLAY_STRING, SET_SIGNLANG_ENABLED, SET_SIGNLANG_WINDOWSIZE_VALUE } from '../signLang/actionTypes';
 
  import { SET_EYESIGHT_STRING, 
     SET_HEARING_STRING, 
@@ -116,10 +119,22 @@ ReducerRegistry.register<IUserData>(
             };
             return equals(state, nextState) ? state : nextState;
         }
-            case SET_OTHERS_AUDIO_INPUT_ENABLED:
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                nextState.audio.otherParticipants = payload.enabled;
-                return nextState;
+        case SET_OTHERS_AUDIO_INPUT_ENABLED:
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            nextState.audio.otherParticipants = payload.enabled;
+            return nextState;
+
+        case SET_SIGNLANG_ENABLED:
+            nextState.assistant.signLang.active = payload.enabled;
+            return nextState;
+
+        case SET_SIGNLANG_DISPLAY_STRING:
+            nextState.assistant.signLang.display = payload.displayValue;
+            return nextState;
+            
+        case SET_SIGNLANG_WINDOWSIZE_VALUE:
+            nextState.assistant.signLang.windowSize = payload.value;
+            return nextState;
 
             case SET_TRANSCRIPTION_ENABLED:
                 nextState.assistant.transcription.active = payload.transcriptionEnabled;

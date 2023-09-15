@@ -1045,6 +1045,7 @@
         "selectMic": "Mikrofon",
         "selfView": "Eigene Ansicht",
         "shortcuts": "Tastaturkürzel",
+        "SignLangTab": "Gebärdensprachen-Assistent",
         "speakers": "Lautsprecher",
         "startAudioMuted": "Alle Personen treten stummgeschaltet bei",
         "startReactionsMuted": "Interaktionstöne für alle deaktivieren",
@@ -1213,15 +1214,15 @@
             "videomuteGUMPending": "Verbinde Ihre Kamera",
             "videounmute": "Kamera einschalten"
         },
-        "transcription": {
-            "btn_engage_headline": "Ich möchte den Assistenten Schriftdolmetscher nutzen",
-            "btn_engage_desc": "Der ASsistent Schriftdolmetschen ermöglicht die Ausgabe von Texten eines Schrift-Dolmetschers:in.",
-            "btn_engage_label": "Assistent Schriftdolmetscher aktivieren",
-            "fontsize_label": "Schriftgröße",
-            "history_label": "Länge vergangener Text",
-            "history_textlength_long": "lang",
-            "history_textlength_medium": "mittel",
-            "history_textlength_short": "kurz"
+        "signlangtab":{
+            "btn_engage_headline": "Ich möchte den Assistenten Gebärdensprache nutzen",
+            "btn_engage_label": "Gebärdensprachen-Assistent",
+            "btn_engage_desc": "Der Assistent Gebärdensprache ermöglicht die Videoanzeige eines Gebärdensprache Dolmetscher:in.",
+            "display_headline": "Darstellung Dolmetscher:in",
+            "display_option1": "als übergeordnetes Fenster",
+            "display_option2": "als eine Kachel wie alle Teilnehmer",
+            "windowsize_headline": "Fenstergröße festlegen",
+            "windowsize_label": "100%"
         },
         "activateOwnAudio": "Audio-Übertragung aktiv",
         "activateOthersAudio": "Teilnehmer Audio aktiv",
