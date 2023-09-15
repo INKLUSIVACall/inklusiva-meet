@@ -14,6 +14,23 @@ export const NATIVE_VOLUME_SLIDER_SCALE = 19;
 export const VOLUME_SLIDER_SCALE = 100;
 
 /**
+ * Minimum value of the zoom slider - this value gets divided by 100 and applied
+ * to the transform zoom of the <video> element.
+ */
+export const ZOOM_SLIDER_MINIMUM = 100;
+
+/**
+ * Maximum value of the zoom slider - this value gets divided by 100 and applied
+ * to the transform zoom of the <video> element.
+ */
+export const ZOOM_SLIDER_MAXIMUM = 300;
+
+/**
+ * Scale of the zoom slider value.
+ */
+export const ZOOM_SLIDER_SCALE = 100;
+
+/**
  * Participant context menu button keys.
  */
 export const PARTICIPANT_MENU_BUTTONS = {

@@ -27,6 +27,9 @@ import {
     SET_USER_IS_RESIZING,
     SET_VERTICAL_VIEW_DIMENSIONS,
     SET_VOLUME,
+    SET_FREQUENCY_FILTER_SETTING,
+    SET_PARTICIPANT_OPACITY,
+    SET_PARTICIPANT_ZOOM_LEVEL,
     TOGGLE_PIN_STAGE_PARTICIPANT
 } from './actionTypes';
 import {
@@ -393,6 +396,65 @@ export function setVolume(participantId: string, volume: number) {
     };
 }
 
+/**
+ * Sets the frequency filter setting for a thumbnail's audio.
+ *
+ * @param {string} participantId - The participant ID associated with the audio.
+ * @param {string} frequencySetting - Frequency Setting.
+ * @returns {{
+*     type: SET_FREQUENCY_FILTER_SETTING,
+*     participantId: string,
+*     setting: number
+* }}
+*/
+export function setFrequencyFilterSetting(participantId: string, setting: number) {
+    return {
+       type: SET_FREQUENCY_FILTER_SETTING,
+       participantId,
+       setting
+    };
+}
+
+/**
+ * Sets the opacity for a thumbnails video.
+ *
+ * @param {boolean} local - Is this the local user?
+ * @param {string} participantId - The participant ID associated with the audio.
+ * @param {number} opacity - Opacity of the user.
+ * @returns {{
+*     type: SET_PARTICIPANT_OPACITY,
+*     local: boolean,
+*     participantId: string|null,
+*     opacity: number
+* }}
+*/
+export function setParticipantOpacitySetting(local:boolean|undefined, participantId: string|null, opacity: number) {
+    return {
+       type: SET_PARTICIPANT_OPACITY,
+       local: ((local === undefined) ? false:local),
+       participantId,
+       opacity
+    };
+}
+
+/**
+ * Sets the opacity for a thumbnails video.
+ *
+ * @param {string} participantId - The participant ID associated with the audio.
+ * @param {number} zoomLevel - Opacity of the user.
+ * @returns {{
+*     type: SET_PARTICIPANT_ZOOM_LEVEL,
+*     participantId: string,
+*     zoomLevel: number
+* }}
+*/
+export function setParticipantZoomLevel(participantId: string, zoomLevel: number) {
+    return {
+       type: SET_PARTICIPANT_ZOOM_LEVEL,
+       participantId,
+       zoomLevel
+    };
+}
 /**
  * Sets the top filmstrip's height.
  *

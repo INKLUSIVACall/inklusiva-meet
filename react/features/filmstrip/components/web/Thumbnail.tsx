@@ -64,6 +64,7 @@ import ThumbnailBottomIndicators from './ThumbnailBottomIndicators';
 import ThumbnailTopIndicators from './ThumbnailTopIndicators';
 import VirtualScreenshareParticipant from './VirtualScreenshareParticipant';
 import ActiveSpeakerIndicator from './ActiveSpeakerIndicator';
+import FadeOutOverlay from './FadeOutOverlay';
 
 /**
  * The type of the React {@code Component} state of {@link Thumbnail}.
@@ -260,6 +261,11 @@ export interface IProps extends WithTranslation {
      * there is empty space.
      */
     width?: number;
+
+    /**
+     * Zoom value of the video tag.
+     */
+    _videoZoomLevel: number;
 }
 
 const defaultStyles = (theme: Theme) => {
@@ -312,7 +318,7 @@ const defaultStyles = (theme: Theme) => {
             width: '100%',
             borderRadius: '4px',
             backgroundColor: theme.palette.ui02
-        },
+        },        
 
         borderIndicator: {
             position: 'absolute' as const,
@@ -674,7 +680,8 @@ class Thumbnail extends Component<IProps, IState> {
             _videoTrack,
             _width,
             horizontalOffset,
-            style
+            style,
+            _videoZoomLevel
         } = this.props;
 
         const isTileType = _thumbnailType === THUMBNAIL_TYPE.TILE;
@@ -717,6 +724,8 @@ class Thumbnail extends Component<IProps, IState> {
         if (videoStyles.objectFit === 'cover') {
             videoStyles.objectPosition = _videoObjectPosition;
         }
+        
+        videoStyles.transform = "scale(" + String(_videoZoomLevel) + ")";
 
         styles = {
             thumbnail: {
@@ -1049,7 +1058,7 @@ class Thumbnail extends Component<IProps, IState> {
         const videoEventListeners: any = {};
         const pinButtonLabel = t(pinned ? 'unpinParticipant' : 'pinParticipant', {
             participantName: name
-        });
+        });                
 
         if (local) {
             if (_isMobilePortrait) {
@@ -1107,6 +1116,10 @@ class Thumbnail extends Component<IProps, IState> {
                     ? <span id = 'localVideoWrapper'>{video}</span>
                     : video)}
                 <div className = { classes.containerBackground } />
+                <FadeOutOverlay
+                    local = { local }
+                    participantId = { id }
+                />
                 {/* put the bottom container before the top container in the dom,
                 because it contains the participant name that should be announced first by screen readers */}
                 <div
@@ -1262,6 +1275,13 @@ function _mapStateToProps(state: IReduxState, ownProps: any): Object {
     const activeParticipants = getActiveParticipantsIds(state);
     const tileType = getThumbnailTypeFromLayout(_currentLayout, filmstripType);
 
+
+    const { participantZoomLevel } = state['features/filmstrip'];
+    let zoomLevel = 1;
+    if (participantZoomLevel[participantID]) {
+        zoomLevel = participantZoomLevel[participantID];
+    }
+
     switch (tileType) {
     case THUMBNAIL_TYPE.VERTICAL:
     case THUMBNAIL_TYPE.HORIZONTAL: {
@@ -1278,7 +1298,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any): Object {
                 remote: { width: undefined,
                     height: undefined },
                 gridView: {}
-            }
+            }            
         } = state['features/filmstrip'];
         const _verticalViewGrid = showGridInVerticalView(state);
         const { local, remote }
@@ -1397,7 +1417,8 @@ function _mapStateToProps(state: IReduxState, ownProps: any): Object {
         _videoObjectPosition: getVideoObjectPosition(state, participant?.id),
         _videoTrack,
         ...size,
-        _gifSrc: mode === 'chat' ? null : gifSrc
+        _gifSrc: mode === 'chat' ? null : gifSrc,
+        _videoZoomLevel: zoomLevel
     };
 }
 

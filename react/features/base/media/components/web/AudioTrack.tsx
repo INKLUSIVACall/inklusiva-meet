@@ -23,6 +23,11 @@ interface IProps {
     _volume?: number | boolean;
 
     /**
+     * Represents the frequency filter setting of the underlying JitsiTrack.
+     */
+    _frequencySetting?: number;
+
+    /**
      * The audio track.
      */
     audioTrack?: ITrack;
@@ -48,6 +53,11 @@ interface IProps {
  * The React/Web {@link Component} which is similar to and wraps around {@code HTMLAudioElement}.
  */
 class AudioTrack extends Component<IProps> {
+    /**
+     * Frequency cut off configuration.
+     */
+    private const FREQUENCY_CUT_OFFS: number[] = [22050, 4000, 2000, 1000, 700, 400];
+
     /**
      * Reference to the HTML audio element, stored until the file is ready.
      */
@@ -108,6 +118,36 @@ class AudioTrack extends Component<IProps> {
             // @ts-ignore
             this._ref.addEventListener('error', this._errorHandler);
         }
+
+
+        if (this.props.audioTrack) {
+            const { _frequencySetting } = this.props;
+
+            if (typeof _frequencySetting === 'number') {
+                this._setFrequencyCutOff(_frequencySetting);
+            }            
+        }
+    }
+
+    /**
+     * Applies the frequency setting to the underlaying Jitsi Track.
+     * @param frequencySetting 
+     */
+    _setFrequencyCutOff(frequencySetting : number) {
+        if (this.props.audioTrack) {
+            let setting = Math.floor(frequencySetting);
+            if (setting < 0 || setting > this.FREQUENCY_CUT_OFFS.length) {
+                setting = 0;
+            }
+
+            const cutOffFrequency = this.FREQUENCY_CUT_OFFS[setting];
+
+            const oldSetting = this.props.audioTrack.jitsiTrack.audioFilter.frequency.value;
+
+            if (oldSetting != cutOffFrequency) {
+                this.props.audioTrack.jitsiTrack.audioFilter.frequency.value = cutOffFrequency;
+            }            
+        }        
     }
 
     /**
@@ -156,6 +196,11 @@ class AudioTrack extends Component<IProps> {
                 this._ref.muted = nextMuted;
             }
         }
+        
+        const nextFilterSetting = nextProps._frequencySetting;
+        if (typeof nextFilterSetting === 'number' && !isNaN(nextFilterSetting)) {
+            this._setFrequencyCutOff(nextFilterSetting);
+        }
 
         return false;
     }
@@ -190,6 +235,7 @@ class AudioTrack extends Component<IProps> {
         }
 
         track.jitsiTrack.attach(this._ref);
+        
         this._play();
     }
 
@@ -273,7 +319,7 @@ class AudioTrack extends Component<IProps> {
      * @returns {void}
      */
     _setRef(audioElement: HTMLAudioElement | null) {
-        this._ref = audioElement;
+        this._ref = audioElement;        
     }
 }
 
@@ -286,11 +332,12 @@ class AudioTrack extends Component<IProps> {
  * @returns {IProps}
  */
 function _mapStateToProps(state: IReduxState, ownProps: any) {
-    const { participantsVolume } = state['features/filmstrip'];
+    const { participantsVolume, participantsFrequencySetting } = state['features/filmstrip'];
 
     return {
         _muted: state['features/base/config'].startSilent,
-        _volume: participantsVolume[ownProps.participantId]
+        _volume: participantsVolume[ownProps.participantId],
+        _frequencySetting: participantsFrequencySetting[ownProps.participantId]
     };
 }
 

@@ -58,7 +58,6 @@ export default class AbstractAudio extends Component<IProps> {
      */
     constructor(props: IProps) {
         super(props);
-
         // Bind event handlers so they are only bound once per instance.
         this.setAudioElementImpl = this.setAudioElementImpl.bind(this);
     }
