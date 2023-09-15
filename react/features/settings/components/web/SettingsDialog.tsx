@@ -5,7 +5,7 @@ import { makeStyles } from 'tss-react/mui';
 import { IReduxState, IStore } from '../../../app/types';
 import {
     IconBell,
-    IconBellConcierge,
+    IconBubble,
     IconCalendar,
     IconGear,
     IconHandHoldingHand,
@@ -53,19 +53,9 @@ import NotificationsTab from './NotificationsTab';
 import ProfileTab from './ProfileTab';
 import ShortcutsTab from './ShortcutsTab';
 import VirtualBackgroundTab from './VirtualBackgroundTab';
-import DistressBtnTab from '../../../lag/distressbtn/DistressBtnTab';
-import { getDistressBtnTabProps, isDistressBtnEnabled } from '../../../lag/distressbtn/functions.web';
-import { submitNewDistressBtnTab } from '../../../lag/distressbtn/actions.web';
-import SupportTab from '../../../lag/support/components/SupportTab';
-import { submitSupportTabProps } from '../../../lag/support/actions.web';
-import { 
-    getEyesight,
-    getHearing, 
-    getSupportTabProps, 
-    isScreenreaderEnabled, 
-    areLearningDifficultiesEnabled, 
-    areSensesEnabled 
-} from '../../../lag/support/functions.web';
+import { getTranscriptionTabProps } from '../../../lag/transcription/functions.web'; 
+import TranscriptionTab from '../../../lag/transcription/components/TranscriptionTab';
+import { submitTranscriptionTabProps } from '../../../lag/transcription/actions.web';
 
 /**
  * The type of the React {@code Component} props of
@@ -160,10 +150,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
     const tabs: IDialogTab<any>[] = [];
     const _iAmVisitor = iAmVisitor(state);
 
-    const isDistressBtnActive = isDistressBtnEnabled(state);
-    const distressBtnTabProps = getDistressBtnTabProps(state);
-    const supportTabProps = getSupportTabProps(state);
-
+    const transcriptionTabProps = getTranscriptionTabProps(state);
 
     if (showDeviceSettings) {
         tabs.push({
@@ -396,6 +383,28 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
             icon: IconGear
         });
     }
+
+    if(true){
+        tabs.push({
+            name: SETTINGS_TABS.TRANSCRIPTION,
+            component: TranscriptionTab,
+            labelKey: 'settings.transcriptionTab', 
+            props: transcriptionTabProps,
+            propsUpdateFunction: (tabState: any, newProps: typeof transcriptionTabProps) => {
+    
+                return {
+                    ...newProps,
+                    active: tabState?.active,
+                    fontSize: tabState?.fontSize,
+                    history: tabState?.history,
+
+                };
+            },
+            submit: submitTranscriptionTabProps,
+            icon: IconBubble
+    
+    });
+}
 
     return { _tabs: tabs };
 }

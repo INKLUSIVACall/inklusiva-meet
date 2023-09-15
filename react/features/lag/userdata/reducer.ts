@@ -14,8 +14,9 @@ import {
     SET_SCREENREADER_ENABLED, 
     SET_SENSES_ENABLED 
 } from '../support/actionTypes';
+import { SET_USERDATA, SET_OTHERS_AUDIO_INPUT_ENABLED } from './actionTypes';
+import { SET_TRANSCRIPTION_ENABLED, SET_TRANSCRIPTION_FONTSIZE_VALUE, SET_TRANSCRIPTION_HISTORY_VALUE } from '../transcription/actionTypes';
 
-import { SET_USERDATA, SET_OTHERS_AUDIO_INPUT_ENABLED } from "./actionTypes";
 
 interface ISupport {
     eyesight: string;
@@ -107,20 +108,31 @@ ReducerRegistry.register<IUserData>(
         const { type, ...payload } = action;
         const nextState = state;
         switch (action.type) {
-            case SET_USERDATA: {
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                const { type, ...payload } = action;
-                const nextState = {
-                    ...payload,
-                };
-
-                return equals(state, nextState) ? state : nextState;
-            }
-
-        case SET_OTHERS_AUDIO_INPUT_ENABLED:
+        case SET_USERDATA: {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            nextState.audio.otherParticipants = payload.enabled;
-            return nextState;
+            const { type, ...payload } = action;
+            const nextState = {
+                ...payload
+            };
+            return equals(state, nextState) ? state : nextState;
+        }
+            case SET_OTHERS_AUDIO_INPUT_ENABLED:
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                nextState.audio.otherParticipants = payload.enabled;
+                return nextState;
+
+            case SET_TRANSCRIPTION_ENABLED:
+                nextState.assistant.transcription.active = payload.transcriptionEnabled;
+                return nextState;
+        
+            case SET_TRANSCRIPTION_FONTSIZE_VALUE:    
+                nextState.assistant.transcription.fontSize = payload.fontSizeValue;
+                return nextState;
+
+            case SET_TRANSCRIPTION_HISTORY_VALUE:
+                nextState.assistant.transcription.history = payload.historyValue;
+                return nextState;
+
 
         case SET_DISTRESSBTN_ENABLED:
             nextState.distressbutton.active = payload.enabled;
