@@ -495,7 +495,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
         _shiftUp: state["features/toolbox"].shiftUp,
         _toolbarButtons: toolbarButtons,
         _visible: isToolboxVisible(state),
-        _distressButton: state["features/lag/userdata"].userData?.distressbutton?.active ?? false,
+        _distressButton: state["features/inklusiva/userdata"].distressbutton?.active ?? false,
     };
 }
 

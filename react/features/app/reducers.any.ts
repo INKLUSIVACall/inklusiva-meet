@@ -55,5 +55,5 @@ import '../video-layout/reducer';
 import '../video-quality/reducer';
 import '../videosipgw/reducer';
 import '../visitors/reducer';
-import '../lag/userdata/reducer';
-import '../lag/sessiondata/reducer';
+import '../inklusiva/userdata/reducer';
+import '../inklusiva/sessiondata/reducer';

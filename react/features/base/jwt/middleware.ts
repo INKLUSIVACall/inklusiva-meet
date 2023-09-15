@@ -15,7 +15,7 @@ import { setJWT } from './actions';
 import { parseJWTFromURLParams } from './functions';
 import logger from './logger';
 
-import { setUserdata } from '../../lag/userdata/actions';
+import { setUserdata } from '../../inklusiva/userdata/actions';
 
 /**
  * Middleware to parse token data upon setting a new room URL.

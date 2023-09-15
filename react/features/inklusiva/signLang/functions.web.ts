@@ -1,27 +1,26 @@
 import { IReduxState } from "../../app/types";
 import { IStateful } from "../../base/app/types";
 import { toState } from "../../base/redux/functions";
-import React from "react";
 
 /**
- * 
- * @param state 
+ *
+ * @param state
  * @returns  booelan is SignLang Assistant enabled?
  */
 export function isSignLangEnabled(state: IReduxState): boolean {
-    return state['features/lag/userdata'].userData?.assistant?.signLanguage?.active;
+    return state['features/inklusiva/userdata'].assistant?.signLang?.active;
 }
 
 export function getDisplayString(state: IReduxState): string{
-    return state['features/lag/userdata'].userData?.assistant?.signLanguage?.display;
+    return state['features/inklusiva/userdata'].assistant?.signLang?.display;
 }
 
-export function getWindowSize(state: IReduxState): boolean{
-    return state['features/lag/userdata'].userData?.assistant?.signLanguage?.windowSize;
+export function getWindowSize(state: IReduxState): number{
+    return state['features/inklusiva/userdata'].assistant?.signLang?.windowSize;
 }
 
 /**
- * 
+ *
  * @param stateful Returns SignlanguagetabProps for options panel
  */
 export function getSignLangTabProps(stateful: IStateful) {

@@ -46,7 +46,6 @@ import {
     getShortcutsTabProps,
     getVirtualBackgroundTabProps,
 } from '../../functions';
-import { getSignLangTabProps, isSignLangEnabled } from '../../../lag/signLang/functions.web';
 
 import CalendarTab from './CalendarTab';
 import ModeratorTab from './ModeratorTab';
@@ -55,11 +54,12 @@ import NotificationsTab from './NotificationsTab';
 import ProfileTab from './ProfileTab';
 import ShortcutsTab from './ShortcutsTab';
 import VirtualBackgroundTab from './VirtualBackgroundTab';
-import { getTranscriptionTabProps } from '../../../lag/transcription/functions.web'; 
-import TranscriptionTab from '../../../lag/transcription/components/TranscriptionTab';
-import { submitTranscriptionTabProps } from '../../../lag/transcription/actions.web';
-import SignLangTab from '../../../lag/signLang/SignLangTab';
-import { submitSignLangTabProps } from '../../../lag/signLang/actions.web';
+import { getTranscriptionTabProps } from '../../../inklusiva/transcription/functions.web';
+import TranscriptionTab from '../../../inklusiva/transcription/components/TranscriptionTab';
+import { submitTranscriptionTabProps } from '../../../inklusiva/transcription/actions.web';
+import SignLangTab from '../../../inklusiva/signLang/SignLangTab';
+import { submitSignLangTabProps } from '../../../inklusiva/signLang/actions.web';
+import { getSignLangTabProps, isSignLangEnabled } from '../../../inklusiva/signLang/functions.web';
 
 /**
  * The type of the React {@code Component} props of
@@ -395,7 +395,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
         tabs.push({
             name: SETTINGS_TABS.SIGNLANG_TAB,
             component: SignLangTab,
-            labelKey: 'settings.SignLangTab', 
+            labelKey: 'settings.SignLangTab',
             props: signLangTabProps,
             propsUpdateFunction: (tabState: any, newProps: typeof signLangTabProps) => {
                 // Updates tab props, keeping users selection

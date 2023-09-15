@@ -16,7 +16,7 @@ import logger from './logger';
 import {
     toggleOwnAudioInput,
     toggleOthersAudioInput,
-} from '../lag/userdata/actions';
+} from '../inklusiva/userdata/actions';
 
 /**
  * Submits the settings related to audio device selection.

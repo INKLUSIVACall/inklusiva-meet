@@ -1,3 +1,3 @@
 import { getLogger } from '../../base/logging/functions';
 
-export default getLogger('features/lag/userdata');
+export default getLogger('features/inklusiva/userdata');
