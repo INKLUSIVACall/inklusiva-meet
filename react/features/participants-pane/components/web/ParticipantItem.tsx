@@ -28,7 +28,7 @@ import {
     DEFAULT_MEETING_ROLE
 } from '../../constants';
 
-import { RaisedHandIndicator } from './RaisedHandIndicator';
+import RaisedHandIndicator from './RaisedHandIndicator';
 
 interface IProps extends WithTranslation {
 
@@ -203,7 +203,7 @@ function ParticipantItem({
                     {ESCORT_REQUIRED && EscortIcons}
                     {SUPPORT_OFFERED && SupportOfferIcons}
                     {ACTIVE_CONNECTION && ConnectionStateIcons}
-                    {raisedHand && <RaisedHandIndicator />}
+                    {raisedHand && <RaisedHandIndicator participantID={participantID}/>}
                 </div>
 
             </div>
