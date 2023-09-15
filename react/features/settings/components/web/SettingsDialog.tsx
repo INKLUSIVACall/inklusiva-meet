@@ -152,7 +152,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
     const isDistressBtnActive = isDistressBtnEnabled(state);
     const distressBtnTabProps = getDistressBtnTabProps(state);
 
-    
+
     if (showDeviceSettings) {
         tabs.push({
             name: SETTINGS_TABS.AUDIO,
@@ -188,7 +188,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
                 // current user selected devices. If this were not done, the
                 // tab would keep using a copy of the initial props it received,
                 // leaving the device list to become stale.
-                
+
                 return {
                     ...newProps,
                     currentFramerate: tabState?.currentFramerate,
@@ -200,7 +200,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
             icon: IconVideo
         });
     }
-    
+
     if (virtualBackgroundSupported && !_iAmVisitor && enableVirtualBackground) {
         tabs.push({
             name: SETTINGS_TABS.VIRTUAL_BACKGROUND,
@@ -220,7 +220,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
             submit: (newState: any) => submitVirtualBackgroundTab(newState),
             cancel: () => {
                 const { options } = getVirtualBackgroundTabProps(state, isDisplayedOnWelcomePage);
-                
+
                 return submitVirtualBackgroundTab({
                     options: {
                         backgroundType: options.backgroundType,
@@ -234,7 +234,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
             icon: IconImage
         });
     }
-    
+
     if ((showSoundsSettings || showNotificationsSettings) && !_iAmVisitor) {
         tabs.push({
             name: SETTINGS_TABS.NOTIFICATIONS,
@@ -257,7 +257,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
             icon: IconBell
         });
     }
-    
+
     if (showModeratorSettings && !_iAmVisitor) {
         tabs.push({
             name: SETTINGS_TABS.MODERATOR,
@@ -266,7 +266,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
             props: moderatorTabProps,
             propsUpdateFunction: (tabState: any, newProps: typeof moderatorTabProps) => {
                 // Updates tab props, keeping users selection
-                
+
                 return {
                     ...newProps,
                     followMeEnabled: tabState?.followMeEnabled,
@@ -279,7 +279,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
             icon: IconModerator
         });
     }
-    
+
     if (showProfileSettings) {
         tabs.push({
             name: SETTINGS_TABS.PROFILE,
@@ -290,7 +290,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
             icon: IconUser
         });
     }
-    
+
     if(true) {
         tabs.push({
         name: SETTINGS_TABS.DISTRESSBTN_TAB,

@@ -1,69 +1,78 @@
-import ReducerRegistry from '../../base/redux/ReducerRegistry';
-import { equals } from '../../base/redux/functions';
-import { 
-    SET_DISTRESSBTN_ENABLED, 
+import ReducerRegistry from "../../base/redux/ReducerRegistry";
+import { equals } from "../../base/redux/functions";
+import {
+    SET_DISTRESSBTN_ENABLED,
     SET_DISTRESSBTN_VOLUME_VALUE,
-    SET_DISTRESSBTN_DIMMING_VALUE, 
+    SET_DISTRESSBTN_DIMMING_VALUE,
     SET_DISTRESSBTN_MESSAGE_ENABLED,
     SET_DISTRESSBTN_MESSAGE_TEXT,
- } from '../distressbtn/actionTypes';
+} from "../distressbtn/actionTypes";
 
-import { SET_USERDATA, SET_OTHERS_AUDIO_INPUT_ENABLED } from './actionTypes';
+import { SET_USERDATA, SET_OTHERS_AUDIO_INPUT_ENABLED } from "./actionTypes";
 
-export interface IUserdataState {
-    userData?: {
-        name: string;
-        support: {
-            eyesight: string;
-            hearing: string;
-            senses: boolean;
-            learning_difficulties: boolean;
-        },
-        ui: {
-            fontSize: number;
-            iconSize: number;
-            screenreader: boolean;
-            visualCues: boolean;
-            acousticCues: boolean;
-        },
-        video: {
-            otherParticipants: boolean;
-            contrast: number;
-            brightness: number;
-            dimming: number;
-            saturation: number;
-            zoom: number;
-            fps: number;
-        },
-        audio: {
-            otherParticipants: boolean;
-            volume: number;
-            highFrequency: number;
-            amplify: boolean;
-            balance: number;
-            background: boolean;
-            output: string;
-        },
-        distressbutton: {
-            active: boolean;
-            dimming: number;
-            volume: number;
-            message: boolean;
-            message_text: string;
-        },
-        assistant: {
-            signLanguage: {
-                active: boolean;
-                display: string;
-                windowSize: number;
-            },
-            transcription: {
-                active: boolean;
-                fontSize: number;
-                history: number;
-            }
-        }
+interface ISupport {
+    eyesight: string;
+    hearing: string;
+    senses: boolean;
+    learning_difficulties: boolean;
+}
+
+interface IUI {
+    fontSize: number;
+    iconSize: number;
+    screenreader: boolean;
+    visualCues: boolean;
+    acousticCues: boolean;
+}
+
+interface IVideo {
+    otherParticipants: boolean;
+    contrast: number;
+    brightness: number;
+    dimming: number;
+    saturation: number;
+    zoom: number;
+    fps: number;
+}
+
+interface IAudio {
+    otherParticipants: boolean;
+    volume: number;
+    highFreq: number;
+    amplify: number;
+    balance: number;
+    background: boolean;
+    output: string;
+}
+
+interface IDistressButton {
+    active: boolean;
+    dimming: number;
+    volume: number;
+    message: boolean;
+    message_text: string;
+}
+
+interface IAssistant {
+    signLang: {
+        active: boolean;
+        display: string;
+        windowSize: number;
     };
+    transcription: {
+        active: boolean;
+        fontSize: number;
+        history: number;
+    };
+}
+
+export interface IUserData {
+    support: ISupport;
+    ui: IUI;
+    video: IVideo;
+    audio: IAudio;
+    distressbutton: IDistressButton;
+    assistant: IAssistant;
 }
 
 /**
@@ -75,48 +84,58 @@ export interface IUserdataState {
  * @returns {Object} The next redux state which is the result of reducing the
  * specified {@code action}.
  */
-ReducerRegistry.register<IUserdataState>(
-    'features/lag/userdata',
-    (state = {}, action): IUserdataState => {
+ReducerRegistry.register<IUserData>(
+    "features/lag/userdata",
+    (
+        state = {
+            support: {},
+            ui: {},
+            video: {},
+            audio: {},
+            distressbutton: {},
+            assistant: { signLang: {}, transcription: {} },
+        },
+        action,
+    ): IUserData => {
         const { type, ...payload } = action;
         const nextState = state;
         switch (action.type) {
-        case SET_USERDATA: {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { type, ...payload } = action;
-            const nextState = {
-                ...payload
-            };
+            case SET_USERDATA: {
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                const { type, ...payload } = action;
+                const nextState = {
+                    ...payload,
+                };
 
-            return equals(state, nextState) ? state : nextState;
+                return equals(state, nextState) ? state : nextState;
+            }
+            case SET_OTHERS_AUDIO_INPUT_ENABLED:
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                nextState.audio.otherParticipants = payload.enabled;
+                return nextState;
+
+            case SET_DISTRESSBTN_ENABLED:
+                nextState.distressbutton.active = payload.enabled;
+                return nextState;
+
+            case SET_DISTRESSBTN_MESSAGE_ENABLED:
+                nextState.distressbutton.message = payload.enabled;
+                return nextState;
+
+            case SET_DISTRESSBTN_DIMMING_VALUE:
+                nextState.distressbutton.dimming = payload.value;
+                return nextState;
+
+            case SET_DISTRESSBTN_VOLUME_VALUE:
+                nextState.distressbutton.volume = payload.value;
+                return nextState;
+
+            case SET_DISTRESSBTN_MESSAGE_TEXT:
+                nextState.distressbutton.message_text = payload.text;
+                return nextState;
+
+            default:
+                return state;
         }
-        case SET_OTHERS_AUDIO_INPUT_ENABLED:
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            nextState.userData.audio.otherParticipants = payload.enabled;
-            return nextState;
-
-        case SET_DISTRESSBTN_ENABLED:
-            nextState.userData.distressbutton.active = payload.enabled;
-            return nextState;
-
-
-        case SET_DISTRESSBTN_MESSAGE_ENABLED:
-            nextState.userData.distressbutton.message = payload.enabled;
-            return nextState;
-            
-        case SET_DISTRESSBTN_DIMMING_VALUE:
-            nextState.userData.distressbutton.dimming = payload.value;
-            return nextState;
-            
-        case SET_DISTRESSBTN_VOLUME_VALUE:
-            nextState.userData.distressbutton.volume = payload.value;
-            return nextState;
-            
-        case SET_DISTRESSBTN_MESSAGE_TEXT:
-            nextState.userData.distressbutton.message_text = payload.text;
-            return nextState;
-
-        default:
-            return state;
-    }
-});
+    },
+);

@@ -1,30 +1,30 @@
-import { IReduxState, IStore } from '../../app/types';
+import { IReduxState } from "../../app/types";
 
 // TODO: Own Audio Input will not get saved atm
-export function isOwnAudioInputEnabled(state: IReduxState): boolean {
-    return  true;
+export function isOwnAudioInputEnabled(_: IReduxState): boolean {
+    return true;
 }
 
 export function isOthersAudioInputEnabled(state: IReduxState): boolean {
-    return state['features/lag/userdata'].userData?.audio?.otherParticipants;
+    return state["features/lag/userdata"].audio?.otherParticipants;
 }
 
 export function isFilterBackgroundNoiseEnabled(state: IReduxState): boolean {
-    return state['features/lag/userdata'].userData?.audio?.background ?? true;
+    return state["features/lag/userdata"].audio?.background;
 }
 
 export function getVolumeValue(state: IReduxState): number {
-    return state['features/lag/userdata'].userData?.audio?.volume ?? 100;
+    return state["features/lag/userdata"].audio?.volume;
 }
 
 export function getHighFrequenciesValue(state: IReduxState): number {
-    return state['features/lag/userdata'].userData?.audio?.highFreq ?? 0;
+    return state["features/lag/userdata"].audio?.highFreq;
 }
 
 export function getBalanceValue(state: IReduxState): number {
-    return state['features/lag/userdata'].userData?.audio?.balance ?? 50;
+    return state["features/lag/userdata"].audio?.balance;
 }
 
 export function getAmplifyValue(state: IReduxState): number {
-    return state['features/lag/userdata'].userData?.audio?.amplify ?? 0;
+    return state["features/lag/userdata"].audio?.amplify;
 }

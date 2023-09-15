@@ -279,6 +279,7 @@ export default class AbstractButton<P extends IProps, S=any> extends Component<P
         const buttonStyles
             = (this._isToggled() ? toggledStyles : styles) || styles;
 
+
         if (this._isDisabled() && buttonStyles && disabledStyles) {
             return {
                 iconStyle: combineStyles(
@@ -291,6 +292,8 @@ export default class AbstractButton<P extends IProps, S=any> extends Component<P
                     disabledStyles.underlayColor || buttonStyles.underlayColor
             };
         }
+
+        console.log("buttonStyles", buttonStyles, this._isToggled());
 
         return buttonStyles;
     }
