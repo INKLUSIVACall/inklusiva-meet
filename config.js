@@ -872,7 +872,11 @@ var config = {
 
     // An array with custom option buttons for the toolbar
     // type:  Array<{ icon: string; id: string; text: string; }>
-    // customToolbarButtons: [],
+    // customToolbarButtons: [ {
+    //     icon: 'distress',
+    //     id: 'distress',
+    //     text: 'Distress'
+    // } ],
 
     // Stats
     //
