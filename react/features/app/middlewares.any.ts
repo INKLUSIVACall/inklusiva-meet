@@ -51,5 +51,6 @@ import '../video-quality/middleware';
 import '../videosipgw/middleware';
 import '../visitors/middleware';
 import '../inklusiva/userdata/middleware';
+import '../inklusiva/sessiondata/middleware';
 
 import './middleware';

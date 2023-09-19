@@ -60,6 +60,7 @@ import {
 } from '../../functions';
 
 import ThumbnailAudioIndicator from './ThumbnailAudioIndicator';
+import ActiveSpeakerIndicator from './ActiveSpeakerIndicator';
 import ThumbnailBottomIndicators from './ThumbnailBottomIndicators';
 import ThumbnailTopIndicators from './ThumbnailTopIndicators';
 import VirtualScreenshareParticipant from './VirtualScreenshareParticipant';
@@ -318,7 +319,7 @@ const defaultStyles = (theme: Theme) => {
             width: '100%',
             borderRadius: '4px',
             backgroundColor: theme.palette.ui02
-        },        
+        },
 
         borderIndicator: {
             position: 'absolute' as const,
@@ -724,7 +725,7 @@ class Thumbnail extends Component<IProps, IState> {
         if (videoStyles.objectFit === 'cover') {
             videoStyles.objectPosition = _videoObjectPosition;
         }
-        
+
         videoStyles.transform = "scale(" + String(_videoZoomLevel) + ")";
 
         styles = {
@@ -1058,7 +1059,7 @@ class Thumbnail extends Component<IProps, IState> {
         const videoEventListeners: any = {};
         const pinButtonLabel = t(pinned ? 'unpinParticipant' : 'pinParticipant', {
             participantName: name
-        });                
+        });
 
         if (local) {
             if (_isMobilePortrait) {
@@ -1298,7 +1299,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any): Object {
                 remote: { width: undefined,
                     height: undefined },
                 gridView: {}
-            }            
+            }
         } = state['features/filmstrip'];
         const _verticalViewGrid = showGridInVerticalView(state);
         const { local, remote }

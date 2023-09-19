@@ -7,6 +7,7 @@ import { IProps as AbstractButtonProps } from "../../../base/toolbox/components/
 import { IconSecurityOff, IconSecurityOn } from "../../../base/icons/svg";
 import { toggleInDistress } from "../../../inklusiva/sessiondata/actions";
 import { connect } from "react-redux";
+import { setParticipantOpacitySetting } from "../../../filmstrip/actions.web";
 
 const styles = () => {
     return {
