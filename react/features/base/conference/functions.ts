@@ -106,7 +106,8 @@ export function commonUserJoinedHandling(
             presence: user.getStatus(),
             role: user.getRole(),
             isReplacing,
-            sources: user.getSources()
+            sources: user.getSources(),
+            tags: user.getTags()
         }));
     }
 }
