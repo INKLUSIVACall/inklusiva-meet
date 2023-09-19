@@ -24,6 +24,28 @@ export const DOMINANT_SPEAKER_CHANGED = 'DOMINANT_SPEAKER_CHANGED';
 export const GRANT_MODERATOR = 'GRANT_MODERATOR';
 
 /**
+ * Adds a tag to a user.
+ *
+ * {
+ *     type: ADD_TAG,
+ *     id: string,
+ *     tagName: string
+ * }
+ */
+export const ADD_TAG = 'ADD_TAG';
+
+/**
+ * Removes a tag from a user.
+ *
+ * {
+ *     type: REMOVE_TAG,
+ *     id: string,
+ *     tagName: string
+ * }
+ */
+export const REMOVE_TAG = 'REMOVE_TAG';
+
+/**
  * Create an action for removing a participant from the conference.
  *
  * {

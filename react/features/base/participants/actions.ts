@@ -6,6 +6,8 @@ import { set } from '../redux/functions';
 
 import {
     DOMINANT_SPEAKER_CHANGED,
+    ADD_TAG,
+    REMOVE_TAG,
     GRANT_MODERATOR,
     HIDDEN_PARTICIPANT_JOINED,
     HIDDEN_PARTICIPANT_LEFT,
@@ -87,6 +89,42 @@ export function grantModerator(id: string) {
         type: GRANT_MODERATOR,
         id
     };
+}
+
+/**
+ * Create an action for granting moderator to a participant.
+ *
+ * @param {string} id - Participant's ID.
+ * @returns {{
+*     type: ADD_TAG,
+*     id: string
+*     tagName: string
+* }}
+*/
+export function addTag(id: string, tagName: string) {
+   return {
+       type: ADD_TAG,
+       id,
+       tagName
+   };
+}
+
+/**
+ * Create an action for granting moderator to a participant.
+ *
+ * @param {string} id - Participant's ID.
+ * @returns {{
+*     type: REMOVE_TAG,
+*     id: string,
+*     tagName: string
+* }}
+*/
+export function removeTag(id: string, tagName: string) {
+   return {
+       type: REMOVE_TAG,
+       id,
+       tagName
+   };
 }
 
 /**

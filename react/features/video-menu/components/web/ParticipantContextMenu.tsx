@@ -44,10 +44,12 @@ import TogglePinToStageButton from './TogglePinToStageButton';
 import VerifyParticipantButton from './VerifyParticipantButton';
 import VolumeSlider from './VolumeSlider';
 
+import { addTag, removeTag } from '../../../base/participants/actions';
+
 interface IProps {
 
     /**
-     * Class name for the context menu.
+     * Class name for the context menu.<
      */
     className?: string;
 
@@ -313,6 +315,13 @@ const ParticipantContextMenu = ({
         });
     }
 
+    const addDemoTag = useCallback(() => {        
+        dispatch(addTag(participant.id, 'demo'));
+    }, [ addTag, participant ]);
+    const removeDemoTag = useCallback(() => {
+        dispatch(removeTag(participant.id, 'demo'));
+    }, [ removeTag, participant ]);
+
     return (
         <ContextMenu
             className = { className }
@@ -357,6 +366,10 @@ const ParticipantContextMenu = ({
                     {breakoutRoomsButtons}
                 </ContextMenuItemGroup>
             )}
+            <div>
+                <button onClick={ addDemoTag } >Add tag demo</button><br />
+                <button onClick={ removeDemoTag } >Remove tag demo</button>
+            </div>
         </ContextMenu>
     );
 };
