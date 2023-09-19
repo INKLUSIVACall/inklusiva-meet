@@ -48,10 +48,12 @@ import OpacityAdjustSlider from './OpacityAdjustSlider';
 import { participantPendingAudio } from '../../../av-moderation/actions';
 import ZoomSlider from './ZoomSlider';
 
+import { addTag, removeTag } from '../../../base/participants/actions';
+
 interface IProps {
 
     /**
-     * Class name for the context menu.
+     * Class name for the context menu.<
      */
     className?: string;
 
@@ -335,6 +337,13 @@ const ParticipantContextMenu = ({
         });
     }
 
+    const addDemoTag = useCallback(() => {        
+        dispatch(addTag(participant.id, 'demo'));
+    }, [ addTag, participant ]);
+    const removeDemoTag = useCallback(() => {
+        dispatch(removeTag(participant.id, 'demo'));
+    }, [ removeTag, participant ]);
+
     return (
         <ContextMenu
             className = { className }
@@ -393,6 +402,10 @@ const ParticipantContextMenu = ({
                     {breakoutRoomsButtons}
                 </ContextMenuItemGroup>
             )}
+            <div>
+                <button onClick={ addDemoTag } >Add tag demo</button><br />
+                <button onClick={ removeDemoTag } >Remove tag demo</button>
+            </div>
         </ContextMenu>
     );
 };

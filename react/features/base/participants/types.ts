@@ -41,6 +41,7 @@ export interface IParticipant {
     role?: string;
     sources?: Map<string, Map<string, ISourceInfo>>;
     supportsRemoteControl?: boolean;
+    tags?: string[];
 }
 
 export interface ILocalParticipant extends IParticipant {
@@ -65,5 +66,8 @@ export interface IJitsiParticipant {
     getJid: () => string;
     getRole: () => string;
     getSources: () => Map<string, Map<string, ISourceInfo>>;
+    getTags: () => string[];
+    addTag: (tagName: string) => void;
+    removeTag: (tagName: string) => void;
     isHidden: () => boolean;
 }
