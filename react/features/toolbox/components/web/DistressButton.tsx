@@ -1,21 +1,19 @@
-import { withStyles } from "@mui/styles";
+import { withStyles } from '@mui/styles';
+import { connect } from 'react-redux';
 
-import { IReduxState } from "../../../app/types";
-import { translate } from "../../../base/i18n/functions";
-import AbstractButton from "../../../base/toolbox/components/AbstractButton";
-import { IProps as AbstractButtonProps } from "../../../base/toolbox/components/AbstractButton";
-import { IconSecurityOff, IconSecurityOn } from "../../../base/icons/svg";
-import { toggleInDistress } from "../../../inklusiva/sessiondata/actions";
-import { connect } from "react-redux";
-import { setParticipantOpacitySetting } from "../../../filmstrip/actions.web";
+import { IReduxState } from '../../../app/types';
+import { translate } from '../../../base/i18n/functions';
+import { IconSecurityOff, IconSecurityOn } from '../../../base/icons/svg';
+import AbstractButton, { IProps as AbstractButtonProps } from '../../../base/toolbox/components/AbstractButton';
+import { toggleInDistress } from '../../../inklusiva/sessiondata/actions';
 
 const styles = () => {
     return {
         pendingContainer: {
-            position: "absolute" as const,
-            bottom: "3px",
-            right: "3px",
-        },
+            position: 'absolute' as const,
+            bottom: '3px',
+            right: '3px'
+        }
     };
 };
 
@@ -23,6 +21,7 @@ const styles = () => {
  * The type of the React {@code Component} props of {@link AudioMuteButton}.
  */
 interface IProps extends AbstractButtonProps {
+
     /**
      * The gumPending state from redux.
      */
@@ -36,14 +35,14 @@ interface IProps extends AbstractButtonProps {
  */
 class DistressButton extends AbstractButton<IProps> {
     icon = IconSecurityOff;
-    label = "Nofall";
-    tooltip = "toolbar.enterFullScreen";
-    accessibilityLabel = "toolbar.accessibilityLabel.enterFullScreen";
+    label = 'Nofall';
+    tooltip = 'toolbar.enterFullScreen';
+    accessibilityLabel = 'toolbar.accessibilityLabel.enterFullScreen';
 
     toggledIcon = IconSecurityOn;
-    toggledLabel = "Notfall aktiv";
-    toggledTooltip = "toolbar.exitFullScreen";
-    toggledAccessibilityLabel = "toolbar.accessibilityLabel.exitFullScreen";
+    toggledLabel = 'Notfall aktiv';
+    toggledTooltip = 'toolbar.exitFullScreen';
+    toggledAccessibilityLabel = 'toolbar.accessibilityLabel.exitFullScreen';
 
     /**
      * Initializes a new {@code AudioMuteButton} instance.
@@ -131,13 +130,11 @@ class DistressButton extends AbstractButton<IProps> {
  * }}
  */
 function _mapStateToProps(state: IReduxState) {
-    const inDistress = state["features/inklusiva/sessiondata"]?.inDistress ?? false;
+    const inDistress = state['features/inklusiva/sessiondata']?.inDistress ?? false;
 
     return {
-        _inDistress: inDistress,
+        _inDistress: inDistress
     };
 }
 
-export default withStyles(styles)(
-    translate(connect(_mapStateToProps)(DistressButton)),
-);
+export default withStyles(styles)(translate(connect(_mapStateToProps)(DistressButton)));
