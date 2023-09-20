@@ -1353,7 +1353,7 @@
                 "learning_difficulties_label": "Ich habe Dyslexie, Legasthenie und/ oder Lernschwierigkeiten",
                 "warning_headline": "Achtung",
                 "warning_text": "Änderungen des Unterstützungsbedarfs hat eventuell Einfluss auf bereits hinterlegte Einstellungen."
-        },
+        }
     },
     "transcribing": {
         "ccButtonTooltip": "Untertitel ein-/ausschalten",
