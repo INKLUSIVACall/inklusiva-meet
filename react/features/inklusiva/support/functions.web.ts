@@ -1,31 +1,31 @@
-import { toState } from "../../base/redux/functions";
-import { IReduxState } from "../../app/types";
-import { IStateful } from "../../base/app/types";
-
+import { IReduxState } from '../../app/types';
+import { IStateful } from '../../base/app/types';
+import { toState } from '../../base/redux/functions';
 
 /**
+ * Getting the eyesight setting.
  *
- * @param state
- * @returns a string indicating how severely eyesight is impaired or not
-*/
-export function getEyesight(state: IReduxState): string{
+ * @param {IReduxState} state - Rhe redux state.
+ * @returns {string} - A string indicating how severely eyesight is impaired or not.
+ */
+export function getEyesight(state: IReduxState): string | undefined {
     return state['features/inklusiva/userdata'].support?.eyesight;
 }
 
-/**
+/** ...........
  *
  *
  * @param state
  * @returns a string indicating how severely hearing is impaired or not
-*/
-export function getHearing(state: IReduxState): string{
-    return state['features/inklusiva/userdata'].support.hearing;
+ */
+export function getHearing(state: IReduxState): string {
+    return state['features/inklusiva/userdata'].support?.hearing;
 }
 
 /**
  *
  * @param state
- * @returns whether or not senses are impaired
+ * @returns Whether or not senses are impaired.
  */
 export function areSensesEnabled(state: IReduxState): boolean {
     return state['features/inklusiva/userdata'].support?.senses;
@@ -34,7 +34,7 @@ export function areSensesEnabled(state: IReduxState): boolean {
 /**
  *
  * @param state
- * @returns whether learning difficulties are TRUE
+ * @returns Whether learning difficulties are TRUE.
  */
 export function areLearningDifficultiesEnabled(state: IReduxState): boolean {
     return state['features/inklusiva/userdata'].support?.learning_difficulties;
@@ -43,14 +43,15 @@ export function areLearningDifficultiesEnabled(state: IReduxState): boolean {
 /**
  *
  * @param state
- * @returns whether Screenreader is enabled
+ * @returns Whether Screenreader is enabled.
  */
 export function isScreenreaderEnabled(state: IReduxState): boolean {
     return state['features/inklusiva/userdata'].ui?.screenreader;
 }
 
-/**
+/** ....................
  *  Returns all states of SupportTab
+ *
  * @param stateful
  */
 export function getSupportTabProps(stateful: IStateful) {
@@ -67,5 +68,5 @@ export function getSupportTabProps(stateful: IStateful) {
         senses,
         learning_difficulties,
         screenreader
-    }
+    };
 }
