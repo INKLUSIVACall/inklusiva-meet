@@ -367,6 +367,11 @@ const Toolbox = ({
         const containerClassName = `toolbox-content${_isMobile || _isNarrowLayout ? ' toolbox-content-mobile' : ''}`;
 
         const { mainMenuButtons, overflowMenuButtons } = getVisibleButtons();
+
+        if (!_distressButton) {
+            mainMenuButtons.splice(mainMenuButtons.findIndex(({ key }) => key === 'distress'), 1);
+        }
+
         const raiseHandInOverflowMenu = overflowMenuButtons.some(({ key }) => key === 'raisehand');
         const showReactionsInOverflowMenu
             = (_reactionsEnabled
