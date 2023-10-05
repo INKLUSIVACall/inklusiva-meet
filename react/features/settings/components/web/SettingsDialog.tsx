@@ -4,6 +4,7 @@ import { makeStyles } from 'tss-react/mui';
 
 import { IReduxState, IStore } from '../../../app/types';
 import {
+    IconAudioOnly,
     IconBell,
     IconBellConcierge,
     IconBubble,
@@ -39,6 +40,9 @@ import { getSupportTabProps } from '../../../inklusiva/support/functions.web';
 import { submitTranscriptionTabProps } from '../../../inklusiva/transcription/actions.web';
 import TranscriptionTab from '../../../inklusiva/transcription/components/TranscriptionTab';
 import { getTranscriptionTabProps } from '../../../inklusiva/transcription/functions.web';
+import UiSettingsTab from '../../../inklusiva/uisettings/UiSettingsTab';
+import { submitUISettingsTabProps } from '../../../inklusiva/uisettings/actions.web';
+import { getUISettingsTabProps } from '../../../inklusiva/uisettings/functions';
 import { checkBlurSupport, checkVirtualBackgroundEnabled } from '../../../virtual-background/functions';
 import { iAmVisitor } from '../../../visitors/functions';
 import {
@@ -164,6 +168,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
     const transcriptionTabProps = getTranscriptionTabProps(state);
 
     const signLangTabProps = getSignLangTabProps(state);
+    const uiSettingsTabProps = getUISettingsTabProps(state);
 
     if (showDeviceSettings) {
         tabs.push({
@@ -439,6 +444,20 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
             icon: IconGear
         });
     }
+
+    tabs.push({
+        name: SETTINGS_TABS.UI_TAB,
+        component: UiSettingsTab,
+        labelKey: 'settings.uiTab',
+        props: uiSettingsTabProps,
+        propsUpdateFunction: (tabState: any, newProps: typeof uiSettingsTabProps) => {
+            return {
+                ...newProps
+            };
+        },
+        submit: submitUISettingsTabProps,
+        icon: IconAudioOnly
+    });
 
     return { _tabs: tabs };
 }

@@ -34,6 +34,11 @@ export function submitNewDistressBtnTab(newState: any) {
     };
 }
 
+/**
+ * Toggles the active state of the distress button.
+ *
+ * @returns {Function}
+ */
 export function toggleActive(): any {
     return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
         if (isDistressBtnEnabled(getState())) {
@@ -43,6 +48,12 @@ export function toggleActive(): any {
         }
     };
 }
+
+/**
+ * Toggles the message state of the distress button.
+ *
+ * @returns {Function}
+ */
 export function toggleMessage(): any {
     return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
         if (isDistressBtnMessageEnabled(getState())) {
@@ -53,6 +64,12 @@ export function toggleMessage(): any {
     };
 }
 
+/**
+ * Sets the enabled state of the distress button.
+ *
+ * @param {boolean} enabled - The new enabled state.
+ * @returns {Object}
+ */
 export function setDistressBtnEnabledState(enabled: boolean): any {
     return {
         type: SET_DISTRESSBTN_ENABLED,
@@ -60,6 +77,12 @@ export function setDistressBtnEnabledState(enabled: boolean): any {
     };
 }
 
+/**
+ * Sets the dimming value of the distress button.
+ *
+ * @param {number} value - The new dimming value.
+ * @returns {Object}
+ */
 export function setDistressBtnDimmingValue(value: number): any {
     return {
         type: SET_DISTRESSBTN_DIMMING_VALUE,
@@ -67,6 +90,12 @@ export function setDistressBtnDimmingValue(value: number): any {
     };
 }
 
+/**
+ * Sets the volume value of the distress button.
+ *
+ * @param {number} value - The new volume value.
+ * @returns {Object}
+ */
 export function setDistressBtnVolumeValue(value: number): any {
     return {
         type: SET_DISTRESSBTN_VOLUME_VALUE,
@@ -74,6 +103,12 @@ export function setDistressBtnVolumeValue(value: number): any {
     };
 }
 
+/**
+ * Sets the enabled state of the distress button message.
+ *
+ * @param {boolean} enabled - The new enabled state.
+ * @returns {Object}
+ */
 export function setDistressBtnMessageEnabled(enabled: boolean): any {
     return {
         type: SET_DISTRESSBTN_MESSAGE_ENABLED,
@@ -81,6 +116,12 @@ export function setDistressBtnMessageEnabled(enabled: boolean): any {
     };
 }
 
+/**
+ * Sets the text of the distress button message.
+ *
+ * @param {string} text - The new message text.
+ * @returns {Object}
+ */
 export function setDistressBtnMessageText(text: string): any {
     return {
         type: SET_DISTRESSBTN_MESSAGE_TEXT,

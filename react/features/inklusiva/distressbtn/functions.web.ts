@@ -19,7 +19,7 @@ export function isDistressBtnEnabled(state: IReduxState): boolean | undefined {
  * @returns {number} The dimming value.
  */
 export function getDistressBtnDimmingValue(state: IReduxState): number | undefined {
-    return state['features/inklusiva/userdata'].distressbutton?.dimming;
+    return state['features/inklusiva/userdata'].distressbutton?.dimming ?? 0;
 }
 
 /**
@@ -29,7 +29,7 @@ export function getDistressBtnDimmingValue(state: IReduxState): number | undefin
  * @returns {number} The volume value.
  */
 export function getDistressBtnVolumeValue(state: IReduxState): number | undefined {
-    return state['features/inklusiva/userdata'].distressbutton?.volume;
+    return state['features/inklusiva/userdata'].distressbutton?.volume ?? 0;
 }
 
 /**
@@ -39,7 +39,7 @@ export function getDistressBtnVolumeValue(state: IReduxState): number | undefine
  * @returns {boolean} Whether distress button message is enabled or disabled.
  */
 export function isDistressBtnMessageEnabled(state: IReduxState): boolean | undefined {
-    return state['features/inklusiva/userdata'].distressbutton?.message;
+    return state['features/inklusiva/userdata'].distressbutton?.message ?? false;
 }
 
 /**
@@ -49,7 +49,7 @@ export function isDistressBtnMessageEnabled(state: IReduxState): boolean | undef
  * @returns {string} The message text.
  */
 export function getDistressBtnMessageText(state: IReduxState): string | undefined {
-    return state['features/inklusiva/userdata'].distressbutton?.message_text;
+    return state['features/inklusiva/userdata'].distressbutton?.message_text ?? '';
 }
 
 /**
