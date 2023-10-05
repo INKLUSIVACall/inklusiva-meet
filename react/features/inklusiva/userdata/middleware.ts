@@ -8,6 +8,7 @@ import MiddlewareRegistry from '../../base/redux/MiddlewareRegistry';
 import { SET_USERDATA } from './actionTypes';
 import logger from './logger';
 import { IUserData } from './reducer';
+import { font } from '../../base/ui/Tokens';
 
 const toBoolean = function(value: any) {
     if (typeof value === 'boolean') {
@@ -34,6 +35,14 @@ MiddlewareRegistry.register(store => next => action => {
     return next(action);
 });
 
+/**
+ * Sets user data.
+ *
+ * @param {IStore} store - The redux store.
+ * @param {Function} next - The redux next function.
+ * @param {AnyAction} action - The redux action.
+ * @returns {AnyAction}
+ */
 function _setUserdata(store: IStore, next: Function, action: AnyAction) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { jwt, type, ...actionPayload } = action;
@@ -53,6 +62,11 @@ function _setUserdata(store: IStore, next: Function, action: AnyAction) {
 
                 if (context) {
                     action.userData = _parseUserData(context.userData);
+
+                    // Add event listener to set the font size on DOMContentLoaded.
+                    window.addEventListener('DOMContentLoaded', () => {
+                        document.querySelector(':root').style.fontSize = _parseFontSize(context.userData.ui.fontSize);
+                    });
                 }
             }
         }
@@ -61,6 +75,12 @@ function _setUserdata(store: IStore, next: Function, action: AnyAction) {
     return next(action);
 }
 
+/**
+ * Parses user data values.
+ *
+ * @param {Object} ud - The user data.
+ * @returns {IUserData}
+ */
 function _parseUserData(ud) {
     const userData: IUserData = {
         support: {},
@@ -98,11 +118,11 @@ function _parseUserData(ud) {
     userData.audio.background = toBoolean(ud.audio.background);
     userData.audio.output = _.toString(ud.audio.output);
     userData.distressbutton.active = toBoolean(ud.distressbutton.active);
-    userData.distressbutton.dimming = _.toNumber(ud.distressbutton.dimming);
-    userData.distressbutton.volume = _.toNumber(ud.distressbutton.volume);
+    userData.distressbutton.dimming = _.toNumber(ud.distressbutton.dimming ?? 0);
+    userData.distressbutton.volume = _.toNumber(ud.distressbutton.volume ?? 0);
     userData.distressbutton.message = toBoolean(ud.distressbutton.message);
     userData.distressbutton.message_text = _.toString(
-        ud.distressbutton.message_text
+        ud.distressbutton.message_text ?? ''
     );
     userData.assistant.signLang.active = toBoolean(
         ud.assistant.signLang.active
@@ -124,4 +144,31 @@ function _parseUserData(ud) {
     );
 
     return Object.keys(userData).length ? userData : undefined;
+}
+
+/**
+ * Parses the font size value that is supplied via userData to a valid CSS-value.
+ *
+ * @param {any} fontSizeValue - The font size value to parse.
+ *
+ * @returns {string}
+ */
+function _parseFontSize(fontSizeValue) {
+    switch (fontSizeValue) {
+    case 0:
+    case '0':
+        return '75%';
+        break;
+    case 1:
+    case '1':
+        return '100%';
+        break;
+    case 2:
+    case '2':
+        return '125%';
+        break;
+    default:
+        return '100%';
+        break;
+    }
 }

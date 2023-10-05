@@ -64,7 +64,7 @@ export function submitAudioDeviceSelectionTab(newState: any, isDisplayedOnWelcom
             dispatch(toggleNoiseSuppression());
         }
 
-        if(newState.othersAudio !== currentState.othersAudio) {
+        if (newState.othersAudio !== currentState.othersAudio) {
             dispatch(toggleOthersAudioInput());
         }
     };

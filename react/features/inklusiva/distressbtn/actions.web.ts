@@ -1,23 +1,28 @@
-import { IStore } from "../../app/types";
+import { IStore } from '../../app/types';
+
 import {
-    SET_DISTRESSBTN_ENABLED,
     SET_DISTRESSBTN_DIMMING_VALUE,
-    SET_DISTRESSBTN_VOLUME_VALUE,
+    SET_DISTRESSBTN_ENABLED,
     SET_DISTRESSBTN_MESSAGE_ENABLED,
     SET_DISTRESSBTN_MESSAGE_TEXT,
-} from "./actionTypes";
+    SET_DISTRESSBTN_VOLUME_VALUE
+} from './actionTypes';
 import {
     getDistressBtnTabProps,
     isDistressBtnEnabled,
-    isDistressBtnMessageEnabled,
-} from "./functions.web";
+    isDistressBtnMessageEnabled
+} from './functions.web';
 
 /**
- *  Submits new values to the state inside the project store
+ * Submits new values to the state inside the project store.
+ *
+ * @param {any} newState - The new values to be submitted.
+ * @returns {Function}
  */
 export function submitNewDistressBtnTab(newState: any) {
-    return (dispatch: IStore["dispatch"], getState: IStore["getState"]) => {
+    return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
         const currentState = getDistressBtnTabProps(getState());
+
         if (newState.active !== currentState.active) {
             dispatch(toggleActive());
         }
@@ -36,8 +41,13 @@ export function submitNewDistressBtnTab(newState: any) {
     };
 }
 
+/**
+ * Toggles the active state of the distress button.
+ *
+ * @returns {Function}
+ */
 export function toggleActive(): any {
-    return (dispatch: IStore["dispatch"], getState: IStore["getState"]) => {
+    return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
         if (isDistressBtnEnabled(getState())) {
             dispatch(setDistressBtnEnabledState(false));
         } else {
@@ -45,8 +55,14 @@ export function toggleActive(): any {
         }
     };
 }
+
+/**
+ * Toggles the message state of the distress button.
+ *
+ * @returns {Function}
+ */
 export function toggleMessage(): any {
-    return (dispatch: IStore["dispatch"], getState: IStore["getState"]) => {
+    return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
         if (isDistressBtnMessageEnabled(getState())) {
             dispatch(setDistressBtnMessageEnabled(false));
         } else {
@@ -55,37 +71,67 @@ export function toggleMessage(): any {
     };
 }
 
+/**
+ * Sets the enabled state of the distress button.
+ *
+ * @param {boolean} enabled - The new enabled state.
+ * @returns {Object}
+ */
 export function setDistressBtnEnabledState(enabled: boolean): any {
     return {
         type: SET_DISTRESSBTN_ENABLED,
-        enabled,
+        enabled
     };
 }
 
+/**
+ * Sets the dimming value of the distress button.
+ *
+ * @param {number} value - The new dimming value.
+ * @returns {Object}
+ */
 export function setDistressBtnDimmingValue(value: number): any {
     return {
         type: SET_DISTRESSBTN_DIMMING_VALUE,
-        value,
+        value
     };
 }
 
+/**
+ * Sets the volume value of the distress button.
+ *
+ * @param {number} value - The new volume value.
+ * @returns {Object}
+ */
 export function setDistressBtnVolumeValue(value: number): any {
     return {
         type: SET_DISTRESSBTN_VOLUME_VALUE,
-        value,
+        value
     };
 }
 
+/**
+ * Sets the enabled state of the distress button message.
+ *
+ * @param {boolean} enabled - The new enabled state.
+ * @returns {Object}
+ */
 export function setDistressBtnMessageEnabled(enabled: boolean): any {
     return {
         type: SET_DISTRESSBTN_MESSAGE_ENABLED,
-        enabled,
+        enabled
     };
 }
 
+/**
+ * Sets the text of the distress button message.
+ *
+ * @param {string} text - The new message text.
+ * @returns {Object}
+ */
 export function setDistressBtnMessageText(text: string): any {
     return {
         type: SET_DISTRESSBTN_MESSAGE_TEXT,
-        text,
+        text
     };
 }

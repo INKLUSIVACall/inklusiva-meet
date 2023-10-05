@@ -73,7 +73,8 @@ const useStyles = makeStyles()(theme => {
             ...withPixelLineHeight(theme.typography.heading5),
             color: `${theme.palette.text01} !important`,
             margin: 0,
-            padding: 0
+            padding: 0,
+            fontSize: '1.25rem'
         },
 
         contentContainer: {
@@ -96,6 +97,7 @@ const useStyles = makeStyles()(theme => {
             alignItems: 'center',
             justifyContent: 'flex-end',
             flexGrow: 0,
+            fontSize: '0.875rem',
 
             [`@media (max-width: ${MOBILE_BREAKPOINT}px)`]: {
                 justifyContent: 'space-between',
