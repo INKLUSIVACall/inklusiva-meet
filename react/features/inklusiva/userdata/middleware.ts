@@ -4,11 +4,11 @@ import { AnyAction } from 'redux';
 
 import { IStore } from '../../app/types';
 import MiddlewareRegistry from '../../base/redux/MiddlewareRegistry';
-import { font } from '../../base/ui/Tokens';
 
 import { SET_USERDATA } from './actionTypes';
 import logger from './logger';
 import { IUserData } from './reducer';
+import { font } from '../../base/ui/Tokens';
 
 const toBoolean = function(value: any) {
     if (typeof value === 'boolean') {

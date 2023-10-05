@@ -1054,7 +1054,6 @@
         "talkWhileMuted": "Wenn bei Stummschaltung gesprochen wird",
         "title": "Einstellungen",
         "transcriptionTab": "Schriftdolmetschen-Assistent",
-        "uiTab": "Benutzeroberfläche",
         "uiSettings": {
             "fontSize": "Schriftgröße",
             "iconSize": "Icon-Größe",
@@ -1075,6 +1074,7 @@
             }
         },
         "userVideoTab": "Teilnehmer-Video",
+        "uiTab": "Benutzeroberfläche",
         "video": "Kamera"
     },
     "settingsView": {
