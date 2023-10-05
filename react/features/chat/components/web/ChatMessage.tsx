@@ -86,14 +86,16 @@ const useStyles = makeStyles()((theme: Theme) => {
             whiteSpace: 'nowrap',
             textOverflow: 'ellipsis',
             overflow: 'hidden',
-            marginBottom: theme.spacing(1)
+            marginBottom: theme.spacing(1),
+            fontSize: '0.75rem'
         },
 
         userMessage: {
             ...withPixelLineHeight(theme.typography.bodyShortRegular),
             color: theme.palette.text01,
             whiteSpace: 'pre-wrap',
-            wordBreak: 'break-word'
+            wordBreak: 'break-word',
+            fontSize: '0.875rem',
         },
 
         privateMessageNotice: {

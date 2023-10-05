@@ -1054,6 +1054,7 @@
         "talkWhileMuted": "Wenn bei Stummschaltung gesprochen wird",
         "title": "Einstellungen",
         "transcriptionTab": "Schriftdolmetschen-Assistent",
+        "uiTab": "Benutzeroberfläche",
         "video": "Kamera"
     },
     "settingsView": {

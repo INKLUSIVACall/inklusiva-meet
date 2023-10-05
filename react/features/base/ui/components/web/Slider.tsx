@@ -60,6 +60,7 @@ const useStyles = makeStyles()(theme => {
             color: theme.palette.text01,
             display: 'inline-flex',
             alignItems: 'center',
+            fontSize: '0.875rem',
 
             '&.is-mobile': {
                 ...withPixelLineHeight(theme.typography.bodyLongRegularLarge)
