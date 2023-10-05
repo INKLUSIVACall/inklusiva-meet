@@ -72,6 +72,7 @@ const useStyles = makeStyles()(theme => {
             height: '40px',
             boxSizing: 'border-box',
             width: '100%',
+            fontSize: '0.875rem',
 
             '&::placeholder': {
                 color: theme.palette.text02

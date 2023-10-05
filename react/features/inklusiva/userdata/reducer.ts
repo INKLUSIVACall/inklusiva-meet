@@ -24,6 +24,7 @@ import {
     SET_TRANSCRIPTION_FONTSIZE_VALUE,
     SET_TRANSCRIPTION_HISTORY_VALUE
 } from '../transcription/actionTypes';
+import { SET_UI_FONTSIZE } from '../uisettings/actionTypes';
 
 import { SET_OTHERS_AUDIO_INPUT_ENABLED, SET_USERDATA } from './actionTypes';
 
@@ -213,9 +214,37 @@ ReducerRegistry.register<IUserData>(
             nextState.ui.screenreader = payload.supportScreenreaderEnabled;
 
             return nextState;
+        case SET_UI_FONTSIZE:
+            document.querySelector(':root').style.fontSize = _parseFontSize(payload.value);
+            nextState.ui.fontSize = payload.value;
 
+            return nextState;
         default:
             return state;
         }
     }
 );
+
+/**
+ * Parses the font size value that is supplied via userData to a valid CSS-value.
+ *
+ * @param {any} fontSizeValue - The font size value to parse.
+ *
+ * @returns {string}
+ */
+function _parseFontSize(fontSizeValue) {
+    switch (fontSizeValue) {
+    case 0:
+        return '75%';
+        break;
+    case 1:
+        return '100%';
+        break;
+    case 2:
+        return '125%';
+        break;
+    default:
+        return '100%';
+        break;
+    }
+}
