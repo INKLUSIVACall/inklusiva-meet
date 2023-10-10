@@ -1075,6 +1075,10 @@
         },
         "userVideoTab": "Teilnehmer-Video",
         "uiTab": "Benutzeroberfläche",
+        "uiSettings": {
+            "Sizes": "Größen",
+            "fontSize": "Schriftgröße"
+        },
         "video": "Kamera"
     },
     "settingsView": {
