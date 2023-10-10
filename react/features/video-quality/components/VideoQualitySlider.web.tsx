@@ -93,18 +93,21 @@ const styles = (theme: Theme) => {
         },
         dialogDetails: {
             ...withPixelLineHeight(theme.typography.bodyShortRegularLarge),
-            marginBottom: 16
+            marginBottom: 16,
+            fontSize: '1rem'
         },
         dialogContents: {
             background: theme.palette.ui01,
-            padding: '16px 16px 48px 16px'
+            padding: '16px 16px 48px 16px',
+            fontSize: '1rem'
         },
         sliderDescription: {
             ...withPixelLineHeight(theme.typography.heading6),
 
             display: 'flex',
             justifyContent: 'space-between',
-            marginBottom: 40
+            marginBottom: 40,
+            fontSize: '1rem'
         }
     };
 };
