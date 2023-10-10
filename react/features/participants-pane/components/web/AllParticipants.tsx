@@ -46,6 +46,7 @@ const useStyles = makeStyles()(theme => {
             color: theme.palette.text02,
             ...withPixelLineHeight(theme.typography.bodyShortBold),
             marginBottom: theme.spacing(3),
+            fontSize: '0.875rem',
 
             [`@media(max-width: ${participantsPaneTheme.MD_BREAKPOINT})`]: {
                 ...withPixelLineHeight(theme.typography.bodyShortBoldLarge)
@@ -188,7 +189,7 @@ function AllParticipants({
                     {currentRoom?.name
                         ? `${currentRoom.name} (${participantsCount})`
                         : t('participantsPane.headings.participantsList', { count: allParticipantsCount })}
-                    
+
                 </div>
                 {
                     participants.length > 1
@@ -258,7 +259,7 @@ function AllParticipants({
                         </ul>
                     </Drawer>
                 </JitsiPortal>
-                    
+
             </div>
             <MeetingParticipantContextMenu
                 closeDrawer = { closeDrawer }

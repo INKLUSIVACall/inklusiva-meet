@@ -50,6 +50,7 @@ const useStyles = makeStyles()(theme => {
             color: theme.palette.text01,
             ...withPixelLineHeight(theme.typography.bodyShortRegular),
             marginBottom: theme.spacing(2),
+            fontSize: '0.875rem',
 
             '&.is-mobile': {
                 ...withPixelLineHeight(theme.typography.bodyShortRegularLarge)

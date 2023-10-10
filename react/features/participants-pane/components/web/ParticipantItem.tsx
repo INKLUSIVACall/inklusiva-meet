@@ -119,7 +119,8 @@ const useStyles = makeStyles()(theme => {
         nameContainer: {
             display: 'flex',
             flex: 1,
-            overflow: 'hidden'
+            overflow: 'hidden',
+            fontSize: '0.875rem'
         },
 
         name: {

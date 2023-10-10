@@ -88,13 +88,15 @@ const styles = (theme: Theme) => {
             marginBottom: theme.spacing(3)
         },
         inputblockContainer: {
-            marginBottom: theme.spacing(5)
+            marginBottom: theme.spacing(5),
+            fontSize: '0.875rem'
         },
         warning: {
             height: '120px',
             width: '350px',
             backgroundColor: 'b6d7a8',
-            color: 'black'
+            color: 'black',
+            fontSize: '0.875rem'
         }
     };
 };

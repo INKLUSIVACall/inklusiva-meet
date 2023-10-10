@@ -19,6 +19,7 @@ const useStyles = makeStyles()(theme => {
             height: '28px',
             borderRadius: `${theme.shape.borderRadius}px 0 0 ${theme.shape.borderRadius}px`,
             marginLeft: '2px',
+            fontSize: '0.875rem',
 
             '@media (max-width: 300px)': {
                 display: 'none'

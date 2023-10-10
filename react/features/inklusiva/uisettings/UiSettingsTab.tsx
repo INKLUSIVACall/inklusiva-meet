@@ -62,7 +62,8 @@ const styles = (theme: Theme) => {
         },
         inputElement: {
             marginBottom: theme.spacing(1),
-            fontWeight: 'bold'
+            fontWeight: 'bold',
+            fontSize: '0.875rem'
         },
         textareaElement: {
             marginBottom: theme.spacing(1)
@@ -102,7 +103,7 @@ class UiSettingsTab extends AbstractDialogTab<IProps, any> {
         return (
             <div className = { classes.container }>
                 <div className = { classes.inputElement }>
-                    {t('settings.uiSettings.fontSize')}
+                    {t('settings.uiSettings.Sizes')}
                 </div>
                 <div className = { classes.inputblockContainer }>
                     <Slider
