@@ -1,18 +1,26 @@
+import { Theme } from '@mui/material';
+import { withStyles } from '@mui/styles';
+import React from 'react';
+import { WithTranslation } from 'react-i18next';
+
 import AbstractDialogTab, {
-    IProps as AbstractDialogTabProps,
-} from "../../base/dialog/components/web/AbstractDialogTab";
-import { WithTranslation } from "react-i18next";
-import { translate } from "../../base/i18n/functions";
-import React from "react";
-import Checkbox from "../../base/ui/components/web/Checkbox";
-import Slider from "../../base/ui/components/web/Slider";
-import { withStyles } from "@mui/styles";
-import { Theme } from "@mui/material";
+    IProps as AbstractDialogTabProps
+} from '../../base/dialog/components/web/AbstractDialogTab';
+import { translate } from '../../base/i18n/functions';
+import Checkbox from '../../base/ui/components/web/Checkbox';
+import Slider from '../../base/ui/components/web/Slider';
+
 
 /**
  * The type of the React {@code Component} props of {@link OwnAudioTab}.
  */
 export interface IProps extends AbstractDialogTabProps, WithTranslation {
+
+    /**
+     *  Is distressbutton enabled?
+     */
+    active: boolean;
+
     /**
      * CSS classes object.
      */
@@ -25,19 +33,9 @@ export interface IProps extends AbstractDialogTabProps, WithTranslation {
     currentLanguage: string;
 
     /**
-     *  Is distressbutton enabled?
-     */
-    active: boolean;
-
-    /**
-     * tile dimming value for distress mode
+     * Tile dimming value for distress mode.
      */
     dimming: number;
-
-    /**
-     * volume value for distress mode
-     */
-    volume: number;
 
     /**
      * Is distress message enabled?
@@ -45,35 +43,44 @@ export interface IProps extends AbstractDialogTabProps, WithTranslation {
     message: boolean;
 
     /**
-     * the actual distress message
+     * The actual distress message.
      */
     message_text: string;
+
+    /**
+     * Volume value for distress mode.
+     */
+    volume: number;
 }
 
 const styles = (theme: Theme) => {
     return {
         container: {
-            display: "flex",
-            flexDirection: "column" as const,
-            padding: "0 2px",
-            width: "100%",
+            display: 'flex',
+            flexDirection: 'column' as const,
+            padding: '0 2px',
+            width: '100%'
         },
         headline: {
             marginBottom: theme.spacing(3),
+            fontSize: '0.875rem'
         },
         inputElement: {
             marginBottom: theme.spacing(1),
-            fontWeight: "bold",
+            fontWeight: 'bold'
         },
         textareaElement: {
             marginBottom: theme.spacing(1),
+            fontSize: '1rem'
         },
         description: {
             marginBottom: theme.spacing(3),
+            fontSize: '0.875rem'
         },
         inputblockContainer: {
             marginBottom: theme.spacing(5),
-        },
+            fontSize: '0.875rem'
+        }
     };
 };
 
@@ -95,41 +102,40 @@ class DistressBtnTab extends AbstractDialogTab<IProps, any> {
      * @returns {ReactElement}
      */
     render() {
-        const { classes, active, dimming, volume, message, message_text, t } =
-            this.props;
+        const { classes, active, dimming, volume, message, message_text, t }
+            = this.props;
 
         return (
-            <div className={classes.container}>
-                <div className={classes.inputblockContainer}>
-                    <b className={classes.headline}>
-                        {t("toolbar.distressbtn.btn_engage_headline")}
+            <div className = { classes.container }>
+                <div className = { classes.inputblockContainer }>
+                    <b className = { classes.headline }>
+                        {t('toolbar.distressbtn.btn_engage_headline')}
                     </b>
                     <Checkbox
-                        className={classes.inputElement}
-                        label={t("toolbar.distressbtn.btn_engage_label")}
-                        // eslint-disable-next-line react/jsx-no-bind
-                        name="distressbtn_enable"
                         checked={active}
+                        className={classes.inputElement}
                         onChange={() =>
                             super._onChange({
                                 active: !active,
                             })
                         }
-                    />
+                        label={t("toolbar.distressbtn.btn_engage_label")}
+                        // eslint-disable-next-line react/jsx-no-bind
+                        name="distressbtn_enable"/>
 
-                    <div className={classes.description}>
-                        {t("toolbar.distressbtn.btn_engage_desc")}
+                    <div className = { classes.description }>
+                        {t('toolbar.distressbtn.btn_engage_desc')}
                     </div>
                 </div>
-                <div className={classes.inputblockContainer}>
-                    <b className={classes.headline}>
-                        {t("toolbar.distressbtn.sliders_headline")}
+                <div className = { classes.inputblockContainer }>
+                    <b className = { classes.headline }>
+                        {t('toolbar.distressbtn.sliders_headline')}
                     </b>
                     <Slider
                         className={classes.inputElement}
                         label={t("toolbar.distressbtn.dimlights_label")}
-                        min={0}
                         max={100}
+                        min={0}
                         step={1}
                         defaultValue={dimming}
                         // eslint-disable-next-line react/jsx-no-bind
@@ -137,15 +143,14 @@ class DistressBtnTab extends AbstractDialogTab<IProps, any> {
                             super._onChange({
                                 dimming: event.target.value,
                             })
-                        }
-                    />
+                        }/>
                     <span>{dimming}%</span>
 
                     <Slider
                         className={classes.inputElement}
                         label={t("toolbar.distressbtn.setvolume_label")}
-                        min={0}
                         max={100}
+                        min={0}
                         step={1}
                         defaultValue={volume}
                         // eslint-disable-next-line react/jsx-no-bind
@@ -153,54 +158,50 @@ class DistressBtnTab extends AbstractDialogTab<IProps, any> {
                             super._onChange({
                                 volume: event.target.value,
                             })
-                        }
-                    />
+                        }/>
                     <span>{volume}%</span>
                 </div>
-                <div className={classes.inputblockContainer}>
+                <div className = { classes.inputblockContainer }>
                     <Checkbox
-                        className={classes.inputElement}
-                        label={t("toolbar.distressbtn.messagebtn_enable_label")}
-                        // eslint-disable-next-line react/jsx-no-bind
-                        name="messagebtn_enable"
                         checked={message}
+                        className={classes.inputElement}
                         onChange={() =>
                             super._onChange({
                                 message: !message,
                             })
                         }
-                    />
+                        label={t("toolbar.distressbtn.messagebtn_enable_label")}
+                        // eslint-disable-next-line react/jsx-no-bind
+                        name="messagebtn_enable"/>
 
-                    <div className={classes.description}>
-                        {t("toolbar.distressbtn.messagebtn_enable_desc")}
+                    <div className = { classes.description }>
+                        {t('toolbar.distressbtn.messagebtn_enable_desc')}
                     </div>
                     <div>
-                        <b className={classes.headline}>
-                            {t("toolbar.distressbtn.message_headline")}{" "}
+                        <b className = { classes.headline }>
+                            {t('toolbar.distressbtn.message_headline')}{' '}
                         </b>
                     </div>
                     <div
-                        className={classes.description}
-                        id="textarea_desc"
-                        aria-hidden="true"
-                    >
-                        {t("toolbar.distressbtn.message_desc")}
+                        aria-hidden = 'true'
+                        className = { classes.description }
+                        id = 'textarea_desc'>
+                        {t('toolbar.distressbtn.message_desc')}
                     </div>
                     <textarea
-                        id="distress_message"
-                        aria-label="Notfallnachricht"
-                        aria-describedby="textarea_desc"
-                        className={classes.textareaElement}
-                        defaultValue={message_text}
-                        placeholder={message_text}
-                        rows={10}
-                        cols={35}
-                        onChange={(event) =>
+                        aria-describedby = 'textarea_desc'
+                        aria-label = 'Notfallnachricht'
+                        className = { classes.textareaElement }
+                        cols = { 35 }
+                        defaultValue = { message_text }
+                        id = 'distress_message'
+                        onChange = { event =>
                             super._onChange({
-                                message_text: event.target.value,
+                                message_text: event.target.value
                             })
                         }
-                    />
+                        placeholder = { message_text }
+                        rows = { 10 } />
                 </div>
             </div>
         );

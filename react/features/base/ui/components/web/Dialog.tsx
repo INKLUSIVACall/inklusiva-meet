@@ -28,7 +28,8 @@ const useStyles = makeStyles()(theme => {
             color: theme.palette.text01,
             ...withPixelLineHeight(theme.typography.heading5),
             margin: 0,
-            padding: 0
+            padding: 0,
+            fontSize: '1.25rem'
         },
 
         content: {
@@ -39,6 +40,7 @@ const useStyles = makeStyles()(theme => {
             padding: '0 24px',
             overflowX: 'hidden',
             minHeight: '40px',
+            fontSize: '1rem',
 
             '@media (max-width: 448px)': {
                 height: '100%'

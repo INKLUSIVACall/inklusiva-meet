@@ -60,6 +60,7 @@ const useStyles = makeStyles()(theme => {
             ...withPixelLineHeight(theme.typography.bodyShortBold),
             transition: 'background .2s',
             cursor: 'pointer',
+            fontSize: '0.875rem',
 
             '&:hover': {
                 backgroundColor: theme.palette.action01Hover

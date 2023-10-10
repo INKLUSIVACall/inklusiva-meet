@@ -51,21 +51,24 @@ const styles = (theme: Theme) => {
             width: '100%'
         },
         headline: {
-            marginBottom: theme.spacing(3)
+            marginBottom: theme.spacing(3),
+            fontSize: '0.875rem'
         },
         inputElement: {
             marginBottom: theme.spacing(1),
-            fontWeight: 'bold',
+            fontWeight: 'bold'
         },
         textareaElement: {
-            marginBottom: theme.spacing(1),
+            marginBottom: theme.spacing(1)
         },
         description: {
-            marginBottom: theme.spacing(3)
+            marginBottom: theme.spacing(3),
+            fontSize: '0.875rem'
         },
         inputblockContainer: {
-            marginBottom: theme.spacing(5)
-        },
+            marginBottom: theme.spacing(5),
+            fontSize: '0.875rem'
+        }
     };
 };
 
@@ -104,7 +107,7 @@ class SignLangTab extends AbstractDialogTab<IProps, any> {
                 {t("toolbar.signlangtab.btn_engage_desc")}
                 </div>
 
-                <div className={ classes.inputblockContainer }>              
+                <div className={ classes.inputblockContainer }>
                     <Checkbox
                     className={ classes.inputElement }
                     checked={active}
@@ -116,12 +119,12 @@ class SignLangTab extends AbstractDialogTab<IProps, any> {
 
                 <b id="display_headline" className={ classes.headline }>{t("toolbar.signlangtab.display_headline")}</b>
                 <div className={ classes.inputblockContainer }>
-                    
+
                     <div role='radiogroup' aria-labelledby='display_headline'>
-                        <input id="opt1" 
-                        type='radio' 
-                        className='radio' 
-                        name="display_radiogroup" 
+                        <input id="opt1"
+                        type='radio'
+                        className='radio'
+                        name="display_radiogroup"
                         value="window"
                         checked={ display === "window" }
                         onChange={ (event) => super._onChange({
@@ -129,10 +132,10 @@ class SignLangTab extends AbstractDialogTab<IProps, any> {
                         })} />
 
                         <label htmlFor="opt1">{t("toolbar.signlangtab.display_option1")}</label>
-                        <input id="opt2" 
-                        type='radio' 
-                        className='radio' 
-                        name="display_radiogroup" 
+                        <input id="opt2"
+                        type='radio'
+                        className='radio'
+                        name="display_radiogroup"
                         value="tile"
                         checked={ display === "tile" }
                         onChange={ (event) => super._onChange({

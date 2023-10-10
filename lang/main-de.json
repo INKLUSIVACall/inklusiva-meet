@@ -1055,6 +1055,10 @@
         "title": "Einstellungen",
         "transcriptionTab": "Schriftdolmetschen-Assistent",
         "uiTab": "Benutzeroberfläche",
+        "uiSettings": {
+            "Sizes": "Größen",
+            "fontSize": "Schriftgröße"
+        },
         "video": "Kamera"
     },
     "settingsView": {

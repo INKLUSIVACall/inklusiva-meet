@@ -51,20 +51,24 @@ const styles = (theme: Theme) => {
             width: '100%'
         },
         headline: {
-            marginBottom: theme.spacing(3)
+            marginBottom: theme.spacing(3),
+            fontSize: '0.875rem'
         },
         inputElement: {
             marginBottom: theme.spacing(1),
-            fontWeight: 'bold'
+            fontWeight: 'bold',
+            fontSize: '0.875rem'
         },
         textareaElement: {
             marginBottom: theme.spacing(1)
         },
         description: {
-            marginBottom: theme.spacing(3)
+            marginBottom: theme.spacing(3),
+            fontSize: '0.875rem'
         },
         inputblockContainer: {
-            marginBottom: theme.spacing(5)
+            marginBottom: theme.spacing(5),
+            fontSize: '0.875rem'
         }
     };
 };

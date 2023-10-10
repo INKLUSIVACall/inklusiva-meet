@@ -107,7 +107,8 @@ const useStyles = makeStyles()((theme: Theme) => {
         timestamp: {
             ...withPixelLineHeight(theme.typography.labelRegular),
             color: theme.palette.text03,
-            marginTop: theme.spacing(1)
+            marginTop: theme.spacing(1),
+            fontSize: '0.75rem'
         }
     };
 });
