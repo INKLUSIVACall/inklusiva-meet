@@ -60,14 +60,16 @@ const styles = (theme: Theme) => {
             alignItems: 'center',
             padding: `${theme.spacing(1)} 0`,
             ...withPixelLineHeight(theme.typography.bodyShortRegular),
-            color: theme.palette.text01
+            color: theme.palette.text01,
+            fontSize: '0.875rem'
         },
 
         listItemKey: {
             backgroundColor: theme.palette.ui04,
             ...withPixelLineHeight(theme.typography.labelBold),
             padding: `${theme.spacing(1)} ${theme.spacing(2)}`,
-            borderRadius: `${Number(theme.shape.borderRadius) / 2}px`
+            borderRadius: `${Number(theme.shape.borderRadius) / 2}px`,
+            fontSize: '0.75rem'
         }
     };
 };

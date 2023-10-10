@@ -46,6 +46,7 @@ const useStyles = makeStyles()(theme => {
             color: theme.palette.text02,
             ...withPixelLineHeight(theme.typography.bodyShortBold),
             marginBottom: theme.spacing(3),
+            fontSize: '0.875rem',
 
             [`@media(max-width: ${participantsPaneTheme.MD_BREAKPOINT})`]: {
                 ...withPixelLineHeight(theme.typography.bodyShortBoldLarge)

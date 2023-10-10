@@ -90,7 +90,8 @@ const styles = (theme: Theme) => {
         label: {
             color: `${theme.palette.text01} !important`,
             ...withPixelLineHeight(theme.typography.bodyShortRegular),
-            marginBottom: theme.spacing(2)
+            marginBottom: theme.spacing(2),
+            fontSize: '0.875rem'
         },
 
         name: {
