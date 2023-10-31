@@ -24,7 +24,13 @@ import {
     SET_TRANSCRIPTION_FONTSIZE_VALUE,
     SET_TRANSCRIPTION_HISTORY_VALUE
 } from '../transcription/actionTypes';
-import { SET_UI_FONTSIZE } from '../uisettings/actionTypes';
+import {
+    SET_AUDIO_CUES_ENABLED_STATE,
+    SET_SCREENREADER_ENABLED_STATE,
+    SET_UI_FONTSIZE,
+    SET_UI_ICONSIZE,
+    SET_VISUAL_CUES_ENABLED_STATE
+} from '../uisettings/actionTypes';
 
 import { SET_OTHERS_AUDIO_INPUT_ENABLED, SET_USERDATA } from './actionTypes';
 
@@ -219,6 +225,17 @@ ReducerRegistry.register<IUserData>(
             nextState.ui.fontSize = payload.value;
 
             return nextState;
+        case SET_UI_ICONSIZE:
+            document.querySelector(':root').style.setProperty('--icon-size-factor', _parseIconSize(payload.value));
+            nextState.ui.iconSize = payload.value;
+
+            return nextState;
+        case SET_VISUAL_CUES_ENABLED_STATE:
+            nextState.ui.visualCues = payload.enabled;
+            return nextState;
+        case SET_AUDIO_CUES_ENABLED_STATE:
+            nextState.ui.acousticCues = payload.enabled;
+            return nextState;
         default:
             return state;
         }
@@ -245,6 +262,29 @@ function _parseFontSize(fontSizeValue) {
         break;
     default:
         return '100%';
+        break;
+    }
+}
+
+/**
+ * Parses the font size value that is supplied via userData to a valid CSS-value.
+ *
+ * @param {number} iconSizeValue - the icon size value to parse.
+ * @returns {number}
+ */
+function _parseIconSize(iconSizeValue) {
+    switch (iconSizeValue) {
+    case 0:
+        return 0.75;
+        break;
+    case 1:
+        return 1;
+        break;
+    case 2:
+        return 1.5;
+        break;
+    default:
+        return 1;
         break;
     }
 }
