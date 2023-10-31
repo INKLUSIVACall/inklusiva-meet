@@ -452,7 +452,11 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
         props: uiSettingsTabProps,
         propsUpdateFunction: (tabState: any, newProps: typeof uiSettingsTabProps) => {
             return {
-                ...newProps
+                ...newProps,
+                fontSize: tabState?.fontSize,
+                iconSize: tabState?.iconSize,
+                acousticCues: tabState?.acousticCues,
+                visualCues: tabState?.visualCues
             };
         },
         submit: submitUISettingsTabProps,
