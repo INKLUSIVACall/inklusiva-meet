@@ -15,6 +15,7 @@ import {
     IconModerator,
     IconShortcuts,
     IconUser,
+    IconUsers,
     IconVideo,
     IconVolumeUp
 } from '../../../base/icons/svg';
@@ -39,6 +40,7 @@ import { getSupportTabProps } from '../../../inklusiva/support/functions.web';
 import { submitTranscriptionTabProps } from '../../../inklusiva/transcription/actions.web';
 import TranscriptionTab from '../../../inklusiva/transcription/components/TranscriptionTab';
 import { getTranscriptionTabProps } from '../../../inklusiva/transcription/functions.web';
+import UserVideoTab from '../../../inklusiva/uservideo/UserVideoTab';
 import { checkBlurSupport, checkVirtualBackgroundEnabled } from '../../../virtual-background/functions';
 import { iAmVisitor } from '../../../visitors/functions';
 import {
@@ -147,7 +149,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
     const moreTabProps = getMoreTabProps(state);
     const distressBtnTabProps = getDistressBtnTabProps(state);
     const supportTabProps = getSupportTabProps(state);
-
+    // const userVideoTabProps = getUserVideoTabProps(state);
     const moderatorTabProps = getModeratorTabProps(state);
     const { showModeratorSettings } = moderatorTabProps;
     const showMoreTab = configuredTabs.includes('more');
@@ -312,6 +314,25 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
             icon: IconUser
         });
     }
+
+    if (true) {
+        tabs.push({
+            name: SETTINGS_TABS.USERVIDEO_TAB,
+            component: UserVideoTab,
+            labelKey: 'settings.userVideoTab',
+            props: undefined, // getUserVideoTabProps(state),
+            propsUpdateFunction: (tabState: any, newProps: any) => { // (tabState: any, newProps: typeof userVideoTabProps) => {
+                // Updates tab props, keeping users selection
+
+                return {
+                    ...newProps
+                };
+            },
+            submit: undefined, // submitUserVideoTab,
+            icon: IconUsers
+        });
+    }
+
 
     tabs.push({
         name: SETTINGS_TABS.DISTRESSBTN_TAB,
