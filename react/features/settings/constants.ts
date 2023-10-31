@@ -12,7 +12,8 @@ export const SETTINGS_TABS = {
     VIRTUAL_BACKGROUND: 'virtual-background_tab',
     DISTRESSBTN_TAB: 'distressbtn_tab',
     SUPPORT_TAB: 'support_tab',
-    UI_TAB: 'ui_tab'
+    UI_TAB: 'ui_tab',
+    USERVIDEO_TAB: 'user-video_tab'
 };
 
 /**
