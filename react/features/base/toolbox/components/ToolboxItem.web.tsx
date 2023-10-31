@@ -84,7 +84,7 @@ export default class ToolboxItem extends AbstractToolboxItem<IProps> {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            width: "120px",
+            width: "7.5rem",
             fontSize: "1.0rem",
             paddingTop: "0.4rem",
             lineHeight: "1.4",
