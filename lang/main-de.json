@@ -1056,8 +1056,23 @@
         "transcriptionTab": "Schriftdolmetschen-Assistent",
         "uiTab": "Benutzeroberfläche",
         "uiSettings": {
-            "Sizes": "Größen",
-            "fontSize": "Schriftgröße"
+            "fontSize": "Schriftgröße",
+            "iconSize": "Icon-Größe",
+            "screenreader":{
+                "headline": "Ich nutze einen Screenreader",
+                "label": "Screenreader aktivieren",
+                "description": "Optimierte Ausgabe von Steuerelementen zur vereinfachten Ausgabe über einen Screenreader."
+            },
+            "acousticcues":{
+                "headline": "Akustische Signale",
+                "label": "Akustische Signale aktivieren",
+                "description": "Akustische Signale für Hinweise und Meldungen während des Meetings."
+            },
+            "visualcues":{
+                "headline": "Visuelle Hinweise",
+                "label": "Visuelle Hinweise aktivieren",
+                "description": "Visuelle Hinweise für Hinweise und Meldungen während des Meetings."
+            }
         },
         "video": "Kamera"
     },
