@@ -1054,6 +1054,7 @@
         "talkWhileMuted": "Wenn bei Stummschaltung gesprochen wird",
         "title": "Einstellungen",
         "transcriptionTab": "Schriftdolmetschen-Assistent",
+        "userVideoTab": "Teilnehmer-Video",
         "video": "Kamera"
     },
     "settingsView": {
@@ -1327,6 +1328,16 @@
         "videomute": "Kamera stoppen",
         "videomuteGUMPending": "Verbinde Ihre Kamera",
         "videounmute": "Kamera einschalten",
+        "userVideo": {
+            "containerHeadline": "Teilnehmer-Videos",
+            "videoVisibilityToggleHeadline": "Während des Meetings sind alle Teilnehmer-Videos in den Kacheln zu sehen.",
+            "contrastSliderHeadline": "Kontrast",
+            "brightnessSliderHeadline": "Helligkeit",
+            "dimSliderHeadline": "Kacheln dimmen",
+            "saturationSliderHeadline": "Farbsättigung",
+            "zoomSliderHeadline": "Alle Videos in den Kacheln zoomen",
+            "fpsSliderHeadline": "Bildübertragungsrate"
+        },
         "distressbtn": {
             "btn_engage_headline": "Ich möchte einen Notfallbutton",
             "btn_engage_label": "Notfallbutton aktivieren",
@@ -1384,6 +1395,7 @@
         "react-nativeGrantPermissions": "Wählen Sie <b><i>Erlauben</i></b>, wenn der Browser um Berechtigungen bittet.",
         "safariGrantPermissions": "Wählen Sie <b><i>OK</i></b>, wenn der Browser um Berechtigungen bittet."
     },
+
     "videoSIPGW": {
         "busy": "Es stehen keine freien Ressourcen zur Verfügung. Bitte versuchen Sie es später noch einmal.",
         "busyTitle": "Keine freien Ressourcen",
