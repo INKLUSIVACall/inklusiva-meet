@@ -46,7 +46,7 @@ const DEFAULT_STATE = {
 export interface IJitsiConference {
     addCommandListener: Function;
     addLobbyMessageListener: Function;
-    addTag: Function;
+    addICRole: Function;
     addTrack: Function;
     authenticateAndUpgradeRole: Function;
     avModerationApprove: Function;
@@ -96,7 +96,7 @@ export interface IJitsiConference {
     off: Function;
     on: Function;
     options: any;
-    removeTag: Function;
+    removeICRole: Function;
     removeTrack: Function;
     replaceTrack: Function;
     room: IJitsiConferenceRoom;
