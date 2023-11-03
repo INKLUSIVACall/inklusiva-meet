@@ -6,8 +6,8 @@ import { set } from '../redux/functions';
 
 import {
     DOMINANT_SPEAKER_CHANGED,
-    ADD_TAG,
-    REMOVE_TAG,
+    ADD_IC_ROLE,
+    REMOVE_IC_ROLE,
     GRANT_MODERATOR,
     HIDDEN_PARTICIPANT_JOINED,
     HIDDEN_PARTICIPANT_LEFT,
@@ -92,20 +92,22 @@ export function grantModerator(id: string) {
 }
 
 /**
- * Create an action for granting moderator to a participant.
+ * Create an action for granting an IC role to a participant.
  *
  * @param {string} id - Participant's ID.
  * @returns {{
-*     type: ADD_TAG,
+*     type: ADD_IC_ROLE,
 *     id: string
-*     tagName: string
+*     icRole: string,
+*     partnerId: string|null
 * }}
 */
-export function addTag(id: string, tagName: string) {
+export function addIcRole(id: string, icRole: string, partnerId: string|null = null) {
    return {
-       type: ADD_TAG,
+       type: ADD_IC_ROLE,
        id,
-       tagName
+       icRole,
+       partnerId
    };
 }
 
@@ -114,16 +116,18 @@ export function addTag(id: string, tagName: string) {
  *
  * @param {string} id - Participant's ID.
  * @returns {{
-*     type: REMOVE_TAG,
+*     type: REMOVE_IC_ROLE,
 *     id: string,
-*     tagName: string
+*     icRole: string,
+*     partnerId: string|null
 * }}
 */
-export function removeTag(id: string, tagName: string) {
+export function removeIcRole(id: string, icRole: string, partnerId: string|null = null) {
    return {
-       type: REMOVE_TAG,
+       type: REMOVE_IC_ROLE,
        id,
-       tagName
+       icRole,
+       partnerId
    };
 }
 

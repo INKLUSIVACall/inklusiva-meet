@@ -67,7 +67,7 @@ export interface IJitsiParticipant {
     getRole: () => string;
     getSources: () => Map<string, Map<string, ISourceInfo>>;
     getTags: () => string[];
-    addTag: (tagName: string) => void;
-    removeTag: (tagName: string) => void;
+    addICRole: (icRole: string, partnerId: string|null) => void;
+    removeICRole: (icRole: string, partnerId: string|null) => void;
     isHidden: () => boolean;
 }

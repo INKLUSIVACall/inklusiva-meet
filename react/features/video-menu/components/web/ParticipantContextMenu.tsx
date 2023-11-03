@@ -44,7 +44,7 @@ import TogglePinToStageButton from './TogglePinToStageButton';
 import VerifyParticipantButton from './VerifyParticipantButton';
 import VolumeSlider from './VolumeSlider';
 
-import { addTag, removeTag } from '../../../base/participants/actions';
+import { addIcRole, addTag, removeIcRole, removeTag } from '../../../base/participants/actions';
 
 interface IProps {
 
@@ -316,11 +316,26 @@ const ParticipantContextMenu = ({
     }
 
     const addDemoTag = useCallback(() => {        
-        dispatch(addTag(participant.id, 'demo'));
+        dispatch(addIcRole(participant.id, 'asst', 'p1'));
     }, [ addTag, participant ]);
     const removeDemoTag = useCallback(() => {
-        dispatch(removeTag(participant.id, 'demo'));
+        dispatch(removeIcRole(participant.id, 'asst', 'p1'));
     }, [ removeTag, participant ]);
+
+    const addDemo2Tag = useCallback(() => {        
+        dispatch(addIcRole(participant.id, 'asst', 'p2'));
+    }, [ addTag, participant ]);
+    const removeDemo2Tag = useCallback(() => {
+        dispatch(removeIcRole(participant.id, 'asst', 'p2'));
+    }, [ removeTag, participant ]);
+
+    const addDemo3Tag = useCallback(() => {        
+        dispatch(addIcRole(participant.id, 'demo'));
+    }, [ addTag, participant ]);
+    const removeDemo3Tag = useCallback(() => {
+        dispatch(removeIcRole(participant.id, 'demo'));
+    }, [ removeTag, participant ]);
+
 
     return (
         <ContextMenu
@@ -367,8 +382,12 @@ const ParticipantContextMenu = ({
                 </ContextMenuItemGroup>
             )}
             <div>
-                <button onClick={ addDemoTag } >Add tag demo</button><br />
-                <button onClick={ removeDemoTag } >Remove tag demo</button>
+                <button onClick={ addDemoTag } >Add asst 1 role</button><br />
+                <button onClick={ removeDemoTag } >Remove asst 1 role</button>
+                <button onClick={ addDemo2Tag } >Add asst 2 role</button><br />
+                <button onClick={ removeDemo2Tag } >Remove asst 2 role</button>
+                <button onClick={ addDemo3Tag } >Add demo role</button><br />
+                <button onClick={ removeDemo3Tag } >Remove demo  role</button>
             </div>
         </ContextMenu>
     );
