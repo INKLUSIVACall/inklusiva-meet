@@ -59,13 +59,12 @@ import {
     showGridInVerticalView
 } from '../../functions';
 
-import ThumbnailAudioIndicator from './ThumbnailAudioIndicator';
 import ActiveSpeakerIndicator from './ActiveSpeakerIndicator';
+import FadeOutOverlay from './FadeOutOverlay';
+import ThumbnailAudioIndicator from './ThumbnailAudioIndicator';
 import ThumbnailBottomIndicators from './ThumbnailBottomIndicators';
 import ThumbnailTopIndicators from './ThumbnailTopIndicators';
 import VirtualScreenshareParticipant from './VirtualScreenshareParticipant';
-import ActiveSpeakerIndicator from './ActiveSpeakerIndicator';
-import FadeOutOverlay from './FadeOutOverlay';
 
 /**
  * The type of the React {@code Component} state of {@link Thumbnail}.
@@ -223,6 +222,11 @@ export interface IProps extends WithTranslation {
     _videoTrack?: any;
 
     /**
+     * Zoom value of the video tag.
+     */
+    _videoZoomLevel: number;
+
+    /**
      * The width of the thumbnail.
      */
     _width: number;
@@ -262,11 +266,6 @@ export interface IProps extends WithTranslation {
      * there is empty space.
      */
     width?: number;
-
-    /**
-     * Zoom value of the video tag.
-     */
-    _videoZoomLevel: number;
 }
 
 const defaultStyles = (theme: Theme) => {
@@ -726,7 +725,7 @@ class Thumbnail extends Component<IProps, IState> {
             videoStyles.objectPosition = _videoObjectPosition;
         }
 
-        videoStyles.transform = "scale(" + String(_videoZoomLevel) + ")";
+        videoStyles.transform = `scale(${String(_videoZoomLevel)})`;
 
         styles = {
             thumbnail: {
@@ -1119,8 +1118,7 @@ class Thumbnail extends Component<IProps, IState> {
                 <div className = { classes.containerBackground } />
                 <FadeOutOverlay
                     local = { local }
-                    participantId = { id }
-                />
+                    participantId = { id } />
                 {/* put the bottom container before the top container in the dom,
                 because it contains the participant name that should be announced first by screen readers */}
                 <div
@@ -1279,6 +1277,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any): Object {
 
     const { participantZoomLevel } = state['features/filmstrip'];
     let zoomLevel = 1;
+
     if (participantZoomLevel[participantID]) {
         zoomLevel = participantZoomLevel[participantID];
     }

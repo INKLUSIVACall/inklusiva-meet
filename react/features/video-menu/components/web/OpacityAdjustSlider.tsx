@@ -11,7 +11,7 @@ import { IconVolumeUp } from '../../../base/icons/svg';
 interface IProps {
 
     /**
-     * The value of the frequency filter slider should display at when the 
+     * The value of the frequency filter slider should display at when the
      * component first mounts. Changes will be stored in state. The value
      * should be an integer between 0 and 5.
      */
@@ -77,7 +77,7 @@ const OpacityAdjustSlider = ({
         const newOpacity = event.currentTarget.value;
 
         onChange(newOpacity);
-        setOpacity(newOpacity);
+        setOpacity(Number(newOpacity));
     }, [ onChange ]);
 
     return (

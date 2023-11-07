@@ -188,7 +188,7 @@ function AllParticipants({
                     {currentRoom?.name
                         ? `${currentRoom.name} (${participantsCount})`
                         : t('participantsPane.headings.participantsList', { count: allParticipantsCount })}
-                    
+
                 </div>
                 {
                     participants.length > 1
@@ -223,7 +223,7 @@ function AllParticipants({
 
                 <LobbyParticipantItems
                     openDrawerForParticipant = { openDrawerForParticipant }
-                    overflowDrawer = { overflowDrawer }
+                    overflowDrawer = { overflowDrawer ?? false }
                     participants = { participants } />
                 <JitsiPortal>
                     <Drawer
@@ -258,7 +258,7 @@ function AllParticipants({
                         </ul>
                     </Drawer>
                 </JitsiPortal>
-                    
+
             </div>
             <MeetingParticipantContextMenu
                 closeDrawer = { closeDrawer }

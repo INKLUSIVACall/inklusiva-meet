@@ -13,6 +13,11 @@ import logger from '../../logger';
 interface IProps {
 
     /**
+     * Represents the frequency filter setting of the underlying JitsiTrack.
+     */
+    _frequencySetting?: number;
+
+    /**
      * Represents muted property of the underlying audio element.
      */
     _muted?: boolean;
@@ -21,11 +26,6 @@ interface IProps {
      * Represents volume property of the underlying audio element.
      */
     _volume?: number | boolean;
-
-    /**
-     * Represents the frequency filter setting of the underlying JitsiTrack.
-     */
-    _frequencySetting?: number;
 
     /**
      * The audio track.
@@ -56,7 +56,7 @@ class AudioTrack extends Component<IProps> {
     /**
      * Frequency cut off configuration.
      */
-    private const FREQUENCY_CUT_OFFS: number[] = [22050, 4000, 2000, 1000, 700, 400];
+    private FREQUENCY_CUT_OFFS: number[] = [ 22050, 4000, 2000, 1000, 700, 400 ];
 
     /**
      * Reference to the HTML audio element, stored until the file is ready.
@@ -78,7 +78,6 @@ class AudioTrack extends Component<IProps> {
         id: ''
     };
 
-
     /**
      * Creates new <code>Audio</code> element instance with given props.
      *
@@ -93,7 +92,6 @@ class AudioTrack extends Component<IProps> {
         this._setRef = this._setRef.bind(this);
         this._play = this._play.bind(this);
     }
-
 
     /**
      * Attaches the audio track to the audio element and plays it.
@@ -119,23 +117,24 @@ class AudioTrack extends Component<IProps> {
             this._ref.addEventListener('error', this._errorHandler);
         }
 
-
         if (this.props.audioTrack) {
             const { _frequencySetting } = this.props;
 
             if (typeof _frequencySetting === 'number') {
                 this._setFrequencyCutOff(_frequencySetting);
-            }            
+            }
         }
     }
 
     /**
      * Applies the frequency setting to the underlaying Jitsi Track.
-     * @param frequencySetting 
+     *
+     * @param frequencySetting
      */
-    _setFrequencyCutOff(frequencySetting : number) {
+    _setFrequencyCutOff(frequencySetting: number) {
         if (this.props.audioTrack) {
             let setting = Math.floor(frequencySetting);
+
             if (setting < 0 || setting > this.FREQUENCY_CUT_OFFS.length) {
                 setting = 0;
             }
@@ -146,8 +145,8 @@ class AudioTrack extends Component<IProps> {
 
             if (oldSetting != cutOffFrequency) {
                 this.props.audioTrack.jitsiTrack.audioFilter.frequency.value = cutOffFrequency;
-            }            
-        }        
+            }
+        }
     }
 
     /**
@@ -196,8 +195,9 @@ class AudioTrack extends Component<IProps> {
                 this._ref.muted = nextMuted;
             }
         }
-        
+
         const nextFilterSetting = nextProps._frequencySetting;
+
         if (typeof nextFilterSetting === 'number' && !isNaN(nextFilterSetting)) {
             this._setFrequencyCutOff(nextFilterSetting);
         }
@@ -214,12 +214,10 @@ class AudioTrack extends Component<IProps> {
     render() {
         const { autoPlay, id } = this.props;
 
-        return (
-            <audio
-                autoPlay = { autoPlay }
-                id = { id }
-                ref = { this._setRef } />
-        );
+        return (<audio
+            autoPlay = { autoPlay }
+            id = { id }
+        ref = { this._setRef } />);
     }
 
     /**
@@ -235,7 +233,7 @@ class AudioTrack extends Component<IProps> {
         }
 
         track.jitsiTrack.attach(this._ref);
-        
+
         this._play();
     }
 
@@ -262,8 +260,10 @@ class AudioTrack extends Component<IProps> {
      * @returns {void}
      */
     _errorHandler(error: Error) {
-        logger.error(`Error ${error?.message} called on audio track ${this.props.audioTrack?.jitsiTrack}. `
-            + 'Attempting to reattach the audio track to the element and execute play on it');
+        logger.error(
+            `Error ${error?.message} called on audio track ${this.props.audioTrack?.jitsiTrack}. `
+                + 'Attempting to reattach the audio track to the element and execute play on it'
+        );
         this._detachTrack(this.props.audioTrack);
         this._attachTrack(this.props.audioTrack);
     }
@@ -286,28 +286,30 @@ class AudioTrack extends Component<IProps> {
             // Ensure the audio gets play() called on it. This may be necessary in the
             // case where the local video container was moved and re-attached, in which
             // case the audio may not autoplay.
-            this._ref.play()
-            .then(() => {
-                if (retries !== 0) {
-                    // success after some failures
-                    this._playTimeout = undefined;
-                    sendAnalytics(createAudioPlaySuccessEvent(id));
-                    logger.info(`Successfully played audio track! retries: ${retries}`);
-                }
-            }, e => {
-                logger.error(`Failed to play audio track! retry: ${retries} ; Error: ${e}`);
-
-                if (retries < 3) {
-                    this._playTimeout = window.setTimeout(() => this._play(retries + 1), 1000);
-
-                    if (retries === 0) {
-                        // send only 1 error event.
-                        sendAnalytics(createAudioPlayErrorEvent(id));
+            this._ref.play().then(
+                () => {
+                    if (retries !== 0) {
+                        // success after some failures
+                        this._playTimeout = undefined;
+                        sendAnalytics(createAudioPlaySuccessEvent(id));
+                        logger.info(`Successfully played audio track! retries: ${retries}`);
                     }
-                } else {
-                    this._playTimeout = undefined;
+                },
+                e => {
+                    logger.error(`Failed to play audio track! retry: ${retries} ; Error: ${e}`);
+
+                    if (retries < 3) {
+                        this._playTimeout = window.setTimeout(() => this._play(retries + 1), 1000);
+
+                        if (retries === 0) {
+                            // send only 1 error event.
+                            sendAnalytics(createAudioPlayErrorEvent(id));
+                        }
+                    } else {
+                        this._playTimeout = undefined;
+                    }
                 }
-            });
+            );
         }
     }
 
@@ -319,7 +321,7 @@ class AudioTrack extends Component<IProps> {
      * @returns {void}
      */
     _setRef(audioElement: HTMLAudioElement | null) {
-        this._ref = audioElement;        
+        this._ref = audioElement;
     }
 }
 
