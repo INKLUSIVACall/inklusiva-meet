@@ -372,6 +372,10 @@ const Toolbox = ({
             mainMenuButtons.splice(mainMenuButtons.findIndex(({ key }) => key === 'distress'), 1);
         }
 
+        const sayHello = function() {
+            alert('Hello');
+        };
+
         const raiseHandInOverflowMenu = overflowMenuButtons.some(({ key }) => key === 'raisehand');
         const showReactionsInOverflowMenu
             = (_reactionsEnabled
@@ -385,6 +389,7 @@ const Toolbox = ({
                 <div
                     className = 'toolbox-content-wrapper'
                     onFocus = { onTabIn }
+                    style = {{ border: '10px solid red' }}
                     { ...(_isMobile
                         ? {}
                         : {
