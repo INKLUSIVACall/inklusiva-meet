@@ -7,6 +7,7 @@ import AbstractDialogTab, {
     IProps as AbstractDialogTabProps
 } from '../../base/dialog/components/web/AbstractDialogTab';
 import { translate } from '../../base/i18n/functions';
+import Checkbox from '../../base/ui/components/web/Checkbox';
 import Slider from '../../base/ui/components/web/Slider';
 
 
@@ -14,6 +15,11 @@ import Slider from '../../base/ui/components/web/Slider';
  * The type of the React {@code Component} props of {@link UserVideoTab}.
  */
 export interface IProps extends AbstractDialogTabProps, WithTranslation {
+
+    /**
+     * Brightness value for user videos.
+     */
+    brightness: number;
 
     /**
      * CSS classes object.
@@ -31,6 +37,30 @@ export interface IProps extends AbstractDialogTabProps, WithTranslation {
      */
     currentLanguage: string;
 
+    /**
+     * Dimming value for user videos.
+     */
+    dimming: number;
+
+    /**
+     * fps value for user videos.
+     */
+    fps: number;
+
+    /**
+     * Are User Videos enabled?
+     */
+    otherParticipants: boolean;
+
+    /**
+     * Saturation value for user videos.
+     */
+    saturation: number;
+
+    /**
+     * Zoom value for user videos.
+     */
+    zoom: number;
 }
 
 const styles = (theme: Theme) => {
@@ -84,7 +114,7 @@ class UserVideoTab extends AbstractDialogTab<IProps, any> {
      */
     render() {
 
-        const { classes, t } = this.props;
+        const { brightness, classes, contrast, dimming, fps, otherParticipants, saturation, zoom, t } = this.props;
 
         return (
             <div className = { classes.container }>
@@ -92,14 +122,26 @@ class UserVideoTab extends AbstractDialogTab<IProps, any> {
                     <b className = { classes.headline }>
                         {t('toolbar.userVideo.containerHeadline')}
                     </b>
+                    <Checkbox
+                        checked = { otherParticipants }
+                        className = { classes.inputElement }
+                        label = { t('toolbar.userVideo.videoVisibilityToggleHeadline') }
+                        // eslint-disable-next-line react/jsx-no-bind
+                        name = 'video-visibility-toggle'
+                        // eslint-disable-next-line react/jsx-no-bind
+                        onChange = { () =>
+                            super._onChange({
+                                otherParticipants: !otherParticipants
+                            })
+                        } />
+                    <div className = { classes.description }>
+                        {t('toolbar.userVideo.videoVisibilityEngage')}
+                    </div>
                 </div>
                 <div className = { classes.inputblockContainer }>
-                    <b className = { classes.headline }>
-                        {t('toolbar.userVideo.contrastSliderHeadline')}
-                    </b>
                     <Slider
                         className = { classes.inputElement }
-                        defaultValue = { 50 }
+                        defaultValue = { contrast }
                         label = { t('toolbar.userVideo.contrastSliderHeadline') }
                         max = { 100 }
                         min = { 0 }
@@ -111,13 +153,87 @@ class UserVideoTab extends AbstractDialogTab<IProps, any> {
                             })
                         }
                         step = { 1 } />
+                    <span>{ contrast }%</span>
+                    <Slider
+                        className = { classes.inputElement }
+                        defaultValue = { brightness }
+                        label = { t('toolbar.userVideo.brightnessSliderHeadline') }
+                        max = { 100 }
+                        min = { 0 }
+                        name = 'contrast-slider'
+                        // eslint-disable-next-line react/jsx-no-bind
+                        onChange = { event =>
+                            super._onChange({
+                                brightness: event.target.value
+                            })
+                        }
+                        step = { 1 } />
+                    <span>{ brightness }%</span>
+                    <Slider
+                        className = { classes.inputElement }
+                        defaultValue = { dimming }
+                        label = { t('toolbar.userVideo.dimSliderHeadline') }
+                        max = { 100 }
+                        min = { 0 }
+                        name = 'contrast-slider'
+                        // eslint-disable-next-line react/jsx-no-bind
+                        onChange = { event =>
+                            super._onChange({
+                                dimming: event.target.value
+                            })
+                        }
+                        step = { 1 } />
+                    <span>{ dimming }%</span>
+                    <Slider
+                        className = { classes.inputElement }
+                        defaultValue = { saturation }
+                        label = { t('toolbar.userVideo.saturationSliderHeadline') }
+                        max = { 100 }
+                        min = { 0 }
+                        name = 'contrast-slider'
+                        // eslint-disable-next-line react/jsx-no-bind
+                        onChange = { event =>
+                            super._onChange({
+                                saturation: event.target.value
+                            })
+                        }
+                        step = { 1 } />
+                    <span>{ saturation }%</span>
+                    <Slider
+                        className = { classes.inputElement }
+                        defaultValue = { zoom }
+                        label = { t('toolbar.userVideo.zoomSliderHeadline') }
+                        max = { 100 }
+                        min = { 0 }
+                        name = 'contrast-slider'
+                        // eslint-disable-next-line react/jsx-no-bind
+                        onChange = { event =>
+                            super._onChange({
+                                zoom: event.target.value
+                            })
+                        }
+                        step = { 1 } />
+                    <span>{ zoom }%</span>
+                    <Slider
+                        className = { classes.inputElement }
+                        defaultValue = { fps }
+                        label = { t('toolbar.userVideo.fpsSliderHeadline') }
+                        max = { 100 }
+                        min = { 0 }
+                        name = 'contrast-slider'
+                        // eslint-disable-next-line react/jsx-no-bind
+                        onChange = { event =>
+                            super._onChange({
+                                fps: event.target.value
+                            })
+                        }
+                        step = { 1 } />
+                    <span>{ fps }fps</span>
                 </div>
             </div>
 
         );
     }
 }
-
-// export default translate(UserVideoTab);
 
 export default withStyles(styles)(translate(UserVideoTab));

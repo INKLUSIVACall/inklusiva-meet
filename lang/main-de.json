@@ -1331,17 +1331,18 @@
         "userVideo": {
             "containerHeadline": "Teilnehmer-Videos",
             "videoVisibilityToggleHeadline": "Während des Meetings sind alle Teilnehmer-Videos in den Kacheln zu sehen.",
+            "videoVisibilityEngage": "Teilnehmer-Videos einschalten",
             "contrastSliderHeadline": "Kontrast",
             "brightnessSliderHeadline": "Helligkeit",
             "dimSliderHeadline": "Kacheln dimmen",
             "saturationSliderHeadline": "Farbsättigung",
-            "zoomSliderHeadline": "Alle Videos in den Kacheln zoomen",
+            "zoomSliderHeadline": "Alle Videos zoomen",
             "fpsSliderHeadline": "Bildübertragungsrate"
         },
         "distressbtn": {
             "btn_engage_headline": "Ich möchte einen Notfallbutton",
             "btn_engage_label": "Notfallbutton aktivieren",
-            "btn_engage_desc": "Der Notfallbutton ermöglicht einen sofortigen Einfluss auf die Audio- und Videoübertragung im meeting. Einer bestimmten Begleitperson kann eine vorab geschriebene Nachricht übermittelt werden.",
+            "btn_engage_desc": "Der Notfallbutton ermöglicht einen sofortigen Einfluss auf die Audio- und Videoübertragung im Meeting. Einer bestimmten Begleitperson kann eine vorab geschriebene Nachricht übermittelt werden.",
             "dimlights_label": "Kacheln dimmen",
             "setvolume_label": "Lautstärke anpassen",
             "messagebtn_enable_label": "Nachricht versenden",

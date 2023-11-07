@@ -41,6 +41,8 @@ import { submitTranscriptionTabProps } from '../../../inklusiva/transcription/ac
 import TranscriptionTab from '../../../inklusiva/transcription/components/TranscriptionTab';
 import { getTranscriptionTabProps } from '../../../inklusiva/transcription/functions.web';
 import UserVideoTab from '../../../inklusiva/uservideo/UserVideoTab';
+import { submitNewUserVideoTab } from '../../../inklusiva/uservideo/actions';
+import { getUserVideoTabProps } from '../../../inklusiva/uservideo/functions';
 import { checkBlurSupport, checkVirtualBackgroundEnabled } from '../../../virtual-background/functions';
 import { iAmVisitor } from '../../../visitors/functions';
 import {
@@ -149,7 +151,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
     const moreTabProps = getMoreTabProps(state);
     const distressBtnTabProps = getDistressBtnTabProps(state);
     const supportTabProps = getSupportTabProps(state);
-    // const userVideoTabProps = getUserVideoTabProps(state);
+    const userVideoTabProps = getUserVideoTabProps(state);
     const moderatorTabProps = getModeratorTabProps(state);
     const { showModeratorSettings } = moderatorTabProps;
     const showMoreTab = configuredTabs.includes('more');
@@ -315,24 +317,28 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
         });
     }
 
-    if (true) {
-        tabs.push({
-            name: SETTINGS_TABS.USERVIDEO_TAB,
-            component: UserVideoTab,
-            labelKey: 'settings.userVideoTab',
-            props: undefined, // getUserVideoTabProps(state),
-            propsUpdateFunction: (tabState: any, newProps: any) => { // (tabState: any, newProps: typeof userVideoTabProps) => {
-                // Updates tab props, keeping users selection
+    tabs.push({
+        name: SETTINGS_TABS.USERVIDEO_TAB,
+        component: UserVideoTab,
+        labelKey: 'settings.userVideoTab',
+        props: getUserVideoTabProps(state),
+        propsUpdateFunction: (tabState: any, newProps: typeof userVideoTabProps) => {
+            // Updates tab props, keeping users selection
 
-                return {
-                    ...newProps
-                };
-            },
-            submit: undefined, // submitUserVideoTab,
-            icon: IconUsers
-        });
-    }
-
+            return {
+                ...newProps,
+                otherParticipants: tabState?.otherParticipants,
+                brightness: tabState?.brigthness,
+                contrast: tabState?.contrast,
+                dimmming: tabState?.dimming,
+                fps: tabState?.fps,
+                saturation: tabState.saturation,
+                zoom: tabState?.zoom
+            };
+        },
+        submit: submitNewUserVideoTab,
+        icon: IconUsers
+    });
 
     tabs.push({
         name: SETTINGS_TABS.DISTRESSBTN_TAB,
