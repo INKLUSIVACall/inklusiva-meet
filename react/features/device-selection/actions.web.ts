@@ -1,22 +1,16 @@
 import { createDeviceChangedEvent } from '../analytics/AnalyticsEvents';
 import { sendAnalytics } from '../analytics/functions';
 import { IStore } from '../app/types';
-import {
-    setAudioInputDevice,
-    setVideoInputDevice
-} from '../base/devices/actions';
+import { setAudioInputDevice, setVideoInputDevice } from '../base/devices/actions';
 import { getDeviceLabelById, setAudioOutputDeviceId } from '../base/devices/functions';
 import { updateSettings } from '../base/settings/actions';
+import { toggleOthersAudioInput } from '../inklusiva/userdata/actions';
 import { toggleNoiseSuppression } from '../noise-suppression/actions';
 import { setScreenshareFramerate } from '../screen-share/actions';
 
 import { getAudioDeviceSelectionDialogProps, getVideoDeviceSelectionDialogProps } from './functions';
 import logger from './logger';
 
-import {
-    toggleOwnAudioInput,
-    toggleOthersAudioInput,
-} from '../inklusiva/userdata/actions';
 
 /**
  * Submits the settings related to audio device selection.
@@ -31,32 +25,37 @@ export function submitAudioDeviceSelectionTab(newState: any, isDisplayedOnWelcom
         const currentState = getAudioDeviceSelectionDialogProps(getState(), isDisplayedOnWelcomePage);
 
         if (newState.selectedAudioInputId && newState.selectedAudioInputId !== currentState.selectedAudioInputId) {
-            dispatch(updateSettings({
-                userSelectedMicDeviceId: newState.selectedAudioInputId,
-                userSelectedMicDeviceLabel:
-                    getDeviceLabelById(getState(), newState.selectedAudioInputId, 'audioInput')
-            }));
+            dispatch(
+                updateSettings({
+                    userSelectedMicDeviceId: newState.selectedAudioInputId,
+                    userSelectedMicDeviceLabel: getDeviceLabelById(
+                        getState(),
+                        newState.selectedAudioInputId,
+                        'audioInput'
+                    )
+                })
+            );
 
             dispatch(setAudioInputDevice(newState.selectedAudioInputId));
         }
 
-        if (newState.selectedAudioOutputId
-            && newState.selectedAudioOutputId
-            !== currentState.selectedAudioOutputId) {
+        if (newState.selectedAudioOutputId && newState.selectedAudioOutputId !== currentState.selectedAudioOutputId) {
             sendAnalytics(createDeviceChangedEvent('audio', 'output'));
 
             setAudioOutputDeviceId(
                 newState.selectedAudioOutputId,
                 dispatch,
                 true,
-                getDeviceLabelById(getState(), newState.selectedAudioOutputId, 'audioOutput'))
+                getDeviceLabelById(getState(), newState.selectedAudioOutputId, 'audioOutput')
+            )
                 .then(() => logger.log('changed audio output device'))
                 .catch(err => {
                     logger.warn(
                         'Failed to change audio output device.',
                         'Default or previously set audio output device will',
                         ' be used instead.',
-                        err);
+                        err
+                    );
                 });
         }
 
@@ -64,7 +63,7 @@ export function submitAudioDeviceSelectionTab(newState: any, isDisplayedOnWelcom
             dispatch(toggleNoiseSuppression());
         }
 
-        if(newState.othersAudio !== currentState.othersAudio) {
+        if (newState.othersAudio !== currentState.othersAudio) {
             dispatch(toggleOthersAudioInput());
         }
     };
@@ -82,20 +81,27 @@ export function submitVideoDeviceSelectionTab(newState: any, isDisplayedOnWelcom
     return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
         const currentState = getVideoDeviceSelectionDialogProps(getState(), isDisplayedOnWelcomePage);
 
-        if (newState.selectedVideoInputId && (newState.selectedVideoInputId !== currentState.selectedVideoInputId)) {
-            dispatch(updateSettings({
-                userSelectedCameraDeviceId: newState.selectedVideoInputId,
-                userSelectedCameraDeviceLabel:
-                    getDeviceLabelById(getState(), newState.selectedVideoInputId, 'videoInput')
-            }));
+        if (newState.selectedVideoInputId && newState.selectedVideoInputId !== currentState.selectedVideoInputId) {
+            dispatch(
+                updateSettings({
+                    userSelectedCameraDeviceId: newState.selectedVideoInputId,
+                    userSelectedCameraDeviceLabel: getDeviceLabelById(
+                        getState(),
+                        newState.selectedVideoInputId,
+                        'videoInput'
+                    )
+                })
+            );
 
             dispatch(setVideoInputDevice(newState.selectedVideoInputId));
         }
 
         if (newState.localFlipX !== currentState.localFlipX) {
-            dispatch(updateSettings({
-                localFlipX: newState.localFlipX
-            }));
+            dispatch(
+                updateSettings({
+                    localFlipX: newState.localFlipX
+                })
+            );
         }
 
         if (newState.currentFramerate !== currentState.currentFramerate) {

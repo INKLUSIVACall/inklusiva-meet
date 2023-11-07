@@ -12,13 +12,11 @@ export function getEyesight(state: IReduxState): string | undefined {
     return state['features/inklusiva/userdata'].support?.eyesight;
 }
 
-/** ...........
- *
- *
+/**
  * @param state
- * @returns a string indicating how severely hearing is impaired or not
+ * @returns A string indicating how severely hearing is impaired or not.
  */
-export function getHearing(state: IReduxState): string {
+export function getHearing(state: IReduxState): string | undefined {
     return state['features/inklusiva/userdata'].support?.hearing;
 }
 
@@ -27,7 +25,7 @@ export function getHearing(state: IReduxState): string {
  * @param state
  * @returns Whether or not senses are impaired.
  */
-export function areSensesEnabled(state: IReduxState): boolean {
+export function areSensesEnabled(state: IReduxState): boolean | undefined {
     return state['features/inklusiva/userdata'].support?.senses;
 }
 
@@ -36,7 +34,7 @@ export function areSensesEnabled(state: IReduxState): boolean {
  * @param state
  * @returns Whether learning difficulties are TRUE.
  */
-export function areLearningDifficultiesEnabled(state: IReduxState): boolean {
+export function areLearningDifficultiesEnabled(state: IReduxState): boolean | undefined {
     return state['features/inklusiva/userdata'].support?.learning_difficulties;
 }
 
@@ -45,11 +43,11 @@ export function areLearningDifficultiesEnabled(state: IReduxState): boolean {
  * @param state
  * @returns Whether Screenreader is enabled.
  */
-export function isScreenreaderEnabled(state: IReduxState): boolean {
+export function isScreenreaderEnabled(state: IReduxState): boolean | undefined {
     return state['features/inklusiva/userdata'].ui?.screenreader;
 }
 
-/** ....................
+/** ..........
  *  Returns all states of SupportTab
  *
  * @param stateful

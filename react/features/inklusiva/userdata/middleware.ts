@@ -1,4 +1,4 @@
-import jwtDecode from 'jwt-decode';
+import * as jwtDecode from 'jwt-decode';
 import _ from 'lodash';
 import { AnyAction } from 'redux';
 
@@ -40,7 +40,7 @@ function _setUserdata(store: IStore, next: Function, action: AnyAction) {
 
     if (!Object.keys(actionPayload).length) {
         if (jwt) {
-            let jwtPayload;
+            let jwtPayload: any;
 
             try {
                 jwtPayload = jwtDecode(jwt);
@@ -61,7 +61,7 @@ function _setUserdata(store: IStore, next: Function, action: AnyAction) {
     return next(action);
 }
 
-function _parseUserData(ud) {
+function _parseUserData(ud: IUserData) {
     const userData: IUserData = {
         support: {},
         ui: {},
@@ -75,9 +75,7 @@ function _parseUserData(ud) {
     userData.support.eyesight = _.toString(ud.support.eyesight);
     userData.support.hearing = _.toString(ud.support.hearing);
     userData.support.senses = toBoolean(ud.support.senses);
-    userData.support.learning_difficulties = toBoolean(
-        ud.support.learning_difficulties
-    );
+    userData.support.learning_difficulties = toBoolean(ud.support.learning_difficulties);
     userData.ui.fontSize = _.toNumber(ud.ui.fontSize);
     userData.ui.iconSize = _.toNumber(ud.ui.iconSize);
     userData.ui.screenreader = toBoolean(ud.ui.screenreader);
@@ -101,27 +99,13 @@ function _parseUserData(ud) {
     userData.distressbutton.dimming = _.toNumber(ud.distressbutton.dimming);
     userData.distressbutton.volume = _.toNumber(ud.distressbutton.volume);
     userData.distressbutton.message = toBoolean(ud.distressbutton.message);
-    userData.distressbutton.message_text = _.toString(
-        ud.distressbutton.message_text
-    );
-    userData.assistant.signLang.active = toBoolean(
-        ud.assistant.signLang.active
-    );
-    userData.assistant.signLang.display = _.toString(
-        ud.assistant.signLang.display
-    );
-    userData.assistant.signLang.windowSize = _.toNumber(
-        ud.assistant.signLang.windowSize
-    );
-    userData.assistant.transcription.active = toBoolean(
-        ud.assistant.transcription.active
-    );
-    userData.assistant.transcription.fontSize = _.toNumber(
-        ud.assistant.transcription.fontSize
-    );
-    userData.assistant.transcription.history = _.toNumber(
-        ud.assistant.transcription.history
-    );
+    userData.distressbutton.message_text = _.toString(ud.distressbutton.message_text);
+    userData.assistant.signLang.active = toBoolean(ud.assistant.signLang.active);
+    userData.assistant.signLang.display = _.toString(ud.assistant.signLang.display);
+    userData.assistant.signLang.windowSize = _.toNumber(ud.assistant.signLang.windowSize);
+    userData.assistant.transcription.active = toBoolean(ud.assistant.transcription.active);
+    userData.assistant.transcription.fontSize = _.toNumber(ud.assistant.transcription.fontSize);
+    userData.assistant.transcription.history = _.toNumber(ud.assistant.transcription.history);
 
     return Object.keys(userData).length ? userData : undefined;
 }
