@@ -30,7 +30,10 @@ var config = {
 
     hosts: {
         // XMPP domain.
-        domain: 'jitsi-meet.example.com',
+        domain: 'inklusiva-meet.4morgen.de',
+        muc: 'conference.inklusiva-meet.4morgen.de',
+        bridge: 'jitsi-videobridge.inklusiva-meet.4morgen.de',
+        focus: 'focus.inklusiva-meet.4morgen.de',
 
         // When using authentication, domain for guest users.
         // anonymousdomain: 'guest.example.com',
@@ -40,13 +43,10 @@ var config = {
 
         // Focus component domain. Defaults to focus.<domain>.
         // focus: 'focus.jitsi-meet.example.com',
-
-        // XMPP MUC domain. FIXME: use XEP-0030 to discover it.
-        muc: 'conference.' + subdomain + 'jitsi-meet.example.com',
     },
 
     // BOSH URL. FIXME: use XEP-0156 to discover it.
-    bosh: 'https://jitsi-meet.example.com/' + subdir + 'http-bind',
+    bosh: 'https://inklusiva-meet.4morgen.de/' + subdir + 'http-bind',
 
     // Websocket URL (XMPP)
     // websocket: 'wss://jitsi-meet.example.com/' + subdir + 'xmpp-websocket',
@@ -752,19 +752,20 @@ var config = {
     // ],
 
     // Holds values related to toolbar visibility control.
-    // toolbarConfig: {
-    //     // Moved from interfaceConfig.INITIAL_TOOLBAR_TIMEOUT
-    //     // The initial number of milliseconds for the toolbar buttons to be visible on screen.
-    //     initialTimeout: 20000,
-    //     // Moved from interfaceConfig.TOOLBAR_TIMEOUT
-    //     // Number of milliseconds for the toolbar buttons to be visible on screen.
-    //     timeout: 4000,
-    //     // Moved from interfaceConfig.TOOLBAR_ALWAYS_VISIBLE
-    //     // Whether toolbar should be always visible or should hide after x milliseconds.
-    //     alwaysVisible: false,
-    //     // Indicates whether the toolbar should still autohide when chat is open
-    //     autoHideWhileChatIsOpen: false,
-    // },
+    toolbarConfig: {
+        // Moved from interfaceConfig.INITIAL_TOOLBAR_TIMEOUT
+        // The initial number of milliseconds for the toolbar buttons to be visible on screen.
+        // initialTimeout: 20000,
+        // Moved from interfaceConfig.TOOLBAR_TIMEOUT
+        // Number of milliseconds for the toolbar buttons to be visible on screen.
+        timeout: 4000
+
+        // Moved from interfaceConfig.TOOLBAR_ALWAYS_VISIBLE
+        // Whether toolbar should be always visible or should hide after x milliseconds.
+        // alwaysVisible: true,
+        // Indicates whether the toolbar should still autohide when chat is open
+        // autoHideWhileChatIsOpen: false,
+    },
 
     // Toolbar buttons which have their click/tap event exposed through the API on
     // `toolbarButtonClicked`. Passing a string for the button key will
