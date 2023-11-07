@@ -1,0 +1,16 @@
+/**
+ * The type of redux action which stores a specific JSON Web Token (JWT) into
+ * the redux store.
+ *
+ * {
+ *     type: SET_USERDATA,
+ *     jwt: string
+ * }
+ */
+export const SET_USERVIDEO_BRIGHTNESS = 'SET_USERVIDEO_BRIGHTNESS';
+export const SET_USERVIDEO_CONTRAST = 'SET_USERVIDEO_CONTRAST';
+export const SET_USERVIDEO_DIMMING = 'SET_USERVIDEO_DIMMING';
+export const SET_USERVIDEO_FPS = 'SET_USERVIDEO_FPS';
+export const SET_USERVIDEO_OTHER_PARTICIPANTS = 'SET_USERVIDEO_OTHER_PARTICIPANTS';
+export const SET_USERVIDEO_SATURATION = 'SET_USERVIDEO_SATURATION';
+export const SET_USERVIDEO_ZOOM = 'SET_USERVIDEO_ZOOM';
