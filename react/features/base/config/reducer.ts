@@ -62,6 +62,7 @@ export interface IConfigState extends IConfig {
     };
     disableRemoteControl?: boolean;
     error?: Error;
+    keepUrlParameters?: boolean;
     oldConfig?: {
         bosh?: string;
         focusUserJid?: string;
