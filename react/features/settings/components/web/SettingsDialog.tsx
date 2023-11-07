@@ -382,27 +382,6 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
             icon: IconShortcuts
         });
 
-    if (showMoreTab && !_iAmVisitor) {
-        tabs.push({
-            name: SETTINGS_TABS.MORE,
-            component: MoreTab,
-            labelKey: 'settings.more',
-            props: moreTabProps,
-            propsUpdateFunction: (tabState: any, newProps: typeof moreTabProps) => {
-                // Updates tab props, keeping users selection
-
-                return {
-                    ...newProps,
-                    currentLanguage: tabState?.currentLanguage,
-                    hideSelfView: tabState?.hideSelfView,
-                    showPrejoinPage: tabState?.showPrejoinPage,
-                    maxStageParticipants: tabState?.maxStageParticipants
-                };
-            },
-            submit: submitMoreTab,
-            icon: IconGear
-        });
-    }
 
     tabs.push({
         name: SETTINGS_TABS.SIGNLANG_TAB,
@@ -438,6 +417,28 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
         submit: submitTranscriptionTabProps,
         icon: IconBubble
     });
+
+    if (showMoreTab && !_iAmVisitor) {
+        tabs.push({
+            name: SETTINGS_TABS.MORE,
+            component: MoreTab,
+            labelKey: 'settings.more',
+            props: moreTabProps,
+            propsUpdateFunction: (tabState: any, newProps: typeof moreTabProps) => {
+                // Updates tab props, keeping users selection
+
+                return {
+                    ...newProps,
+                    currentLanguage: tabState?.currentLanguage,
+                    hideSelfView: tabState?.hideSelfView,
+                    showPrejoinPage: tabState?.showPrejoinPage,
+                    maxStageParticipants: tabState?.maxStageParticipants
+                };
+            },
+            submit: submitMoreTab,
+            icon: IconGear
+        });
+    }
 
     return { _tabs: tabs };
 }
