@@ -118,14 +118,14 @@ class UserVideoTab extends AbstractDialogTab<IProps, any> {
 
         return (
             <div className = { classes.container }>
+                <b className = { classes.headline }>
+                    {t('toolbar.userVideo.containerHeadline')}
+                </b>
                 <div className = { classes.inputblockContainer }>
-                    <b className = { classes.headline }>
-                        {t('toolbar.userVideo.containerHeadline')}
-                    </b>
                     <Checkbox
                         checked = { otherParticipants }
                         className = { classes.inputElement }
-                        label = { t('toolbar.userVideo.videoVisibilityToggleHeadline') }
+                        label = { t('toolbar.userVideo.videoVisibilityEngage') }
                         // eslint-disable-next-line react/jsx-no-bind
                         name = 'video-visibility-toggle'
                         // eslint-disable-next-line react/jsx-no-bind
@@ -135,7 +135,7 @@ class UserVideoTab extends AbstractDialogTab<IProps, any> {
                             })
                         } />
                     <div className = { classes.description }>
-                        {t('toolbar.userVideo.videoVisibilityEngage')}
+                        {t('toolbar.userVideo.videoVisibilityToggleHeadline')}
                     </div>
                 </div>
                 <div className = { classes.inputblockContainer }>
@@ -160,7 +160,7 @@ class UserVideoTab extends AbstractDialogTab<IProps, any> {
                         label = { t('toolbar.userVideo.brightnessSliderHeadline') }
                         max = { 100 }
                         min = { 0 }
-                        name = 'contrast-slider'
+                        name = 'brightness-slider'
                         // eslint-disable-next-line react/jsx-no-bind
                         onChange = { event =>
                             super._onChange({
@@ -175,7 +175,7 @@ class UserVideoTab extends AbstractDialogTab<IProps, any> {
                         label = { t('toolbar.userVideo.dimSliderHeadline') }
                         max = { 100 }
                         min = { 0 }
-                        name = 'contrast-slider'
+                        name = 'dimmer-slider'
                         // eslint-disable-next-line react/jsx-no-bind
                         onChange = { event =>
                             super._onChange({
@@ -190,7 +190,7 @@ class UserVideoTab extends AbstractDialogTab<IProps, any> {
                         label = { t('toolbar.userVideo.saturationSliderHeadline') }
                         max = { 100 }
                         min = { 0 }
-                        name = 'contrast-slider'
+                        name = 'saturation-slider'
                         // eslint-disable-next-line react/jsx-no-bind
                         onChange = { event =>
                             super._onChange({
@@ -205,7 +205,7 @@ class UserVideoTab extends AbstractDialogTab<IProps, any> {
                         label = { t('toolbar.userVideo.zoomSliderHeadline') }
                         max = { 100 }
                         min = { 0 }
-                        name = 'contrast-slider'
+                        name = 'zoom-slider'
                         // eslint-disable-next-line react/jsx-no-bind
                         onChange = { event =>
                             super._onChange({
@@ -220,7 +220,7 @@ class UserVideoTab extends AbstractDialogTab<IProps, any> {
                         label = { t('toolbar.userVideo.fpsSliderHeadline') }
                         max = { 100 }
                         min = { 0 }
-                        name = 'contrast-slider'
+                        name = 'fps-slider'
                         // eslint-disable-next-line react/jsx-no-bind
                         onChange = { event =>
                             super._onChange({

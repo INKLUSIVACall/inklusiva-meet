@@ -24,6 +24,15 @@ import {
     SET_TRANSCRIPTION_FONTSIZE_VALUE,
     SET_TRANSCRIPTION_HISTORY_VALUE
 } from '../transcription/actionTypes';
+import {
+    SET_USERVIDEO_BRIGHTNESS,
+    SET_USERVIDEO_CONTRAST,
+    SET_USERVIDEO_DIMMING,
+    SET_USERVIDEO_FPS,
+    SET_USERVIDEO_OTHER_PARTICIPANTS,
+    SET_USERVIDEO_SATURATION,
+    SET_USERVIDEO_ZOOM
+} from '../uservideo/actionTypes';
 
 import { SET_OTHERS_AUDIO_INPUT_ENABLED, SET_USERDATA } from './actionTypes';
 
@@ -211,6 +220,41 @@ ReducerRegistry.register<IUserData>(
 
         case SET_SCREENREADER_ENABLED:
             nextState.ui.screenreader = payload.supportScreenreaderEnabled;
+
+            return nextState;
+
+        case SET_USERVIDEO_BRIGHTNESS:
+            nextState.video.brightness = payload.value;
+
+            return nextState;
+
+        case SET_USERVIDEO_CONTRAST:
+            nextState.video.contrast = payload.value;
+
+            return nextState;
+
+        case SET_USERVIDEO_DIMMING:
+            nextState.video.dimming = payload.value;
+
+            return nextState;
+
+        case SET_USERVIDEO_FPS:
+            nextState.video.fps = payload.value;
+
+            return nextState;
+
+        case SET_USERVIDEO_OTHER_PARTICIPANTS:
+            nextState.video.otherParticipants = payload.enabled;
+
+            return nextState;
+
+        case SET_USERVIDEO_SATURATION:
+            nextState.video.saturation = payload.value;
+
+            return nextState;
+
+        case SET_USERVIDEO_ZOOM:
+            nextState.video.zoom = payload.value;
 
             return nextState;
 
