@@ -328,9 +328,9 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
             return {
                 ...newProps,
                 otherParticipants: tabState?.otherParticipants,
-                brightness: tabState?.brigthness,
+                brightness: tabState?.brightness,
                 contrast: tabState?.contrast,
-                dimmming: tabState?.dimming,
+                dimming: tabState?.dimming,
                 fps: tabState?.fps,
                 saturation: tabState.saturation,
                 zoom: tabState?.zoom
