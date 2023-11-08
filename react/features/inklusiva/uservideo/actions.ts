@@ -32,19 +32,19 @@ export function submitNewUserVideoTab(newState: any) {
             dispatch(setUserVideoContrastValue(newState.contrast));
         }
         if (newState.dimming !== currentState.dimming) {
-            dispatch(setUserVideoContrastValue(newState.dimming));
+            dispatch(setUserVideoDimmingValue(newState.dimming));
         }
         if (newState.fps !== currentState.fps) {
-            dispatch(setUserVideoContrastValue(newState.fps));
+            dispatch(setUserVideoFPSValue(newState.fps));
         }
         if (newState.otherParticipants !== currentState.otherParticipants) {
             dispatch(toggleOtherParticipants());
         }
         if (newState.saturation !== currentState.saturation) {
-            dispatch(setUserVideoSaturationValue(newState.volume));
+            dispatch(setUserVideoSaturationValue(newState.saturation));
         }
         if (newState.zoom !== currentState.zoom) {
-            dispatch(setUserVideoZoomValue(newState.message_text));
+            dispatch(setUserVideoZoomValue(newState.zoom));
         }
     };
 }
