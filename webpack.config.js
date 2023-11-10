@@ -99,6 +99,7 @@ function getConfig(options = {}) {
     return {
         devtool: isProduction ? 'source-map' : 'eval-source-map',
         mode: isProduction ? 'production' : 'development',
+        cache: true,
         module: {
             rules: [ {
                 // Transpile ES2015 (aka ES6) to ES5. Accept the JSX syntax by React
