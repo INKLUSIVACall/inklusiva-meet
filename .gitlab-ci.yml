@@ -14,8 +14,5 @@ deploy:
   - chmod 644 ~/.ssh/known_hosts
   script:
   - ssh $SSH_USER_DEV@$HOST_DEV "./deploy-inklusiva-meet.sh"
-  artifacts:
-    paths:
-    - public
   only:
   - lag-dev
