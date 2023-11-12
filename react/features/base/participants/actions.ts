@@ -5,9 +5,8 @@ import { IJitsiConference } from '../conference/reducer';
 import { set } from '../redux/functions';
 
 import {
-    DOMINANT_SPEAKER_CHANGED,
     ADD_IC_ROLE,
-    REMOVE_IC_ROLE,
+    DOMINANT_SPEAKER_CHANGED,
     GRANT_MODERATOR,
     HIDDEN_PARTICIPANT_JOINED,
     HIDDEN_PARTICIPANT_LEFT,
@@ -25,6 +24,7 @@ import {
     PARTICIPANT_UPDATED,
     PIN_PARTICIPANT,
     RAISE_HAND_UPDATED,
+    REMOVE_IC_ROLE,
     SCREENSHARE_PARTICIPANT_NAME_CHANGED,
     SET_LOADABLE_AVATAR_URL,
     SET_LOCAL_PARTICIPANT_RECORDING_STATUS
@@ -102,13 +102,13 @@ export function grantModerator(id: string) {
 *     partnerId: string|null
 * }}
 */
-export function addIcRole(id: string, icRole: string, partnerId: string|null = null) {
-   return {
-       type: ADD_IC_ROLE,
-       id,
-       icRole,
-       partnerId
-   };
+export function addIcRole(id: string, icRole: string, partnerId: string | null = null) {
+    return {
+        type: ADD_IC_ROLE,
+        id,
+        icRole,
+        partnerId
+    };
 }
 
 /**
@@ -122,13 +122,13 @@ export function addIcRole(id: string, icRole: string, partnerId: string|null = n
 *     partnerId: string|null
 * }}
 */
-export function removeIcRole(id: string, icRole: string, partnerId: string|null = null) {
-   return {
-       type: REMOVE_IC_ROLE,
-       id,
-       icRole,
-       partnerId
-   };
+export function removeIcRole(id: string, icRole: string, partnerId: string | null = null) {
+    return {
+        type: REMOVE_IC_ROLE,
+        id,
+        icRole,
+        partnerId
+    };
 }
 
 /**
