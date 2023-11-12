@@ -228,9 +228,6 @@ ReducerRegistry.register<IUserData>(
             nextState.ui.screenreader = payload.supportScreenreaderEnabled;
 
             return nextState;
-        case SET_UI_FONTSIZE:
-            document.querySelector(':root').style.fontSize = _parseFontSize(payload.value);
-            nextState.ui.fontSize = payload.value;
 
         case SET_UI_FONTSIZE: {
             const root = document.querySelector(':root') as HTMLElement;

@@ -7,8 +7,6 @@ import { set } from '../redux/functions';
 import {
     ADD_IC_ROLE,
     DOMINANT_SPEAKER_CHANGED,
-    ADD_IC_ROLE,
-    REMOVE_IC_ROLE,
     GRANT_MODERATOR,
     HIDDEN_PARTICIPANT_JOINED,
     HIDDEN_PARTICIPANT_LEFT,
