@@ -6,5 +6,5 @@ npm run build
 cd ../..
 
 # Start the development server
-export WEBPACK_DEV_SERVER_PROXY_TARGET=https://jitsi.intern.4morgen.de
+export WEBPACK_DEV_SERVER_PROXY_TARGET=https://inklusiva-meet.4morgen.de
 make dev
