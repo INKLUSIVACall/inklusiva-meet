@@ -233,7 +233,6 @@ ReducerRegistry.register<IUserData>(
             const root = document.querySelector(':root') as HTMLElement;
 
             root.style.fontSize = _parseFontSize(payload.value);
-            console.log('UI FONTSIZE', nextState);
             nextState.ui.fontSize = payload.value;
 
             return nextState;
