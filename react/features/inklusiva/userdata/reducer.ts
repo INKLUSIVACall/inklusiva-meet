@@ -342,3 +342,4 @@ function _parseIconSize(iconSizeValue: number) {
         return '1';
     }
 }
+
