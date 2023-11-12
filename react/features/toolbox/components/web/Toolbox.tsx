@@ -389,7 +389,6 @@ const Toolbox = ({
                 <div
                     className = 'toolbox-content-wrapper'
                     onFocus = { onTabIn }
-                    style = {{ border: '10px solid red' }}
                     { ...(_isMobile
                         ? {}
                         : {

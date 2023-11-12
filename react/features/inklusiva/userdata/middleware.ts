@@ -4,11 +4,11 @@ import { AnyAction } from 'redux';
 
 import { IStore } from '../../app/types';
 import MiddlewareRegistry from '../../base/redux/MiddlewareRegistry';
+import { font } from '../../base/ui/Tokens';
 
 import { SET_USERDATA } from './actionTypes';
 import logger from './logger';
 import { IUserData } from './reducer';
-import { font } from '../../base/ui/Tokens';
 
 const toBoolean = function(value: any) {
     if (typeof value === 'boolean') {
@@ -65,7 +65,9 @@ function _setUserdata(store: IStore, next: Function, action: AnyAction) {
 
                     // Add event listener to set the font size on DOMContentLoaded.
                     window.addEventListener('DOMContentLoaded', () => {
-                        document.querySelector(':root').style.fontSize = _parseFontSize(context.userData.ui.fontSize);
+                        const root = document.querySelector(':root') as HTMLElement;
+
+                        root.style.fontSize = _parseFontSize(context.userData.ui.fontSize);
                     });
                 }
             }
@@ -131,7 +133,7 @@ function _parseUserData(ud: IUserData) {
  *
  * @returns {string}
  */
-function _parseFontSize(fontSizeValue) {
+function _parseFontSize(fontSizeValue: string | number) {
     switch (fontSizeValue) {
     case 0:
     case '0':

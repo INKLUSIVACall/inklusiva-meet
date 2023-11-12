@@ -79,7 +79,7 @@ const useStyles = makeStyles()(theme => {
             },
 
             '&.large': {
-                width: '664px'
+                width: '764px'
             },
 
             '&.unmount': {

@@ -450,6 +450,24 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
         icon: IconBubble
     });
 
+    tabs.push({
+        name: SETTINGS_TABS.UI_TAB,
+        component: UiSettingsTab,
+        labelKey: 'settings.uiTab',
+        props: uiSettingsTabProps,
+        propsUpdateFunction: (tabState: any, newProps: typeof uiSettingsTabProps) => {
+            return {
+                ...newProps,
+                fontSize: tabState?.fontSize,
+                iconSize: tabState?.iconSize,
+                acousticCues: tabState?.acousticCues,
+                visualCues: tabState?.visualCues
+            };
+        },
+        submit: submitUISettingsTabProps,
+        icon: IconAudioOnly
+    });
+
     if (showMoreTab && !_iAmVisitor) {
         tabs.push({
             name: SETTINGS_TABS.MORE,
@@ -471,24 +489,6 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
             icon: IconGear
         });
     }
-
-    tabs.push({
-        name: SETTINGS_TABS.UI_TAB,
-        component: UiSettingsTab,
-        labelKey: 'settings.uiTab',
-        props: uiSettingsTabProps,
-        propsUpdateFunction: (tabState: any, newProps: typeof uiSettingsTabProps) => {
-            return {
-                ...newProps,
-                fontSize: tabState?.fontSize,
-                iconSize: tabState?.iconSize,
-                acousticCues: tabState?.acousticCues,
-                visualCues: tabState?.visualCues
-            };
-        },
-        submit: submitUISettingsTabProps,
-        icon: IconAudioOnly
-    });
 
     return { _tabs: tabs };
 }
