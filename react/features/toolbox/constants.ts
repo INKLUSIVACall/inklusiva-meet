@@ -4,31 +4,52 @@
 export const THRESHOLDS = [
     {
         width: 565,
-        order: [ 'distress', 'microphone', 'camera', 'desktop', 'chat', 'raisehand', 'reactions', 'participants', 'tileview' ]
+        order: [
+            'rolematching',
+            'distress',
+            'microphone',
+            'camera',
+            'desktop',
+            'chat',
+            'raisehand',
+            'reactions',
+            'participants',
+            'tileview'
+        ]
     },
     {
         width: 520,
-        order: [ 'distress', 'microphone', 'camera', 'desktop', 'chat', 'raisehand', 'participants', 'tileview' ]
+        order: [
+            'rolematching',
+            'distress',
+            'microphone',
+            'camera',
+            'desktop',
+            'chat',
+            'raisehand',
+            'participants',
+            'tileview'
+        ]
     },
     {
         width: 470,
-        order: [ 'distress', 'microphone', 'camera', 'desktop', 'chat', 'raisehand', 'participants' ]
+        order: [ 'rolematching', 'distress', 'microphone', 'camera', 'desktop', 'chat', 'raisehand', 'participants' ]
     },
     {
         width: 420,
-        order: [ 'distress', 'microphone', 'camera', 'desktop', 'chat', 'participants' ]
+        order: [ 'rolematching', 'distress', 'microphone', 'camera', 'desktop', 'chat', 'participants' ]
     },
     {
         width: 370,
-        order: [ 'distress', 'microphone', 'camera', 'chat', 'participants' ]
+        order: [ 'rolematching', 'distress', 'microphone', 'camera', 'chat', 'participants' ]
     },
     {
         width: 225,
-        order: [ 'distress', 'microphone', 'camera', 'chat' ]
+        order: [ 'rolematching', 'distress', 'microphone', 'camera', 'chat' ]
     },
     {
         width: 200,
-        order: [ 'distress', 'microphone', 'camera' ]
+        order: [ 'rolematching', 'distress', 'microphone', 'camera' ]
     }
 ];
 

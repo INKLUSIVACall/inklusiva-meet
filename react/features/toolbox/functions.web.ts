@@ -32,11 +32,11 @@ import { isWhiteboardVisible } from '../whiteboard/functions';
 import DownloadButton from './components/DownloadButton';
 import HelpButton from './components/HelpButton';
 import AudioSettingsButton from './components/web/AudioSettingsButton';
-import CustomOptionButton from './components/web/CustomOptionButton';
 import DistressButton from './components/web/DistressButton';
 import FullscreenButton from './components/web/FullscreenButton';
 import LinkToSalesforceButton from './components/web/LinkToSalesforceButton';
 import ProfileButton from './components/web/ProfileButton';
+import RoleMatchingButton from './components/web/RoleMatchingButton';
 import ShareDesktopButton from './components/web/ShareDesktopButton';
 import ToggleCameraButton from './components/web/ToggleCameraButton';
 import VideoSettingsButton from './components/web/VideoSettingsButton';
@@ -241,6 +241,12 @@ export function getAllToolboxButtons(_customToolbarButtons?: {
         group: 2
     };
 
+    const rolematching = {
+        key: 'rolematching',
+        Content: RoleMatchingButton,
+        group: 2
+    };
+
     // In Narrow layout and mobile web we are using drawer for popups and that is why it is better to include
     // all forms of reactions in the overflow menu. Otherwise the toolbox will be hidden and the reactions popup
     // misaligned.
@@ -405,9 +411,16 @@ export function getAllToolboxButtons(_customToolbarButtons?: {
     const customButtons = _customToolbarButtons?.reduce((prev, { icon, id, text }) => {
         return {
             ...prev,
-            ['distress']: {
+            'distress': {
                 key: 'distress',
                 Content: DistressButton,
+                group: 1,
+                icon,
+                text
+            },
+            'rolematching': {
+                key: 'rolematching',
+                Content: RoleMatchingButton,
                 group: 1,
                 icon,
                 text
@@ -448,6 +461,7 @@ export function getAllToolboxButtons(_customToolbarButtons?: {
         download,
         help,
         distress,
+        rolematching,
         ...customButtons
     };
 }
