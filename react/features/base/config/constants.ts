@@ -19,6 +19,7 @@ export const TOOLBAR_BUTTONS = [
     'closedcaptions',
     'desktop',
     'distress',
+    'rolematching',
     'download',
     'embedmeeting',
     'etherpad',
