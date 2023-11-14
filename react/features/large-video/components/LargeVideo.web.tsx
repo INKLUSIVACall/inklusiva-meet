@@ -14,6 +14,7 @@ import StageParticipantNameLabel from '../../display-name/components/web/StagePa
 import { FILMSTRIP_BREAKPOINT } from '../../filmstrip/constants';
 import { getVerticalViewMaxWidth, isFilmstripResizable } from '../../filmstrip/functions.web';
 import { IUserData } from '../../inklusiva/userdata/reducer';
+import { getUserVideoTabProps } from '../../inklusiva/uservideo/functions';
 import SharedVideo from '../../shared-video/components/web/SharedVideo';
 import Captions from '../../subtitles/components/web/Captions';
 import { setTileView } from '../../video-layout/actions.web';
@@ -96,6 +97,26 @@ interface IProps {
     _showDominantSpeakerBadge: boolean;
 
     /**
+     * The User Video brightness.
+     */
+    _userVideoBrightness: number;
+
+    /**
+     * The User Video contrast.
+     */
+     _userVideoContrast: number;
+
+    /**
+     * The User Video saturation.
+     */
+    _userVideoSaturation: number;
+
+    /**
+     * The User Video zoom.
+     */
+    _userVideoZoom: number;
+
+    /**
      * The width of the vertical filmstrip (user resized).
      */
     _verticalFilmstripWidth?: number | null;
@@ -119,6 +140,11 @@ interface IProps {
      * The Redux dispatch function.
      */
     dispatch: IStore['dispatch'];
+
+    /**
+     * The User Video Data.
+     */
+    userVideoProps: IUserData;
 }
 
 /** .
@@ -294,12 +320,21 @@ class LargeVideo extends Component<IProps> {
         const {
             _customBackgroundColor,
             _customBackgroundImageUrl,
+            _userVideoBrightness,
+            _userVideoContrast,
+            _userVideoSaturation,
+            _userVideoZoom,
             _verticalFilmstripWidth,
             _verticalViewMaxWidth,
             _visibleFilmstrip
         } = this.props;
 
         styles.backgroundColor = _customBackgroundColor || interfaceConfig.DEFAULT_BACKGROUND;
+
+        styles.filter = `brightness(${_userVideoBrightness}%)
+            contrast(${_userVideoContrast}%)
+            saturate(${_userVideoSaturation}%)`;
+        styles.zoom = `${_userVideoZoom}%`;
 
         if (this.props._backgroundAlpha !== undefined) {
             const alphaColor = setColorAlpha(styles.backgroundColor, this.props._backgroundAlpha);
@@ -360,6 +395,7 @@ function _mapStateToProps(state: IReduxState) {
     const isLocalScreenshareOnLargeVideo = largeVideoParticipant?.id?.includes(localParticipantId ?? '')
         && videoTrack?.videoType === VIDEO_TYPE.DESKTOP;
     const isOnSpot = defaultLocalDisplayName === SPOT_DISPLAY_NAME;
+    const userVideoData = getUserVideoTabProps(state);
 
     return {
         _backgroundAlpha: state['features/base/config'].backgroundAlpha,
@@ -375,6 +411,10 @@ function _mapStateToProps(state: IReduxState) {
         _resizableFilmstrip: isFilmstripResizable(state),
         _seeWhatIsBeingShared: Boolean(seeWhatIsBeingShared),
         _showDominantSpeakerBadge: !hideDominantSpeakerBadge,
+        _userVideoBrightness: userVideoData.brightness,
+        _userVideoContrast: userVideoData.contrast,
+        _userVideoSaturation: userVideoData.saturation,
+        _userVideoZoom: userVideoData.zoom,
         _verticalFilmstripWidth: verticalFilmstripWidth.current,
         _verticalViewMaxWidth: getVerticalViewMaxWidth(state),
         _visibleFilmstrip: visible,
