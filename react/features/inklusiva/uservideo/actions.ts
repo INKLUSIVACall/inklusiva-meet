@@ -4,7 +4,6 @@ import {
     SET_USERVIDEO_BRIGHTNESS,
     SET_USERVIDEO_CONTRAST,
     SET_USERVIDEO_DIMMING,
-    SET_USERVIDEO_FPS,
     SET_USERVIDEO_OTHER_PARTICIPANTS,
     SET_USERVIDEO_SATURATION,
     SET_USERVIDEO_ZOOM
@@ -33,9 +32,6 @@ export function submitNewUserVideoTab(newState: any) {
         }
         if (newState.dimming !== currentState.dimming) {
             dispatch(setUserVideoDimmingValue(newState.dimming));
-        }
-        if (newState.fps !== currentState.fps) {
-            dispatch(setUserVideoFPSValue(newState.fps));
         }
         if (newState.otherParticipants !== currentState.otherParticipants) {
             dispatch(toggleOtherParticipants());
@@ -99,19 +95,6 @@ export function setUserVideoContrastValue(value: number): any {
 export function setUserVideoDimmingValue(value: number): any {
     return {
         type: SET_USERVIDEO_DIMMING,
-        value
-    };
-}
-
-/**
- * Sets the value of fps.
- *
- * @param {number} value - The new value.
- * @returns {property}
- */
-export function setUserVideoFPSValue(value: number): any {
-    return {
-        type: SET_USERVIDEO_FPS,
         value
     };
 }

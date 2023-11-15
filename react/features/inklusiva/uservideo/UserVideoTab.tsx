@@ -43,11 +43,6 @@ export interface IProps extends AbstractDialogTabProps, WithTranslation {
     dimming: number;
 
     /**
-     * fps value for user videos.
-     */
-    fps: number;
-
-    /**
      * Are User Videos enabled?
      */
     otherParticipants: boolean;
@@ -114,7 +109,7 @@ class UserVideoTab extends AbstractDialogTab<IProps, any> {
      */
     render() {
 
-        const { brightness, classes, contrast, dimming, fps, otherParticipants, saturation, zoom, t } = this.props;
+        const { brightness, classes, contrast, dimming, otherParticipants, saturation, zoom, t } = this.props;
 
         return (
             <div className = { classes.container }>
@@ -203,7 +198,7 @@ class UserVideoTab extends AbstractDialogTab<IProps, any> {
                         className = { classes.inputElement }
                         defaultValue = { zoom }
                         label = { t('toolbar.userVideo.zoomSliderHeadline') }
-                        max = { 100 }
+                        max = { 200 }
                         min = { 0 }
                         name = 'zoom-slider'
                         // eslint-disable-next-line react/jsx-no-bind
@@ -214,21 +209,6 @@ class UserVideoTab extends AbstractDialogTab<IProps, any> {
                         }
                         step = { 1 } />
                     <span>{ zoom }%</span>
-                    <Slider
-                        className = { classes.inputElement }
-                        defaultValue = { fps }
-                        label = { t('toolbar.userVideo.fpsSliderHeadline') }
-                        max = { 100 }
-                        min = { 0 }
-                        name = 'fps-slider'
-                        // eslint-disable-next-line react/jsx-no-bind
-                        onChange = { event =>
-                            super._onChange({
-                                fps: event.target.value
-                            })
-                        }
-                        step = { 1 } />
-                    <span>{ fps }fps</span>
                 </div>
             </div>
 

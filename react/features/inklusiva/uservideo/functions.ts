@@ -37,16 +37,6 @@ export function getUserVideoDimmingValue(state: IReduxState): number | undefined
  * Returns state of user videos.
  *
  * @param {IReduxState} state - The redux state.
- * @returns {number} The fps value.
- */
-export function getUserVideoFPSValue(state: IReduxState): number | undefined {
-    return state['features/inklusiva/userdata'].video?.fps;
-}
-
-/**
- * Returns state of user videos.
- *
- * @param {IReduxState} state - The redux state.
  * @returns {boolean} Whether user videos are enabled or disabled.
  */
 export function areOtherParticipantsEnabled(state: IReduxState): boolean | undefined {
@@ -85,7 +75,6 @@ export function getUserVideoTabProps(stateful: IStateful) {
     const brightness = getUserVideoBrightnessValue(state);
     const contrast = getUserVideoContrastValue(state);
     const dimming = getUserVideoDimmingValue(state);
-    const fps = getUserVideoFPSValue(state);
     const otherParticipants = areOtherParticipantsEnabled(state);
     const saturation = getUserVideoSaturationValue(state);
     const zoom = getUserVideoZoomValue(state);
@@ -94,7 +83,6 @@ export function getUserVideoTabProps(stateful: IStateful) {
         brightness,
         contrast,
         dimming,
-        fps,
         otherParticipants,
         saturation,
         zoom
