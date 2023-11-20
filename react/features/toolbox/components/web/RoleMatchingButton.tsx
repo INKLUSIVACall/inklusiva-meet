@@ -1,152 +1,54 @@
-import React, { Component } from 'react';
-import { WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 
 import { IReduxState } from '../../../app/types';
-import { isMobileBrowser } from '../../../base/environment/utils';
+import { isIosMobileBrowser } from '../../../base/environment/utils';
 import { translate } from '../../../base/i18n/functions';
-import { IconArrowUp } from '../../../base/icons/svg';
-import JitsiMeetJS from '../../../base/lib-jitsi-meet/_';
-import { IGUMPendingState } from '../../../base/media/types';
-import ToolboxButtonWithIcon from '../../../base/toolbox/components/web/ToolboxButtonWithIcon';
-import { toggleAudioSettings } from '../../../settings/actions';
-import AudioSettingsPopup from '../../../settings/components/web/audio/AudioSettingsPopup';
-import { getAudioSettingsVisibility } from '../../../settings/functions';
-import { isAudioSettingsButtonDisabled } from '../../functions';
+import { IconUser } from '../../../base/icons/svg';
+import AbstractButton, { IProps as AbstractButtonProps } from '../../../base/toolbox/components/AbstractButton';
+import { toggleRoleMatchingMenuVisibility } from '../../../inklusiva/rolematching/actions';
 
-import AudioMuteButton from './AudioMuteButton';
-
-interface IProps extends WithTranslation {
+interface IProps extends AbstractButtonProps {
 
     /**
-     * The button's key.
+     * Whether or not the popup is open.
      */
-    buttonKey?: string;
-
-    /**
-     * The gumPending state from redux.
-     */
-    gumPending: IGUMPendingState;
-
-    /**
-     * External handler for click action.
-     */
-    handleClick: Function;
-
-    /**
-     * Indicates whether audio permissions have been granted or denied.
-     */
-    hasPermissions: boolean;
-
-    /**
-     * If the button should be disabled.
-     */
-    isDisabled: boolean;
-
-    /**
-     * Defines is popup is open.
-     */
-    isOpen: boolean;
-
-    /**
-     * Notify mode for `toolbarButtonClicked` event -
-     * whether to only notify or to also prevent button click routine.
-     */
-    notifyMode?: string;
-
-    /**
-     * Click handler for the small icon. Opens audio options.
-     */
-    onAudioOptionsClick: Function;
-
-    /**
-     * Flag controlling the visibility of the button.
-     * AudioSettings popup is disabled on mobile browsers.
-     */
-    visible: boolean;
+    _isOpen?: boolean;
 }
 
 /**
- * Button used for audio & audio settings.
- *
- * @returns {ReactElement}
+ * Implementation of a button for toggling fullscreen state.
  */
-class RoleMatchingButton extends Component<IProps> {
-    /**
-     * Initializes a new {@code AudioSettingsButton} instance.
-     *
-     * @inheritdoc
-     */
-    constructor(props: IProps) {
-        super(props);
+class RoleMatchingButton extends AbstractButton<IProps> {
+    accessibilityLabel = 'toolbar.accessibilityLabel.enterFullScreen';
+    toggledAccessibilityLabel = 'toolbar.accessibilityLabel.exitFullScreen';
+    label = 'toolbar.assistance';
+    toggledLabel = 'toolbar.assistance';
+    tooltip = 'toolbar.assistance';
+    toggledTooltip = 'toolbar.assistance';
+    toggledIcon = IconUser;
+    icon = IconUser;
 
-        this._onEscClick = this._onEscClick.bind(this);
-        this._onClick = this._onClick.bind(this);
+    /**
+     * Indicates whether this button is in toggled state or not.
+     *
+     * @override
+     * @protected
+     * @returns {boolean}
+     */
+    _isToggled() {
+        return this.props._isOpen;
     }
 
     /**
-     * Click handler for the more actions entries.
+     * Handles clicking the button, and toggles fullscreen.
      *
-     * @param {KeyboardEvent} event - Esc key click to close the popup.
+     * @private
      * @returns {void}
      */
-    _onEscClick(event: React.KeyboardEvent) {
-        if (event.key === 'Escape' && this.props.isOpen) {
-            event.preventDefault();
-            event.stopPropagation();
-            this._onClick();
-        }
-    }
+    _handleClick() {
+        const { dispatch } = this.props;
 
-    /**
-     * Click handler for the more actions entries.
-     *
-     * @param {MouseEvent} e - Mouse event.
-     * @returns {void}
-     */
-    _onClick(e?: React.MouseEvent) {
-        const { onAudioOptionsClick, isOpen } = this.props;
-
-        if (isOpen) {
-            e?.stopPropagation();
-        }
-        onAudioOptionsClick();
-    }
-
-    /**
-     * Implements React's {@link Component#render}.
-     *
-     * @inheritdoc
-     */
-    render() {
-        const { gumPending, hasPermissions, isDisabled, visible, isOpen, buttonKey, notifyMode, t } = this.props;
-        const settingsDisabled = !hasPermissions
-            || isDisabled
-            || !JitsiMeetJS.mediaDevices.isMultipleAudioInputSupported();
-
-        return visible ? (
-            <AudioSettingsPopup>
-                <ToolboxButtonWithIcon
-                    ariaControls = 'audio-settings-dialog'
-                    ariaExpanded = { isOpen }
-                    ariaHasPopup = { true }
-                    ariaLabel = { t('toolbar.audioSettings') }
-                    buttonKey = { buttonKey }
-                    icon = { IconArrowUp }
-                    iconDisabled = { settingsDisabled || gumPending !== IGUMPendingState.NONE }
-                    iconId = 'audio-settings-button'
-                    iconTooltip = { t('toolbar.audioSettings') }
-                    notifyMode = { notifyMode }
-                    onIconClick = { this._onClick }
-                    onIconKeyDown = { this._onEscClick }>
-                    <AudioMuteButton
-                        buttonKey = { buttonKey }
-                        notifyMode = { notifyMode } />
-                </ToolboxButtonWithIcon>
-            </AudioSettingsPopup>
-        ) : <AudioMuteButton
-            buttonKey = { buttonKey }
-            notifyMode = { notifyMode } />;
+        dispatch(toggleRoleMatchingMenuVisibility());
     }
 }
 
@@ -156,25 +58,11 @@ class RoleMatchingButton extends Component<IProps> {
  * @param {Object} state - Redux state.
  * @returns {Object}
  */
-function mapStateToProps(state: IReduxState) {
-    const { permissions = { audio: false } } = state['features/base/devices'];
-    const { isNarrowLayout } = state['features/base/responsive-ui'];
-    const { gumPending } = state['features/base/media'].audio;
-
+const mapStateToProps = (state: IReduxState) => {
     return {
-        gumPending,
-        hasPermissions: permissions.audio,
-        isDisabled: Boolean(isAudioSettingsButtonDisabled(state)),
-        isOpen: Boolean(getAudioSettingsVisibility(state)),
-        visible: !isMobileBrowser() && !isNarrowLayout
+        _fullScreen: state['features/toolbox'].fullScreen,
+        visible: !isIosMobileBrowser()
     };
-}
-
-const mapDispatchToProps = {
-    onAudioOptionsClick: toggleAudioSettings
 };
 
-export default translate(connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(RoleMatchingButton));
+export default translate(connect(mapStateToProps)(RoleMatchingButton));
