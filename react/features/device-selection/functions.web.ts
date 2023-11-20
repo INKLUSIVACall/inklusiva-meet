@@ -35,7 +35,7 @@ import {
     isFilterBackgroundNoiseEnabled,
     isOthersAudioInputEnabled,
     isOwnAudioInputEnabled
-} from '../lag/userdata/functions';
+} from '../inklusiva/userdata/functions';
 
 /**
  * Returns the properties for the audio device selection dialog from Redux state.

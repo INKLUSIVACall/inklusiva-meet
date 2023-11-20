@@ -8,7 +8,10 @@ import {
     SET_FILMSTRIP_HEIGHT,
     SET_FILMSTRIP_VISIBLE,
     SET_FILMSTRIP_WIDTH,
+    SET_FREQUENCY_FILTER_SETTING,
     SET_HORIZONTAL_VIEW_DIMENSIONS,
+    SET_PARTICIPANT_OPACITY,
+    SET_PARTICIPANT_ZOOM_LEVEL,
     SET_REMOTE_PARTICIPANTS,
     SET_SCREENSHARE_FILMSTRIP_PARTICIPANT,
     SET_SCREENSHARING_TILE_DIMENSIONS,
@@ -61,6 +64,34 @@ const DEFAULT_STATE = {
      * @type {Object}
      */
     participantsVolume: {},
+
+    /**
+     * The custom frequency filter setting per participant.
+     *
+     * @type {Object}
+     */
+    participantsFrequencySetting: {},
+
+    /**
+     * The opacity of each participant.
+     *
+     * @type {Object}
+     */
+    participantsOpacity: {},
+
+    /**
+     * The opacity of local participant.
+     *
+     * @type {Object}
+     */
+    localOpacity: 1,
+
+    /**
+     * The zoom level of each participant.
+     *
+     * @type {Object}
+     */
+    participantZoomLevel: {},
 
     /**
      * The ordered IDs of the remote participants displayed in the filmstrip.
@@ -208,6 +239,16 @@ export interface IFilmstripState {
         remoteVideosContainer?: IDimensions;
     };
     isResizing: boolean;
+    localOpacity: number | null;
+    participantZoomLevel: {
+        [participantId: string]: number;
+    };
+    participantsFrequencySetting: {
+        [participantId: string]: number;
+    };
+    participantsOpacity: {
+        [participantId: string]: number;
+    };
     participantsVolume: {
         [participantId: string]: number;
     };
@@ -300,6 +341,44 @@ ReducerRegistry.register<IFilmstripState>(
                     [action.participantId]: action.volume
                 }
             };
+        case SET_FREQUENCY_FILTER_SETTING:
+            return {
+                ...state,
+                participantsFrequencySetting: {
+                    ...state.participantsFrequencySetting,
+
+                    // NOTE: Same note for Volume
+                    [action.participantId]: action.setting
+                }
+            };
+        case SET_PARTICIPANT_OPACITY: {
+            if (action.local) {
+                return {
+                    ...state,
+                    localOpacity: action.opacity
+                };
+            }
+
+            return {
+                ...state,
+                participantsOpacity: {
+                    ...state.participantsOpacity,
+
+                    [action.participantId]: action.opacity
+                }
+            };
+
+        }
+        case SET_PARTICIPANT_ZOOM_LEVEL: {
+            return {
+                ...state,
+                participantZoomLevel: {
+                    ...state.participantZoomLevel,
+
+                    [action.participantId]: action.zoomLevel
+                }
+            };
+        }
         case SET_VISIBLE_REMOTE_PARTICIPANTS: {
             const { endIndex, startIndex } = action;
             const { remoteParticipants } = state;

@@ -1,8 +1,8 @@
-// @ts-expect-error
 import jwtDecode from 'jwt-decode';
 import { AnyAction } from 'redux';
 
 import { IStore } from '../../app/types';
+import { setUserdata } from '../../inklusiva/userdata/actions';
 import { SET_CONFIG } from '../config/actionTypes';
 import { SET_LOCATION_URL } from '../connection/actionTypes';
 import { participantUpdated } from '../participants/actions';
@@ -15,7 +15,6 @@ import { setJWT } from './actions';
 import { parseJWTFromURLParams } from './functions';
 import logger from './logger';
 
-import { setUserdata } from '../../lag/userdata/actions';
 
 /**
  * Middleware to parse token data upon setting a new room URL.

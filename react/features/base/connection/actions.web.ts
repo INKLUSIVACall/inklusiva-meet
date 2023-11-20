@@ -9,7 +9,7 @@ import { NOTIFICATION_TIMEOUT_TYPE } from '../../notifications/constants';
 import { stopLocalVideoRecording } from '../../recording/actions.any';
 import LocalRecordingManager from '../../recording/components/Recording/LocalRecordingManager.web';
 import { setJWT } from '../jwt/actions';
-import { setUserdata } from '../../lag/userdata/actions';
+import { setUserdata } from '../../inklusiva/userdata/actions';
 
 import { _connectInternal } from './actions.any';
 

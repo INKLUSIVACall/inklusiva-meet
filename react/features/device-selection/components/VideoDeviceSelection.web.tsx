@@ -110,7 +110,8 @@ const styles = (theme: Theme) => {
             display: 'flex',
             flexDirection: 'column' as const,
             padding: '0 2px',
-            width: '100%'
+            width: '100%',
+            fontsize: '0.875rem'
         },
 
         checkboxContainer: {

@@ -151,8 +151,10 @@ const useStyles = makeStyles()(theme => {
         },
 
         text: {
-            ...withPixelLineHeight(theme.typography.bodyShortRegular),
-            color: theme.palette.text01
+            // ...withPixelLineHeight(theme.typography.bodyShortRegular),
+            lineHeight: '1.25rem',
+            color: theme.palette.text01,
+            fontSize: '0.875rem'
         },
 
         drawerText: {

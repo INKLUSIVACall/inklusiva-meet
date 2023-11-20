@@ -227,6 +227,12 @@ export function getSortedParticipantIds(stateful: IStateful) {
     ];
 }
 
+export function getRaisedHandPosition(stateful: IStateful, participantId: string) {
+    const raisedHandParticipants = getRaiseHandsQueue(stateful).map(({ id }) => id);
+
+    return raisedHandParticipants.indexOf(participantId) + 1;
+}
+
 /**
  * Checks if a participant matches the search string.
  *

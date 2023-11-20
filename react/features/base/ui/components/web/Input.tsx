@@ -50,6 +50,7 @@ const useStyles = makeStyles()(theme => {
             color: theme.palette.text01,
             ...withPixelLineHeight(theme.typography.bodyShortRegular),
             marginBottom: theme.spacing(2),
+            fontSize: '0.875rem',
 
             '&.is-mobile': {
                 ...withPixelLineHeight(theme.typography.bodyShortRegularLarge)
@@ -72,6 +73,7 @@ const useStyles = makeStyles()(theme => {
             height: '40px',
             boxSizing: 'border-box',
             width: '100%',
+            fontSize: '0.875rem',
 
             '&::placeholder': {
                 color: theme.palette.text02

@@ -18,18 +18,9 @@ import { isLocalParticipantModerator } from '../../../base/participants/function
 import ContextMenu from '../../../base/ui/components/web/ContextMenu';
 import { isReactionsButtonEnabled, isReactionsEnabled } from '../../../reactions/functions.web';
 import { iAmVisitor } from '../../../visitors/functions';
-import {
-    setHangupMenuVisible,
-    setOverflowMenuVisible,
-    setToolbarHovered,
-    showToolbox
-} from '../../actions.web';
+import { setHangupMenuVisible, setOverflowMenuVisible, setToolbarHovered, showToolbox } from '../../actions.web';
 import { NOT_APPLICABLE, THRESHOLDS } from '../../constants';
-import {
-    getAllToolboxButtons,
-    getJwtDisabledButtons,
-    isToolboxVisible
-} from '../../functions.web';
+import { getAllToolboxButtons, getJwtDisabledButtons, isToolboxVisible } from '../../functions.web';
 import { useKeyboardShortcuts } from '../../hooks.web';
 import { IToolboxButton } from '../../types';
 import HangupButton from '../HangupButton';
@@ -74,6 +65,11 @@ interface IProps extends WithTranslation {
      * Whether or not the toolbox is disabled. It is for recorders.
      */
     _disabled: boolean;
+
+    /**
+     * Whether or not the distress button is enabled.
+     */
+    _distressButton: boolean;
 
     /**
      * Whether the end conference feature is supported.
@@ -191,7 +187,8 @@ const Toolbox = ({
     _visible,
     dispatch,
     t,
-    toolbarButtons
+    toolbarButtons,
+    _distressButton
 }: IProps) => {
     const { classes, cx } = useStyles();
     const _toolboxRef = useRef<HTMLDivElement>(null);
@@ -200,8 +197,10 @@ const Toolbox = ({
 
     useEffect(() => {
         if (!_visible) {
-            if (document.activeElement instanceof HTMLElement
-                && _toolboxRef.current?.contains(document.activeElement)) {
+            if (
+                document.activeElement instanceof HTMLElement
+                && _toolboxRef.current?.contains(document.activeElement)
+            ) {
                 document.activeElement.blur();
             }
         }
@@ -253,13 +252,16 @@ const Toolbox = ({
      * @param {KeyboardEvent} e - Esc key click to close the popup.
      * @returns {void}
      */
-    const onEscKey = useCallback((e?: React.KeyboardEvent) => {
-        if (e?.key === 'Escape') {
-            e?.stopPropagation();
-            _hangupMenuVisible && dispatch(setHangupMenuVisible(false));
-            _overflowMenuVisible && dispatch(setOverflowMenuVisible(false));
-        }
-    }, [ _hangupMenuVisible, _overflowMenuVisible ]);
+    const onEscKey = useCallback(
+        (e?: React.KeyboardEvent) => {
+            if (e?.key === 'Escape') {
+                e?.stopPropagation();
+                _hangupMenuVisible && dispatch(setHangupMenuVisible(false));
+                _overflowMenuVisible && dispatch(setOverflowMenuVisible(false));
+            }
+        },
+        [ _hangupMenuVisible, _overflowMenuVisible ]
+    );
 
     /**
      * Sets the notify click mode for the buttons.
@@ -290,18 +292,19 @@ const Toolbox = ({
 
         setButtonsNotifyClickMode(buttons);
         const isHangupVisible = isToolbarButtonEnabled('hangup', _toolbarButtons);
-        let { order } = THRESHOLDS.find(({ width }) => _clientWidth > width)
-            || THRESHOLDS[THRESHOLDS.length - 1];
+        let { order } = THRESHOLDS.find(({ width }) => _clientWidth > width) || THRESHOLDS[THRESHOLDS.length - 1];
 
         const keys = Object.keys(buttons);
 
         const filtered = [
             ...order.map(key => buttons[key as keyof typeof buttons]),
             ...Object.values(buttons).filter((button, index) => !order.includes(keys[index]))
-        ].filter(({ key, alias = NOT_APPLICABLE }) =>
-            !_jwtDisabledButtons.includes(key)
-            && (isToolbarButtonEnabled(key, _toolbarButtons) || isToolbarButtonEnabled(alias, _toolbarButtons))
+        ].filter(
+            ({ key, alias = NOT_APPLICABLE }) =>
+                !_jwtDisabledButtons.includes(key)
+                && (isToolbarButtonEnabled(key, _toolbarButtons) || isToolbarButtonEnabled(alias, _toolbarButtons))
         );
+
         const filteredKeys = filtered.map(button => button.key);
 
         order = order.filter(key => filteredKeys.includes(buttons[key as keyof typeof buttons].key));
@@ -364,9 +367,19 @@ const Toolbox = ({
         const containerClassName = `toolbox-content${_isMobile || _isNarrowLayout ? ' toolbox-content-mobile' : ''}`;
 
         const { mainMenuButtons, overflowMenuButtons } = getVisibleButtons();
+
+        if (!_distressButton) {
+            mainMenuButtons.splice(mainMenuButtons.findIndex(({ key }) => key === 'distress'), 1);
+        }
+
+        const sayHello = function() {
+            alert('Hello');
+        };
+
         const raiseHandInOverflowMenu = overflowMenuButtons.some(({ key }) => key === 'raisehand');
         const showReactionsInOverflowMenu
-            = (_reactionsEnabled && !_reactionsButtonEnabled
+            = (_reactionsEnabled
+                && !_reactionsButtonEnabled
                 && (raiseHandInOverflowMenu || _isNarrowLayout || _isMobile))
             || overflowMenuButtons.some(({ key }) => key === 'reactions');
         const showRaiseHandInReactionsMenu = showReactionsInOverflowMenu && raiseHandInOverflowMenu;
@@ -376,19 +389,21 @@ const Toolbox = ({
                 <div
                     className = 'toolbox-content-wrapper'
                     onFocus = { onTabIn }
-                    { ...(_isMobile ? {} : {
-                        onMouseOut,
-                        onMouseOver
-                    }) }>
-
+                    { ...(_isMobile
+                        ? {}
+                        : {
+                            onMouseOut,
+                            onMouseOver
+                        }) }>
                     <div
                         className = 'toolbox-content-items'
                         ref = { _toolboxRef }>
-                        {mainMenuButtons.map(({ Content, key, ...rest }) => Content !== Separator && (
-                            <Content
-                                { ...rest }
-                                buttonKey = { key }
-                                key = { key } />)
+                        {mainMenuButtons.map(
+                            ({ Content, key, ...rest }) =>
+                                Content !== Separator && <Content
+                                    { ...rest }
+                                    buttonKey = { key }
+                                    key = { key } />
                         )}
 
                         {Boolean(overflowMenuButtons.length) && (
@@ -426,9 +441,9 @@ const Toolbox = ({
                                 showReactionsMenu = { showReactionsInOverflowMenu } />
                         )}
 
-                        {isToolbarButtonEnabled('hangup', _toolbarButtons) && (
-                            _endConferenceSupported
-                                ? <HangupMenuButton
+                        {isToolbarButtonEnabled('hangup', _toolbarButtons)
+                            && (_endConferenceSupported ? (
+                                <HangupMenuButton
                                     ariaControls = 'hangup-menu'
                                     isOpen = { _hangupMenuVisible }
                                     key = 'hangup-menu'
@@ -442,22 +457,20 @@ const Toolbox = ({
                                         onKeyDown = { onEscKey }>
                                         <EndConferenceButton
                                             buttonKey = 'end-meeting'
-                                            notifyMode = { getButtonNotifyMode(
-                                                'end-meeting',
-                                                _buttonsWithNotifyClick
-                                            ) } />
+                                            notifyMode = { getButtonNotifyMode('end-meeting', _buttonsWithNotifyClick) } />
                                         <LeaveConferenceButton
                                             buttonKey = 'hangup'
                                             notifyMode = { getButtonNotifyMode('hangup', _buttonsWithNotifyClick) } />
                                     </ContextMenu>
                                 </HangupMenuButton>
-                                : <HangupButton
+                            ) : (
+                                <HangupButton
                                     buttonKey = 'hangup'
                                     customClass = 'hangup-button'
                                     key = 'hangup-button'
                                     notifyMode = { getButtonNotifyMode('hangup', _buttonsWithNotifyClick) }
                                     visible = { isToolbarButtonEnabled('hangup', _toolbarButtons) } />
-                        )}
+                            ))}
                     </div>
                 </div>
             </div>
@@ -468,8 +481,8 @@ const Toolbox = ({
         return null;
     }
 
-    const rootClassNames = `new-toolbox ${_visible ? 'visible' : ''} ${
-        _toolbarButtons.length ? '' : 'no-buttons'} ${_chatOpen ? 'shift-right' : ''}`;
+    const rootClassNames = `new-toolbox ${_visible ? 'visible' : ''} ${_toolbarButtons.length ? '' : 'no-buttons'} ${_chatOpen ? 'shift-right' : ''
+    }`;
 
     return (
         <div
@@ -494,16 +507,8 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
     const { isNarrowLayout } = state['features/base/responsive-ui'];
     const endConferenceSupported = conference?.isEndConferenceSupported() && isLocalParticipantModerator(state);
 
-    const {
-        customToolbarButtons,
-        iAmRecorder,
-        iAmSipGateway
-    } = state['features/base/config'];
-    const {
-        hangupMenuVisible,
-        overflowMenuVisible,
-        overflowDrawer
-    } = state['features/toolbox'];
+    const { customToolbarButtons, iAmRecorder, iAmSipGateway } = state['features/base/config'];
+    const { hangupMenuVisible, overflowMenuVisible, overflowDrawer } = state['features/toolbox'];
     const { clientWidth } = state['features/base/responsive-ui'];
     let toolbarButtons = ownProps.toolbarButtons || getToolbarButtons(state);
     const _reactionsEnabled = isReactionsEnabled(state);
@@ -530,7 +535,8 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
         _reactionsEnabled,
         _shiftUp: state['features/toolbox'].shiftUp,
         _toolbarButtons: toolbarButtons,
-        _visible: isToolboxVisible(state)
+        _visible: isToolboxVisible(state),
+        _distressButton: state['features/inklusiva/userdata'].distressbutton?.active ?? false
     };
 }
 
