@@ -579,6 +579,17 @@ export function isParticipantModerator(participant?: IParticipant) {
 }
 
 /**
+ * Checks if a user has an inclusiva Call role.
+ * @param {string} icRole  - Role name
+ * @param {IParticipant} participant - Participant.
+ * @param {IParticipant} partner - Partner.
+ * @returns 
+ */
+export function checkParticipantHasICRole(icRole: string, participant?: IParticipant, partner?: IParticipant) {
+    return participant?.conference?.checkMemberHasRole(participant?.id, icRole, partner?.id);
+}
+
+/**
  * Returns the dominant speaker participant.
  *
  * @param {(Function|Object)} stateful - The (whole) redux state or redux's

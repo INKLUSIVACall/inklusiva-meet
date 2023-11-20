@@ -44,7 +44,7 @@ import TogglePinToStageButton from './TogglePinToStageButton';
 import VerifyParticipantButton from './VerifyParticipantButton';
 import VolumeSlider from './VolumeSlider';
 
-import { addIcRole, addTag, removeIcRole, removeTag } from '../../../base/participants/actions';
+import { addIcRole, removeIcRole } from '../../../base/participants/actions';
 
 interface IProps {
 
@@ -317,24 +317,24 @@ const ParticipantContextMenu = ({
 
     const addDemoTag = useCallback(() => {        
         dispatch(addIcRole(participant.id, 'asst', 'p1'));
-    }, [ addTag, participant ]);
+    }, [ addIcRole, participant ]);
     const removeDemoTag = useCallback(() => {
         dispatch(removeIcRole(participant.id, 'asst', 'p1'));
-    }, [ removeTag, participant ]);
+    }, [ removeIcRole, participant ]);
 
     const addDemo2Tag = useCallback(() => {        
         dispatch(addIcRole(participant.id, 'asst', 'p2'));
-    }, [ addTag, participant ]);
+    }, [ addIcRole, participant ]);
     const removeDemo2Tag = useCallback(() => {
         dispatch(removeIcRole(participant.id, 'asst', 'p2'));
-    }, [ removeTag, participant ]);
+    }, [ removeIcRole, participant ]);
 
     const addDemo3Tag = useCallback(() => {        
         dispatch(addIcRole(participant.id, 'demo'));
-    }, [ addTag, participant ]);
+    }, [ addIcRole, participant ]);
     const removeDemo3Tag = useCallback(() => {
         dispatch(removeIcRole(participant.id, 'demo'));
-    }, [ removeTag, participant ]);
+    }, [ removeIcRole, participant ]);
 
 
     return (
