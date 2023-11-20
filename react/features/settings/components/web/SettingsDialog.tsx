@@ -4,16 +4,21 @@ import { makeStyles } from 'tss-react/mui';
 
 import { IReduxState, IStore } from '../../../app/types';
 import {
+    IconAudioOnly,
     IconBell,
     IconBellConcierge,
+    IconBubble,
     IconCalendar,
     IconGear,
+    IconHandHoldingHand,
+    IconHands,
     IconImage,
     IconModerator,
     IconShortcuts,
     IconUser,
+    IconUsers,
     IconVideo,
-    IconVolumeUp,
+    IconVolumeUp
 } from '../../../base/icons/svg';
 import DialogWithTabs, { IDialogTab } from '../../../base/ui/components/web/DialogWithTabs';
 import { isCalendarEnabled } from '../../../calendar-sync/functions.web';
@@ -24,6 +29,24 @@ import {
     getAudioDeviceSelectionDialogProps,
     getVideoDeviceSelectionDialogProps
 } from '../../../device-selection/functions.web';
+import DistressBtnTab from '../../../inklusiva/distressbtn/DistressBtnTab';
+import { submitNewDistressBtnTab } from '../../../inklusiva/distressbtn/actions.web';
+import { getDistressBtnTabProps } from '../../../inklusiva/distressbtn/functions.web';
+import SignLangTab from '../../../inklusiva/signLang/SignLangTab';
+import { submitSignLangTabProps } from '../../../inklusiva/signLang/actions.web';
+import { getSignLangTabProps } from '../../../inklusiva/signLang/functions.web';
+import { submitSupportTabProps } from '../../../inklusiva/support/actions.web';
+import SupportTab from '../../../inklusiva/support/components/SupportTab';
+import { getSupportTabProps } from '../../../inklusiva/support/functions.web';
+import { submitTranscriptionTabProps } from '../../../inklusiva/transcription/actions.web';
+import TranscriptionTab from '../../../inklusiva/transcription/components/TranscriptionTab';
+import { getTranscriptionTabProps } from '../../../inklusiva/transcription/functions.web';
+import UiSettingsTab from '../../../inklusiva/uisettings/UiSettingsTab';
+import { submitUISettingsTabProps } from '../../../inklusiva/uisettings/actions.web';
+import { getUISettingsTabProps } from '../../../inklusiva/uisettings/functions';
+import UserVideoTab from '../../../inklusiva/uservideo/UserVideoTab';
+import { submitNewUserVideoTab } from '../../../inklusiva/uservideo/actions';
+import { getUserVideoTabProps } from '../../../inklusiva/uservideo/functions';
 import { checkBlurSupport, checkVirtualBackgroundEnabled } from '../../../virtual-background/functions';
 import { iAmVisitor } from '../../../visitors/functions';
 import {
@@ -33,7 +56,7 @@ import {
     submitProfileTab,
     submitShortcutsTab,
     submitVirtualBackgroundTab
-} from '../../actions';
+} from '../../actions.web';
 import { SETTINGS_TABS } from '../../constants';
 import {
     getModeratorTabProps,
@@ -42,8 +65,8 @@ import {
     getNotificationsTabProps,
     getProfileTabProps,
     getShortcutsTabProps,
-    getVirtualBackgroundTabProps,
-} from '../../functions';
+    getVirtualBackgroundTabProps
+} from '../../functions.web';
 
 import CalendarTab from './CalendarTab';
 import ModeratorTab from './ModeratorTab';
@@ -52,9 +75,6 @@ import NotificationsTab from './NotificationsTab';
 import ProfileTab from './ProfileTab';
 import ShortcutsTab from './ShortcutsTab';
 import VirtualBackgroundTab from './VirtualBackgroundTab';
-import DistressBtnTab from '../../../lag/distressbtn/DistressBtnTab';
-import { getDistressBtnTabProps, isDistressBtnEnabled } from '../../../lag/distressbtn/functions.web';
-import { submitNewDistressBtnTab } from '../../../lag/distressbtn/actions.web';
 
 /**
  * The type of the React {@code Component} props of
@@ -102,8 +122,7 @@ const SettingsDialog = ({ _tabs, defaultTab, dispatch }: IProps) => {
         return {
             ...tab,
             className: `settings-pane ${classes.settingsDialog}`,
-            submit: (...args: any) => tab.submit
-                && dispatch(tab.submit(...args))
+            submit: (...args: any) => tab.submit && dispatch(tab.submit(...args))
         };
     });
 
@@ -134,13 +153,14 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
     // The settings sections to display.
     const showDeviceSettings = configuredTabs.includes('devices');
     const moreTabProps = getMoreTabProps(state);
+    const distressBtnTabProps = getDistressBtnTabProps(state);
+    const supportTabProps = getSupportTabProps(state);
+    const userVideoTabProps = getUserVideoTabProps(state);
     const moderatorTabProps = getModeratorTabProps(state);
     const { showModeratorSettings } = moderatorTabProps;
     const showMoreTab = configuredTabs.includes('more');
-    const showProfileSettings
-        = configuredTabs.includes('profile') && !state['features/base/config'].disableProfile;
-    const showCalendarSettings
-        = configuredTabs.includes('calendar') && isCalendarEnabled(state);
+    const showProfileSettings = configuredTabs.includes('profile') && !state['features/base/config'].disableProfile;
+    const showCalendarSettings = configuredTabs.includes('calendar') && isCalendarEnabled(state);
     const showSoundsSettings = configuredTabs.includes('sounds');
     const enabledNotifications = getNotificationsMap(state);
     const showNotificationsSettings = Object.keys(enabledNotifications).length > 0;
@@ -149,10 +169,11 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
     const tabs: IDialogTab<any>[] = [];
     const _iAmVisitor = iAmVisitor(state);
 
-    const isDistressBtnActive = isDistressBtnEnabled(state);
-    const distressBtnTabProps = getDistressBtnTabProps(state);
+    const transcriptionTabProps = getTranscriptionTabProps(state);
 
-    
+    const signLangTabProps = getSignLangTabProps(state);
+    const uiSettingsTabProps = getUISettingsTabProps(state);
+
     if (showDeviceSettings) {
         tabs.push({
             name: SETTINGS_TABS.AUDIO,
@@ -177,39 +198,46 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
             submit: (newState: any) => submitAudioDeviceSelectionTab(newState, isDisplayedOnWelcomePage),
             icon: IconVolumeUp
         });
-        !_iAmVisitor && tabs.push({
-            name: SETTINGS_TABS.VIDEO,
-            component: VideoDeviceSelection,
-            labelKey: 'settings.video',
-            props: getVideoDeviceSelectionDialogProps(state, isDisplayedOnWelcomePage),
-            propsUpdateFunction: (tabState: any, newProps: ReturnType<typeof getVideoDeviceSelectionDialogProps>) => {
-                // Ensure the device selection tab gets updated when new devices
-                // are found by taking the new props and only preserving the
-                // current user selected devices. If this were not done, the
-                // tab would keep using a copy of the initial props it received,
-                // leaving the device list to become stale.
-                
-                return {
-                    ...newProps,
-                    currentFramerate: tabState?.currentFramerate,
-                    localFlipX: tabState.localFlipX,
-                    selectedVideoInputId: tabState.selectedVideoInputId
-                };
-            },
-            submit: (newState: any) => submitVideoDeviceSelectionTab(newState, isDisplayedOnWelcomePage),
-            icon: IconVideo
-        });
+        !_iAmVisitor
+            && tabs.push({
+                name: SETTINGS_TABS.VIDEO,
+                component: VideoDeviceSelection,
+                labelKey: 'settings.video',
+                props: getVideoDeviceSelectionDialogProps(state, isDisplayedOnWelcomePage),
+                propsUpdateFunction: (
+                        tabState: any,
+                        newProps: ReturnType<typeof getVideoDeviceSelectionDialogProps>
+                ) => {
+                    // Ensure the device selection tab gets updated when new devices
+                    // are found by taking the new props and only preserving the
+                    // current user selected devices. If this were not done, the
+                    // tab would keep using a copy of the initial props it received,
+                    // leaving the device list to become stale.
+
+                    return {
+                        ...newProps,
+                        currentFramerate: tabState?.currentFramerate,
+                        localFlipX: tabState.localFlipX,
+                        selectedVideoInputId: tabState.selectedVideoInputId
+                    };
+                },
+                submit: (newState: any) => submitVideoDeviceSelectionTab(newState, isDisplayedOnWelcomePage),
+                icon: IconVideo
+            });
     }
-    
+
     if (virtualBackgroundSupported && !_iAmVisitor && enableVirtualBackground) {
         tabs.push({
             name: SETTINGS_TABS.VIRTUAL_BACKGROUND,
             component: VirtualBackgroundTab,
             labelKey: 'virtualBackground.title',
             props: getVirtualBackgroundTabProps(state, isDisplayedOnWelcomePage),
-            propsUpdateFunction: (tabState: any, newProps: ReturnType<typeof getVirtualBackgroundTabProps>,
-                tabStates: any) => {
-                    const videoTabState = tabStates[tabs.findIndex(tab => tab.name === SETTINGS_TABS.VIDEO)];
+            propsUpdateFunction: (
+                    tabState: any,
+                    newProps: ReturnType<typeof getVirtualBackgroundTabProps>,
+                    tabStates: any
+            ) => {
+                const videoTabState = tabStates[tabs.findIndex(tab => tab.name === SETTINGS_TABS.VIDEO)];
 
                 return {
                     ...newProps,
@@ -220,21 +248,24 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
             submit: (newState: any) => submitVirtualBackgroundTab(newState),
             cancel: () => {
                 const { options } = getVirtualBackgroundTabProps(state, isDisplayedOnWelcomePage);
-                
-                return submitVirtualBackgroundTab({
-                    options: {
-                        backgroundType: options.backgroundType,
-                        enabled: options.backgroundEffectEnabled,
-                        url: options.virtualSource,
-                        selectedThumbnail: options.selectedThumbnail,
-                        blurValue: options.blurValue
-                    }
-                }, true);
+
+                return submitVirtualBackgroundTab(
+                    {
+                        options: {
+                            backgroundType: options.backgroundType,
+                            enabled: options.backgroundEffectEnabled,
+                            url: options.virtualSource,
+                            selectedThumbnail: options.selectedThumbnail,
+                            blurValue: options.blurValue
+                        }
+                    },
+                    true
+                );
             },
             icon: IconImage
         });
     }
-    
+
     if ((showSoundsSettings || showNotificationsSettings) && !_iAmVisitor) {
         tabs.push({
             name: SETTINGS_TABS.NOTIFICATIONS,
@@ -257,7 +288,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
             icon: IconBell
         });
     }
-    
+
     if (showModeratorSettings && !_iAmVisitor) {
         tabs.push({
             name: SETTINGS_TABS.MODERATOR,
@@ -266,7 +297,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
             props: moderatorTabProps,
             propsUpdateFunction: (tabState: any, newProps: typeof moderatorTabProps) => {
                 // Updates tab props, keeping users selection
-                
+
                 return {
                     ...newProps,
                     followMeEnabled: tabState?.followMeEnabled,
@@ -279,7 +310,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
             icon: IconModerator
         });
     }
-    
+
     if (showProfileSettings) {
         tabs.push({
             name: SETTINGS_TABS.PROFILE,
@@ -290,9 +321,31 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
             icon: IconUser
         });
     }
-    
-    if(true) {
-        tabs.push({
+
+    tabs.push({
+        name: SETTINGS_TABS.USERVIDEO_TAB,
+        component: UserVideoTab,
+        labelKey: 'settings.userVideoTab',
+        props: getUserVideoTabProps(state),
+        propsUpdateFunction: (tabState: any, newProps: typeof userVideoTabProps) => {
+            // Updates tab props, keeping users selection
+
+            return {
+                ...newProps,
+                otherParticipants: tabState?.otherParticipants,
+                brightness: tabState?.brightness,
+                contrast: tabState?.contrast,
+                dimming: tabState?.dimming,
+                fps: tabState?.fps,
+                saturation: tabState.saturation,
+                zoom: tabState?.zoom
+            };
+        },
+        submit: submitNewUserVideoTab,
+        icon: IconUsers
+    });
+
+    tabs.push({
         name: SETTINGS_TABS.DISTRESSBTN_TAB,
         component: DistressBtnTab,
         labelKey: 'settings.distressBtnTab', // muss in Sprachdatei gesetzt werden
@@ -306,13 +359,33 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
                 dimming: tabState?.dimming,
                 volume: tabState?.volume,
                 message: tabState?.message,
-                message_text: tabState?.message_text,
+                message_text: tabState?.message_text
             };
         },
         submit: submitNewDistressBtnTab,
         icon: IconBellConcierge
-        });
-    }
+    });
+
+    tabs.push({
+        name: SETTINGS_TABS.SUPPORT_TAB,
+        component: SupportTab,
+        labelKey: 'settings.supportTab', // muss in Sprachdatei gesetzt werden
+        props: getSupportTabProps(state),
+        propsUpdateFunction: (tabState: any, newProps: typeof supportTabProps) => {
+            // Updates tab props, keeping users selection
+
+            return {
+                ...newProps,
+                eyesight: tabState?.eyesight,
+                hearing: tabState?.hearing,
+                senses: tabState?.senses,
+                learning_difficulties: tabState?.learning_difficulties,
+                screenreader: tabState?.screenreader
+            };
+        },
+        submit: submitSupportTabProps,
+        icon: IconHandHoldingHand
+    });
 
     if (showCalendarSettings && !_iAmVisitor) {
         tabs.push({
@@ -323,21 +396,76 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
         });
     }
 
-    !_iAmVisitor && tabs.push({
-        name: SETTINGS_TABS.SHORTCUTS,
-        component: ShortcutsTab,
-        labelKey: 'settings.shortcuts',
-        props: getShortcutsTabProps(state, isDisplayedOnWelcomePage),
-        propsUpdateFunction: (tabState: any, newProps: ReturnType<typeof getShortcutsTabProps>) => {
-            // Updates tab props, keeping users selection
+    !_iAmVisitor
+        && tabs.push({
+            name: SETTINGS_TABS.SHORTCUTS,
+            component: ShortcutsTab,
+            labelKey: 'settings.shortcuts',
+            props: getShortcutsTabProps(state, isDisplayedOnWelcomePage),
+            propsUpdateFunction: (tabState: any, newProps: ReturnType<typeof getShortcutsTabProps>) => {
+                // Updates tab props, keeping users selection
 
+                return {
+                    ...newProps,
+                    keyboardShortcutsEnabled: tabState?.keyboardShortcutsEnabled
+                };
+            },
+            submit: submitShortcutsTab,
+            icon: IconShortcuts
+        });
+
+
+    tabs.push({
+        name: SETTINGS_TABS.SIGNLANG_TAB,
+        component: SignLangTab,
+        labelKey: 'settings.SignLangTab',
+        props: signLangTabProps,
+        propsUpdateFunction: (tabState: any, newProps: typeof signLangTabProps) => {
+            // Updates tab props, keeping users selection
             return {
                 ...newProps,
-                keyboardShortcutsEnabled: tabState?.keyboardShortcutsEnabled
+                active: tabState?.active,
+                display: tabState?.display,
+                windowSize: tabState?.windowSize
             };
         },
-        submit: submitShortcutsTab,
-        icon: IconShortcuts
+        submit: submitSignLangTabProps,
+        icon: IconHands
+    });
+
+    tabs.push({
+        name: SETTINGS_TABS.TRANSCRIPTION,
+        component: TranscriptionTab,
+        labelKey: 'settings.transcriptionTab',
+        props: transcriptionTabProps,
+        propsUpdateFunction: (tabState: any, newProps: typeof transcriptionTabProps) => {
+            return {
+                ...newProps,
+                active: tabState?.active,
+                fontSize: tabState?.fontSize,
+                history: tabState?.history
+            };
+        },
+        submit: submitTranscriptionTabProps,
+        icon: IconBubble
+    });
+
+    tabs.push({
+        name: SETTINGS_TABS.UI_TAB,
+        component: UiSettingsTab,
+        labelKey: 'settings.uiTab',
+        props: uiSettingsTabProps,
+        propsUpdateFunction: (tabState: any, newProps: typeof uiSettingsTabProps) => {
+            return {
+                ...newProps,
+                fontSize: tabState?.fontSize,
+                iconSize: tabState?.iconSize,
+                acousticCues: tabState?.acousticCues,
+                visualCues: tabState?.visualCues
+            };
+        },
+        submit: submitUISettingsTabProps,
+        icon: IconAudioOnly
     });
 
     if (showMoreTab && !_iAmVisitor) {

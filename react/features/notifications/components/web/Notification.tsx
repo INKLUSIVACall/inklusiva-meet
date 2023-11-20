@@ -122,13 +122,15 @@ const useStyles = makeStyles()((theme: Theme) => {
         },
 
         title: {
-            ...withPixelLineHeight(theme.typography.bodyShortBold)
+            ...withPixelLineHeight(theme.typography.bodyShortBold),
+            fontSize: '0.875rem'
         },
 
         description: {
             ...withPixelLineHeight(theme.typography.bodyShortRegular),
             overflow: 'auto',
             overflowWrap: 'break-word',
+            fontSize: '0.875rem',
 
             '&:not(:empty)': {
                 marginTop: theme.spacing(1)
@@ -153,6 +155,7 @@ const useStyles = makeStyles()((theme: Theme) => {
             marginRight: theme.spacing(3),
             padding: 0,
             cursor: 'pointer',
+            fontSize: '0.875rem',
 
             '&:last-of-type': {
                 marginRight: 0

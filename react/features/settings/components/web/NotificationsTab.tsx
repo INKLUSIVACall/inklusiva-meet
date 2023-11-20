@@ -109,7 +109,8 @@ const styles = (theme: Theme) => {
         title: {
             ...withPixelLineHeight(theme.typography.heading6),
             color: `${theme.palette.text01} !important`,
-            marginBottom: theme.spacing(3)
+            marginBottom: theme.spacing(3),
+            fontSize: '1rem'
         },
 
         checkbox: {

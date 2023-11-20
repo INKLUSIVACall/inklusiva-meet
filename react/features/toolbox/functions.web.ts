@@ -33,6 +33,7 @@ import DownloadButton from './components/DownloadButton';
 import HelpButton from './components/HelpButton';
 import AudioSettingsButton from './components/web/AudioSettingsButton';
 import CustomOptionButton from './components/web/CustomOptionButton';
+import DistressButton from './components/web/DistressButton';
 import FullscreenButton from './components/web/FullscreenButton';
 import LinkToSalesforceButton from './components/web/LinkToSalesforceButton';
 import ProfileButton from './components/web/ProfileButton';
@@ -234,6 +235,12 @@ export function getAllToolboxButtons(_customToolbarButtons?: {
         group: 2
     };
 
+    const distress = {
+        key: 'distress',
+        Content: DistressButton,
+        group: 2
+    };
+
     // In Narrow layout and mobile web we are using drawer for popups and that is why it is better to include
     // all forms of reactions in the overflow menu. Otherwise the toolbox will be hidden and the reactions popup
     // misaligned.
@@ -398,10 +405,10 @@ export function getAllToolboxButtons(_customToolbarButtons?: {
     const customButtons = _customToolbarButtons?.reduce((prev, { icon, id, text }) => {
         return {
             ...prev,
-            [id]: {
-                key: id,
-                Content: CustomOptionButton,
-                group: 4,
+            ['distress']: {
+                key: 'distress',
+                Content: DistressButton,
+                group: 1,
                 icon,
                 text
             }
@@ -440,6 +447,7 @@ export function getAllToolboxButtons(_customToolbarButtons?: {
         feedback,
         download,
         help,
+        distress,
         ...customButtons
     };
 }

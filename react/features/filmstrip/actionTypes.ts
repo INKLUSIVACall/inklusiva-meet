@@ -90,6 +90,40 @@ export const SET_VERTICAL_VIEW_DIMENSIONS = 'SET_VERTICAL_VIEW_DIMENSIONS';
 export const SET_VOLUME = 'SET_VOLUME';
 
 /**
+ * The type of (redux) action which sets the frequency settings for a thumnail's audio.
+ *
+ * {
+ *     type: SET_FREQUENCY_FILTER_SETTING,
+ *     participantId: string,
+ *     setting: number
+ * }
+ */
+export const SET_FREQUENCY_FILTER_SETTING = 'SET_FREQUENCY_FILTER_SETTING';
+
+/**
+ * The type of (redux) action which sets the opacity settings for a thumnail's video.
+ *
+ * {
+ *     type: SET_PARTICIPANT_OPACITY,
+ *     local: boolean,
+ *     participantId: string|null,
+ *     opacity: number
+ * }
+ */
+export const SET_PARTICIPANT_OPACITY = 'SET_PARTICIPANT_OPACITY';
+
+/**
+ * The type of (redux) action which sets the zoom level for a thumnail's video.
+ *
+ * {
+ *     type: SET_PARTICIPANT_OPACITY,
+ *     participantId: string,
+ *     zoomLevel: number
+ * }
+ */
+export const SET_PARTICIPANT_ZOOM_LEVEL = 'SET_PARTICIPANT_ZOOM_LEVEL';
+
+/**
  * The type of the action which sets the list of visible remote participants in the filmstrip by storing the start and
  * end index in the remote participants array.
  *

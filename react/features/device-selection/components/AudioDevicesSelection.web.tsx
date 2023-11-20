@@ -21,7 +21,7 @@ import AudioOutputPreview from './AudioOutputPreview';
 import DeviceHidContainer from './DeviceHidContainer.web';
 import DeviceSelector from './DeviceSelector.web';
 
-import { isOthersAudioInputEnabled } from '../../../features/lag/userdata/functions';
+import { isOthersAudioInputEnabled } from '../../../features/inklusiva/userdata/functions';
 /**
  * The type of the React {@code Component} props of {@link AudioDevicesSelection}.
  */
@@ -517,11 +517,11 @@ const mapStateToProps = (state: IReduxState) => {
         availableDevices: state['features/base/devices'].availableDevices ?? {},
         iAmVisitor: iAmVisitorCheck(state),
         //othersAudioActive: isOthersAudioInputEnabled(state),
-        //othersVolume: state['features/lag/userdata'].userData?.audio?.volume ?? 100,
-        highFrequencies: state['features/lag/userdata'].userData?.audio?.highFrequency ?? 100,
-        amplify: state['features/lag/userdata'].userData?.audio?.amplify ?? 100,
-        balance: state['features/lag/userdata'].userData?.audio?.balance ?? 100,
-        background: state['features/lag/userdata'].userData?.audio?.background ?? false,
+        //othersVolume: state['features/inklusiva/usera'].audio?.volume ?? 100,
+        highFrequencies: state['features/inklusiva/userdata'].audio?.highFreq ?? 100,
+        amplify: state['features/inklusiva/userdata'].audio?.amplify ?? 100,
+        balance: state['features/inklusiva/userdata'].audio?.balance ?? 100,
+        background: state['features/inklusiva/userdata'].audio?.background ?? false,
     };
 };
 

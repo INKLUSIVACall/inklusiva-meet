@@ -61,7 +61,8 @@ const useStyles = makeStyles()(theme => {
             padding: '10px 16px',
             textAlign: 'center',
             ...withPixelLineHeight(theme.typography.bodyShortRegular),
-            border: `1px solid ${theme.palette.ui03}`
+            border: `1px solid ${theme.palette.ui03}`,
+            fontSize: '0.875rem'
         }
     };
 });

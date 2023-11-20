@@ -1,7 +1,7 @@
+import clsx from 'clsx';
 import React, { ReactNode, useCallback } from 'react';
 import { WithTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
-import clsx from 'clsx';
 
 import Avatar from '../../../base/avatar/components/Avatar';
 import { translate } from '../../../base/i18n/functions';
@@ -9,26 +9,26 @@ import { withPixelLineHeight } from '../../../base/styles/functions.web';
 import ListItem from '../../../base/ui/components/web/ListItem';
 import {
     ACTION_TRIGGER,
+    ACTIVE_CONNECTION,
     type ActionTrigger,
     AudioStateIcons,
+    ConnectionStateIcons,
+    DEFAULT_MEETING_ROLE,
+    DEFAULT_MEETING_STATE,
+    ESCORT_REQUIRED,
+    EscortIcons,
     MEDIA_STATE,
     MediaState,
-    VideoStateIcons,
-    MeetingStateIcons,
-    ConnectionStateIcons,
     MeetingRoleIcons,
-    TechnicalSupportIcons,
-    EscortIcons,
+    MeetingStateIcons,
+    SUPPORT_OFFERED,
     SupportOfferIcons,
     TECHNICAL_SUPPORT_REQUIRED,
-    ESCORT_REQUIRED,
-    SUPPORT_OFFERED,
-    ACTIVE_CONNECTION,
-    DEFAULT_MEETING_STATE,
-    DEFAULT_MEETING_ROLE
+    TechnicalSupportIcons,
+    VideoStateIcons
 } from '../../constants';
 
-import { RaisedHandIndicator } from './RaisedHandIndicator';
+import RaisedHandIndicator from './RaisedHandIndicator';
 
 interface IProps extends WithTranslation {
 
@@ -56,6 +56,11 @@ interface IProps extends WithTranslation {
      * The name of the participant. Used for showing lobby names.
      */
     displayName?: string;
+
+    /**
+     * True if the user is in the Lobby.
+     */
+    inLobby?: boolean;
 
     /**
      * Is this item highlighted/raised.
@@ -106,12 +111,6 @@ interface IProps extends WithTranslation {
      * The translated "you" text.
      */
     youText?: string;
-
-
-    /**
-     * True if the user is in the Lobby
-     */
-    inLobby: boolean;
 }
 
 const useStyles = makeStyles()(theme => {
@@ -119,7 +118,8 @@ const useStyles = makeStyles()(theme => {
         nameContainer: {
             display: 'flex',
             flex: 1,
-            overflow: 'hidden'
+            overflow: 'hidden',
+            fontSize: '0.875rem'
         },
 
         name: {
@@ -172,9 +172,10 @@ function ParticipantItem({
 
     const { classes } = useStyles();
 
-    var meeting_role = DEFAULT_MEETING_ROLE;
+    let meetingRole = DEFAULT_MEETING_ROLE;
+
     if (isModerator) {
-        meeting_role = "moderator";
+        meetingRole = 'moderator';
     }
 
     const icon = (
@@ -185,10 +186,11 @@ function ParticipantItem({
             size = { 32 } />
     );
 
+    const roleIcon = MeetingRoleIcons[meetingRole];
     const text = (
         <>
             <div className = { classes.nameContainer }>
-                {inLobby && <div className = { clsx(classes.name, "lobby-participant-name") }>
+                {inLobby && <div className = { clsx(classes.name, 'lobby-participant-name') }>
                     {displayName}
                 </div>}
                 {!inLobby && <div className = { classes.name }>
@@ -196,18 +198,17 @@ function ParticipantItem({
                 </div>}
                 {local ? <span>&nbsp;({youText})</span> : null}
 
-
                 <div className = 'LeftPlacedIcons'>
-                    {MeetingRoleIcons[meeting_role]}
+                    {roleIcon}
                     {TECHNICAL_SUPPORT_REQUIRED && TechnicalSupportIcons}
                     {ESCORT_REQUIRED && EscortIcons}
                     {SUPPORT_OFFERED && SupportOfferIcons}
                     {ACTIVE_CONNECTION && ConnectionStateIcons}
-                    {raisedHand && <RaisedHandIndicator />}
+                    {raisedHand && <RaisedHandIndicator participantID = { participantID } />}
                 </div>
 
             </div>
-            {/*{isModerator && !disableModeratorIndicator && <div className = { classes.moderatorLabel }>
+            {/* {isModerator && !disableModeratorIndicator && <div className = { classes.moderatorLabel }>
                 {t('videothumbnail.moderator')}
             </div>}*/}
         </>

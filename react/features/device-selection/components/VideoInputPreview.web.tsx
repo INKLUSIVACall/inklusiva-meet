@@ -47,7 +47,8 @@ const useStyles = makeStyles()(theme => {
             position: 'absolute',
             right: 0,
             textAlign: 'center',
-            top: '50%'
+            top: '50%',
+            fontSize: '0.875rem'
         }
     };
 });

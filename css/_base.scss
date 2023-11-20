@@ -28,7 +28,7 @@ body {
     margin: 0px;
     width: 100%;
     height: 100%;
-    font-size: 12px;
+    font-size: 24px;
     font-weight: 400;
     overflow: hidden;
     color: #F1F1F1;
@@ -46,6 +46,9 @@ body {
 .jitsi-icon {
     &-default svg {
         fill: white;
+    }
+    svg {
+        transform: scale(var(--icon-size-factor));
     }
 }
 

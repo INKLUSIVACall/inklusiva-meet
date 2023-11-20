@@ -116,6 +116,7 @@ const useStyles = makeStyles()(theme => {
             boxSizing: 'border-box',
             color: theme.palette.text01,
             ...withPixelLineHeight(theme.typography.heading6),
+            fontSize: '1rem',
 
             '.jitsi-icon': {
                 cursor: 'pointer'

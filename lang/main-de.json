@@ -1045,12 +1045,55 @@
         "selectMic": "Mikrofon",
         "selfView": "Eigene Ansicht",
         "shortcuts": "Tastaturkürzel",
+        "SignLangTab": "Gebärdensprachen-Assistent",
         "speakers": "Lautsprecher",
         "startAudioMuted": "Alle Personen treten stummgeschaltet bei",
         "startReactionsMuted": "Interaktionstöne für alle deaktivieren",
         "startVideoMuted": "Alle Personen treten ohne Video bei",
+        "supportTab": "Unterstützungsbedarf",
         "talkWhileMuted": "Wenn bei Stummschaltung gesprochen wird",
         "title": "Einstellungen",
+        "transcriptionTab": "Schriftdolmetschen-Assistent",
+        "uiSettings": {
+            "fontSize": "Schriftgröße",
+            "iconSize": "Icon-Größe",
+            "screenreader":{
+                "headline": "Ich nutze einen Screenreader",
+                "label": "Screenreader aktivieren",
+                "description": "Optimierte Ausgabe von Steuerelementen zur vereinfachten Ausgabe über einen Screenreader."
+            },
+            "acousticcues":{
+                "headline": "Akustische Signale",
+                "label": "Akustische Signale aktivieren",
+                "description": "Akustische Signale für Hinweise und Meldungen während des Meetings."
+            },
+            "visualcues":{
+                "headline": "Visuelle Hinweise",
+                "label": "Visuelle Hinweise aktivieren",
+                "description": "Visuelle Hinweise für Hinweise und Meldungen während des Meetings."
+            }
+        },
+        "userVideoTab": "Teilnehmer-Video",
+        "uiTab": "Benutzeroberfläche",
+        "uiSettings": {
+            "fontSize": "Schriftgröße",
+            "iconSize": "Icon-Größe",
+            "screenreader":{
+                "headline": "Ich nutze einen Screenreader",
+                "label": "Screenreader aktivieren",
+                "description": "Optimierte Ausgabe von Steuerelementen zur vereinfachten Ausgabe über einen Screenreader."
+            },
+            "acousticcues":{
+                "headline": "Akustische Signale",
+                "label": "Akustische Signale aktivieren",
+                "description": "Akustische Signale für Hinweise und Meldungen während des Meetings."
+            },
+            "visualcues":{
+                "headline": "Visuelle Hinweise",
+                "label": "Visuelle Hinweise aktivieren",
+                "description": "Visuelle Hinweise für Hinweise und Meldungen während des Meetings."
+            }
+        },
         "video": "Kamera"
     },
     "settingsView": {
@@ -1211,6 +1254,15 @@
             "videomuteGUMPending": "Verbinde Ihre Kamera",
             "videounmute": "Kamera einschalten"
         },
+        "signlangtab":{
+            "btn_engage_headline": "Ich möchte den Assistenten Gebärdensprache nutzen",
+            "btn_engage_label": "Gebärdensprachen-Assistent",
+            "btn_engage_desc": "Der Assistent Gebärdensprache ermöglicht die Videoanzeige eines Gebärdensprache Dolmetscher:in.",
+            "display_headline": "Darstellung Dolmetscher:in",
+            "display_option1": "als übergeordnetes Fenster",
+            "display_option2": "als eine Kachel wie alle Teilnehmer",
+            "windowsize_label": "Fenstergröße festlegen"
+        },
         "activateOwnAudio": "Audio-Übertragung aktiv",
         "activateOthersAudio": "Teilnehmer Audio aktiv",
         "addPeople": "Personen zur Konferenz hinzufügen",
@@ -1314,10 +1366,21 @@
         "videomute": "Kamera stoppen",
         "videomuteGUMPending": "Verbinde Ihre Kamera",
         "videounmute": "Kamera einschalten",
+        "userVideo": {
+            "containerHeadline": "Teilnehmer-Videos",
+            "videoVisibilityToggleHeadline": "Während des Meetings sind alle Teilnehmer-Videos in den Kacheln zu sehen.",
+            "videoVisibilityEngage": "Teilnehmer-Videos einschalten",
+            "contrastSliderHeadline": "Kontrast",
+            "brightnessSliderHeadline": "Helligkeit",
+            "dimSliderHeadline": "Kacheln dimmen",
+            "saturationSliderHeadline": "Farbsättigung",
+            "zoomSliderHeadline": "Alle Videos zoomen",
+            "fpsSliderHeadline": "Bildübertragungsrate"
+        },
         "distressbtn": {
             "btn_engage_headline": "Ich möchte einen Notfallbutton",
             "btn_engage_label": "Notfallbutton aktivieren",
-            "btn_engage_desc": "Der Notfallbutton ermöglicht einen sofortigen Einfluss auf die Audio- und Videoübertragung im meeting. Einer bestimmten Begleitperson kann eine vorab geschriebene Nachricht übermittelt werden.",
+            "btn_engage_desc": "Der Notfallbutton ermöglicht einen sofortigen Einfluss auf die Audio- und Videoübertragung im Meeting. Einer bestimmten Begleitperson kann eine vorab geschriebene Nachricht übermittelt werden.",
             "dimlights_label": "Kacheln dimmen",
             "setvolume_label": "Lautstärke anpassen",
             "messagebtn_enable_label": "Nachricht versenden",
@@ -1325,6 +1388,21 @@
             "messagebtn_enable_desc": "Nach dem Klick auf den Notfallbutton wird eine private Nachricht an eine Begleitperson gesendet. Vorerst ist das der Moderator. Im Meeting kann eine bevorzugte Begleitperson eingestellt werden.",
             "message_headline": "Nachricht verfassen",
             "message_desc": "In diesem Feld kann eine eigene Notfallnachricht verfasst werden."
+        },
+        "support":{
+                "eyesight_headline": "Angaben zu Sehen",
+                "eyesight_option1_label": "Ich bin blind und habe Unterstützungsbedarf",
+                "eyesight_option2_label": "Ich habe Seheinschränkungen und habe Unterstützungsbedarf",
+                "eyesight_option3_label": "Ich habe keinen Unterstützungsbedarf",
+                "hearing_headline": "Angaben zu Hören",
+                "hearing_option1_label": "Ich bin taub und habe Unterstützungsbedarf",
+                "hearing_option2_label": "Ich habe Höreinschränkungen und habe Unterstützungsbedarf",
+                "hearing_option3_label": "Ich habe keinen Unterstützungsbedarf",
+                "screenreader_label": "Ich nutze einen Screenreader",
+                "senses_label": "Ich bin schnell überreizt",
+                "learning_difficulties_label": "Ich habe Dyslexie, Legasthenie und/ oder Lernschwierigkeiten",
+                "warning_headline": "Achtung",
+                "warning_text": "Änderungen des Unterstützungsbedarfs hat eventuell Einfluss auf bereits hinterlegte Einstellungen."
         }
     },
     "transcribing": {
@@ -1356,6 +1434,7 @@
         "react-nativeGrantPermissions": "Wählen Sie <b><i>Erlauben</i></b>, wenn der Browser um Berechtigungen bittet.",
         "safariGrantPermissions": "Wählen Sie <b><i>OK</i></b>, wenn der Browser um Berechtigungen bittet."
     },
+
     "videoSIPGW": {
         "busy": "Es stehen keine freien Ressourcen zur Verfügung. Bitte versuchen Sie es später noch einmal.",
         "busyTitle": "Keine freien Ressourcen",
