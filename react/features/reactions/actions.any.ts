@@ -3,6 +3,7 @@ import { IStore } from '../app/types';
 import {
     ADD_REACTION_BUFFER,
     ADD_REACTION_MESSAGE,
+    DISPLAY_NOTIFICATION_INSTEAD_OF_REACTION_SOUND,
     FLUSH_REACTION_BUFFER,
     PUSH_REACTIONS,
     SEND_REACTIONS,
@@ -110,5 +111,17 @@ export function pushReactions(reactions: Array<string>): IReactionsAction {
 export function displayReactionSoundsNotification(): IReactionsAction {
     return {
         type: SHOW_SOUNDS_NOTIFICATION
+    };
+}
+
+/**
+ * Displays a Notification instead of playing a sound.
+ *
+ * @returns {void}
+ */
+export function displayNotificationInsteadOfReactionSound(message): IReactionsAction {
+    return {
+        type: DISPLAY_NOTIFICATION_INSTEAD_OF_REACTION_SOUND,
+        message
     };
 }
