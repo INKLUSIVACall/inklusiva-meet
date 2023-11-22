@@ -22,6 +22,7 @@ import { NOTIFICATION_TIMEOUT_TYPE } from '../notifications/constants';
 
 import {
     ADD_REACTION_BUFFER,
+    DISPLAY_NOTIFICATION_INSTEAD_OF_REACTION_SOUND,
     FLUSH_REACTION_BUFFER,
     PUSH_REACTIONS,
     SEND_REACTIONS,
@@ -35,6 +36,7 @@ import {
     sendReactions,
     setReactionQueue
 } from './actions';
+import { displayNotificationInsteadOfReactionSound } from './actions.any';
 import {
     ENDPOINT_REACTION_NAME,
     IMuteCommandAttributes,
@@ -52,6 +54,7 @@ import {
 } from './functions.any';
 import logger from './logger';
 import { RAISE_HAND_SOUND_FILE } from './sounds';
+
 
 /**
  * Middleware which intercepts Reactions actions to handle changes to the
@@ -149,6 +152,10 @@ MiddlewareRegistry.register((store: IStore) => (next: Function) => (action: AnyA
                 reactionSoundsThresholds.forEach(reaction =>
                     dispatch(playSound(`${REACTIONS[reaction.reaction].soundId}${reaction.threshold}`))
                 );
+            } else {
+                reactions.forEach(reaction =>
+                    dispatch(displayNotificationInsteadOfReactionSound(reaction))
+                );
             }
             dispatch(setReactionQueue([ ...queue, ...getReactionsWithId(reactions) ]));
         });
@@ -215,6 +222,13 @@ MiddlewareRegistry.register((store: IStore) => (next: Function) => (action: AnyA
             customActionHandler: customFunctions
         }, NOTIFICATION_TIMEOUT_TYPE.MEDIUM));
         break;
+    }
+
+    case DISPLAY_NOTIFICATION_INSTEAD_OF_REACTION_SOUND: {
+        dispatch(showNotification({
+            titleKey: 'Es wurde eine Reaktion gesendet',
+            descriptionKey: 'Die gesendete Reaktion war: ' + action.message
+        }, NOTIFICATION_TIMEOUT_TYPE.MEDIUM));
     }
     }
 

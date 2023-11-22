@@ -8,6 +8,8 @@ import ReducerRegistry from '../redux/ReducerRegistry';
 import { assignIfDefined } from '../util/helpers';
 
 import { SETTINGS_UPDATED } from './actionTypes';
+import { SET_AUDIO_CUES_ENABLED_STATE, SET_VISUAL_CUES_ENABLED_STATE } from '../../inklusiva/uisettings/actionTypes';
+import { SET_USERDATA } from '../../inklusiva/userdata/actionTypes';
 
 /**
  * The default/initial redux state of the feature {@code base/settings}.
@@ -124,6 +126,40 @@ ReducerRegistry.register<ISettingsState>(STORE_NAME, (state = DEFAULT_STATE, act
         return {
             ...state,
             ...action.settings
+        };
+
+    case SET_AUDIO_CUES_ENABLED_STATE:
+
+        return {
+            ...state,
+            soundsIncomingMessage: action.enabled,
+            soundsParticipantJoined: action.enabled,
+            soundsParticipantKnocking: action.enabled,
+            soundsParticipantLeft: action.enabled,
+            soundsTalkWhileMuted: action.enabled,
+            soundsReactions: action.enabled
+        };
+
+    case SET_VISUAL_CUES_ENABLED_STATE:
+
+        return {
+            userSelectedNotifications: {
+                'notify.chatMessages': action.enabled
+            }
+        };
+    case SET_USERDATA:
+
+        return {
+            ...state,
+            soundsIncomingMessage: action.userData.ui.acousticCues,
+            soundsParticipantJoined: action.userData.ui.acousticCues,
+            soundsParticipantKnocking: action.userData.ui.acousticCues,
+            soundsParticipantLeft: action.userData.ui.acousticCues,
+            soundsTalkWhileMuted: action.userData.ui.acousticCues,
+            soundsReactions: action.userData.ui.acousticCues,
+            userSelectedNotifications: {
+                'notify.chatMessages': action.userData.ui.visualCues
+            }
         };
     }
 

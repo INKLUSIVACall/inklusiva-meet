@@ -42,3 +42,10 @@ export function setOthersAudioInputEnabledState(enabled: boolean): any {
         enabled
     };
 }
+
+export function setAudioCuesEnabledState(enabled: boolean): any {
+    return {
+        type: SET_AUDIO_CUES_ENABLED,
+        enabled
+    };
+}
