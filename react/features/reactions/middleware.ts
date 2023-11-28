@@ -225,10 +225,14 @@ MiddlewareRegistry.register((store: IStore) => (next: Function) => (action: AnyA
     }
 
     case DISPLAY_NOTIFICATION_INSTEAD_OF_REACTION_SOUND: {
-        dispatch(showNotification({
+        break;
+
+        // the following code can be used to display a notification for the reaction.
+        // This is not used at the moment because reactions are displayed in the chat either way.
+        /*dispatch(showNotification({
             titleKey: 'Es wurde eine Reaktion gesendet',
             descriptionKey: 'Die gesendete Reaktion war: ' + action.message
-        }, NOTIFICATION_TIMEOUT_TYPE.MEDIUM));
+        }, NOTIFICATION_TIMEOUT_TYPE.MEDIUM));*/
     }
     }
 

@@ -172,3 +172,27 @@ export function getPrivateNoticeMessage(message: IMessage) {
         recipient: message.messageType === MESSAGE_TYPE_LOCAL ? message.recipient : i18next.t('chat.you')
     });
 }
+
+/**
+ * Takes a notification in form of an action and deconstructs it to build a valid message text.
+ *
+ * @param {Object} action - The notification action.
+ * @returns {string}
+ */
+export function buildMessageTextFromNotification(action) {
+    const { titleKey, title, descriptionKey, titleArguments } = action.props;
+
+    // case for raised hand notifications.
+    if (title) {
+        return `${title}${i18next.t(descriptionKey)}`;
+    }
+    if (titleArguments) {
+        // case for participant joined/ left notifications.
+        if (titleArguments.name) {
+            return `${titleArguments.name}${i18next.t(titleKey)} ${i18next.t(descriptionKey)}`;
+        }
+    }
+
+    // case for other notifications.
+    return `${i18next.t(titleKey)} ${i18next.t(descriptionKey)}`;
+}
