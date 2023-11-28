@@ -43,6 +43,11 @@ export interface IProps extends AbstractDialogTabProps, WithTranslation {
     dimming: number;
 
     /**
+     * Are Interpreters Videos enabled?
+     */
+    interpreter: boolean;
+
+    /**
      * Are User Videos enabled?
      */
     otherParticipants: boolean;
@@ -51,6 +56,11 @@ export interface IProps extends AbstractDialogTabProps, WithTranslation {
      * Saturation value for user videos.
      */
     saturation: number;
+
+    /**
+     * Is screensharing enabled?
+     */
+    screensharing: boolean;
 
     /**
      * Zoom value for user videos.
@@ -109,7 +119,8 @@ class UserVideoTab extends AbstractDialogTab<IProps, any> {
      */
     render() {
 
-        const { brightness, classes, contrast, dimming, otherParticipants, saturation, zoom, t } = this.props;
+        const { brightness, classes, contrast, dimming, interpreter, otherParticipants, saturation,
+            screensharing, zoom, t } = this.props;
 
         return (
             <div className = { classes.container }>
@@ -131,6 +142,36 @@ class UserVideoTab extends AbstractDialogTab<IProps, any> {
                         } />
                     <div className = { classes.description }>
                         {t('toolbar.userVideo.videoVisibilityToggleHeadline')}
+                    </div>
+                    <Checkbox
+                        checked = { interpreter }
+                        className = { classes.inputElement }
+                        label = { t('toolbar.userVideo.interpreterHeadline') }
+                        // eslint-disable-next-line react/jsx-no-bind
+                        name = 'video-visibility-toggle'
+                        // eslint-disable-next-line react/jsx-no-bind
+                        onChange = { () =>
+                            super._onChange({
+                                interpreter: !interpreter
+                            })
+                        } />
+                    <div className = { classes.description }>
+                        {t('toolbar.userVideo.interpreterDescription')}
+                    </div>
+                    <Checkbox
+                        checked = { screensharing }
+                        className = { classes.inputElement }
+                        label = { t('toolbar.userVideo.screensharingHeadline') }
+                        // eslint-disable-next-line react/jsx-no-bind
+                        name = 'video-visibility-toggle'
+                        // eslint-disable-next-line react/jsx-no-bind
+                        onChange = { () =>
+                            super._onChange({
+                                screensharing: !screensharing
+                            })
+                        } />
+                    <div className = { classes.description }>
+                        {t('toolbar.userVideo.screensharingDescription')}
                     </div>
                 </div>
                 <div className = { classes.inputblockContainer }>
