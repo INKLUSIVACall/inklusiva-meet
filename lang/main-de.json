@@ -73,6 +73,7 @@
             "joinedTitle": "Breakout-Räume"
         }
     },
+    "brightnessSlider": "Helligkeit ändern",
     "calendarSync": {
         "addMeetingURL": "Konferenzlink hinzufügen",
         "confirmAddLink": "Möchten Sie einen Jitsi-Link zu diesem Termin hinzufügen?",
@@ -193,6 +194,7 @@
         "video_ssrc": "Video-SSRC:",
         "yes": "Ja"
     },
+    "contrastSlider": "Kontrast ändern",
     "dateUtils": {
         "earlier": "Früher",
         "today": "Heute",
@@ -774,6 +776,7 @@
         "viewLobby": "Lobby ansehen",
         "waitingParticipants": "{{waitingParticipants}} Personen"
     },
+    "opacityAdjustSlider": "Kachel dimmen",
     "participantsPane": {
         "actions": {
             "allow": "Anwesenden erlauben:",
@@ -989,6 +992,7 @@
         "unavailableTitle": "Aufnahme nicht verfügbar",
         "uploadToCloud": "In die Cloud hochladen"
     },
+    "saturationSlider": "Sättigung ändern",
     "screenshareDisplayName": "{{name}}s Bildschirmfreigabe",
     "sectionList": {
         "pullToRefresh": "Ziehen, um zu aktualisieren"
@@ -1369,6 +1373,10 @@
         "videounmute": "Kamera einschalten",
         "userVideo": {
             "containerHeadline": "Teilnehmer-Videos",
+            "interpreterHeadline": "Dolmetschervideos einschalten",
+            "interpreterDescription": "Während des Meetings sind alle Dolmetschervideos in den Kacheln zu sehen.",
+            "screensharingHeadline": "Geteilte Bildschirme anzeigen",
+            "screensharingDescription": "Während des Meetings sind geteilte Bildschirme zu sehen.",
             "videoVisibilityToggleHeadline": "Während des Meetings sind alle Teilnehmer-Videos in den Kacheln zu sehen.",
             "videoVisibilityEngage": "Teilnehmer-Videos einschalten",
             "contrastSliderHeadline": "Kontrast",
@@ -1585,5 +1593,6 @@
         "accessibilityLabel": {
             "heading": "Whiteboard"
         }
-    }
+    },
+    "zoomSlider": "Kachel zoomen"
 }
