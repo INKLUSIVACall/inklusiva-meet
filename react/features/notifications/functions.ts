@@ -2,6 +2,7 @@ import { MODERATION_NOTIFICATIONS } from '../av-moderation/constants';
 import { IStateful } from '../base/app/types';
 import { MediaType } from '../base/media/constants';
 import { toState } from '../base/redux/functions';
+import { getVisualCuesEnabled } from '../inklusiva/userdata/functions';
 
 /**
  * Tells whether or not the notifications are enabled and if there are any
@@ -39,4 +40,16 @@ export function isModerationNotificationDisplayed(mediaType: MediaType, stateful
     const { notifications } = state['features/notifications'];
 
     return Boolean(notifications.find(n => n.uid === MODERATION_NOTIFICATIONS[mediaType]));
+}
+
+/**
+ * Wrapper for getVisualCuesEnabled, so the state is accurate.
+ *
+ * @param {IStateful} stateful - The redux store state.
+ * @returns {boolean}
+ */
+export function isVisualCuesEnabled(stateful: IStateful): boolean | undefined {
+    const state = toState(stateful);
+
+    return getVisualCuesEnabled(state);
 }

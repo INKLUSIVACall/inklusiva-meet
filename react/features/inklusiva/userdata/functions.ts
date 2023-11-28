@@ -28,3 +28,11 @@ export function getBalanceValue(state: IReduxState): number | undefined {
 export function getAmplifyValue(state: IReduxState): number | undefined {
     return state['features/inklusiva/userdata'].audio?.amplify;
 }
+
+export function getAudioCuesEnabled(state: IReduxState): boolean | undefined {
+    return state['features/inklusiva/userdata'].ui?.audioCues;
+}
+
+export function getVisualCuesEnabled(state: IReduxState): boolean | undefined {
+    return state['features/inklusiva/userdata'].ui?.visualCues;
+}
