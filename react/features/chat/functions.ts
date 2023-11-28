@@ -194,5 +194,5 @@ export function buildMessageTextFromNotification(action) {
     }
 
     // case for other notifications.
-    return `${i18next.t(titleKey)} ${i18next.t(descriptionKey)}`;
+    return `${i18next.t(titleKey)}. ${i18next.t(descriptionKey)}.`;
 }
