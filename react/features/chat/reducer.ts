@@ -173,8 +173,6 @@ ReducerRegistry.register<IChatState>('features/chat', (state = DEFAULT_STATE, ac
             lobbyMessageRecipient: undefined
         };
     case SHOW_NOTIFICATION_AS_MESSAGE: {
-        console.log('123456', 'show notification chat', action);
-
         const text = buildMessageTextFromNotification(action);
 
         const newMessage: IMessage = {
