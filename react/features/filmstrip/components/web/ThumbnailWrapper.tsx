@@ -11,6 +11,7 @@ import { FILMSTRIP_TYPE, TILE_ASPECT_RATIO, TILE_HORIZONTAL_MARGIN } from '../..
 import { getActiveParticipantsIds, showGridInVerticalView } from '../../functions.web';
 
 import Thumbnail from './Thumbnail';
+import { IC_ROLES } from '../../../base/conference/icRoles';
 
 /**
  * The type of the React {@code Component} props of {@link ThumbnailWrapper}.
@@ -152,7 +153,21 @@ class ThumbnailWrapper extends Component<IProps> {
 function _mapStateToProps(state: IReduxState, ownProps: { columnIndex: number;
         data: { filmstripType: string; }; index?: number; rowIndex: number; }) {
     const _currentLayout = getCurrentLayout(state);
-    const { remoteParticipants: remote } = state['features/filmstrip'];
+    const { remoteParticipants: remoteParticipantsOriginal } = state['features/filmstrip'];
+
+    const { assistant } = state['features/inklusiva/userdata'];
+    let remote:string[] = [];
+    if (assistant.signLang.display === "window") {
+        const { conference } = state['features/base/conference'];
+        remoteParticipantsOriginal?.forEach((participantId: string) => {
+            if ( !(conference?.checkMemberHasRole(participantId, IC_ROLES.SIGN_LANG_TRANSLATOR))) {
+                remote.push(participantId);
+            }
+        });
+    } else {
+        remote = remoteParticipantsOriginal;
+    }
+
     const activeParticipants = getActiveParticipantsIds(state);
     const disableSelfView = getHideSelfView(state);
     const _verticalViewGrid = showGridInVerticalView(state);

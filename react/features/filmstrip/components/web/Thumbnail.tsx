@@ -65,6 +65,7 @@ import ThumbnailAudioIndicator from './ThumbnailAudioIndicator';
 import ThumbnailBottomIndicators from './ThumbnailBottomIndicators';
 import ThumbnailTopIndicators from './ThumbnailTopIndicators';
 import VirtualScreenshareParticipant from './VirtualScreenshareParticipant';
+import { IC_ROLES } from '../../../base/conference/icRoles';
 
 /**
  * The type of the React {@code Component} state of {@link Thumbnail}.
@@ -266,6 +267,11 @@ export interface IProps extends WithTranslation {
      * there is empty space.
      */
     width?: number;
+
+    /**
+     * Whether this is a sign language translator. Touch events are handled differently here.
+     */
+    _isSignLanguageTranslatorOverlay: boolean;
 }
 
 const defaultStyles = (theme: Theme) => {
@@ -681,7 +687,8 @@ class Thumbnail extends Component<IProps, IState> {
             _width,
             horizontalOffset,
             style,
-            _videoZoomLevel
+            _videoZoomLevel,
+            _isSignLanguageTranslatorOverlay
         } = this.props;
 
         const isTileType = _thumbnailType === THUMBNAIL_TYPE.TILE;
@@ -743,6 +750,10 @@ class Thumbnail extends Component<IProps, IState> {
             video: videoStyles
         };
 
+        if (_isSignLanguageTranslatorOverlay) {
+            styles.thumbnail.position = 'static';            
+        }
+
         if (_isHidden) {
             styles.thumbnail.display = 'none';
         }
@@ -756,10 +767,12 @@ class Thumbnail extends Component<IProps, IState> {
      * @returns {void}
      */
     _onClick() {
-        const { _participant, dispatch, _stageFilmstripLayout } = this.props;
+        const { _participant, dispatch, _stageFilmstripLayout, _isSignLanguageTranslatorOverlay } = this.props;
         const { id, pinned } = _participant;
 
-        if (_stageFilmstripLayout) {
+        if (_isSignLanguageTranslatorOverlay) {
+            return;
+        } else if (_stageFilmstripLayout) {
             dispatch(togglePinStageParticipant(id));
         } else {
             dispatch(pinParticipant(pinned ? null : id));
@@ -1045,6 +1058,7 @@ class Thumbnail extends Component<IProps, IState> {
             _videoTrack,
             classes,
             filmstripType,
+            _isSignLanguageTranslatorOverlay,
             t
         } = this.props;
         const { id, name, pinned } = _participant || {};
@@ -1149,7 +1163,7 @@ class Thumbnail extends Component<IProps, IState> {
                         showPopover = { this._showPopover }
                         thumbnailType = { _thumbnailType } />
                 </div>
-                {_shouldDisplayTintBackground && <div className = { classes.tintBackground } />}
+                {_shouldDisplayTintBackground && !_isSignLanguageTranslatorOverlay && <div className = { classes.tintBackground } />}
                 {!_gifSrc && this._renderAvatar(styles.avatar) }
                 { !local && (
                     <div className = 'presence-label-container'>
@@ -1377,6 +1391,16 @@ function _mapStateToProps(state: IReduxState, ownProps: any): Object {
         size._width = ownProps.width;
     }
 
+    let isSignLanguageTranslatorOverlay:boolean = false;
+    const { assistant } = state['features/inklusiva/userdata'];
+    let remoteParticipants:string[] = [];
+    if (assistant.signLang.display === "window") {
+        const { conference } = state['features/base/conference'];
+        if (conference?.checkMemberHasRole(id, IC_ROLES.SIGN_LANG_TRANSLATOR)) {
+            isSignLanguageTranslatorOverlay = true;
+        }
+    }
+
     const { gifUrl: gifSrc } = getGifForParticipant(state, id ?? '');
     const mode = getGifDisplayMode(state);
     const participantId = isLocal ? getLocalParticipant(state)?.id : participantID;
@@ -1418,7 +1442,8 @@ function _mapStateToProps(state: IReduxState, ownProps: any): Object {
         _videoTrack,
         ...size,
         _gifSrc: mode === 'chat' ? null : gifSrc,
-        _videoZoomLevel: zoomLevel
+        _videoZoomLevel: zoomLevel,
+        _isSignLanguageTranslatorOverlay: isSignLanguageTranslatorOverlay
     };
 }
 

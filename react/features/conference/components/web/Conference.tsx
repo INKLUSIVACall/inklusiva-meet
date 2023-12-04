@@ -39,6 +39,7 @@ import type { AbstractProps } from '../AbstractConference';
 
 import ConferenceInfo from './ConferenceInfo';
 import { default as Notice } from './Notice';
+import SignLangTranslatorFilmStrip from '../../../filmstrip/components/web/SignLangTranslatorFilmStrip';
 
 /**
  * DOM events for when full screen mode has changed. Different browsers need
@@ -245,6 +246,10 @@ class Conference extends AbstractConference<IProps, any> {
                             <Toolbox />
                         </>
                     )}
+
+                    {
+                        _showPrejoin || _showLobby || (<SignLangTranslatorFilmStrip />)
+                    }
 
                     {_notificationsVisible && !_isAnyOverlayVisible && (_overflowDrawer
                         ? <JitsiPortal className = 'notification-portal'>
