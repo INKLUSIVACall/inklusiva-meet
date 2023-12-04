@@ -2,6 +2,7 @@ import { IReduxState } from '../app/types';
 import { IStateful } from '../base/app/types';
 import { isMobileBrowser } from '../base/environment/utils';
 import { MEDIA_TYPE } from '../base/media/constants';
+import { IC_ROLES } from '../base/conference/icRoles';
 import {
     getLocalParticipant,
     getParticipantById,
@@ -10,6 +11,7 @@ import {
     getPinnedParticipant,
     isScreenShareParticipant
 } from '../base/participants/functions';
+import { IJitsiParticipant, IParticipant } from '../base/participants/types';
 import { toState } from '../base/redux/functions';
 import { getHideSelfView } from '../base/settings/functions.any';
 import {
@@ -221,9 +223,22 @@ export function getNumberOfPartipantsForTileView(state: IReduxState) {
     const disableSelfView = getHideSelfView(state);
     const { localScreenShare } = state['features/base/participants'];
     const localParticipantsCount = localScreenShare ? 2 : 1;
+
+    let numberOfFloatingSignLangTranslators:number = 0;
+    const { assistant } = state['features/inklusiva/userdata'];
+    if (assistant.signLang.display === "window") {
+        const { conference } = state['features/base/conference'];
+        conference?.getParticipants()?.forEach((participant: IJitsiParticipant) => {
+            if ( conference?.checkMemberHasRole(participant?.getId(), IC_ROLES.SIGN_LANG_TRANSLATOR)) {
+                numberOfFloatingSignLangTranslators ++;
+            }
+        });
+    }
+
     const numberOfParticipants = getParticipantCountWithFake(state)
         - (iAmRecorder ? 1 : 0)
-        - (disableSelfView ? localParticipantsCount : 0);
+        - (disableSelfView ? localParticipantsCount : 0)
+        - numberOfFloatingSignLangTranslators;
 
     return numberOfParticipants;
 }
