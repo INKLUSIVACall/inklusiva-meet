@@ -4,6 +4,7 @@ import { makeStyles } from 'tss-react/mui';
 
 import Icon from '../../../base/icons/components/Icon';
 import { IconVolumeUp } from '../../../base/icons/svg';
+import { getUserVideoBrightnessValue } from '../../../inklusiva/uservideo/functions';
 
 /**
  * The type of the React {@code Component} props of {@link OpacityAdjustSlider}.
@@ -11,19 +12,17 @@ import { IconVolumeUp } from '../../../base/icons/svg';
 interface IProps {
 
     /**
-     * The value of the frequency filter slider should display at when the
-     * component first mounts. Changes will be stored in state. The value
-     * should be an integer between 0 and 5.
+     * The value of the Brightness Slider.
      */
     initialValue: number;
 
     /**
-     * Label of the Opacity Slider.
+     * Label for the BrightnessSlider.
      */
     label: string;
 
     /**
-     * The callback to invoke when the frequency filter slider value changes.
+     * The callback to invoke when the Brightness Slider value changes.
      */
     onChange: Function;
 }
@@ -74,7 +73,7 @@ const _onClick = (e: React.MouseEvent) => {
     e.stopPropagation();
 };
 
-const OpacityAdjustSlider = ({
+const BrightnessSlider = ({
     initialValue,
     label,
     onChange
@@ -82,18 +81,18 @@ const OpacityAdjustSlider = ({
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
 
-    const [ opacity, setOpacity ] = useState(initialValue);
+    const [ brightness, setBrightness ] = useState((initialValue || 100));
 
-    const _onFrequencyAdjustChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-        const newOpacity = event.currentTarget.value;
+    const _onBrightnessSliderChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+        const newBrightness = event.currentTarget.value;
 
-        onChange(newOpacity);
-        setOpacity(Number(newOpacity));
+        onChange(newBrightness);
+        setBrightness(Number(newBrightness));
     }, [ onChange ]);
 
     return (
         <div
-            aria-label = { t('opacityAdjustSlider') }
+            aria-label = { t('brightnessSlider') }
             className = { classes.bigContainer }>
             <div>{ label }</div>
             <div
@@ -107,16 +106,16 @@ const OpacityAdjustSlider = ({
                 <div className = { classes.sliderContainer }>
                     <input
                         aria-label = { label }
-                        aria-valuemax = { 100 }
-                        aria-valuemin = { 0 }
-                        aria-valuenow = { opacity }
+                        aria-valuemax = { 200 }
+                        aria-valuemin = { 100 }
+                        aria-valuenow = { brightness }
                         className = { cx('popupmenu__volume-slider', classes.slider) }
-                        max = { 100 }
-                        min = { 0 }
-                        onChange = { _onFrequencyAdjustChange }
+                        max = { 200 }
+                        min = { 100 }
+                        onChange = { _onBrightnessSliderChange }
                         tabIndex = { 0 }
                         type = 'range'
-                        value = { opacity } />
+                        value = { brightness } />
                 </div>
                 <br />
             </div>
@@ -124,4 +123,4 @@ const OpacityAdjustSlider = ({
     );
 };
 
-export default OpacityAdjustSlider;
+export default BrightnessSlider;

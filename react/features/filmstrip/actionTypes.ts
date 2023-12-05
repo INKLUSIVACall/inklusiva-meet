@@ -101,6 +101,30 @@ export const SET_VOLUME = 'SET_VOLUME';
 export const SET_FREQUENCY_FILTER_SETTING = 'SET_FREQUENCY_FILTER_SETTING';
 
 /**
+ * The type of (redux) action which sets the brightness settings for a thumnail's video.
+ *
+ * {
+ *     type: SET_PARTICIPANT_BRIGHTNESS,
+ *     local: boolean,
+ *     participantId: string|null,
+ *     brightness: number
+ * }
+ */
+export const SET_PARTICIPANT_BRIGHTNESS = 'SET_PARTICIPANT_BRIGHTNESS';
+
+/**
+ * The type of (redux) action which sets the contrast settings for a thumnail's video.
+ *
+ * {
+ *     type: SET_PARTICIPANT_CONTRAST,
+ *     local: boolean,
+ *     participantId: string|null,
+ *     contrast: number
+ * }
+ */
+export const SET_PARTICIPANT_CONTRAST = 'SET_PARTICIPANT_CONTRAST';
+
+/**
  * The type of (redux) action which sets the opacity settings for a thumnail's video.
  *
  * {
@@ -111,6 +135,18 @@ export const SET_FREQUENCY_FILTER_SETTING = 'SET_FREQUENCY_FILTER_SETTING';
  * }
  */
 export const SET_PARTICIPANT_OPACITY = 'SET_PARTICIPANT_OPACITY';
+
+/**
+ * The type of (redux) action which sets the saturation settings for a thumnail's video.
+ *
+ * {
+ *     type: SET_PARTICIPANT_SATURATION,
+ *     local: boolean,
+ *     participantId: string|null,
+ *     saturation: number
+ * }
+ */
+export const SET_PARTICIPANT_SATURATION = 'SET_PARTICIPANT_SATURATION';
 
 /**
  * The type of (redux) action which sets the zoom level for a thumnail's video.

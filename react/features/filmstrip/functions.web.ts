@@ -20,6 +20,7 @@ import {
     isRemoteTrackMuted
 } from '../base/tracks/functions';
 import { isTrackStreamingStatusActive } from '../connection-indicator/functions';
+import ParticipantsCounter from '../participants-pane/components/web/ParticipantsCounter';
 import { isSharingStatus } from '../shared-video/functions';
 import { LAYOUTS } from '../video-layout/constants';
 import { getCurrentLayout, getNotResponsiveTileViewGridDimensions } from '../video-layout/functions.web';
@@ -832,4 +833,34 @@ export function isTopPanelEnabled(state: IReduxState) {
 
     return !filmstrip?.disableTopPanel && participantsCount >= (filmstrip?.minParticipantCountForTopPanel ?? 50);
 
+}
+
+/**
+ * Function returns the brightness parameter from the redux state.
+ *
+ * @param { IReduxState } state - The redux state.
+ * @returns { number } - The redux value.
+ */
+export function getParticipantBrightness(state: IReduxState) {
+    return state['features/filmstrip'].participantsBrightness;
+}
+
+/**
+ * Function returns the contrast parameter from the redux state.
+ *
+ * @param { IReduxState } state - The redux state.
+ * @returns { number } - The redux value.
+ */
+export function getParticipantContrast(state: IReduxState) {
+    return state['features/filmstrip'].participantsContrast;
+}
+
+/**
+ * Function returns the saturation parameter from the redux state.
+ *
+ * @param { IReduxState } state - The redux state.
+ * @returns { number } - The redux value.
+ */
+export function getParticipantsSaturation(state: IReduxState) {
+    return state['features/filmstrip'].participantsSaturation;
 }

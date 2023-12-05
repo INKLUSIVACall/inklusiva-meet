@@ -10,7 +10,10 @@ import {
     SET_FILMSTRIP_WIDTH,
     SET_FREQUENCY_FILTER_SETTING,
     SET_HORIZONTAL_VIEW_DIMENSIONS,
+    SET_PARTICIPANT_BRIGHTNESS,
+    SET_PARTICIPANT_CONTRAST,
     SET_PARTICIPANT_OPACITY,
+    SET_PARTICIPANT_SATURATION,
     SET_PARTICIPANT_ZOOM_LEVEL,
     SET_REMOTE_PARTICIPANTS,
     SET_SCREENSHARE_FILMSTRIP_PARTICIPANT,
@@ -73,6 +76,20 @@ const DEFAULT_STATE = {
     participantsFrequencySetting: {},
 
     /**
+     * The brightness of each participant.
+     *
+     * @type {Object}
+     */
+    participantsBrightness: {},
+
+    /**
+     * The contrast of each participant.
+     *
+     * @type {Object}
+     */
+    participantsContrast: {},
+
+    /**
      * The opacity of each participant.
      *
      * @type {Object}
@@ -85,6 +102,13 @@ const DEFAULT_STATE = {
      * @type {Object}
      */
     localOpacity: 1,
+
+    /**
+     * The saturation of each participant.
+     *
+     * @type {Object}
+     */
+    participantsSaturation: {},
 
     /**
      * The zoom level of each participant.
@@ -243,11 +267,20 @@ export interface IFilmstripState {
     participantZoomLevel: {
         [participantId: string]: number;
     };
+    participantsBrightness: {
+        [participantID: string]: number;
+    };
+    participantsContrast: {
+        [participantID: string]: number;
+    };
     participantsFrequencySetting: {
         [participantId: string]: number;
     };
     participantsOpacity: {
         [participantId: string]: number;
+    };
+    participantsSaturation: {
+        [participantID: string]: number;
     };
     participantsVolume: {
         [participantId: string]: number;
@@ -351,6 +384,26 @@ ReducerRegistry.register<IFilmstripState>(
                     [action.participantId]: action.setting
                 }
             };
+        case SET_PARTICIPANT_BRIGHTNESS: {
+            return {
+                ...state,
+                participantsBrightness: {
+                    ...state.participantsBrightness,
+
+                    [action.participantId]: action.brightness
+                }
+            };
+        }
+        case SET_PARTICIPANT_CONTRAST: {
+            return {
+                ...state,
+                participantsContrast: {
+                    ...state.participantsContrast,
+
+                    [action.participantId]: action.contrast
+                }
+            };
+        }
         case SET_PARTICIPANT_OPACITY: {
             if (action.local) {
                 return {
@@ -367,7 +420,16 @@ ReducerRegistry.register<IFilmstripState>(
                     [action.participantId]: action.opacity
                 }
             };
+        }
+        case SET_PARTICIPANT_SATURATION: {
+            return {
+                ...state,
+                participantsSaturation: {
+                    ...state.participantsSaturation,
 
+                    [action.participantId]: action.saturation
+                }
+            };
         }
         case SET_PARTICIPANT_ZOOM_LEVEL: {
             return {

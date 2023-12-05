@@ -19,6 +19,11 @@ interface IProps {
     initialValue: number;
 
     /**
+     * Label for the Slider.
+     */
+    label: string;
+
+    /**
      * The callback to invoke when the zoom slider value changes.
      */
     onChange: Function;
@@ -26,6 +31,16 @@ interface IProps {
 
 const useStyles = makeStyles()(theme => {
     return {
+        bigContainer: {
+            display: 'flex',
+            flexDirection: 'column',
+            padding: '10px 16px',
+
+            '&:hover': {
+                backgroundColor: theme.palette.ui02
+            }
+        },
+
         container: {
             minHeight: '40px',
             minWidth: '180px',
@@ -33,12 +48,7 @@ const useStyles = makeStyles()(theme => {
             boxSizing: 'border-box',
             cursor: 'pointer',
             display: 'flex',
-            alignItems: 'center',
-            padding: '10px 16px',
-
-            '&:hover': {
-                backgroundColor: theme.palette.ui02
-            }
+            alignItems: 'center'
         },
 
         icon: {
@@ -67,6 +77,7 @@ const _onClick = (e: React.MouseEvent) => {
 
 const ZoomSlider = ({
     initialValue,
+    label,
     onChange
 }: IProps) => {
     const { classes, cx } = useStyles();
@@ -84,25 +95,30 @@ const ZoomSlider = ({
     return (
         <div
             aria-label = { t('zoomSlider') }
-            className = { cx('popupmenu__contents', classes.container) }
-            onClick = { _onClick }>
-            <span className = { classes.icon }>
-                <Icon
-                    size = { 22 }
-                    src = { IconVolumeUp } />
-            </span>
-            <div className = { classes.sliderContainer }>
-                <input
-                    aria-valuemax = { ZOOM_SLIDER_MAXIMUM }
-                    aria-valuemin = { ZOOM_SLIDER_MINIMUM }
-                    aria-valuenow = { zoomLevel }
-                    className = { cx('popupmenu__zoom-slider', classes.slider) }
-                    max = { ZOOM_SLIDER_MAXIMUM }
-                    min = { ZOOM_SLIDER_MINIMUM }
-                    onChange = { _onZoomLevelChange }
-                    tabIndex = { 0 }
-                    type = 'range'
-                    value = { zoomLevel } />
+            className = { classes.bigContainer }>
+            <div>{ label }</div>
+            <div
+                className = { cx('popupmenu__contents', classes.container) }
+                onClick = { _onClick }>
+                <span className = { classes.icon }>
+                    <Icon
+                        size = { 22 }
+                        src = { IconVolumeUp } />
+                </span>
+                <div className = { classes.sliderContainer }>
+                    <input
+                        aria-label = { label }
+                        aria-valuemax = { ZOOM_SLIDER_MAXIMUM }
+                        aria-valuemin = { ZOOM_SLIDER_MINIMUM }
+                        aria-valuenow = { zoomLevel }
+                        className = { cx('popupmenu__zoom-slider', classes.slider) }
+                        max = { ZOOM_SLIDER_MAXIMUM }
+                        min = { ZOOM_SLIDER_MINIMUM }
+                        onChange = { _onZoomLevelChange }
+                        tabIndex = { 0 }
+                        type = 'range'
+                        value = { zoomLevel } />
+                </div>
             </div>
         </div>
     );
