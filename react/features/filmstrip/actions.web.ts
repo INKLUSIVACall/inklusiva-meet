@@ -17,7 +17,10 @@ import {
     SET_FILMSTRIP_WIDTH,
     SET_FREQUENCY_FILTER_SETTING,
     SET_HORIZONTAL_VIEW_DIMENSIONS,
+    SET_PARTICIPANT_BRIGHTNESS,
+    SET_PARTICIPANT_CONTRAST,
     SET_PARTICIPANT_OPACITY,
+    SET_PARTICIPANT_SATURATION,
     SET_PARTICIPANT_ZOOM_LEVEL,
     SET_SCREENSHARE_FILMSTRIP_PARTICIPANT,
     SET_SCREENSHARING_TILE_DIMENSIONS,
@@ -404,6 +407,44 @@ export function setFrequencyFilterSetting(participantId: string, setting: number
 }
 
 /**
+ * Sets the brightness for a thumbnails video.
+ *
+ * @param {string} participantId - The participant ID associated with the brightness.
+ * @param {number} brightness - Brightness of the user.
+ * @returns {{
+ *     type: SET_PARTICIPANT_BRIGHTNESS
+ *     participantId: string,
+ *     brightness: number
+ * }}
+ */
+export function setParticipantBrightness(participantId: string, brightness: number) {
+    return {
+        type: SET_PARTICIPANT_BRIGHTNESS,
+        participantId,
+        brightness
+    };
+}
+
+/**
+ * Sets the contrast for a thumbnails video.
+ *
+ * @param {string} participantId - The participant ID associated with the contrast.
+ * @param {number} contrast - Contrast of the user.
+ * @returns {{
+*     type: SET_PARTICIPANT_CONTRAST
+*     participantId: string,
+*     contrast: number
+* }}
+*/
+export function setParticipantContrast(participantId: string, contrast: number) {
+    return {
+        type: SET_PARTICIPANT_CONTRAST,
+        participantId,
+        contrast
+    };
+}
+
+/**
  * Sets the opacity for a thumbnails video.
  *
  * @param {boolean} local - Is this the local user?
@@ -426,6 +467,26 @@ export function setParticipantOpacitySetting(
         local: local === undefined ? false : local,
         participantId,
         opacity
+    };
+}
+
+/**
+ * Sets the saturation for a thumbnails video.
+ *
+ * @param {string} participantId - The participant ID associated with the audio.
+ * @param {number} saturation - Opacity of the user.
+ * @returns {{
+*     type: SET_PARTICIPANT_SATURATION
+*     participantId: string,
+*     saturation: number
+* }}
+*/
+export function setParticipantSaturation(participantId: string, saturation: number) {
+
+    return {
+        type: SET_PARTICIPANT_SATURATION,
+        participantId,
+        saturation
     };
 }
 

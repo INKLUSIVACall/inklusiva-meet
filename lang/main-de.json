@@ -1373,7 +1373,7 @@
         "videounmute": "Kamera einschalten",
         "userVideo": {
             "containerHeadline": "Teilnehmer-Videos",
-            "interpreterHeadline": "Dolmetschervideos einschalten",
+            "interpreterHeadline": "Dolmetscher-Videos einschalten",
             "interpreterDescription": "Während des Meetings sind alle Dolmetschervideos in den Kacheln zu sehen.",
             "screensharingHeadline": "Geteilte Bildschirme anzeigen",
             "screensharingDescription": "Während des Meetings sind geteilte Bildschirme zu sehen.",

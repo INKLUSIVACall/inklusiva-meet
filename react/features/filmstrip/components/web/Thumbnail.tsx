@@ -43,6 +43,11 @@ import { LAYOUTS } from '../../../video-layout/constants';
 import { getCurrentLayout } from '../../../video-layout/functions.web';
 import { togglePinStageParticipant } from '../../actions';
 import {
+    setParticipantBrightness,
+    setParticipantContrast,
+    setParticipantSaturation
+} from '../../actions.web';
+import {
     DISPLAY_MODE_TO_CLASS_NAME,
     DISPLAY_VIDEO,
     FILMSTRIP_TYPE,
@@ -58,6 +63,11 @@ import {
     isVideoPlayable,
     showGridInVerticalView
 } from '../../functions';
+import {
+    getParticipantBrightness,
+    getParticipantContrast,
+    getParticipantsSaturation
+} from '../../functions.web';
 
 import ActiveSpeakerIndicator from './ActiveSpeakerIndicator';
 import FadeOutOverlay from './FadeOutOverlay';
@@ -102,6 +112,16 @@ export interface IProps extends WithTranslation {
      * The audio track related to the participant.
      */
     _audioTrack?: ITrack;
+
+    /**
+     * The Participant's video brightness.
+     */
+    _brightness: number;
+
+    /**
+     * The Participant's video contrast.
+     */
+    _contrast: number;
 
     /**
      * Indicates whether the local video flip feature is disabled or not.
@@ -189,6 +209,11 @@ export interface IProps extends WithTranslation {
      * Whether or not the participant has the hand raised.
      */
     _raisedHand: boolean;
+
+    /**
+     * The Participant's video saturation.
+     */
+    _saturation: number;
 
     /**
      * Whether or not to display a tint background over tile.
@@ -675,12 +700,15 @@ class Thumbnail extends Component<IProps, IState> {
     _getStyles(): any {
         const { canPlayEventReceived } = this.state;
         const {
+            _brightness,
+            _contrast,
             _disableTileEnlargement,
             _height,
             _isVirtualScreenshareParticipant,
             _isHidden,
             _isScreenSharing,
             _participant,
+            _saturation,
             _thumbnailType,
             _videoObjectPosition,
             _videoTrack,
@@ -734,6 +762,8 @@ class Thumbnail extends Component<IProps, IState> {
 
         videoStyles.transform = `scale(${String(_videoZoomLevel)})`;
 
+        videoStyles.filter = `brightness(${_brightness}%) contrast(${_contrast}%) saturate(${_saturation}%)`;
+
         styles = {
             thumbnail: {
                 ...style,
@@ -741,7 +771,11 @@ class Thumbnail extends Component<IProps, IState> {
                 height: `${_height}px`,
                 minHeight: `${_height}px`,
                 minWidth: `${_width}px`,
-                width: `${_width}px`
+                width: `${_width}px`,
+                // filter: `brightness(${_brightness}%); contrast(${_contrast}%); saturate(${_saturation})`
+                /* brightness: `brightness(${_brightness}%)`,
+                contrast: `contrast(${_contrast}%)`,
+                saturation: `saturate(${_saturation})` */
             },
             avatar: {
                 height: `${avatarSize}px`,
@@ -1262,7 +1296,7 @@ class Thumbnail extends Component<IProps, IState> {
  * @returns {IProps}
  */
 function _mapStateToProps(state: IReduxState, ownProps: any): Object {
-    const { participantID, filmstripType = FILMSTRIP_TYPE.MAIN } = ownProps;
+    const { _brightness, _contrast, participantID, _saturation, filmstripType = FILMSTRIP_TYPE.MAIN } = ownProps;
 
     const participant = getParticipantByIdOrUndefined(state, participantID);
     const id = participant?.id ?? '';
@@ -1288,6 +1322,9 @@ function _mapStateToProps(state: IReduxState, ownProps: any): Object {
     const activeParticipants = getActiveParticipantsIds(state);
     const tileType = getThumbnailTypeFromLayout(_currentLayout, filmstripType);
 
+    // setParticipantBrightness(participantID, _brightness);
+    // setParticipantContrast(participantID, _contrast);
+    // setParticipantSaturation(participantID, _saturation);
 
     const { participantZoomLevel } = state['features/filmstrip'];
     let zoomLevel = 1;
@@ -1296,6 +1333,27 @@ function _mapStateToProps(state: IReduxState, ownProps: any): Object {
         zoomLevel = participantZoomLevel[participantID];
     }
 
+    const {
+        participantsBrightness,
+        participantsContrast,
+        participantsSaturation
+    } = state['features/filmstrip'];
+
+    let brightness = 100;
+    let contrast = 100;
+    let saturation = 100;
+
+    if (participantsBrightness[participantID]) {
+        brightness = participantsBrightness[participantID];
+    }
+    if (participantsContrast[participantID]) {
+        contrast = participantsContrast[participantID];
+    }
+    if (participantsSaturation[participantID]) {
+        saturation = participantsSaturation[participantID];
+    }
+
+    console.log('123456', brightness, contrast, saturation);
     switch (tileType) {
     case THUMBNAIL_TYPE.VERTICAL:
     case THUMBNAIL_TYPE.HORIZONTAL: {
@@ -1417,6 +1475,8 @@ function _mapStateToProps(state: IReduxState, ownProps: any): Object {
 
     return {
         _audioTrack,
+        _brightness: brightness,
+        _contrast: contrast,
         _currentLayout,
         _defaultLocalDisplayName: defaultLocalDisplayName,
         _disableLocalVideoFlip: Boolean(disableLocalVideoFlip),
@@ -1434,6 +1494,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any): Object {
         _localFlipX: Boolean(localFlipX),
         _participant: participant,
         _raisedHand: hasRaisedHand(participant),
+        _saturation: saturation,
         _stageFilmstripLayout: isStageFilmstripAvailable(state),
         _stageParticipantsVisible: _currentLayout === LAYOUTS.STAGE_FILMSTRIP_VIEW,
         _shouldDisplayTintBackground: shouldDisplayTintBackground,
