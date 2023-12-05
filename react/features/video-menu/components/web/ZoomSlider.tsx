@@ -106,7 +106,7 @@ const ZoomSlider = ({
                 <span className = { classes.icon }>
                     <Icon
                         size = { 22 }
-                        src = { IconZoom } />
+                        src = { IconVolumeUp } />
                 </span>
                 <div className = { classes.sliderContainer }>
                     <input

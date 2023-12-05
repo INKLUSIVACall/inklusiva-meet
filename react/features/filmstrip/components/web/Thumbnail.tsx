@@ -771,7 +771,11 @@ class Thumbnail extends Component<IProps, IState> {
                 height: `${_height}px`,
                 minHeight: `${_height}px`,
                 minWidth: `${_width}px`,
-                width: `${_width}px`
+                width: `${_width}px`,
+                // filter: `brightness(${_brightness}%); contrast(${_contrast}%); saturate(${_saturation})`
+                /* brightness: `brightness(${_brightness}%)`,
+                contrast: `contrast(${_contrast}%)`,
+                saturation: `saturate(${_saturation})` */
             },
             avatar: {
                 height: `${avatarSize}px`,
@@ -1292,7 +1296,7 @@ class Thumbnail extends Component<IProps, IState> {
  * @returns {IProps}
  */
 function _mapStateToProps(state: IReduxState, ownProps: any): Object {
-    const { participantID, filmstripType = FILMSTRIP_TYPE.MAIN } = ownProps;
+    const { _brightness, _contrast, participantID, _saturation, filmstripType = FILMSTRIP_TYPE.MAIN } = ownProps;
 
     const participant = getParticipantByIdOrUndefined(state, participantID);
     const id = participant?.id ?? '';

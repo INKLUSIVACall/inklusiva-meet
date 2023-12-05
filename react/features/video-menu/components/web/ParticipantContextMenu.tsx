@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { WithTranslation, useTranslation } from 'react-i18next';
+import { useTranslation, WithTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
 
@@ -29,12 +29,14 @@ import {
     setVolume
 } from '../../../filmstrip/actions.web';
 import { isStageFilmstripAvailable } from '../../../filmstrip/functions.web';
+import { getUserVideoBrightnessValue, getUserVideoContrastValue, getUserVideoSaturationValue } from '../../../inklusiva/uservideo/functions';
 import { QUICK_ACTION_BUTTON } from '../../../participants-pane/constants';
 import { getQuickActionButtonType, isForceMuted } from '../../../participants-pane/functions';
 import { requestRemoteControl, stopController } from '../../../remote-control/actions';
 import { NOTIFY_CLICK_MODE } from '../../../toolbox/constants';
 import { showOverflowDrawer } from '../../../toolbox/functions.web';
 import { iAmVisitor } from '../../../visitors/functions';
+import { translate } from '../../base/i18n/functions';
 import { PARTICIPANT_MENU_BUTTONS as BUTTONS } from '../../constants';
 
 import AskToUnmuteButton from './AskToUnmuteButton';
@@ -168,7 +170,7 @@ const ParticipantContextMenu = ({
         participantsOpacity,
         participantsSaturation,
         localOpacity,
-        participantZoomLevel
+        participantZoomLevel,
     } = useSelector((state: IReduxState) => state['features/filmstrip']);
     const _volume
         = (participant?.local ?? true ? undefined : participant?.id ? participantsVolume[participant?.id] : undefined)

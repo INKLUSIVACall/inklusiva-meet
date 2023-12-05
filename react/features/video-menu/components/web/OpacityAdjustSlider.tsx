@@ -105,7 +105,7 @@ const OpacityAdjustSlider = ({
                 <span className = { classes.icon }>
                     <Icon
                         size = { 22 }
-                        src = { IconDimming } />
+                        src = { IconVolumeUp } />
                 </span>
                 <div className = { classes.sliderContainer }>
                     <input
