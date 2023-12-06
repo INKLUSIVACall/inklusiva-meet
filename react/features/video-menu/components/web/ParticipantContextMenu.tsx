@@ -29,7 +29,6 @@ import {
     setVolume
 } from '../../../filmstrip/actions.web';
 import { isStageFilmstripAvailable } from '../../../filmstrip/functions.web';
-import { getUserVideoBrightnessValue, getUserVideoContrastValue, getUserVideoSaturationValue } from '../../../inklusiva/uservideo/functions';
 import { QUICK_ACTION_BUTTON } from '../../../participants-pane/constants';
 import { getQuickActionButtonType, isForceMuted } from '../../../participants-pane/functions';
 import { requestRemoteControl, stopController } from '../../../remote-control/actions';
