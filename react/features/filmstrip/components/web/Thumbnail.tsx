@@ -771,11 +771,7 @@ class Thumbnail extends Component<IProps, IState> {
                 height: `${_height}px`,
                 minHeight: `${_height}px`,
                 minWidth: `${_width}px`,
-                width: `${_width}px`,
-                // filter: `brightness(${_brightness}%); contrast(${_contrast}%); saturate(${_saturation})`
-                /* brightness: `brightness(${_brightness}%)`,
-                contrast: `contrast(${_contrast}%)`,
-                saturation: `saturate(${_saturation})` */
+                width: `${_width}px`
             },
             avatar: {
                 height: `${avatarSize}px`,
@@ -1296,7 +1292,7 @@ class Thumbnail extends Component<IProps, IState> {
  * @returns {IProps}
  */
 function _mapStateToProps(state: IReduxState, ownProps: any): Object {
-    const { _brightness, _contrast, participantID, _saturation, filmstripType = FILMSTRIP_TYPE.MAIN } = ownProps;
+    const { participantID, filmstripType = FILMSTRIP_TYPE.MAIN } = ownProps;
 
     const participant = getParticipantByIdOrUndefined(state, participantID);
     const id = participant?.id ?? '';
@@ -1321,10 +1317,6 @@ function _mapStateToProps(state: IReduxState, ownProps: any): Object {
     const _isMobile = isMobileBrowser();
     const activeParticipants = getActiveParticipantsIds(state);
     const tileType = getThumbnailTypeFromLayout(_currentLayout, filmstripType);
-
-    // setParticipantBrightness(participantID, _brightness);
-    // setParticipantContrast(participantID, _contrast);
-    // setParticipantSaturation(participantID, _saturation);
 
     const { participantZoomLevel } = state['features/filmstrip'];
     let zoomLevel = 1;
@@ -1353,7 +1345,6 @@ function _mapStateToProps(state: IReduxState, ownProps: any): Object {
         saturation = participantsSaturation[participantID];
     }
 
-    console.log('123456', brightness, contrast, saturation);
     switch (tileType) {
     case THUMBNAIL_TYPE.VERTICAL:
     case THUMBNAIL_TYPE.HORIZONTAL: {
