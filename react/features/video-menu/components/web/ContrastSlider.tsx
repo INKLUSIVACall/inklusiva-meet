@@ -81,7 +81,7 @@ const ContrastSlider = ({
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
 
-    const [ contrast, setContrast ] = useState(initialValue || 100);
+    const [ contrast, setContrast ] = useState((initialValue || 1) * 100);
 
     const _onContrastSliderChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         const newContrast = event.currentTarget.value;
