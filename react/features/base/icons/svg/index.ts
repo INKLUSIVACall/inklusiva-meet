@@ -111,6 +111,10 @@ export { default as IconWifi2Bars } from './wifi-2.svg';
 export { default as IconWifi3Bars } from './wifi-3.svg';
 export { default as IconYahoo } from './yahoo.svg';
 
+export { default as IconBrightness } from './brightness.svg'
+export { default as IconDimming } from './dimming.svg'
+export { default as IconSaturation } from './saturation.svg'
+export { default as IconZoom } from './zoom.svg'
 export { default as IconEmptyHourglass } from './empty-hourglass.svg';
 export { default as IconFullHourglass } from './full-hourglass.svg';
 export { default as IconLink } from './link.svg'

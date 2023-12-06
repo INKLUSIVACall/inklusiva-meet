@@ -3,8 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 
 import Icon from '../../../base/icons/components/Icon';
-import { IconVolumeUp } from '../../../base/icons/svg';
-import { getUserVideoBrightnessValue } from '../../../inklusiva/uservideo/functions';
+import {
+    IconVolumeUp,
+    IconBrightness
+} from '../../../base/icons/svg';
 
 /**
  * The type of the React {@code Component} props of {@link OpacityAdjustSlider}.
@@ -81,7 +83,7 @@ const BrightnessSlider = ({
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
 
-    const [ brightness, setBrightness ] = useState((initialValue || 100));
+    const [ brightness, setBrightness ] = useState((initialValue || 1) * 100);
 
     const _onBrightnessSliderChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         const newBrightness = event.currentTarget.value;
@@ -101,7 +103,7 @@ const BrightnessSlider = ({
                 <span className = { classes.icon }>
                     <Icon
                         size = { 22 }
-                        src = { IconVolumeUp } />
+                        src = { IconBrightness } />
                 </span>
                 <div className = { classes.sliderContainer }>
                     <input

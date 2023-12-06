@@ -3,7 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 
 import Icon from '../../../base/icons/components/Icon';
-import { IconVolumeUp } from '../../../base/icons/svg';
+import {
+    IconVolumeUp,
+    IconZoom
+} from '../../../base/icons/svg';
 import { ZOOM_SLIDER_MINIMUM, ZOOM_SLIDER_MAXIMUM, ZOOM_SLIDER_SCALE } from '../../constants';
 
 /**
@@ -103,7 +106,7 @@ const ZoomSlider = ({
                 <span className = { classes.icon }>
                     <Icon
                         size = { 22 }
-                        src = { IconVolumeUp } />
+                        src = { IconZoom } />
                 </span>
                 <div className = { classes.sliderContainer }>
                     <input

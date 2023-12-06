@@ -3,7 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 
 import Icon from '../../../base/icons/components/Icon';
-import { IconVolumeUp } from '../../../base/icons/svg';
+import {
+    IconVolumeUp,
+    IconDimming
+} from '../../../base/icons/svg';
 
 /**
  * The type of the React {@code Component} props of {@link OpacityAdjustSlider}.
@@ -102,7 +105,7 @@ const OpacityAdjustSlider = ({
                 <span className = { classes.icon }>
                     <Icon
                         size = { 22 }
-                        src = { IconVolumeUp } />
+                        src = { IconDimming } />
                 </span>
                 <div className = { classes.sliderContainer }>
                     <input
