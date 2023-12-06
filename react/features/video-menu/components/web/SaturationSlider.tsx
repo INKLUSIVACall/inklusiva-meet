@@ -3,7 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 
 import Icon from '../../../base/icons/components/Icon';
-import { IconVolumeUp } from '../../../base/icons/svg';
+import {
+    IconVolumeUp,
+    IconSaturation
+} from '../../../base/icons/svg';
 import { getUserVideoSaturationValue } from '../../../inklusiva/uservideo/functions';
 
 /**
@@ -81,7 +84,7 @@ const SaturationSlider = ({
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
 
-    const [ saturation, setSaturation ] = useState(initialValue || 100);
+    const [ saturation, setSaturation ] = useState((initialValue || 1) * 100);
 
     const _onSaturationSliderChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         const newSaturation = event.currentTarget.value;
@@ -101,7 +104,7 @@ const SaturationSlider = ({
                 <span className = { classes.icon }>
                     <Icon
                         size = { 22 }
-                        src = { IconVolumeUp } />
+                        src = { IconSaturation } />
                 </span>
                 <div className = { classes.sliderContainer }>
                     <input
