@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import React, { ReactNode, useCallback } from 'react';
 import { WithTranslation } from 'react-i18next';
+import { useStore } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
 
 import Avatar from '../../../base/avatar/components/Avatar';
@@ -165,48 +166,58 @@ function ParticipantItem({
     inLobby
 }: IProps) {
     const onClick = useCallback(
-        () => openDrawerForParticipant?.({
-            participantID,
-            displayName
-        }), []);
+        () =>
+            openDrawerForParticipant?.({
+                participantID,
+                displayName
+            }),
+        []
+    );
 
     const { classes } = useStyles();
 
-    let meetingRole = DEFAULT_MEETING_ROLE;
+    const meetingRole = DEFAULT_MEETING_ROLE;
 
-    if (isModerator) {
-        meetingRole = 'moderator';
-    }
-
-    const icon = (
-        <Avatar
+    const icon
+        = (<Avatar
             className = { classes.avatar }
             displayName = { displayName }
             participantId = { participantID }
-            size = { 32 } />
-    );
+            size = { 32 } />)
+    ;
 
-    const roleIcon = MeetingRoleIcons[meetingRole];
+    // Reading roles of participant
+    const store = useStore();
+    const { conference } = store.getState()['features/base/conference'];
+    const icRoles = conference?.getMemberICRoles(participantID);
+
+    // Role cascading
+    let mainRole = DEFAULT_MEETING_ROLE;
+
+    if (isModerator) {
+        mainRole = 'moderator';
+    } else {
+        mainRole = (icRoles && icRoles[0]?.name) || 'participant';
+    }
+
+    // Getting the role icon
+    const roleIcon = MeetingRoleIcons[mainRole];
+
     const text = (
         <>
             <div className = { classes.nameContainer }>
-                {inLobby && <div className = { clsx(classes.name, 'lobby-participant-name') }>
-                    {displayName}
-                </div>}
-                {!inLobby && <div className = { classes.name }>
-                    {displayName}
-                </div>}
+                {inLobby && <div className = { clsx(classes.name, 'lobby-participant-name') }>{displayName}</div>}
+                {!inLobby && <div className = { classes.name }>{displayName}</div>}
                 {local ? <span>&nbsp;({youText})</span> : null}
 
                 <div className = 'LeftPlacedIcons'>
                     {roleIcon}
-                    {TECHNICAL_SUPPORT_REQUIRED && TechnicalSupportIcons}
-                    {ESCORT_REQUIRED && EscortIcons}
-                    {SUPPORT_OFFERED && SupportOfferIcons}
+                    {/* {TECHNICAL_SUPPORT_REQUIRED && TechnicalSupportIcons} */}
+                    {/* {ESCORT_REQUIRED && EscortIcons} */}
+                    {/* {SUPPORT_OFFERED && SupportOfferIcons} */}
                     {ACTIVE_CONNECTION && ConnectionStateIcons}
                     {raisedHand && <RaisedHandIndicator participantID = { participantID } />}
                 </div>
-
             </div>
             {/* {isModerator && !disableModeratorIndicator && <div className = { classes.moderatorLabel }>
                 {t('videothumbnail.moderator')}
@@ -220,9 +231,7 @@ function ParticipantItem({
                 {VideoStateIcons[videoMediaState]}
                 {AudioStateIcons[audioMediaState]}
             </div>
-            <div className = 'RightPlacedIcons'>
-                {MeetingStateIcons[DEFAULT_MEETING_STATE]}
-            </div>
+            <div className = 'RightPlacedIcons'>{MeetingStateIcons[DEFAULT_MEETING_STATE]}</div>
         </>
     );
 
