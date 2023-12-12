@@ -136,7 +136,6 @@ ReducerRegistry.register<IUserData>(
 
         switch (action.type) {
         case SET_USERDATA: {
-            console.log('ACTION', action, payload);
             nextState = {
                 ...payload.userData
             };
