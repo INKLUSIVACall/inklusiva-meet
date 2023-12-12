@@ -23,6 +23,7 @@ import RaisedHandsCountLabel from './RaisedHandsCountLabel';
 import RecordingStatusLabel from './RecordingStatusLabel';
 import SpeakerStatsLabel from './SpeakerStatsLabel';
 import SubjectText from './SubjectText';
+import Testdisplay from './Testdisplay';
 import ToggleTopPanelLabel from './ToggleTopPanelLabel';
 import TranscriptLink from './TranscriptLink';
 import VisualCuesStatusLabel from './VisualCuesStatusLabel';
