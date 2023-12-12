@@ -39,9 +39,24 @@
     display: flex;
     justify-content: center;
     position: absolute;
-    top: 0;
-    height: 48px;
-    max-width: calc(100% - 24px);
+    top: 10;
+    height: 65px;
+    max-width: calc(100% - 40px);
+    background: #00000059;
+    z-index: 1;
+    margin: auto 20px;
+    border-radius: 10px;
+    margin-top: 1;
+}
+
+#detailIndicatorsLeft {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+#detailIndicatorsRight {
+    display: flex;
+    flex-direction: row;
 }
 
 @keyframes hideSubject {

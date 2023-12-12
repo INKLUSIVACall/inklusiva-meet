@@ -15,12 +15,18 @@ import VisitorsCountLabel from '../../../visitors/components/web/VisitorsCountLa
 import ConferenceTimer from '../ConferenceTimer';
 import { getConferenceInfo } from '../functions.web';
 
+import AcousticCuesStatusLabel from './AcousticCuesStatusLabel';
 import ConferenceInfoContainer from './ConferenceInfoContainer';
 import InsecureRoomNameLabel from './InsecureRoomNameLabel';
 import RaisedHandsCountLabel from './RaisedHandsCountLabel';
+import RecordingStatusLabel from './RecordingStatusLabel';
 import SpeakerStatsLabel from './SpeakerStatsLabel';
 import SubjectText from './SubjectText';
+import Testdisplay from './Testdisplay';
 import ToggleTopPanelLabel from './ToggleTopPanelLabel';
+import TranscriptLink from './TranscriptLink';
+import VisualCuesStatusLabel from './VisualCuesStatusLabel';
+import AssistantRelationLabel from './AssistantRelationLabel';
 
 /**
  * The type of the React {@code Component} props of {@link Subject}.
@@ -33,6 +39,8 @@ interface IProps {
     _conferenceInfo: {
         alwaysVisible?: string[];
         autoHide?: string[];
+        detailIndicatorsLeft?: string[];
+        detailIndicatorsRight?: string[];
     };
 
     /**
@@ -102,6 +110,30 @@ const COMPONENTS: Array<{
     {
         Component: ToggleTopPanelLabel,
         id: 'top-panel-toggle'
+    },
+    {
+        Component: Testdisplay,
+        id: 'test-display'
+    },
+    {
+        Component: TranscriptLink,
+        id: 'transcript-link'
+    },
+    {
+        Component: RecordingStatusLabel,
+        id: 'recording-status'
+    },
+    {
+        Component: VisualCuesStatusLabel,
+        id: 'visual-cues-status'
+    },
+    {
+        Component: AcousticCuesStatusLabel,
+        id: 'acoustic-cues-status'
+    },
+    {
+        Component: AssistantRelationLabel,
+        id: 'assistantre-relation'
     }
 ];
 
@@ -193,6 +225,60 @@ class ConferenceInfo extends Component<IProps> {
     }
 
     /**
+     * Renders the indicators.
+     *
+     * @returns {void}
+     */
+    _renderIndicatorsLeft() {
+        const { detailIndicatorsLeft } = this.props._conferenceInfo;
+
+        if (!detailIndicatorsLeft?.length) {
+            return null;
+        }
+
+        return (
+            <ConferenceInfoContainer
+                id = 'detailIndicatorsLeft'
+                visible = { true } >
+                {
+                    COMPONENTS
+                        .filter(comp => detailIndicatorsLeft.includes(comp.id))
+                        .map(c =>
+                            <c.Component key = { c.id } />
+                        )
+                }
+            </ConferenceInfoContainer>
+        );
+    }
+
+    /**
+     * Renders the indicators.
+     *
+     * @returns {void}
+     */
+    _renderIndicatorsRight() {
+        const { detailIndicatorsRight } = this.props._conferenceInfo;
+
+        if (!detailIndicatorsRight?.length) {
+            return null;
+        }
+
+        return (
+            <ConferenceInfoContainer
+                id = 'detailIndicatorsRight'
+                visible = { true } >
+                {
+                    COMPONENTS
+                        .filter(comp => detailIndicatorsRight.includes(comp.id))
+                        .map(c =>
+                            <c.Component key = { c.id } />
+                        )
+                }
+            </ConferenceInfoContainer>
+        );
+    }
+
+    /**
      * Implements React's {@link Component#render()}.
      *
      * @inheritdoc
@@ -203,8 +289,10 @@ class ConferenceInfo extends Component<IProps> {
             <div
                 className = 'details-container'
                 onFocus = { this._onTabIn }>
+                { this._renderIndicatorsLeft() }
                 { this._renderAlwaysVisible() }
                 { this._renderAutoHide() }
+                { this._renderIndicatorsRight() }
             </div>
         );
     }
