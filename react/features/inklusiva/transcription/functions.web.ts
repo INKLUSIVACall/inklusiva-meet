@@ -31,6 +31,16 @@ export function getHistory(state: IReduxState): number | undefined {
     return state['features/inklusiva/userdata'].assistant?.transcription?.history;
 }
 
+/**
+ * Returns link to the transcription.
+ *
+ * @param {IReduxState} state - The redux state.
+ * @returns {string} Link to transcription. TODO: retrieve actual link, as soon as it is implemented.
+ */
+export function getTranscriptionLink(state: IReduxState): string | undefined {
+    return 'http://www.google.com';
+}
+
 /** .........
  *  Returns all states of TranscriptionTab
  *
