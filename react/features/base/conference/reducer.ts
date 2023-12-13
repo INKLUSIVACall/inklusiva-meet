@@ -131,6 +131,7 @@ export interface IJitsiConference {
     startVerification: Function;
     stopRecording: Function;
     toggleE2EE: Function;
+    updateTranscriptLink: Function;
 }
 
 export interface IConferenceState {
