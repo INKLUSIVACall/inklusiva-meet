@@ -16,17 +16,16 @@ import ConferenceTimer from '../ConferenceTimer';
 import { getConferenceInfo } from '../functions.web';
 
 import AcousticCuesStatusLabel from './AcousticCuesStatusLabel';
+import AssistantRelationLabel from './AssistantRelationLabel';
 import ConferenceInfoContainer from './ConferenceInfoContainer';
 import InsecureRoomNameLabel from './InsecureRoomNameLabel';
 import RaisedHandsCountLabel from './RaisedHandsCountLabel';
 import RecordingStatusLabel from './RecordingStatusLabel';
 import SpeakerStatsLabel from './SpeakerStatsLabel';
 import SubjectText from './SubjectText';
-import Testdisplay from './Testdisplay';
 import ToggleTopPanelLabel from './ToggleTopPanelLabel';
 import TranscriptLink from './TranscriptLink';
 import VisualCuesStatusLabel from './VisualCuesStatusLabel';
-import AssistantRelationLabel from './AssistantRelationLabel';
 
 /**
  * The type of the React {@code Component} props of {@link Subject}.
@@ -112,10 +111,6 @@ const COMPONENTS: Array<{
         id: 'top-panel-toggle'
     },
     {
-        Component: Testdisplay,
-        id: 'test-display'
-    },
-    {
         Component: TranscriptLink,
         id: 'transcript-link'
     },
@@ -133,7 +128,7 @@ const COMPONENTS: Array<{
     },
     {
         Component: AssistantRelationLabel,
-        id: 'assistantre-relation'
+        id: 'assistant-relation'
     }
 ];
 

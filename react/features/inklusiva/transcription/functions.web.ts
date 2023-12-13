@@ -1,5 +1,6 @@
 import { IReduxState } from '../../app/types';
 import { IStateful } from '../../base/app/types';
+import { getCurrentConference } from '../../base/conference/functions';
 import { toState } from '../../base/redux/functions';
 
 /**
@@ -38,7 +39,8 @@ export function getHistory(state: IReduxState): number | undefined {
  * @returns {string} Link to transcription. TODO: retrieve actual link, as soon as it is implemented.
  */
 export function getTranscriptionLink(state: IReduxState): string | undefined {
-    return 'http://www.google.com';
+    const conference = getCurrentConference(state);
+    return conference?.transcriptionLink ?? '';
 }
 
 /** .........
