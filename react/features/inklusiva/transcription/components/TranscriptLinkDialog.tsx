@@ -1,24 +1,16 @@
 import React from 'react';
-import { connect, useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { IReduxState } from '../../../app/types';
-import { IJitsiConference } from '../../../base/conference/reducer';
 import Dialog from '../../../base/ui/components/web/Dialog';
-import { updateTranscriptLink } from '../actions.web';
 import { getTranscriptionLink } from '../functions.web';
+import { IC_ROLES } from '../../../base/conference/icRoles';
+import { updateTranscriptLink } from '../actions.web';
+import { TextField } from '@mui/material';
 
-/**
- * The type of the React {@code Component} props of
- * {@link ConnectedSettingsDialog}.
- */
-interface IProps {
-    _conference?: IJitsiConference;
-}
-const TranscriptLinkDialog = (props: IProps) => {
+const TranscriptLinkDialog = () => {
     let transcriptionLink = useSelector(getTranscriptionLink);
-
-    const _conference = props._conference;
-
+    const { conference } = useSelector(state => state['features/base/conference']);
+    //const isCaptioner = conference.checkLocalHasRole(IC_ROLES.CAPTIONER);
     const isCaptioner = true;
     const dispatch = useDispatch();
 
@@ -40,8 +32,8 @@ const TranscriptLinkDialog = (props: IProps) => {
                     </p>
                     <input
                         defaultValue = { transcriptionLink }
-                        onChange = { event => transcriptionLink = event.target.value }
-                        type = 'text' />
+                        type = 'text'
+                        onChange={ event => transcriptionLink = event.target.value } />
                 </div>
             </Dialog>
         );
@@ -68,12 +60,4 @@ const TranscriptLinkDialog = (props: IProps) => {
     );
 };
 
-const _mapStateToProps = (state: IReduxState) => {
-    const { conference } = state['features/base/conference'];
-
-    return {
-        _conference: conference
-    };
-};
-
-export default connect(_mapStateToProps)(TranscriptLinkDialog);
+export default TranscriptLinkDialog;

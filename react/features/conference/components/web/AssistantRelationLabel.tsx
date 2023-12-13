@@ -4,6 +4,7 @@ import { IconHandHoldingHand } from '../../../base/icons/svg';
 import Label from '../../../base/label/components/web/Label';
 import { COLORS } from '../../../base/label/constants';
 import Tooltip from '../../../base/tooltip/components/Tooltip';
+import { IC_ROLES } from '../../../base/conference/icRoles';
 
 /*
 const useStyles = makeStyles()(theme => {
