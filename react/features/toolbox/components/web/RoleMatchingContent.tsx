@@ -67,6 +67,10 @@ const RoleMatchingContent = () => {
             participantId: '1234' }
     ];
 
+    const _onClickNeedAssistance = function() {
+        console.log('need assistance');
+    };
+
     /**
      * Renders a single microphone entry.
      *
@@ -107,6 +111,7 @@ const RoleMatchingContent = () => {
                     <Button
                         className = { classes.button }
                         label = 'Ich benötige Assistenz'
+                        onClick = { _onClickNeedAssistance }
                         type = { BUTTON_TYPES.PRIMARY } />
                 </ContextMenuItem>
 
