@@ -179,11 +179,11 @@ export const MeetingRoleIcons: { [index: string]: any; } = {
         size = { 16 }
         src = { IconContact } />,
     'IC_ROLE_SIGN_LANG_TRANSLATOR': <Icon
-        color = { '#' }
+        color = { '#FFFFFF' }
         size = { 16 }
         src = { IconHands } />,
     'IC_ROLE_CAPTIONER': <Icon
-        color = { '#' }
+        color = { '#FFFFFF' }
         size = { 16 }
         src = { IconMessage } />,
     participant: null

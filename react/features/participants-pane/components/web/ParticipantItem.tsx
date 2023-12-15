@@ -195,7 +195,7 @@ function ParticipantItem({
     let mainRole = DEFAULT_MEETING_ROLE;
 
     if (isModerator) {
-        mainRole = 'moderator';
+        mainRole = (icRoles && icRoles[0]?.name) || 'moderator';
     } else {
         mainRole = (icRoles && icRoles[0]?.name) || 'participant';
     }
@@ -211,7 +211,6 @@ function ParticipantItem({
                 {local ? <span>&nbsp;({youText})</span> : null}
 
                 <div className = 'LeftPlacedIcons'>
-                    {roleIcon}
                     {/* {TECHNICAL_SUPPORT_REQUIRED && TechnicalSupportIcons} */}
                     {/* {ESCORT_REQUIRED && EscortIcons} */}
                     {/* {SUPPORT_OFFERED && SupportOfferIcons} */}
@@ -231,7 +230,10 @@ function ParticipantItem({
                 {VideoStateIcons[videoMediaState]}
                 {AudioStateIcons[audioMediaState]}
             </div>
-            <div className = 'RightPlacedIcons'>{MeetingStateIcons[DEFAULT_MEETING_STATE]}</div>
+            <div className = 'RightPlacedIcons'>
+                {MeetingStateIcons[DEFAULT_MEETING_STATE]}
+                {roleIcon}
+            </div>
         </>
     );
 
