@@ -34,8 +34,7 @@ const AssistantRelationLabel = () => {
                 position = 'bottom'>
                 <Label
                     accessibilityText = { `${AssistantName} ist deine Begleitperson` }
-                    className = { 'test' }
-                    color = { COLORS.white }
+                    className = { 'icLabelTransparent' }
                     icon = { IconHandHoldingHand }
                     iconColor = '#fff'
                     id = 'assistantRelationLabel'
