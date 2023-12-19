@@ -386,27 +386,6 @@ const ParticipantContextMenu = ({
         });
     }
 
-    const addDemoTag = useCallback(() => {
-        dispatch(addIcRole(participant.id, 'asst', 'p1'));
-    }, [ addIcRole, participant ]);
-    const removeDemoTag = useCallback(() => {
-        dispatch(removeIcRole(participant.id, 'asst', 'p1'));
-    }, [ removeIcRole, participant ]);
-
-    const addDemo2Tag = useCallback(() => {
-        dispatch(addIcRole(participant.id, 'asst', 'p2'));
-    }, [ addIcRole, participant ]);
-    const removeDemo2Tag = useCallback(() => {
-        dispatch(removeIcRole(participant.id, 'asst', 'p2'));
-    }, [ removeIcRole, participant ]);
-
-    const addDemo3Tag = useCallback(() => {
-        dispatch(addIcRole(participant.id, 'demo'));
-    }, [ addIcRole, participant ]);
-    const removeDemo3Tag = useCallback(() => {
-        dispatch(removeIcRole(participant.id, 'demo'));
-    }, [ removeIcRole, participant ]);
-
     return (
         <ContextMenu
             className = { className }
@@ -461,17 +440,6 @@ const ParticipantContextMenu = ({
                     {breakoutRoomsButtons}
                 </ContextMenuItemGroup>
             )}
-            <div>
-                <button onClick = { addDemoTag }>Add asst 1 role</button>
-                <br />
-                <button onClick = { removeDemoTag }>Remove asst 1 role</button>
-                <button onClick = { addDemo2Tag }>Add asst 2 role</button>
-                <br />
-                <button onClick = { removeDemo2Tag }>Remove asst 2 role</button>
-                <button onClick = { addDemo3Tag }>Add demo role</button>
-                <br />
-                <button onClick = { removeDemo3Tag }>Remove demo role</button>
-            </div>
         </ContextMenu>
     );
 };

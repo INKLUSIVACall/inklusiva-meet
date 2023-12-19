@@ -9,8 +9,10 @@ import {
     IconFullHourglass,
     IconGridPlus,
     IconHalfStar,
+    IconHands,
     IconLifeSaver,
     IconLink,
+    IconMessage,
     IconMic,
     IconMicSlash,
     IconVideo,
@@ -169,13 +171,21 @@ export const MeetingRoleIcons: { [index: string]: any; } = {
         color = { '#' }
         size = { 16 }
         src = { IconEmptyStar } />,
-    coModerator: <Icon
+    'IC_ROLE_COHOST': <Icon
         size = { 16 }
         src = { IconHalfStar } />,
-    assistant: <Icon
+    'IC_ROLE_ASSISTANT': <Icon
         color = { '#' }
         size = { 16 }
         src = { IconContact } />,
+    'IC_ROLE_SIGN_LANG_TRANSLATOR': <Icon
+        color = { '#FFFFFF' }
+        size = { 16 }
+        src = { IconHands } />,
+    'IC_ROLE_CAPTIONER': <Icon
+        color = { '#FFFFFF' }
+        size = { 16 }
+        src = { IconMessage } />,
     participant: null
 };
 
@@ -189,7 +199,7 @@ export const TechnicalSupportIcons = (<Icon
     size = { 16 }
     src = { IconLifeSaver } />);
 
-export const TECHNICAL_SUPPORT_REQUIRED = false;
+export const TECHNICAL_SUPPORT_REQUIRED = true;
 
 /**
  * Icon mapping for required escort.
@@ -199,7 +209,7 @@ export const EscortIcons = (<Icon
     size = { 16 }
     src = { IconGridPlus } />);
 
-export const ESCORT_REQUIRED = false;
+export const ESCORT_REQUIRED = true;
 
 /**
  * Icon mapping for offered support.
@@ -209,5 +219,5 @@ export const SupportOfferIcons = (<Icon
     size = { 16 }
     src = { IconBullhorn } />);
 
-export const SUPPORT_OFFERED = false;
+export const SUPPORT_OFFERED = true;
 

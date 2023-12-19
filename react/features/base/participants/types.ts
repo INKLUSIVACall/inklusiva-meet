@@ -61,13 +61,13 @@ export interface ISourceInfo {
 }
 
 export interface IJitsiParticipant {
+    addICRole: (icRole: string, partnerId: string | null) => void;
     getDisplayName: () => string;
     getId: () => string;
     getJid: () => string;
     getRole: () => string;
     getSources: () => Map<string, Map<string, ISourceInfo>>;
     getTags: () => string[];
-    addICRole: (icRole: string, partnerId: string|null) => void;
-    removeICRole: (icRole: string, partnerId: string|null) => void;
     isHidden: () => boolean;
+    removeICRole: (icRole: string, partnerId: string | null) => void;
 }

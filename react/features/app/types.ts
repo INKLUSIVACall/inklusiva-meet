@@ -42,6 +42,9 @@ import { IFilmstripState } from '../filmstrip/reducer';
 import { IFollowMeState } from '../follow-me/reducer';
 import { IGifsState } from '../gifs/reducer';
 import { IGoogleApiState } from '../google-api/reducer';
+import { IRoleMatchingState } from '../inklusiva/rolematching/reducer';
+import { ISessionData } from '../inklusiva/sessiondata/reducer';
+import { IUserData } from '../inklusiva/userdata/reducer';
 import { IInviteState } from '../invite/reducer';
 import { IJaaSState } from '../jaas/reducer';
 import { IKeyboardShortcutsState } from '../keyboard-shortcuts/types';
@@ -82,9 +85,6 @@ import { IVirtualBackground } from '../virtual-background/reducer';
 import { IVisitorsState } from '../visitors/reducer';
 import { IWebHid } from '../web-hid/reducer';
 import { IWhiteboardState } from '../whiteboard/reducer';
-
-import { IUserData} from '../inklusiva/userdata/reducer';
-import { ISessionData } from '../inklusiva/sessiondata/reducer';
 
 export interface IStore {
     dispatch: ThunkDispatch<IReduxState, void, AnyAction>;
@@ -137,6 +137,9 @@ export interface IReduxState {
     'features/full-screen': IFullScreenState;
     'features/gifs': IGifsState;
     'features/google-api': IGoogleApiState;
+    'features/inklusiva/rolematching': IRoleMatchingState;
+    'features/inklusiva/sessiondata': ISessionData;
+    'features/inklusiva/userdata': IUserData;
     'features/invite': IInviteState;
     'features/jaas': IJaaSState;
     'features/keyboard-shortcuts': IKeyboardShortcutsState;
@@ -177,8 +180,6 @@ export interface IReduxState {
     'features/visitors': IVisitorsState;
     'features/web-hid': IWebHid;
     'features/whiteboard': IWhiteboardState;
-    'features/inklusiva/userdata': IUserData;
-    'features/inklusiva/sessiondata': ISessionData;
 }
 
 export interface IReloadNowOptions {
