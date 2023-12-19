@@ -25,6 +25,7 @@ import {
 } from './constants';
 import { preloadImage } from './preloadImage';
 import { FakeParticipant, IJitsiParticipant, IParticipant, ISourceInfo } from './types';
+import { IC_ROLES } from '../conference/icRoles';
 
 
 /**
@@ -569,13 +570,33 @@ export function getPinnedParticipant(stateful: IStateful) {
 }
 
 /**
- * Returns true if the participant is a moderator.
+ * Returns true if the participant is an XMPP moderator.
  *
  * @param {string} participant - Participant object.
  * @returns {boolean}
  */
 export function isParticipantModerator(participant?: IParticipant) {
     return participant?.role === PARTICIPANT_ROLE.MODERATOR;
+}
+
+/**
+ * Returns true if the participant is an Inklusiva Call Host.
+ *
+ * @param {string} participant - Participant object.
+ * @returns {boolean}
+ */
+export function isParticipantHost(participant?: IParticipant) {
+    return participant?.role === PARTICIPANT_ROLE.MODERATOR && !participant?.conference?.checkMemberHasRole(participant?.id, IC_ROLES.COHOST);
+}
+
+/**
+ * Returns true if the participant is a co-host.
+ *
+ * @param {string} participant - Participant object.
+ * @returns {boolean}
+ */
+export function isParticipantCoHost(participant?: IParticipant) {
+    return participant?.role === PARTICIPANT_ROLE.MODERATOR && participant?.conference?.checkMemberHasRole(participant?.id, IC_ROLES.COHOST);
 }
 
 /**
