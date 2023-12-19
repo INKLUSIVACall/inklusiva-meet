@@ -580,10 +580,11 @@ export function isParticipantModerator(participant?: IParticipant) {
 
 /**
  * Checks if a user has an inclusiva Call role.
- * @param {string} icRole  - Role name
+ *
+ * @param {string} icRole  - Role name.
  * @param {IParticipant} participant - Participant.
  * @param {IParticipant} partner - Partner.
- * @returns 
+ * @returns
  */
 export function checkParticipantHasICRole(icRole: string, participant?: IParticipant, partner?: IParticipant) {
     return participant?.conference?.checkMemberHasRole(participant?.id, icRole, partner?.id);
