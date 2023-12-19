@@ -14,7 +14,6 @@ import StageParticipantNameLabel from '../../display-name/components/web/StagePa
 import FadeOutOverlay from '../../filmstrip/components/web/FadeOutOverlay';
 import { FILMSTRIP_BREAKPOINT } from '../../filmstrip/constants';
 import { getVerticalViewMaxWidth, isFilmstripResizable } from '../../filmstrip/functions.web';
-import { IUserData } from '../../inklusiva/userdata/reducer';
 import { getUserVideoTabProps } from '../../inklusiva/uservideo/functions';
 import SharedVideo from '../../shared-video/components/web/SharedVideo';
 import Captions from '../../subtitles/components/web/Captions';
@@ -25,7 +24,6 @@ import { setSeeWhatIsBeingShared } from '../actions.web';
 import { getLargeVideoParticipant } from '../functions';
 
 import ScreenSharePlaceholder from './ScreenSharePlaceholder.web';
-import { truncate } from 'lodash';
 
 // Hack to detect Spot.
 const SPOT_DISPLAY_NAME = 'Meeting Room';
@@ -40,12 +38,12 @@ interface IProps {
     /**
      * The brightness value from the UserVideoTab.
      */
-    _brightness: number;
+    _brightness?: number;
 
     /**
      * The contrast value from the UserVideoTab.
      */
-    _contrast: number;
+    _contrast?: number;
 
     /**
      * The user selected background color.
@@ -60,7 +58,7 @@ interface IProps {
     /**
      * The dimming value from the UserVideoTab.
      */
-    _dimming: number;
+    _dimming?: number;
 
     /**
      * Whether the screen-sharing placeholder should be displayed or not.
@@ -106,7 +104,7 @@ interface IProps {
     /**
      * The saturation value from the UserVideoTab.
      */
-    _saturation: number;
+    _saturation?: number;
 
     /**
      * Whether or not the screen sharing is visible.
@@ -141,7 +139,7 @@ interface IProps {
     /**
      * The zoom value from the UserVideoTab.
      */
-    _zoom: number;
+    _zoom?: number;
 
     /**
      * The Redux dispatch function.
@@ -332,7 +330,8 @@ class LargeVideo extends Component<IProps> {
             _verticalFilmstripWidth,
             _verticalViewMaxWidth,
             _visibleFilmstrip
-            //_zoom
+
+            // _zoom
         } = this.props;
 
         styles.filter = `brightness(${_brightness}%) contrast(${_contrast}%) saturate(${_saturation}%)`;

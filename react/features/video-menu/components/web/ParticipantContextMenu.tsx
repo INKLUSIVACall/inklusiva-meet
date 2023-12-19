@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { useTranslation, WithTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
 
@@ -9,7 +9,6 @@ import Avatar from '../../../base/avatar/components/Avatar';
 import { getButtonNotifyMode, getParticipantMenuButtonsWithNotifyClick } from '../../../base/config/functions.web';
 import { isIosMobileBrowser, isMobileBrowser } from '../../../base/environment/utils';
 import { MEDIA_TYPE } from '../../../base/media/constants';
-import { addIcRole, removeIcRole } from '../../../base/participants/actions';
 import { PARTICIPANT_ROLE } from '../../../base/participants/constants';
 import { getLocalParticipant } from '../../../base/participants/functions';
 import { IParticipant } from '../../../base/participants/types';
@@ -35,7 +34,6 @@ import { requestRemoteControl, stopController } from '../../../remote-control/ac
 import { NOTIFY_CLICK_MODE } from '../../../toolbox/constants';
 import { showOverflowDrawer } from '../../../toolbox/functions.web';
 import { iAmVisitor } from '../../../visitors/functions';
-import { translate } from '../../base/i18n/functions';
 import { PARTICIPANT_MENU_BUTTONS as BUTTONS } from '../../constants';
 
 import AskToUnmuteButton from './AskToUnmuteButton';
@@ -59,8 +57,6 @@ import TogglePinToStageButton from './TogglePinToStageButton';
 import VerifyParticipantButton from './VerifyParticipantButton';
 import VolumeSlider from './VolumeSlider';
 import ZoomSlider from './ZoomSlider';
-import { getUserVideoDimmingValue } from '../../../inklusiva/uservideo/functions';
-import { IUserData } from '../../../inklusiva/userdata/reducer';
 
 interface IProps {
 
@@ -171,7 +167,7 @@ const ParticipantContextMenu = ({
         participantsOpacity,
         participantsSaturation,
         localOpacity,
-        participantZoomLevel,
+        participantZoomLevel
     } = useSelector((state: IReduxState) => state['features/filmstrip']);
 
     const _volume
@@ -488,7 +484,7 @@ const ParticipantContextMenu = ({
                     label = { t('brightnessSlider') }
                     onChange = { _onBrightnessChange } />
                 <OpacityAdjustSlider
-                    initialValue = { _opacitySliderSetting * 100}
+                    initialValue = { _opacitySliderSetting * 100 }
                     key = 'opacity-adjust-slider'
                     label = { t('opacityAdjustSlider') }
                     onChange = { _onParticipantOpacityAdjustChange } />
