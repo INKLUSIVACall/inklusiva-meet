@@ -4,12 +4,19 @@ import { connect } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
 
 import { IReduxState, IStore } from '../../../app/types';
+import { getCurrentConference } from '../../../base/conference/functions';
+import { ICRole, IC_ROLES } from '../../../base/conference/icRoles';
+import { IJitsiConference } from '../../../base/conference/reducer';
 import { IconUser } from '../../../base/icons/svg';
+import { getLocalParticipant, getRemoteParticipants } from '../../../base/participants/functions';
+import { IParticipant } from '../../../base/participants/types';
+import { IProps as AbstractButtonProps } from '../../../base/toolbox/components/AbstractButton';
 import Button from '../../../base/ui/components/web/Button';
 import ContextMenu from '../../../base/ui/components/web/ContextMenu';
 import ContextMenuItem from '../../../base/ui/components/web/ContextMenuItem';
 import ContextMenuItemGroup from '../../../base/ui/components/web/ContextMenuItemGroup';
 import { BUTTON_TYPES, TEXT_OVERFLOW_TYPES } from '../../../base/ui/constants.web';
+import { hideRoleMatching } from '../../../inklusiva/rolematching/functions';
 
 
 const useStyles = makeStyles()(theme => {
@@ -42,33 +49,75 @@ const useStyles = makeStyles()(theme => {
         },
         button: {
             width: '100%'
+        },
+        assistanceName: {
+            textAlign: 'center',
+            justifyContent: 'center',
+            fontWeight: 'bold'
         }
     };
 });
 
-const RoleMatchingContent = () => {
+/**
+ * The type of the React {@code Component} props of {@link ProfileButton}.
+ */
+interface IProps extends AbstractButtonProps {
+
+    /**
+     * Conference object for the current conference.
+     */
+    _conference?: IJitsiConference;
+
+    /**
+     * Hide the visibility of the popup.
+     */
+    _hideVisibility: Function;
+
+    /**
+     * The local participant.
+     */
+    _localParticipant?: IParticipant;
+
+    /**
+     * The remote participants.
+     */
+    _remoteParticipants?: Map<string, IParticipant>;
+}
+const RoleMatchingContent = (props: IProps) => {
     const { classes } = useStyles();
 
+    // Transform the remote participants map into an array of objects with the name and id of the participant.
+    const assistees = Array.from(props._remoteParticipants?.values() || [])
+        .filter(participant => props._conference?.checkMemberHasRole(participant.id, IC_ROLES.ASSISTED))
+        .map(participant => {
+            return {
+                name: participant.name,
+                participantId: participant.id
+            };
+        });
 
-    const assistees = [
-        { name: 'John Doe',
-            participantId: '1234' },
-        { name: 'Jane Doe',
-            participantId: '5678' },
-        { name: 'John Doe',
-            participantId: '1234' },
-        { name: 'Jane Doe',
-            participantId: '5678' },
-        { name: 'John Doe',
-            participantId: '1234' },
-        { name: 'Jane Doe',
-            participantId: '5678' },
-        { name: 'John Doe',
-            participantId: '1234' }
-    ];
+    let assistedBy: IParticipant | null = null;
+    let assistedByName = '';
+
+    Array.from(props._remoteParticipants?.values() || []).forEach(participant => {
+        const roles = props._conference?.getMemberICRoles(participant.id);
+
+        roles.forEach((role: ICRole) => {
+            if (role.name === IC_ROLES.ASSISTANT && role.partner === props._localParticipant?.id) {
+                assistedBy = participant;
+                assistedByName = participant?.name ?? '';
+            }
+        });
+    });
 
     const _onClickNeedAssistance = function() {
-        console.log('need assistance');
+        props._conference?.addLocalICRole(IC_ROLES.ASSISTED);
+        props._hideVisibility();
+    };
+
+    const _onClickOfferAssistance = function(participantId: string) {
+        props._conference?.addLocalICRole(IC_ROLES.ASSISTANT, participantId);
+        props._hideVisibility();
     };
 
     /**
@@ -92,11 +141,11 @@ const RoleMatchingContent = () => {
                 <Button
                     className = { classes.button }
                     label = { `... ${data.name}` }
+                    onClick = { () => _onClickOfferAssistance(data.participantId) }
                     type = { BUTTON_TYPES.PRIMARY } />
             </ContextMenuItem>
         </li>
     );
-
 
     return (
         <ContextMenu
@@ -106,15 +155,21 @@ const RoleMatchingContent = () => {
             id = 'audio-settings-dialog'
             tabIndex = { -1 }>
             <ContextMenuItemGroup>
-                <ContextMenuItem
-                    accessibilityLabel = { 'Ich benötige Assistenz' }>
-                    <Button
-                        className = { classes.button }
-                        label = 'Ich benötige Assistenz'
-                        onClick = { _onClickNeedAssistance }
-                        type = { BUTTON_TYPES.PRIMARY } />
-                </ContextMenuItem>
-
+                {assistedBy === null && (
+                    <ContextMenuItem accessibilityLabel = { 'Ich benötige Assistenz' }>
+                        <Button
+                            className = { classes.button }
+                            label = 'Ich benötige Assistenz'
+                            onClick = { _onClickNeedAssistance }
+                            type = { BUTTON_TYPES.PRIMARY } />
+                    </ContextMenuItem>
+                )}
+                {assistedBy !== null && (
+                    <ContextMenuItem
+                        accessibilityLabel = { `Assistenz durch ${assistedByName}` }>
+                        <div className = { classes.assistanceName }>{`Assistenz durch ${assistedByName}`} </div>
+                    </ContextMenuItem>
+                )}
             </ContextMenuItemGroup>
             {assistees.length > 0 && (
                 <ContextMenuItemGroup>
@@ -129,9 +184,7 @@ const RoleMatchingContent = () => {
                         className = { classes.list }
                         role = 'radiogroup'
                         tabIndex = { -1 }>
-                        {assistees.map((data: any, i: number) =>
-                            _renderAssistees(data, i, assistees.length)
-                        )}
+                        {assistees.map((data: any, i: number) => _renderAssistees(data, i, assistees.length))}
                     </ul>
                 </ContextMenuItemGroup>
             )}
@@ -139,14 +192,36 @@ const RoleMatchingContent = () => {
     );
 };
 
-const mapStateToProps = (_: IReduxState) => {
+const mapStateToProps = (state: IReduxState) => {
     return {
+        _remoteParticipants: getRemoteParticipants(state),
+        _localParticipant: getLocalParticipant(state),
+        _conference: getCurrentConference(state)
     };
 };
 
-const mapDispatchToProps = (_: IStore['dispatch']) => {
+/**
+ * Maps dispatching of some action to React component props.
+ *
+ * @param {Function} dispatch - Redux action dispatcher.
+ * @private
+ * @returns {{
+ *     _toggleVisibility: Function
+ * }}
+ */
+const mapDispatchToProps = (dispatch: IStore['dispatch']) => {
     return {
+        /**
+         * Dispatches actions to store the last applied transform to a video.
+         *
+         * @private
+         * @returns {void}
+         */
+        _hideVisibility() {
+            dispatch(hideRoleMatching());
+        }
     };
 };
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(RoleMatchingContent);

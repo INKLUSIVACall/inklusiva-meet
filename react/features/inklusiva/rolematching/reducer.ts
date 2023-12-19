@@ -1,6 +1,6 @@
 import ReducerRegistry from '../../base/redux/ReducerRegistry';
 
-import { TOGGLE_ROLEMATCHIN_VISIBLE } from './actionTypes';
+import { HIDE_ROLEMATCHING, SHOW_ROLEMATCHING, TOGGLE_ROLEMATCHIN_VISIBLE } from './actionTypes';
 
 export interface IRoleMatchingState {
 
@@ -37,6 +37,16 @@ ReducerRegistry.register<IRoleMatchingState>(
             return {
                 ...state,
                 visible: !state.visible
+            };
+        case SHOW_ROLEMATCHING:
+            return {
+                ...state,
+                visible: true
+            };
+        case HIDE_ROLEMATCHING:
+            return {
+                ...state,
+                visible: false
             };
         }
 

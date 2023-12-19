@@ -2004,6 +2004,12 @@ export default {
             }
         );
 
+        room.on(
+            JitsiConferenceEvents.USER_IC_ROLES_CHANGED, ev => {
+                console.log('USER_IC_ROLES_CHANGED', ev);
+            }
+        );
+
         // call hangup
         APP.UI.addListener(UIEvents.HANGUP, () => {
             this.hangup(true);
