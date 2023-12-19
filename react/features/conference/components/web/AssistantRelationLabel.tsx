@@ -1,11 +1,9 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 
 import { IconHandHoldingHand } from '../../../base/icons/svg';
 import Label from '../../../base/label/components/web/Label';
 import { COLORS } from '../../../base/label/constants';
 import Tooltip from '../../../base/tooltip/components/Tooltip';
-import { IC_ROLES } from '../../../base/conference/icRoles';
 
 /*
 const useStyles = makeStyles()(theme => {
@@ -21,13 +19,6 @@ const useStyles = makeStyles()(theme => {
  * @returns {ReactElement}
  */
 const AssistantRelationLabel = () => {
-    // const subject = useSelector(getConferenceName);
-    // const { classes } = useStyles();
-
-    const { conference } = useSelector(state => state['features/base/conference']);
-
-    // const isCarer = conference.checkLocalHasRole(IC_ROLES.ASSISTANT);
-    // const isCaree = conference.checkLocalHasRole(IC_ROLES.ASSISTED);
 
     const hasAssistant = true;
     const AssistantName = 'Assistant';

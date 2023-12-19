@@ -40,10 +40,11 @@ export function getHistory(state: IReduxState): number | undefined {
  */
 export function getTranscriptionLink(state: IReduxState): string | undefined {
     const conference = getCurrentConference(state);
+
     return conference?.transcriptionLink ?? '';
 }
 
-/** .........
+/** ...............................
  *  Returns all states of TranscriptionTab
  *
  * @param stateful

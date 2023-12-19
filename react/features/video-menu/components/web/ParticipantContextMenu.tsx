@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { useTranslation, WithTranslation } from 'react-i18next';
+import { WithTranslation, useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
 
@@ -35,7 +35,6 @@ import { requestRemoteControl, stopController } from '../../../remote-control/ac
 import { NOTIFY_CLICK_MODE } from '../../../toolbox/constants';
 import { showOverflowDrawer } from '../../../toolbox/functions.web';
 import { iAmVisitor } from '../../../visitors/functions';
-import { translate } from '../../base/i18n/functions';
 import { PARTICIPANT_MENU_BUTTONS as BUTTONS } from '../../constants';
 
 import AskToUnmuteButton from './AskToUnmuteButton';
@@ -169,7 +168,7 @@ const ParticipantContextMenu = ({
         participantsOpacity,
         participantsSaturation,
         localOpacity,
-        participantZoomLevel,
+        participantZoomLevel
     } = useSelector((state: IReduxState) => state['features/filmstrip']);
     const _volume
         = (participant?.local ?? true ? undefined : participant?.id ? participantsVolume[participant?.id] : undefined)
