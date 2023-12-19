@@ -22,11 +22,6 @@ interface IProps {
     isOpen: boolean;
 
     /**
-     * Callback executed when the popup closes.
-     */
-    onClose: Function;
-
-    /**
      * The popup placement enum value.
      */
     popupPlacement: string;
@@ -46,7 +41,7 @@ const useStyles = makeStyles()(() => {
  *
  * @returns {ReactElement}
  */
-function RoleMathingPopup({ children, isOpen, popupPlacement, onClose }: IProps) {
+function RoleMathingPopup({ children, isOpen, popupPlacement }: IProps) {
     const { classes, cx } = useStyles();
 
     return (
@@ -55,7 +50,7 @@ function RoleMathingPopup({ children, isOpen, popupPlacement, onClose }: IProps)
                 allowClick = { true }
                 content = { <RoleMatchingContent /> }
                 headingId = 'audio-settings-button'
-                onPopoverClose = { onClose }
+                onPopoverClose = { () => {} }
                 position = { popupPlacement }
                 trigger = 'click'
                 visible = { isOpen }>

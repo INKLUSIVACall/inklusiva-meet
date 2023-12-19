@@ -1,16 +1,24 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 
+import { IReduxState } from '../../../app/types';
+import { IJitsiConference } from '../../../base/conference/reducer';
 import Dialog from '../../../base/ui/components/web/Dialog';
-import { getTranscriptionLink } from '../functions.web';
-import { IC_ROLES } from '../../../base/conference/icRoles';
 import { updateTranscriptLink } from '../actions.web';
-import { TextField } from '@mui/material';
+import { getTranscriptionLink } from '../functions.web';
 
-const TranscriptLinkDialog = () => {
+/**
+ * The type of the React {@code Component} props of
+ * {@link ConnectedSettingsDialog}.
+ */
+interface IProps {
+    _conference?: IJitsiConference;
+}
+const TranscriptLinkDialog = (props: IProps) => {
     let transcriptionLink = useSelector(getTranscriptionLink);
-    const { conference } = useSelector(state => state['features/base/conference']);
-    //const isCaptioner = conference.checkLocalHasRole(IC_ROLES.CAPTIONER);
+
+    const _conference = props._conference;
+
     const isCaptioner = true;
     const dispatch = useDispatch();
 
@@ -32,8 +40,8 @@ const TranscriptLinkDialog = () => {
                     </p>
                     <input
                         defaultValue = { transcriptionLink }
-                        type = 'text'
-                        onChange={ event => transcriptionLink = event.target.value } />
+                        onChange = { event => transcriptionLink = event.target.value }
+                        type = 'text' />
                 </div>
             </Dialog>
         );
@@ -60,4 +68,12 @@ const TranscriptLinkDialog = () => {
     );
 };
 
-export default TranscriptLinkDialog;
+const _mapStateToProps = (state: IReduxState) => {
+    const { conference } = state['features/base/conference'];
+
+    return {
+        _conference: conference
+    };
+};
+
+export default connect(_mapStateToProps)(TranscriptLinkDialog);

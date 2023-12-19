@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { IReduxState, IStore } from '../../../app/types';
+import { IReduxState } from '../../../app/types';
 import { isIosMobileBrowser } from '../../../base/environment/utils';
 import { translate } from '../../../base/i18n/functions';
 import { IconUser } from '../../../base/icons/svg';
@@ -13,12 +13,6 @@ interface IProps extends AbstractButtonProps {
      * Whether or not the popup is open.
      */
     _isOpen?: boolean;
-
-    /**
-     * Toggles the visibility of the popup.
-     */
-    _toggleVisibility: Function;
-
 }
 
 /**
@@ -52,7 +46,9 @@ class RoleMatchingButton extends AbstractButton<IProps> {
      * @returns {void}
      */
     _handleClick() {
-        this.props._toggleVisibility();
+        const { dispatch } = this.props;
+
+        dispatch(toggleRoleMatchingMenuVisibility());
     }
 }
 
@@ -69,28 +65,4 @@ const mapStateToProps = (state: IReduxState) => {
     };
 };
 
-/**
- * Maps dispatching of some action to React component props.
- *
- * @param {Function} dispatch - Redux action dispatcher.
- * @private
- * @returns {{
- *     _toggleVisibility: Function
- * }}
- */
-const mapDispatchToProps = (dispatch: IStore['dispatch']) => {
-    return {
-        /**
-         * Dispatches actions to store the last applied transform to a video.
-         *
-         * @private
-         * @returns {void}
-         */
-        _toggleVisibility() {
-            dispatch(toggleRoleMatchingMenuVisibility());
-        }
-    };
-};
-
-
-export default translate(connect(mapStateToProps, mapDispatchToProps)(RoleMatchingButton));
+export default translate(connect(mapStateToProps)(RoleMatchingButton));

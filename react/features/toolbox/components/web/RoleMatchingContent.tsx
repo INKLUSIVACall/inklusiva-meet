@@ -61,7 +61,7 @@ const useStyles = makeStyles()(theme => {
 /**
  * The type of the React {@code Component} props of {@link ProfileButton}.
  */
-interface IProps extends AbstractButtonProps {
+interface IProps {
 
     /**
      * Conference object for the current conference.

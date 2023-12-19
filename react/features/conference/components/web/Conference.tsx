@@ -14,6 +14,7 @@ import { setColorAlpha } from '../../../base/util/helpers';
 import Chat from '../../../chat/components/web/Chat';
 import MainFilmstrip from '../../../filmstrip/components/web/MainFilmstrip';
 import ScreenshareFilmstrip from '../../../filmstrip/components/web/ScreenshareFilmstrip';
+import SignLangTranslatorFilmStrip from '../../../filmstrip/components/web/SignLangTranslatorFilmStrip';
 import StageFilmstrip from '../../../filmstrip/components/web/StageFilmstrip';
 import { getUserVideoTabProps } from '../../../inklusiva/uservideo/functions';
 import CalleeInfoContainer from '../../../invite/components/callee-info/CalleeInfoContainer';
@@ -40,7 +41,6 @@ import type { AbstractProps } from '../AbstractConference';
 
 import ConferenceInfo from './ConferenceInfo';
 import { default as Notice } from './Notice';
-import SignLangTranslatorFilmStrip from '../../../filmstrip/components/web/SignLangTranslatorFilmStrip';
 
 /**
  * DOM events for when full screen mode has changed. Different browsers need
@@ -104,27 +104,27 @@ interface IProps extends AbstractProps, WithTranslation {
     /**
      * The User Video brightness.
      */
-    _userVideoBrightness: number;
+    _userVideoBrightness?: number;
 
     /**
      * The User Video contrast.
      */
-     _userVideoContrast: number;
+     _userVideoContrast?: number;
 
      /**
      * The User Video dimming.
      */
-    _userVideoDimming: number;
+    _userVideoDimming?: number;
 
     /**
      * The User Video saturation.
      */
-    _userVideoSaturation: number;
+    _userVideoSaturation?: number;
 
     /**
      * The User Video zoom.
      */
-    _userVideoZoom: number;
+    _userVideoZoom?: number;
 
     dispatch: IStore['dispatch'];
 }
@@ -275,7 +275,7 @@ class Conference extends AbstractConference<IProps, any> {
                     )}
 
                     {
-                        _showPrejoin || _showLobby || (<SignLangTranslatorFilmStrip />)
+                        _showPrejoin || _showLobby || <SignLangTranslatorFilmStrip />
                     }
 
                     {_notificationsVisible && !_isAnyOverlayVisible && (_overflowDrawer
@@ -315,7 +315,7 @@ class Conference extends AbstractConference<IProps, any> {
 
         styles.filter = `brightness(${_userVideoBrightness}%)
             contrast(${_userVideoContrast}%)
-            opacity(${100 - _userVideoDimming}%)
+            opacity(${_userVideoDimming ? 100 - _userVideoDimming : 100}%)
             saturate(${_userVideoSaturation}%)`;
         styles.zoom = `${_userVideoZoom}%`;
 
