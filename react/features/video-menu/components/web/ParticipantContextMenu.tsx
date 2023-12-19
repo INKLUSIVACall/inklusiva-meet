@@ -57,6 +57,8 @@ import TogglePinToStageButton from './TogglePinToStageButton';
 import VerifyParticipantButton from './VerifyParticipantButton';
 import VolumeSlider from './VolumeSlider';
 import ZoomSlider from './ZoomSlider';
+import { IC_ROLES } from '../../../base/conference/icRoles';
+import GrantCoHostButton from './GrantCoHostButton';
 
 interface IProps {
 
@@ -145,8 +147,14 @@ const ParticipantContextMenu = ({
     const { t } = useTranslation();
     const { classes: styles } = useStyles();
 
+    const { conference } = useSelector((state: IReduxState) => state['features/base/conference']);
+
     const localParticipant = useSelector(getLocalParticipant);
     const _isModerator = Boolean(localParticipant?.role === PARTICIPANT_ROLE.MODERATOR);
+
+    const _isCoHost = _isModerator && conference?.checkLocalHasRole(IC_ROLES.COHOST) && Boolean(localParticipant?.role === PARTICIPANT_ROLE.MODERATOR);
+    const _isHost = _isModerator && !_isCoHost;
+    
     const _isVideoForceMuted = useSelector<IReduxState>(state => isForceMuted(participant, MEDIA_TYPE.VIDEO, state));
     const _isAudioMuted = useSelector((state: IReduxState) => isParticipantAudioMuted(participant, state));
     const _isVideoMuted = useSelector((state: IReduxState) => isParticipantVideoMuted(participant, state));
@@ -326,7 +334,7 @@ const ParticipantContextMenu = ({
             };
         },
         [ _getCurrentParticipantId, buttonsWithNotifyClick, getButtonNotifyMode, notifyClick ]
-    );
+    );        
 
     if (_isModerator) {
         if (isModerationSupported) {
@@ -363,8 +371,12 @@ const ParticipantContextMenu = ({
             buttons.push(<MuteEveryoneElsesVideoButton { ...getButtonProps(BUTTONS.MUTE_OTHERS_VIDEO) } />);
         }
 
-        if (!disableGrantModerator && !isBreakoutRoom) {
+        if (!disableGrantModerator && !isBreakoutRoom && _isHost) {
             buttons2.push(<GrantModeratorButton { ...getButtonProps(BUTTONS.GRANT_MODERATOR) } />);
+        }
+
+        if (!disableGrantModerator && !isBreakoutRoom) {
+            buttons2.push(<GrantCoHostButton { ...getButtonProps(BUTTONS.GRANT_COHOST) } />);
         }
 
         if (!disableKick) {

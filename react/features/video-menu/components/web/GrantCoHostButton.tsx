@@ -6,37 +6,40 @@ import { IReduxState } from '../../../app/types';
 import { openDialog } from '../../../base/dialog/actions';
 import { IconModerator } from '../../../base/icons/svg';
 import { PARTICIPANT_ROLE } from '../../../base/participants/constants';
-import { getLocalParticipant, getParticipantById, isParticipantHost, isParticipantModerator } from '../../../base/participants/functions';
+import { getLocalParticipant, getParticipantById, isParticipantModerator, isParticipantHost, isParticipantCoHost } from '../../../base/participants/functions';
 import ContextMenuItem from '../../../base/ui/components/web/ContextMenuItem';
 import { NOTIFY_CLICK_MODE } from '../../../toolbox/constants';
 import { IButtonProps } from '../../types';
 
-import GrantModeratorDialog from './GrantModeratorDialog';
+import GrantCoHostDialog from './GrantCoHostDialog';
+import { IC_ROLES } from '../../../base/conference/icRoles';
 
 /**
  * Implements a React {@link Component} which displays a button for granting
- * moderator to a participant.
+ * Co Host to a participant.
  *
  * @returns {JSX.Element|null}
  */
-const GrantModeratorButton = ({
+const GrantCoHostButton = ({
     notifyClick,
     notifyMode,
     participantID
 }: IButtonProps): JSX.Element | null => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
+
     const localParticipant = useSelector(getLocalParticipant);
+
     const targetParticipant = useSelector((state: IReduxState) => getParticipantById(state, participantID));
     const visible = useMemo(() => Boolean(localParticipant?.role === PARTICIPANT_ROLE.MODERATOR)
-        && !isParticipantHost(targetParticipant), [ isParticipantHost, localParticipant, targetParticipant ]);
+        && !isParticipantCoHost(targetParticipant) && !isParticipantHost(targetParticipant), [ isParticipantCoHost, isParticipantHost, localParticipant, targetParticipant ]);
 
     const handleClick = useCallback(() => {
         notifyClick?.();
         if (notifyMode === NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY) {
             return;
         }
-        dispatch(openDialog(GrantModeratorDialog, { participantID }));
+        dispatch(openDialog(GrantCoHostDialog, { participantID }));
     }, [ dispatch, notifyClick, notifyMode, participantID ]);
 
     if (!visible) {
@@ -45,12 +48,12 @@ const GrantModeratorButton = ({
 
     return (
         <ContextMenuItem
-            accessibilityLabel = { t('toolbar.accessibilityLabel.grantModerator') }
-            className = 'grantmoderatorlink'
+            accessibilityLabel = { t('toolbar.accessibilityLabel.grantCoModerator') }
+            className = 'grantcomoderatorlink'
             icon = { IconModerator }
             onClick = { handleClick }
-            text = { t('videothumbnail.grantModerator') } />
+            text = { t('videothumbnail.grantCoModerator') } />
     );
 };
 
-export default GrantModeratorButton;
+export default GrantCoHostButton;

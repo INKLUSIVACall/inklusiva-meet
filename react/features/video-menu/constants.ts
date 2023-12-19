@@ -39,6 +39,7 @@ export const PARTICIPANT_MENU_BUTTONS = {
     CONN_STATUS: 'conn-status',
     FLIP_LOCAL_VIDEO: 'flip-local-video',
     GRANT_MODERATOR: 'grant-moderator',
+    GRANT_COHOST: 'grant-cohost',
     HIDE_SELF_VIEW: 'hide-self-view',
     KICK: 'kick',
     MUTE: 'mute',
