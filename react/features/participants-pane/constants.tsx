@@ -125,7 +125,7 @@ export const SEARCH_PARTICIPANTS_STATUS = false;
 /**
  * Default breakoutroom button status.
  */
-export const BREAKOUTROOM_BUTTON_STATUS = false;
+export const BREAKOUTROOM_BUTTON_STATUS = true;
 
 /**
  * Default breakoutroom list status.
