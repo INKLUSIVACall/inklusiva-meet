@@ -4,15 +4,29 @@ import {
     SET_USERVIDEO_BRIGHTNESS,
     SET_USERVIDEO_CONTRAST,
     SET_USERVIDEO_DIMMING,
+    SET_USERVIDEO_INTERPRETERS,
     SET_USERVIDEO_OTHER_PARTICIPANTS,
     SET_USERVIDEO_SATURATION,
+    SET_USERVIDEO_SCREESHARING,
     SET_USERVIDEO_ZOOM
 } from './actionTypes';
 import {
     areOtherParticipantsEnabled,
-    getUserVideoTabProps
+    areInterpretersEnabled,
+    getUserVideoTabProps,
+    isScreensharingEnabled
 } from './functions';
 
+import { 
+    setParticipantBrightness,
+    setParticipantContrast,
+    setParticipantOpacitySetting,
+    setParticipantSaturation,
+    setParticipantZoomLevel
+} from '../../filmstrip/actions.web';
+
+import { getRemoteParticipants } from '../../base/participants/functions';
+import { IStateful } from '../../base/app/types';
 
 /**
  * Submits new values to the state inside the project store.
@@ -61,7 +75,37 @@ export function toggleOtherParticipants(): any {
 }
 
 /**
- * Toggles the state of otherParticipants.
+ * Toggles the state of interpreters.
+ *
+ * @returns {Function}
+ */
+export function toggleInterpreters(): any {
+    return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
+        if (areInterpretersEnabled(getState())) {
+            dispatch(setUserVideoInterpretersState(false))
+        } else {
+            dispatch(setUserVideoInterpretersState(true));
+        }
+    }
+}
+
+/**
+ * Toggles the state of screensharing.
+ *
+ * @returns {Function}
+ */
+export function toggleScreensharing(): any {
+    return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
+        if (isScreensharingEnabled(getState())) {
+            dispatch(setUserVideoScreensharingState(false))
+        } else {
+            dispatch(setUserVideoScreensharingState(true));
+        }
+    }
+}
+
+/**
+ * Sets the value of brightness.
  *
  * @param {number} value - The new value.
  * @returns {property}
@@ -110,6 +154,32 @@ export function setUserVideoOtherParticipantsState(enabled: boolean): any {
         type: SET_USERVIDEO_OTHER_PARTICIPANTS,
         enabled
     };
+}
+
+/**
+ * Sets the state of otherParticipants.
+ *
+ * @param {boolean} enabled - The new state.
+ * @returns {property}
+ */
+export function setUserVideoInterpretersState(enabled: boolean): any {
+    return {
+        type: SET_USERVIDEO_INTERPRETERS,
+        enabled
+    }
+}
+
+/**
+ * Sets the state of otherParticipants.
+ *
+ * @param {boolean} enabled - The new state.
+ * @returns {property}
+ */
+export function setUserVideoScreensharingState(enabled: boolean): any {
+    return {
+        type: SET_USERVIDEO_SCREESHARING,
+        enabled
+    }
 }
 
 /**

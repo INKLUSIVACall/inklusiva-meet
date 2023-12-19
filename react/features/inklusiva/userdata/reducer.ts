@@ -34,8 +34,11 @@ import {
     SET_USERVIDEO_BRIGHTNESS,
     SET_USERVIDEO_CONTRAST,
     SET_USERVIDEO_DIMMING,
+    SET_USERVIDEO_FPS,
+    SET_USERVIDEO_INTERPRETERS,
     SET_USERVIDEO_OTHER_PARTICIPANTS,
     SET_USERVIDEO_SATURATION,
+    SET_USERVIDEO_SCREESHARING,
     SET_USERVIDEO_ZOOM
 } from '../uservideo/actionTypes';
 
@@ -61,8 +64,10 @@ interface IVideo {
     contrast?: number;
     dimming?: number;
     fps?: number;
+    interpreter?: boolean;
     otherParticipants?: boolean;
     saturation?: number;
+    screensharing?: boolean;
     zoom?: number;
 }
 
@@ -270,6 +275,16 @@ ReducerRegistry.register<IUserData>(
 
             return nextState;
 
+        case SET_USERVIDEO_FPS:
+            nextState.video.fps = payload.value;
+
+            return nextState;
+
+        case SET_USERVIDEO_INTERPRETERS:
+            nextState.video.interpreter = payload.value;
+
+            return nextState;
+
         case SET_USERVIDEO_OTHER_PARTICIPANTS:
             nextState.video.otherParticipants = payload.enabled;
 
@@ -277,6 +292,11 @@ ReducerRegistry.register<IUserData>(
 
         case SET_USERVIDEO_SATURATION:
             nextState.video.saturation = payload.value;
+
+            return nextState;
+
+        case SET_USERVIDEO_SCREESHARING:
+            nextState.video.screensharing = payload.value;
 
             return nextState;
 

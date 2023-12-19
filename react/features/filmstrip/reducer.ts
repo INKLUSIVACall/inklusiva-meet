@@ -30,6 +30,7 @@ import {
     SET_VOLUME
 } from './actionTypes';
 
+
 const DEFAULT_STATE = {
 
     /**
@@ -101,7 +102,7 @@ const DEFAULT_STATE = {
      *
      * @type {Object}
      */
-    localOpacity: 1,
+    localOpacity: 0,
 
     /**
      * The saturation of each participant.

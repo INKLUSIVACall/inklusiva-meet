@@ -22,6 +22,7 @@ export { default as IconCloudUpload } from './cloud-upload.svg';
 export { default as IconCode } from './code.svg';
 export { default as IconConnection } from './connection.svg';
 export { default as IconConnectionInactive } from './ninja.svg';
+export { default as IconContrast } from './contrast.svg'
 export { default as IconCopy } from './copy.svg';
 export { default as IconDeviceHeadphone } from './headset.svg';
 export { default as IconDotsHorizontal } from './dots-horizontal.svg';

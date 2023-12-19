@@ -59,6 +59,8 @@ import TogglePinToStageButton from './TogglePinToStageButton';
 import VerifyParticipantButton from './VerifyParticipantButton';
 import VolumeSlider from './VolumeSlider';
 import ZoomSlider from './ZoomSlider';
+import { getUserVideoDimmingValue } from '../../../inklusiva/uservideo/functions';
+import { IUserData } from '../../../inklusiva/userdata/reducer';
 
 interface IProps {
 
@@ -171,6 +173,7 @@ const ParticipantContextMenu = ({
         localOpacity,
         participantZoomLevel,
     } = useSelector((state: IReduxState) => state['features/filmstrip']);
+
     const _volume
         = (participant?.local ?? true ? undefined : participant?.id ? participantsVolume[participant?.id] : undefined)
         ?? 1;
@@ -185,7 +188,7 @@ const ParticipantContextMenu = ({
             ? undefined
             : participant?.id
                 ? participantsBrightness[participant?.id]
-                : undefined) ?? 1;
+                : undefined) ?? 0;
     const _contrastSliderSetting
     = (participant?.local ?? true
         ? undefined
@@ -197,7 +200,7 @@ const ParticipantContextMenu = ({
             ? localOpacity
             : participant?.id
                 ? participantsOpacity[participant?.id]
-                : undefined) ?? 1;
+                : undefined) ?? 0;
     const _saturationSliderSetting
     = (participant?.local ?? true
         ? undefined
@@ -209,7 +212,7 @@ const ParticipantContextMenu = ({
             ? undefined
             : participant?.id
                 ? participantZoomLevel[participant?.id]
-                : undefined) ?? 1;
+                : undefined) ?? 0;
     const isBreakoutRoom = useSelector(isInBreakoutRoom);
     const isModerationSupported = useSelector((state: IReduxState) => isAvModerationSupported()(state));
     const stageFilmstrip = useSelector(isStageFilmstripAvailable);
@@ -485,7 +488,7 @@ const ParticipantContextMenu = ({
                     label = { t('brightnessSlider') }
                     onChange = { _onBrightnessChange } />
                 <OpacityAdjustSlider
-                    initialValue = { _opacitySliderSetting * 100 }
+                    initialValue = { _opacitySliderSetting * 100}
                     key = 'opacity-adjust-slider'
                     label = { t('opacityAdjustSlider') }
                     onChange = { _onParticipantOpacityAdjustChange } />
