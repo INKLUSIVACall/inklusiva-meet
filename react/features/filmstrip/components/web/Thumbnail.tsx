@@ -63,11 +63,6 @@ import {
     isVideoPlayable,
     showGridInVerticalView
 } from '../../functions';
-import {
-    getParticipantBrightness,
-    getParticipantContrast,
-    getParticipantsSaturation
-} from '../../functions.web';
 
 import ActiveSpeakerIndicator from './ActiveSpeakerIndicator';
 import FadeOutOverlay from './FadeOutOverlay';

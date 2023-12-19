@@ -304,20 +304,21 @@ class Conference extends AbstractConference<IProps, any> {
      */
     _useStyle() {
         const styles: any = {};
-        const {
+
+        /* const {
             _userVideoBrightness,
             _userVideoContrast,
             _userVideoDimming,
             _userVideoSaturation,
             _userVideoZoom
-        } = this.props;
+        } = this.props; */
 
 
-        styles.filter = `brightness(${_userVideoBrightness}%)
+        /* styles.filter = `brightness(${_userVideoBrightness}%)
             contrast(${_userVideoContrast}%)
             opacity(${_userVideoDimming ? 100 - _userVideoDimming : 100}%)
             saturate(${_userVideoSaturation}%)`;
-        styles.zoom = `${_userVideoZoom}%`;
+        styles.zoom = `${_userVideoZoom}%`; */
 
         return styles;
     }

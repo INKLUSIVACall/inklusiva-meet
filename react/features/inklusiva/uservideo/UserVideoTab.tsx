@@ -9,6 +9,7 @@ import AbstractDialogTab, {
 import { translate } from '../../base/i18n/functions';
 import Checkbox from '../../base/ui/components/web/Checkbox';
 import Slider from '../../base/ui/components/web/Slider';
+import { getRemoteParticipants } from '../../base/participants/functions';
 
 
 /**
@@ -122,6 +123,8 @@ class UserVideoTab extends AbstractDialogTab<IProps, any> {
         const { brightness, classes, contrast, dimming, interpreter, otherParticipants, saturation,
             screensharing, zoom, t } = this.props;
 
+        // let participants = getRemoteParticipants(getState());
+
         return (
             <div className = { classes.container }>
                 <b className = { classes.headline }>
@@ -201,6 +204,10 @@ class UserVideoTab extends AbstractDialogTab<IProps, any> {
                         onChange = { event =>
                             super._onChange({
                                 brightness: event.target.value
+                                // for (let p of participants.keys()) {
+                                //     console.log(123456, p)
+                                //     dispatch(setParticipantBrightness(p, brightness))
+                                // };
                             })
                         }
                         step = { 1 } />

@@ -474,7 +474,7 @@ export function setParticipantOpacitySetting(
  * Sets the saturation for a thumbnails video.
  *
  * @param {string} participantId - The participant ID associated with the audio.
- * @param {number} saturation - Opacity of the user.
+ * @param {number} saturation - Saturation of the user.
  * @returns {{
 *     type: SET_PARTICIPANT_SATURATION
 *     participantId: string,
@@ -491,10 +491,10 @@ export function setParticipantSaturation(participantId: string, saturation: numb
 }
 
 /**
- * Sets the opacity for a thumbnails video.
+ * Sets the zoom level for a thumbnails video.
  *
  * @param {string} participantId - The participant ID associated with the audio.
- * @param {number} zoomLevel - Opacity of the user.
+ * @param {number} zoomLevel - zoom level of the user.
  * @returns {{
  *     type: SET_PARTICIPANT_ZOOM_LEVEL,
  *     participantId: string,
