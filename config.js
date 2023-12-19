@@ -657,16 +657,16 @@ var config = {
 
     // Configs for prejoin page.
     prejoinConfig: {
-    //     // When 'true', it shows an intermediate page before joining, where the user can configure their devices.
-    //     // This replaces `prejoinPageEnabled`.
+        //     // When 'true', it shows an intermediate page before joining, where the user can configure their devices.
+        //     // This replaces `prejoinPageEnabled`.
         enabled: false,
 
-    //     // Hides the participant name editing field in the prejoin screen.
-    //     // If requireDisplayName is also set as true, a name should still be provided through
-    //     // either the jwt or the userInfo from the iframe api init object in order for this to have an effect.
-    //     hideDisplayName: false,
-    //     // List of buttons to hide from the extra join options dropdown.
-    //     hideExtraJoinButtons: ['no-audio', 'by-phone'],
+        //     // Hides the participant name editing field in the prejoin screen.
+        //     // If requireDisplayName is also set as true, a name should still be provided through
+        //     // either the jwt or the userInfo from the iframe api init object in order for this to have an effect.
+        //     hideDisplayName: false,
+        //     // List of buttons to hide from the extra join options dropdown.
+        //     hideExtraJoinButtons: ['no-audio', 'by-phone'],
     },
 
     // When 'true', the user cannot edit the display name.
@@ -762,11 +762,12 @@ var config = {
         // initialTimeout: 20000,
         // Moved from interfaceConfig.TOOLBAR_TIMEOUT
         // Number of milliseconds for the toolbar buttons to be visible on screen.
-//        timeout: 4000
+        timeout: 4000,
 
         // Moved from interfaceConfig.TOOLBAR_ALWAYS_VISIBLE
         // Whether toolbar should be always visible or should hide after x milliseconds.
-        alwaysVisible: true,
+        alwaysVisible: true
+
         // Indicates whether the toolbar should still autohide when chat is open
         // autoHideWhileChatIsOpen: false,
     },

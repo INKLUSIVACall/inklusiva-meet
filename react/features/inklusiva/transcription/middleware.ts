@@ -18,7 +18,6 @@ MiddlewareRegistry.register(store => next => action => {
     case UPDATE_TRANSCRIPT_LINK: {
         const state = store.getState();
         const conference = getCurrentConference(state);
-        console.log('123456', conference);
         if (conference) {
             conference.updateTranscriptLink(action.link);
         }

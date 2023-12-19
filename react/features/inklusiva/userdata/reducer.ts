@@ -136,7 +136,6 @@ ReducerRegistry.register<IUserData>(
 
         switch (action.type) {
         case SET_USERDATA: {
-            console.log('ACTION', action, payload);
             nextState = {
                 ...payload.userData
             };
@@ -309,13 +308,10 @@ function _parseFontSize(fontSizeValue: number) {
     switch (fontSizeValue) {
     case 0:
         return '75%';
-        break;
     case 1:
         return '100%';
-        break;
     case 2:
         return '125%';
-        break;
     default:
         return '100%';
     }
@@ -331,13 +327,10 @@ function _parseIconSize(iconSizeValue: number) {
     switch (iconSizeValue) {
     case 0:
         return '0.75';
-        break;
     case 1:
         return '1';
-        break;
     case 2:
         return '1.5';
-        break;
     default:
         return '1';
     }

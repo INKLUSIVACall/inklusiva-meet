@@ -45,8 +45,8 @@ const DEFAULT_STATE = {
 
 export interface IJitsiConference {
     addCommandListener: Function;
-    addLobbyMessageListener: Function;
     addICRole: Function;
+    addLobbyMessageListener: Function;
     addLocalICRole: Function;
     addTrack: Function;
     authenticateAndUpgradeRole: Function;
