@@ -1,12 +1,20 @@
-import { IReduxState, IStore } from "../../app/types";
-import { IStateful } from "../../base/app/types";
-import { toState } from "../../base/redux/functions";
-import { SET_TRANSCRIPTION_ENABLED, SET_TRANSCRIPTION_FONTSIZE_VALUE, SET_TRANSCRIPTION_HISTORY_VALUE, UPDATE_TRANSCRIPT_LINK} from "./actionTypes";
+import { IStore } from '../../app/types';
 
+import {
+    SET_TRANSCRIPTION_ENABLED,
+    SET_TRANSCRIPTION_FONTSIZE_VALUE,
+    SET_TRANSCRIPTION_HISTORY_VALUE,
+    UPDATE_TRANSCRIPT_LINK
+} from './actionTypes';
 import { getTranscriptionTabProps, isTranscriptionEnabled } from './functions.web';
 
-export function submitTranscriptionTabProps(newState: any) {
-
+/**
+ * Action to submit the transcription tab props.
+ *
+ * @param {Object} newState - The new state.
+ * @returns {Function}
+ */
+export function submitTranscriptionTabProps(newState: any): Function {
     return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
         const currentState = getTranscriptionTabProps(getState());
 
@@ -22,6 +30,11 @@ export function submitTranscriptionTabProps(newState: any) {
     };
 }
 
+/**
+ * Action to toggle the transcription enabled flag.
+ *
+ * @returns {any}
+ */
 export function toggleActive(): any {
     return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
         if (isTranscriptionEnabled(getState())) {
@@ -32,14 +45,26 @@ export function toggleActive(): any {
     };
 }
 
+/**
+ * Action to set the transcription enabled flag.
+ *
+ * @param {boolean} transcriptionEnabled - The new value.
+ * @returns {Object}
+ * @private
+ */
 export function setTranscriptionEnabled(transcriptionEnabled: boolean): any {
-
     return {
         type: SET_TRANSCRIPTION_ENABLED,
         transcriptionEnabled
     };
 }
 
+/**
+ * Action to set the transcription font size value.
+ *
+ * @param {number} fontSizeValue - The new value.
+ * @returns {Object}
+ */
 export function setFontSizeValue(fontSizeValue: number): any {
     return {
         type: SET_TRANSCRIPTION_FONTSIZE_VALUE,
@@ -47,23 +72,16 @@ export function setFontSizeValue(fontSizeValue: number): any {
     };
 }
 
+/**
+ * Action to set the transcription history value.
+ *
+ * @param {number} historyValue - The new value.
+ * @returns {Object}
+ */
 export function setHistoryValue(historyValue: number): any {
     return {
         type: SET_TRANSCRIPTION_HISTORY_VALUE,
         historyValue
-    };
-}
-
-/**
- * Action to update the link to the transcription.
- *
- * @param {string} link - The new link to the transcription.
- * @returns {Object}
- */
-export function updateTranscriptLink(link: string) {
-    return {
-        type: UPDATE_TRANSCRIPT_LINK,
-        link
     };
 }
 
