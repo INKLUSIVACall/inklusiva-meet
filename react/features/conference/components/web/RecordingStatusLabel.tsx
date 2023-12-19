@@ -33,8 +33,7 @@ const RecordingStatusLabel = () => {
                 position = 'bottom'>
                 <Label
                     accessibilityText = { 'Dieses Meeting wird gerade aufgezeichnet' }
-                    className = { 'test' }
-                    color = { COLORS.white }
+                    className = { 'icLabelTransparent' }
                     icon = { IconRecord }
                     iconColor = '#fff'
                     id = 'acousticCuesStatusLabel' />

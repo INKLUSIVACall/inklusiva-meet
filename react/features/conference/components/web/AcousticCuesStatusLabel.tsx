@@ -1,19 +1,21 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { makeStyles } from 'tss-react/mui';
 
-import { IconVolumeOff, IconVolumeUp } from '../../../base/icons/svg';
+import { IconVolumeOff } from '../../../base/icons/svg';
 import Label from '../../../base/label/components/web/Label';
-import { COLORS } from '../../../base/label/constants';
 import Tooltip from '../../../base/tooltip/components/Tooltip';
 import { isAcousticCuesEnabled } from '../../../inklusiva/uisettings/functions';
 
-/*
+
 const useStyles = makeStyles()(theme => {
     return {
-
+        acousticCuesStatusLabel: {
+            backgroundColor: 'transparent',
+            borderColor: 'transparent'
+        }
     };
 });
-*/
 
 /**
  * Label for the conference name.
@@ -21,26 +23,23 @@ const useStyles = makeStyles()(theme => {
  * @returns {ReactElement}
  */
 const AcousticCuesStatusLabel = () => {
-    // const subject = useSelector(getConferenceName);
-    // const { classes } = useStyles();
-
     const acousticCuesStatus = useSelector(isAcousticCuesEnabled);
+    const { classes } = useStyles();
 
-    return (
-        <Tooltip
-            content = { acousticCuesStatus ? 'Hörbare Hinweise sind eingeschaltet'
-                : 'Hörbare Hinweise sind nicht eingeschaltet' }
-            position = 'bottom'>
-            <Label
-                accessibilityText = { acousticCuesStatus ? 'Hörbare Hinweise sind eingeschaltet'
-                    : 'Hörbare Hinweise sind nicht eingeschaltet' }
-                className = { 'test' }
-                color = { COLORS.white }
-                icon = { acousticCuesStatus ? IconVolumeUp : IconVolumeOff }
-                iconColor = '#fff'
-                id = 'acousticCuesStatusLabel' />
-        </Tooltip>
-    );
+    if (!acousticCuesStatus) {
+        return (
+            <Tooltip
+                content = { 'Hörbare Hinweise sind ausgeschaltet' }
+                position = 'bottom'>
+                <Label
+                    accessibilityText = { 'Hörbare Hinweise sind ausgeschaltet' }
+                    className = { classes.acousticCuesStatusLabel }
+                    icon = { IconVolumeOff }
+                    iconColor = '#fff'
+                    id = 'acousticCuesStatusLabel' />
+            </Tooltip>
+        );
+    }
 };
 
 export default AcousticCuesStatusLabel;
