@@ -1,19 +1,18 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { makeStyles } from 'tss-react/mui';
 
-import { IconRecord, IconVolumeOff, IconVolumeUp } from '../../../base/icons/svg';
+import { IconRecord } from '../../../base/icons/svg';
 import Label from '../../../base/label/components/web/Label';
-import { COLORS } from '../../../base/label/constants';
 import Tooltip from '../../../base/tooltip/components/Tooltip';
-import { isAcousticCuesEnabled } from '../../../inklusiva/uisettings/functions';
 
-/*
 const useStyles = makeStyles()(theme => {
     return {
-
+        recordingStatusLabel: {
+            backgroundColor: 'transparent',
+            borderColor: 'transparent'
+        }
     };
 });
-*/
 
 /**
  * Label for the conference name.
@@ -22,8 +21,7 @@ const useStyles = makeStyles()(theme => {
  */
 const RecordingStatusLabel = () => {
     // const subject = useSelector(getConferenceName);
-    // const { classes } = useStyles();
-
+    const { classes } = useStyles();
     const isRecordingInProgress = true;
 
     if (isRecordingInProgress) {
@@ -33,10 +31,10 @@ const RecordingStatusLabel = () => {
                 position = 'bottom'>
                 <Label
                     accessibilityText = { 'Dieses Meeting wird gerade aufgezeichnet' }
-                    className = { 'test' }
-                    color = { COLORS.white }
+                    className = { classes.recordingStatusLabel }
                     icon = { IconRecord }
                     iconColor = '#fff'
+                    iconSize = { '24' }
                     id = 'acousticCuesStatusLabel' />
             </Tooltip>
         );

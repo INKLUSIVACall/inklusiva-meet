@@ -25,6 +25,7 @@ import SpeakerStatsLabel from './SpeakerStatsLabel';
 import SubjectText from './SubjectText';
 import ToggleTopPanelLabel from './ToggleTopPanelLabel';
 import TranscriptLink from './TranscriptLink';
+import TranscriptLinkEdit from './TranscriptLinkEdit';
 import VisualCuesStatusLabel from './VisualCuesStatusLabel';
 
 /**
@@ -119,6 +120,10 @@ const COMPONENTS: Array<{
         id: 'recording-status'
     },
     {
+        Component: AssistantRelationLabel,
+        id: 'assistant-relation'
+    },
+    {
         Component: VisualCuesStatusLabel,
         id: 'visual-cues-status'
     },
@@ -127,8 +132,8 @@ const COMPONENTS: Array<{
         id: 'acoustic-cues-status'
     },
     {
-        Component: AssistantRelationLabel,
-        id: 'assistant-relation'
+        Component: TranscriptLinkEdit,
+        id: 'transcript-link-edit'
     }
 ];
 

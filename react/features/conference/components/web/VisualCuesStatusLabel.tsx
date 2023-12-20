@@ -1,19 +1,22 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { makeStyles } from 'tss-react/mui';
 
-import { IconAudioOnly, IconAudioOnlyOff } from '../../../base/icons/svg';
+import { IconAudioOnlyOff } from '../../../base/icons/svg';
 import Label from '../../../base/label/components/web/Label';
-import { COLORS } from '../../../base/label/constants';
 import Tooltip from '../../../base/tooltip/components/Tooltip';
 import { isVisualCuesEnabled } from '../../../inklusiva/uisettings/functions';
 
-/*
+
 const useStyles = makeStyles()(theme => {
     return {
-
+        visualCuesStatusLabel: {
+            backgroundColor: 'transparent',
+            borderColor: 'transparent'
+        }
     };
 });
-*/
+
 
 /**
  * Label for the conference name.
@@ -21,26 +24,24 @@ const useStyles = makeStyles()(theme => {
  * @returns {ReactElement}
  */
 const VisualCuesStatusLabel = () => {
-    // const subject = useSelector(getConferenceName);
-    // const { classes } = useStyles();
-
     const visualCuesStatus = useSelector(isVisualCuesEnabled);
+    const { classes } = useStyles();
 
-    return (
-        <Tooltip
-            content = { visualCuesStatus ? 'Visuelle Hinweise sind eingeschaltet'
-                : 'Visuelle Hinweise sind nicht eingeschaltet' }
-            position = 'bottom'>
-            <Label
-                accessibilityText = { visualCuesStatus ? 'Visuelle Hinweise sind eingeschaltet'
-                    : 'Visuelle Hinweise sind nicht eingeschaltet' }
-                className = { 'test' }
-                color = { COLORS.white }
-                icon = { visualCuesStatus ? IconAudioOnly : IconAudioOnlyOff }
-                iconColor = '#fff'
-                id = 'visualCuesStatusLabel' />
-        </Tooltip>
-    );
+    if (!visualCuesStatus) {
+        return (
+            <Tooltip
+                content = { 'Visuelle Hinweise sind ausgeschaltet' }
+                position = 'bottom'>
+                <Label
+                    accessibilityText = { 'Visuelle Hinweise sind ausgeschaltet' }
+                    className = { classes.visualCuesStatusLabel }
+                    icon = { IconAudioOnlyOff }
+                    iconColor = '#fff'
+                    iconSize = { '24' }
+                    id = 'visualCuesStatusLabel' />
+            </Tooltip>
+        );
+    }
 };
 
 export default VisualCuesStatusLabel;

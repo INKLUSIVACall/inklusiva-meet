@@ -1,66 +1,122 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
+import { connect } from 'react-redux';
 
+import { IReduxState } from '../../../app/types';
+import { IC_ROLES } from '../../../base/conference/icRoles';
 import { IconHandHoldingHand } from '../../../base/icons/svg';
 import Label from '../../../base/label/components/web/Label';
-import { COLORS } from '../../../base/label/constants';
+import {
+    getLocalParticipant,
+    getParticipantWithICRoleAndPartner,
+    getRemoteParticipants,
+    participantHasRole
+} from '../../../base/participants/functions';
+import { IParticipant } from '../../../base/participants/types';
 import Tooltip from '../../../base/tooltip/components/Tooltip';
 
-/*
-const useStyles = makeStyles()(theme => {
-    return {
+/**
+ * The type of the React {@code Component} props of {@link AssistantRelationLabel}.
+ */
+interface IProps {
 
-    };
-});
-*/
+    /**
+     * The function to get the participant with a specific IC role and partner.
+     *
+     * @param {string} role - The IC role.
+     * @param {string} partnerId - The partner ID.
+     * @returns {IParticipant | undefined}
+     */
+    getParticipantWithICRoleAndPartner: Function;
+
+    /**
+     * The local participant.
+     */
+    localParticipant?: IParticipant;
+
+    /**
+     * The function to check if a participant has a specific role.
+     *
+     * @param {string} participantId - The ID of the participant.
+     * @param {string} role - The role to check.
+     * @returns {boolean}
+     */
+    participantHasRole: Function;
+
+
+    /**
+     * The remote participants.
+     */
+    remoteParticipants?: Map<string, IParticipant>;
+}
 
 /**
  * Label for the conference name.
  *
+ * @param {IProps} props - The props of the component.
  * @returns {ReactElement}
  */
-const AssistantRelationLabel = () => {
+const AssistantRelationLabel = (props: IProps): ReactElement => {
+    let labelText: string | undefined;
+    let tooltipText = '';
+    let visible = false;
 
-    const hasAssistant = true;
-    const AssistantName = 'Assistant';
+    const localId = props.localParticipant?.id;
 
-    const hasAssisted = false;
-    const AssistedName = 'Assisted';
-
-    if (hasAssistant) {
-        return (
-            <Tooltip
-                content = { `${AssistantName} ist deine Begleitperson` }
-                position = 'bottom'>
-                <Label
-                    accessibilityText = { `${AssistantName} ist deine Begleitperson` }
-                    className = { 'test' }
-                    color = { COLORS.white }
-                    icon = { IconHandHoldingHand }
-                    iconColor = '#fff'
-                    id = 'assistantRelationLabel'
-                    text = { AssistantName } />
-            </Tooltip>
+    if (props.participantHasRole(localId, IC_ROLES.ASSISTED)) {
+        const rolePartner = props.getParticipantWithICRoleAndPartner(
+            IC_ROLES.ASSISTANT,
+            props.localParticipant ? localId : ''
         );
+
+        if (rolePartner === undefined) {
+            tooltipText = 'Warte auf Assistenz';
+            labelText = 'Warte auf Assistenz';
+        } else {
+            labelText = rolePartner?.name ?? '';
+            tooltipText = `Ich werde von ${labelText} betreut`;
+        }
+        visible = true;
     }
 
-    if (hasAssisted) {
-        return (
-            <Tooltip
-                content = { `${AssistedName} ist deine Begleitperson` }
-                position = 'bottom'>
-                <Label
-                    accessibilityText = { `${AssistedName} ist deine Begleitperson` }
-                    className = { 'test' }
-                    color = { COLORS.white }
-                    icon = { IconHandHoldingHand }
-                    iconColor = '#fff'
-                    id = 'assistantRelationLabel'
-                    text = { AssistedName } />
-            </Tooltip>
+    if (props.participantHasRole(localId, IC_ROLES.ASSISTANT)) {
+        const assistantRoleDefinition = (props.localParticipant?.icRoles ?? []).find(
+            role => role.name === IC_ROLES.ASSISTANT
         );
+
+        if (props.participantHasRole(assistantRoleDefinition?.partner ?? undefined, IC_ROLES.ASSISTED)) {
+            const assistedParticipant = props.remoteParticipants?.get(assistantRoleDefinition?.partner ?? '');
+
+            tooltipText = `${assistedParticipant?.name} wird von mir betreut`;
+            labelText = assistedParticipant?.name ?? '';
+            visible = true;
+        }
     }
 
-    return null;
+    return visible ? (
+        <Tooltip
+            content = { tooltipText }
+            position = 'bottom'>
+            <Label
+                accessibilityText = { tooltipText }
+                className = { 'icLabelTransparent' }
+                icon = { IconHandHoldingHand }
+                iconColor = '#fff'
+                id = 'assistantRelationLabel'
+                text = { labelText } />
+        </Tooltip>
+    ) : <></>;
 };
 
-export default AssistantRelationLabel;
+const mapStateToProps = (state: IReduxState) => {
+    return {
+        remoteParticipants: getRemoteParticipants(state),
+        localParticipant: getLocalParticipant(state),
+        participantHasRole: (participantId: string, role: string) =>
+            participantHasRole(state, participantId, role),
+        getParticipantWithICRoleAndPartner: (role: string, partnerId: string) =>
+            getParticipantWithICRoleAndPartner(state, role, partnerId)
+    };
+};
+
+
+export default connect(mapStateToProps)(AssistantRelationLabel);

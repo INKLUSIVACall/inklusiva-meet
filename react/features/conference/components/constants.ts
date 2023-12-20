@@ -13,5 +13,5 @@ export const CONFERENCE_INFO = {
         'top-panel-toggle'
     ],
     detailIndicatorsLeft: [ 'visual-cues-status', 'acoustic-cues-status', 'recording-status', 'assistant-relation' ],
-    detailIndicatorsRight: [ 'transcript-link' ]
+    detailIndicatorsRight: [ 'transcript-link', 'transcript-link-edit' ]
 };
