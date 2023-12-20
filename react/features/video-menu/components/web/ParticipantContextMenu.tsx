@@ -9,7 +9,6 @@ import Avatar from '../../../base/avatar/components/Avatar';
 import { getButtonNotifyMode, getParticipantMenuButtonsWithNotifyClick } from '../../../base/config/functions.web';
 import { isIosMobileBrowser, isMobileBrowser } from '../../../base/environment/utils';
 import { MEDIA_TYPE } from '../../../base/media/constants';
-import { addIcRole, removeIcRole } from '../../../base/participants/actions';
 import { PARTICIPANT_ROLE } from '../../../base/participants/constants';
 import { getLocalParticipant } from '../../../base/participants/functions';
 import { IParticipant } from '../../../base/participants/types';
@@ -21,7 +20,10 @@ import { IRoom } from '../../../breakout-rooms/types';
 import { displayVerification } from '../../../e2ee/functions';
 import {
     setFrequencyFilterSetting,
+    setParticipantBrightness,
+    setParticipantContrast,
     setParticipantOpacitySetting,
+    setParticipantSaturation,
     setParticipantZoomLevel,
     setVolume
 } from '../../../filmstrip/actions.web';
@@ -35,7 +37,9 @@ import { iAmVisitor } from '../../../visitors/functions';
 import { PARTICIPANT_MENU_BUTTONS as BUTTONS } from '../../constants';
 
 import AskToUnmuteButton from './AskToUnmuteButton';
+import BrightnessSlider from './BrightnessSlider';
 import ConnectionStatusButton from './ConnectionStatusButton';
+import ContrastSlider from './ContrastSlider';
 import CustomOptionButton from './CustomOptionButton';
 import FrequencyFilterSlider from './FrequencyFilterSlider';
 import GrantModeratorButton from './GrantModeratorButton';
@@ -47,6 +51,7 @@ import MuteVideoButton from './MuteVideoButton';
 import OpacityAdjustSlider from './OpacityAdjustSlider';
 import PrivateMessageMenuButton from './PrivateMessageMenuButton';
 import RemoteControlButton, { REMOTE_CONTROL_MENU_STATES } from './RemoteControlButton';
+import SaturationSlider from './SaturationSlider';
 import SendToRoomButton from './SendToRoomButton';
 import TogglePinToStageButton from './TogglePinToStageButton';
 import VerifyParticipantButton from './VerifyParticipantButton';
@@ -157,10 +162,14 @@ const ParticipantContextMenu = ({
     const {
         participantsVolume,
         participantsFrequencySetting,
+        participantsBrightness,
+        participantsContrast,
         participantsOpacity,
+        participantsSaturation,
         localOpacity,
         participantZoomLevel
     } = useSelector((state: IReduxState) => state['features/filmstrip']);
+
     const _volume
         = (participant?.local ?? true ? undefined : participant?.id ? participantsVolume[participant?.id] : undefined)
         ?? 1;
@@ -170,18 +179,36 @@ const ParticipantContextMenu = ({
             : participant?.id
                 ? participantsFrequencySetting[participant?.id]
                 : undefined) ?? 0;
+    const _brightnessSliderSetting
+        = (participant?.local ?? true
+            ? undefined
+            : participant?.id
+                ? participantsBrightness[participant?.id]
+                : undefined) ?? 0;
+    const _contrastSliderSetting
+    = (participant?.local ?? true
+        ? undefined
+        : participant?.id
+            ? participantsContrast[participant?.id]
+            : undefined) ?? 1;
     const _opacitySliderSetting
         = (participant?.local ?? true
             ? localOpacity
             : participant?.id
                 ? participantsOpacity[participant?.id]
-                : undefined) ?? 1;
+                : undefined) ?? 0;
+    const _saturationSliderSetting
+    = (participant?.local ?? true
+        ? undefined
+        : participant?.id
+            ? participantsSaturation[participant?.id]
+            : undefined) ?? 1;
     const _zoomSliderValue
         = (participant?.local ?? true
             ? undefined
             : participant?.id
                 ? participantZoomLevel[participant?.id]
-                : undefined) ?? 1;
+                : undefined) ?? 0;
     const isBreakoutRoom = useSelector(isInBreakoutRoom);
     const isModerationSupported = useSelector((state: IReduxState) => isAvModerationSupported()(state));
     const stageFilmstrip = useSelector(isStageFilmstripAvailable);
@@ -205,11 +232,32 @@ const ParticipantContextMenu = ({
         [ setFrequencyFilterSetting, dispatch ]
     );
 
+    const _onBrightnessChange = useCallback(
+        value => {
+            dispatch(setParticipantBrightness(participant.id, value));
+        },
+        [ setParticipantBrightness, dispatch ]
+    );
+
+    const _onContrastChange = useCallback(
+        value => {
+            dispatch(setParticipantContrast(participant.id, value));
+        },
+        [ setParticipantContrast, dispatch ]
+    );
+
     const _onParticipantOpacityAdjustChange = useCallback(
         value => {
             dispatch(setParticipantOpacitySetting(participant.local, participant.id, value / 100.0));
         },
         [ setParticipantOpacitySetting, dispatch ]
+    );
+
+    const _onSaturationChange = useCallback(
+        value => {
+            dispatch(setParticipantSaturation(participant.id, value));
+        },
+        [ setParticipantSaturation, dispatch ]
     );
 
     const _onZoomLevelChange = useCallback(
@@ -425,13 +473,30 @@ const ParticipantContextMenu = ({
                 </ContextMenuItemGroup>
             )}
             <ContextMenuItemGroup>
+                <ContrastSlider
+                    initialValue = { _contrastSliderSetting }
+                    key = 'cotrast-slider'
+                    label = { t('contrastSlider') }
+                    onChange = { _onContrastChange } />
+                <BrightnessSlider
+                    initialValue = { _brightnessSliderSetting }
+                    key = 'brightness-slider'
+                    label = { t('brightnessSlider') }
+                    onChange = { _onBrightnessChange } />
                 <OpacityAdjustSlider
                     initialValue = { _opacitySliderSetting * 100 }
                     key = 'opacity-adjust-slider'
+                    label = { t('opacityAdjustSlider') }
                     onChange = { _onParticipantOpacityAdjustChange } />
+                <SaturationSlider
+                    initialValue = { _saturationSliderSetting }
+                    key = 'saturation-slider'
+                    label = { t('saturationSlider') }
+                    onChange = { _onSaturationChange } />
                 <ZoomSlider
                     initialValue = { _zoomSliderValue }
                     key = 'zoom-slider'
+                    label = { t('zoomSlider') }
                     onChange = { _onZoomLevelChange } />
             </ContextMenuItemGroup>
             {breakoutRoomsButtons.length > 0 && (

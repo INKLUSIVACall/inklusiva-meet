@@ -6,6 +6,7 @@ import { getToolbarButtons } from '../../../base/config/functions.web';
 import { isMobileBrowser } from '../../../base/environment/utils';
 import { LAYOUTS } from '../../../video-layout/constants';
 import { getCurrentLayout } from '../../../video-layout/functions.web';
+import { IC_ROLES } from '../../../base/conference/icRoles';
 import {
     ASPECT_RATIO_BREAKPOINT,
     FILMSTRIP_BREAKPOINT,
@@ -16,6 +17,7 @@ import {
 import { isFilmstripResizable, showGridInVerticalView } from '../../functions.web';
 
 import Filmstrip from './Filmstrip';
+import { IJitsiParticipant } from '../../../base/participants/types';
 
 interface IProps {
 
@@ -108,7 +110,21 @@ const MainFilmstrip = (props: IProps) => (
  */
 function _mapStateToProps(state: IReduxState, _ownProps: any) {
     const toolbarButtons = getToolbarButtons(state);
-    const { remoteParticipants, width: verticalFilmstripWidth } = state['features/filmstrip'];
+    const { remoteParticipants: remoteParticipantsOriginal, width: verticalFilmstripWidth } = state['features/filmstrip'];
+    
+    const { assistant } = state['features/inklusiva/userdata'];
+    let remoteParticipants:string[] = [];
+    if (assistant.signLang.display === "window") {
+        const { conference } = state['features/base/conference'];
+        remoteParticipantsOriginal?.forEach((participantId: string) => {
+            if ( !(conference?.checkMemberHasRole(participantId, IC_ROLES.SIGN_LANG_TRANSLATOR))) {
+                remoteParticipants.push(participantId);
+            }
+        });
+    } else {
+        remoteParticipants = remoteParticipantsOriginal;
+    }
+
     const reduceHeight = state['features/toolbox'].visible && toolbarButtons.length;
     const {
         gridDimensions: dimensions = { columns: undefined,

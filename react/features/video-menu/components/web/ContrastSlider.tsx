@@ -5,29 +5,26 @@ import { makeStyles } from 'tss-react/mui';
 import Icon from '../../../base/icons/components/Icon';
 import {
     IconVolumeUp,
-    IconZoom
+    IconContrast
 } from '../../../base/icons/svg';
-import { ZOOM_SLIDER_MINIMUM, ZOOM_SLIDER_MAXIMUM, ZOOM_SLIDER_SCALE } from '../../constants';
 
 /**
- * The type of the React {@code Component} props of {@link ZoomSlider}.
+ * The type of the React {@code Component} props of {@link OpacityAdjustSlider}.
  */
 interface IProps {
 
     /**
-     * The value the zoom slider will be initialised with when it
-     * mounts. Changes will be stored in state. The value should be a number
-     * between 1 and 3.
+     * The value of the Contrast Slider.
      */
     initialValue: number;
 
     /**
-     * Label for the Slider.
+     * Label for the Contrast Slider.
      */
     label: string;
 
     /**
-     * The callback to invoke when the zoom slider value changes.
+     * The callback to invoke when the Contrast Slider value changes.
      */
     onChange: Function;
 }
@@ -78,7 +75,7 @@ const _onClick = (e: React.MouseEvent) => {
     e.stopPropagation();
 };
 
-const ZoomSlider = ({
+const ContrastSlider = ({
     initialValue,
     label,
     onChange
@@ -86,18 +83,18 @@ const ZoomSlider = ({
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
 
-    const [ zoomLevel, setZoomLevel ] = useState((initialValue || 1) * ZOOM_SLIDER_SCALE);
+    const [ contrast, setContrast ] = useState((initialValue || 1) * 100);
 
-    const _onZoomLevelChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-        const newZoomLevel = Number(event.currentTarget.value);
+    const _onContrastSliderChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+        const newContrast = event.currentTarget.value;
 
-        onChange(newZoomLevel / ZOOM_SLIDER_SCALE);
-        setZoomLevel(newZoomLevel);
+        onChange(newContrast);
+        setContrast(Number(newContrast));
     }, [ onChange ]);
 
     return (
         <div
-            aria-label = { t('zoomSlider') }
+            aria-label = { t('contrastSlider') }
             className = { classes.bigContainer }>
             <div>{ label }</div>
             <div
@@ -106,25 +103,26 @@ const ZoomSlider = ({
                 <span className = { classes.icon }>
                     <Icon
                         size = { 22 }
-                        src = { IconZoom } />
+                        src = { IconContrast } />
                 </span>
                 <div className = { classes.sliderContainer }>
                     <input
                         aria-label = { label }
-                        aria-valuemax = { ZOOM_SLIDER_MAXIMUM }
-                        aria-valuemin = { ZOOM_SLIDER_MINIMUM }
-                        aria-valuenow = { zoomLevel }
-                        className = { cx('popupmenu__zoom-slider', classes.slider) }
-                        max = { ZOOM_SLIDER_MAXIMUM }
-                        min = { ZOOM_SLIDER_MINIMUM }
-                        onChange = { _onZoomLevelChange }
+                        aria-valuemax = { 150 }
+                        aria-valuemin = { 50 }
+                        aria-valuenow = { contrast }
+                        className = { cx('popupmenu__volume-slider', classes.slider) }
+                        max = { 150 }
+                        min = { 50 }
+                        onChange = { _onContrastSliderChange }
                         tabIndex = { 0 }
                         type = 'range'
-                        value = { zoomLevel } />
+                        value = { contrast } />
                 </div>
+                <br />
             </div>
         </div>
     );
 };
 
-export default ZoomSlider;
+export default ContrastSlider;

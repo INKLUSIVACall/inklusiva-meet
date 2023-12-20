@@ -132,6 +132,7 @@ export interface IJitsiConference {
     startVerification: Function;
     stopRecording: Function;
     toggleE2EE: Function;
+    transcriptionLink: string;
     updateTranscriptLink: Function;
 }
 

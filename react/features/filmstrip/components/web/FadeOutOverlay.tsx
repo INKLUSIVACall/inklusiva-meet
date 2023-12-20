@@ -19,6 +19,16 @@ export interface IProps  {
     local: boolean;
 
     /**
+     * Is Large Video?
+     */
+    largeVideo: boolean;
+
+    /**
+     * Large Video Opacity.
+     */
+    largeVideoOpacity: number;
+
+    /**
      * Participant ID.
      */
     partcipantId?: string;
@@ -73,7 +83,7 @@ class FadeOutOverlay extends Component<IProps> {
         } = this.props;
 
         return (
-            <div className = { classes.containerFade } style={{opacity: 1 - opacity}} />
+            <div className = { classes.containerFade } style={{opacity: opacity}} />
         );
     }
 }
@@ -86,20 +96,25 @@ class FadeOutOverlay extends Component<IProps> {
  * @private
  */
 function _mapStateToProps(state: IReduxState, ownProps: any): any {
-    const { participantId, local } = ownProps;
+    const { opacity, participantId, local, largeVideo } = ownProps;
 
     const { participantsOpacity, localOpacity } = state['features/filmstrip'];
+    const largeVideoOpacity = state['features/inklusiva/userdata'].video?.dimming;
 
     let resultOpacity = 1;
+
     if (local) {
         resultOpacity = localOpacity ?? 1;
+    } else if (largeVideo) {
+        resultOpacity = largeVideoOpacity ?? 1;
     } else {
-        resultOpacity = participantsOpacity ? (participantsOpacity[participantId] ?? 1):1;
+        resultOpacity = participantsOpacity ? (participantsOpacity[participantId] ?? 0) : 0;
     }
 
     return {
         participantId: participantId,
         local: local,
+        largeVideo: largeVideo,
         opacity: resultOpacity
     };
 }

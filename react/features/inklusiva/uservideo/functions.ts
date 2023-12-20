@@ -27,20 +27,10 @@ export function getUserVideoContrastValue(state: IReduxState): number | undefine
  * Returns state of user videos.
  *
  * @param {IReduxState} state - The redux state.
- * @returns {boolean} Whether user videos are enabled or disabled.
+ * @returns {number} The dimming value.
  */
 export function getUserVideoDimmingValue(state: IReduxState): number | undefined {
     return state['features/inklusiva/userdata'].video?.dimming;
-}
-
-/**
- * Returns state of user videos.
- *
- * @param {IReduxState} state - The redux state.
- * @returns {number} The fps value.
- */
-export function getUserVideoFPSValue(state: IReduxState): number | undefined {
-    return state['features/inklusiva/userdata'].video?.fps;
 }
 
 /**
@@ -51,6 +41,26 @@ export function getUserVideoFPSValue(state: IReduxState): number | undefined {
  */
 export function areOtherParticipantsEnabled(state: IReduxState): boolean | undefined {
     return state['features/inklusiva/userdata'].video?.otherParticipants;
+}
+
+/**
+ * Returns state of user videos.
+ *
+ * @param {IReduxState} state - The redux state.
+ * @returns {boolean} Whether interpreters videos are enabled or disabled.
+ */
+export function areInterpretersEnabled(state: IReduxState) : boolean | undefined {
+    return state['features/inklusiva/userdata'].video?.interpreter;
+}
+
+/**
+ * Returns state of user videos.
+ *
+ * @param {IReduxState} state - The redux state.
+ * @returns {boolean} Whether screensharing is enabled or disabled.
+ */
+export function isScreensharingEnabled(state: IReduxState) : boolean | undefined {
+    return state['features/inklusiva/userdata'].video?.screensharing;
 }
 
 /**
@@ -74,7 +84,7 @@ export function getUserVideoZoomValue(state: IReduxState): number | undefined {
 }
 
 /**
- *  Gets DistressBtn Props.
+ *  Gets user video Props.
  *
  * @param {IStateful} stateful - The redux state.
  * @returns {IUserData} The user video props.
@@ -85,18 +95,20 @@ export function getUserVideoTabProps(stateful: IStateful) {
     const brightness = getUserVideoBrightnessValue(state);
     const contrast = getUserVideoContrastValue(state);
     const dimming = getUserVideoDimmingValue(state);
-    const fps = getUserVideoFPSValue(state);
+    const interpreters = areInterpretersEnabled(state);
     const otherParticipants = areOtherParticipantsEnabled(state);
     const saturation = getUserVideoSaturationValue(state);
+    const screensharing = isScreensharingEnabled(state);
     const zoom = getUserVideoZoomValue(state);
 
     return {
         brightness,
         contrast,
         dimming,
-        fps,
+        interpreters,
         otherParticipants,
         saturation,
+        screensharing,
         zoom
     };
 }

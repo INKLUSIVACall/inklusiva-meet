@@ -14,7 +14,9 @@ import { setColorAlpha } from '../../../base/util/helpers';
 import Chat from '../../../chat/components/web/Chat';
 import MainFilmstrip from '../../../filmstrip/components/web/MainFilmstrip';
 import ScreenshareFilmstrip from '../../../filmstrip/components/web/ScreenshareFilmstrip';
+import SignLangTranslatorFilmStrip from '../../../filmstrip/components/web/SignLangTranslatorFilmStrip';
 import StageFilmstrip from '../../../filmstrip/components/web/StageFilmstrip';
+import { getUserVideoTabProps } from '../../../inklusiva/uservideo/functions';
 import CalleeInfoContainer from '../../../invite/components/callee-info/CalleeInfoContainer';
 import LargeVideo from '../../../large-video/components/LargeVideo.web';
 import LobbyScreen from '../../../lobby/components/web/LobbyScreen';
@@ -98,6 +100,31 @@ interface IProps extends AbstractProps, WithTranslation {
      * If prejoin page is visible or not.
      */
     _showPrejoin: boolean;
+
+    /**
+     * The User Video brightness.
+     */
+    _userVideoBrightness?: number;
+
+    /**
+     * The User Video contrast.
+     */
+     _userVideoContrast?: number;
+
+     /**
+     * The User Video dimming.
+     */
+    _userVideoDimming?: number;
+
+    /**
+     * The User Video saturation.
+     */
+    _userVideoSaturation?: number;
+
+    /**
+     * The User Video zoom.
+     */
+    _userVideoZoom?: number;
 
     dispatch: IStore['dispatch'];
 }
@@ -223,7 +250,8 @@ class Conference extends AbstractConference<IProps, any> {
                     <Notice />
                     <div
                         id = 'videospace'
-                        onTouchStart = { this._onVidespaceTouchStart }>
+                        onTouchStart = { this._onVidespaceTouchStart }
+                        style = { this._useStyle() }>
                         <LargeVideo />
                         {
                             _showPrejoin || _showLobby || (<>
@@ -246,6 +274,10 @@ class Conference extends AbstractConference<IProps, any> {
                         </>
                     )}
 
+                    {
+                        _showPrejoin || _showLobby || <SignLangTranslatorFilmStrip />
+                    }
+
                     {_notificationsVisible && !_isAnyOverlayVisible && (_overflowDrawer
                         ? <JitsiPortal className = 'notification-portal'>
                             {this.renderNotificationsContainer({ portal: true })}
@@ -262,6 +294,33 @@ class Conference extends AbstractConference<IProps, any> {
                 <ParticipantsPane />
             </div>
         );
+    }
+
+    /**
+     * Creates the custom styles object.
+     *
+     * @private
+     * @returns {Object}
+     */
+    _useStyle() {
+        const styles: any = {};
+
+        /* const {
+            _userVideoBrightness,
+            _userVideoContrast,
+            _userVideoDimming,
+            _userVideoSaturation,
+            _userVideoZoom
+        } = this.props; */
+
+
+        /* styles.filter = `brightness(${_userVideoBrightness}%)
+            contrast(${_userVideoContrast}%)
+            opacity(${_userVideoDimming ? 100 - _userVideoDimming : 100}%)
+            saturate(${_userVideoSaturation}%)`;
+        styles.zoom = `${_userVideoZoom}%`; */
+
+        return styles;
     }
 
     /**
@@ -392,6 +451,7 @@ class Conference extends AbstractConference<IProps, any> {
 function _mapStateToProps(state: IReduxState) {
     const { backgroundAlpha, mouseMoveCallbackInterval } = state['features/base/config'];
     const { overflowDrawer } = state['features/toolbox'];
+    const userVideoData = getUserVideoTabProps(state);
 
     return {
         ...abstractMapStateToProps(state),
@@ -402,7 +462,12 @@ function _mapStateToProps(state: IReduxState) {
         _overflowDrawer: overflowDrawer,
         _roomName: getConferenceNameForTitle(state),
         _showLobby: getIsLobbyVisible(state),
-        _showPrejoin: isPrejoinPageVisible(state)
+        _showPrejoin: isPrejoinPageVisible(state),
+        _userVideoBrightness: userVideoData.brightness,
+        _userVideoContrast: userVideoData.contrast,
+        _userVideoDimming: userVideoData.dimming,
+        _userVideoSaturation: userVideoData.saturation,
+        _userVideoZoom: userVideoData.zoom
     };
 }
 
