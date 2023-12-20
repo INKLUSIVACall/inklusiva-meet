@@ -26,6 +26,7 @@ import SubjectText from './SubjectText';
 import ToggleTopPanelLabel from './ToggleTopPanelLabel';
 import TranscriptLink from './TranscriptLink';
 import VisualCuesStatusLabel from './VisualCuesStatusLabel';
+import TranscriptLinkEdit from './TranscriptLinkEdit';
 
 /**
  * The type of the React {@code Component} props of {@link Subject}.
@@ -129,6 +130,10 @@ const COMPONENTS: Array<{
     {
         Component: AssistantRelationLabel,
         id: 'assistant-relation'
+    },
+    {
+        Component: TranscriptLinkEdit,
+        id: 'transcript-link-edit'
     }
 ];
 

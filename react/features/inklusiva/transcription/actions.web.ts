@@ -66,16 +66,3 @@ export function updateTranscriptLink(link: string) {
         link
     };
 }
-
-/**
- * Action to update the link to the transcription.
- *
- * @param {string} link - The new link to the transcription.
- * @returns {Object}
- */
-export function updateTranscriptLink(link: string) {
-    return {
-        type: UPDATE_TRANSCRIPT_LINK,
-        link
-    };
-}

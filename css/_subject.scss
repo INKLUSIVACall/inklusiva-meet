@@ -27,7 +27,7 @@
     display: flex;
     justify-content: center;
     margin: 0 auto;
-    height: 28px;
+    height: 32px;
 
     @media (max-width: 500px) {
         flex-wrap: wrap;
@@ -43,7 +43,6 @@
     height: 65px;
     max-width: calc(100% - 40px);
     background: #00000059;
-    z-index: 1;
     margin: auto 20px;
     border-radius: 10px;
     margin-top: 1;

@@ -56,6 +56,7 @@ const VideoQualityLabel = () => {
                 color = { COLORS.white }
                 icon = { icon }
                 iconColor = '#fff'
+                iconSize = { '24' }
                 id = 'videoResolutionLabel'
                 // eslint-disable-next-line react/jsx-no-bind
                 onClick = { onClick }

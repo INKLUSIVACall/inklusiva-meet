@@ -6,14 +6,16 @@ import Label from '../../../base/label/components/web/Label';
 import { COLORS } from '../../../base/label/constants';
 import Tooltip from '../../../base/tooltip/components/Tooltip';
 import { IC_ROLES } from '../../../base/conference/icRoles';
+import { makeStyles } from 'tss-react/mui';
 
-/*
 const useStyles = makeStyles()(theme => {
     return {
-
+        assistantRelationLabel: {
+            backgroundColor: 'transparent',
+            borderColor: 'transparent'
+        }
     };
 });
-*/
 
 /**
  * Label for the conference name.
@@ -22,7 +24,7 @@ const useStyles = makeStyles()(theme => {
  */
 const AssistantRelationLabel = () => {
     // const subject = useSelector(getConferenceName);
-    // const { classes } = useStyles();
+    const { classes } = useStyles();
 
     const { conference } = useSelector(state => state['features/base/conference']);
 
@@ -42,9 +44,10 @@ const AssistantRelationLabel = () => {
                 position = 'bottom'>
                 <Label
                     accessibilityText = { `${AssistantName} ist deine Begleitperson` }
-                    className = { 'icLabelTransparent' }
+                    className = { classes.assistantRelationLabel }
                     icon = { IconHandHoldingHand }
                     iconColor = '#fff'
+                    iconSize = { '24' }
                     id = 'assistantRelationLabel'
                     text = { AssistantName } />
             </Tooltip>
@@ -58,10 +61,11 @@ const AssistantRelationLabel = () => {
                 position = 'bottom'>
                 <Label
                     accessibilityText = { `${AssistedName} ist deine Begleitperson` }
-                    className = { 'test' }
+                    className = { classes.assistantRelationLabel }
                     color = { COLORS.white }
                     icon = { IconHandHoldingHand }
                     iconColor = '#fff'
+                    iconSize = { '24' }
                     id = 'assistantRelationLabel'
                     text = { AssistedName } />
             </Tooltip>

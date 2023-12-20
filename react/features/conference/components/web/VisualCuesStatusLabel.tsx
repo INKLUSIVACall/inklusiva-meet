@@ -37,6 +37,7 @@ const VisualCuesStatusLabel = () => {
                     className = { classes.visualCuesStatusLabel }
                     icon = { IconAudioOnlyOff }
                     iconColor = '#fff'
+                    iconSize = { '24' }
                     id = 'visualCuesStatusLabel' />
             </Tooltip>
         );
