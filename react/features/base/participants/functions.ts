@@ -752,3 +752,32 @@ export const setShareDialogVisiblity = (addPeopleFeatureEnabled: boolean, dispat
         dispatch(toggleShareDialog(true));
     }
 };
+
+/**
+ * Checks, wether a given participant has a given IC-ROle.
+ *
+ * @param {IStatefule} stateful - Redux state.
+ * @param {string} participantId - ID of the participant to be checked.
+ * @param {string} roleName - Name of the role to be found.
+ * @returns {boolean}
+ */
+export function participantHasRole(stateful: IStateful, participantId: string | undefined, roleName: string) {
+    if (participantId === undefined) {
+        return false;
+    }
+    const participant = getParticipantById(stateful, participantId);
+
+    return participant?.icRoles?.find(
+            role => role.name === roleName
+    ) !== undefined;
+}
+
+export function getParticipantWithICRoleAndPartner(stateful: IStateful, icRole: string, partner: string): IParticipant | undefined {
+    const state = toState(stateful);
+    const { remote } = state['features/base/participants'];
+
+    return Array.from(remote.values()).find(
+        participant => participant.icRoles?.find(role => role.name === icRole && role.partner === partner)
+    );
+}
+
