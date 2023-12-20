@@ -9,6 +9,7 @@ import AbstractDialogTab, {
 import { translate } from '../../base/i18n/functions';
 import Checkbox from '../../base/ui/components/web/Checkbox';
 import Slider from '../../base/ui/components/web/Slider';
+import { getRemoteParticipants } from '../../base/participants/functions';
 
 
 /**
@@ -43,9 +44,9 @@ export interface IProps extends AbstractDialogTabProps, WithTranslation {
     dimming: number;
 
     /**
-     * fps value for user videos.
+     * Are Interpreters Videos enabled?
      */
-    fps: number;
+    interpreter: boolean;
 
     /**
      * Are User Videos enabled?
@@ -56,6 +57,11 @@ export interface IProps extends AbstractDialogTabProps, WithTranslation {
      * Saturation value for user videos.
      */
     saturation: number;
+
+    /**
+     * Is screensharing enabled?
+     */
+    screensharing: boolean;
 
     /**
      * Zoom value for user videos.
@@ -114,7 +120,10 @@ class UserVideoTab extends AbstractDialogTab<IProps, any> {
      */
     render() {
 
-        const { brightness, classes, contrast, dimming, fps, otherParticipants, saturation, zoom, t } = this.props;
+        const { brightness, classes, contrast, dimming, interpreter, otherParticipants, saturation,
+            screensharing, zoom, t } = this.props;
+
+        // let participants = getRemoteParticipants(getState());
 
         return (
             <div className = { classes.container }>
@@ -136,6 +145,36 @@ class UserVideoTab extends AbstractDialogTab<IProps, any> {
                         } />
                     <div className = { classes.description }>
                         {t('toolbar.userVideo.videoVisibilityToggleHeadline')}
+                    </div>
+                    <Checkbox
+                        checked = { interpreter }
+                        className = { classes.inputElement }
+                        label = { t('toolbar.userVideo.interpreterHeadline') }
+                        // eslint-disable-next-line react/jsx-no-bind
+                        name = 'video-visibility-toggle'
+                        // eslint-disable-next-line react/jsx-no-bind
+                        onChange = { () =>
+                            super._onChange({
+                                interpreter: !interpreter
+                            })
+                        } />
+                    <div className = { classes.description }>
+                        {t('toolbar.userVideo.interpreterDescription')}
+                    </div>
+                    <Checkbox
+                        checked = { screensharing }
+                        className = { classes.inputElement }
+                        label = { t('toolbar.userVideo.screensharingHeadline') }
+                        // eslint-disable-next-line react/jsx-no-bind
+                        name = 'video-visibility-toggle'
+                        // eslint-disable-next-line react/jsx-no-bind
+                        onChange = { () =>
+                            super._onChange({
+                                screensharing: !screensharing
+                            })
+                        } />
+                    <div className = { classes.description }>
+                        {t('toolbar.userVideo.screensharingDescription')}
                     </div>
                 </div>
                 <div className = { classes.inputblockContainer }>
@@ -165,6 +204,10 @@ class UserVideoTab extends AbstractDialogTab<IProps, any> {
                         onChange = { event =>
                             super._onChange({
                                 brightness: event.target.value
+                                // for (let p of participants.keys()) {
+                                //     console.log(123456, p)
+                                //     dispatch(setParticipantBrightness(p, brightness))
+                                // };
                             })
                         }
                         step = { 1 } />
@@ -203,7 +246,7 @@ class UserVideoTab extends AbstractDialogTab<IProps, any> {
                         className = { classes.inputElement }
                         defaultValue = { zoom }
                         label = { t('toolbar.userVideo.zoomSliderHeadline') }
-                        max = { 100 }
+                        max = { 200 }
                         min = { 0 }
                         name = 'zoom-slider'
                         // eslint-disable-next-line react/jsx-no-bind
@@ -214,21 +257,6 @@ class UserVideoTab extends AbstractDialogTab<IProps, any> {
                         }
                         step = { 1 } />
                     <span>{ zoom }%</span>
-                    <Slider
-                        className = { classes.inputElement }
-                        defaultValue = { fps }
-                        label = { t('toolbar.userVideo.fpsSliderHeadline') }
-                        max = { 100 }
-                        min = { 0 }
-                        name = 'fps-slider'
-                        // eslint-disable-next-line react/jsx-no-bind
-                        onChange = { event =>
-                            super._onChange({
-                                fps: event.target.value
-                            })
-                        }
-                        step = { 1 } />
-                    <span>{ fps }fps</span>
                 </div>
             </div>
 

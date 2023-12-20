@@ -44,7 +44,7 @@ export function getTranscriptionLink(state: IReduxState): string | undefined {
     return conference?.transcriptionLink ?? '';
 }
 
-/** .........
+/** ...............................
  *  Returns all states of TranscriptionTab
  *
  * @param stateful

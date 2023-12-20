@@ -5,29 +5,27 @@ import { makeStyles } from 'tss-react/mui';
 import Icon from '../../../base/icons/components/Icon';
 import {
     IconVolumeUp,
-    IconZoom
+    IconSaturation
 } from '../../../base/icons/svg';
-import { ZOOM_SLIDER_MINIMUM, ZOOM_SLIDER_MAXIMUM, ZOOM_SLIDER_SCALE } from '../../constants';
+import { getUserVideoSaturationValue } from '../../../inklusiva/uservideo/functions';
 
 /**
- * The type of the React {@code Component} props of {@link ZoomSlider}.
+ * The type of the React {@code Component} props of {@link OpacityAdjustSlider}.
  */
 interface IProps {
 
     /**
-     * The value the zoom slider will be initialised with when it
-     * mounts. Changes will be stored in state. The value should be a number
-     * between 1 and 3.
+     * The value of the Saturation Slider.
      */
     initialValue: number;
 
     /**
-     * Label for the Slider.
+     * Label for the Saturation Slider.
      */
     label: string;
 
     /**
-     * The callback to invoke when the zoom slider value changes.
+     * The callback to invoke when the Saturation Slider value changes.
      */
     onChange: Function;
 }
@@ -78,7 +76,7 @@ const _onClick = (e: React.MouseEvent) => {
     e.stopPropagation();
 };
 
-const ZoomSlider = ({
+const SaturationSlider = ({
     initialValue,
     label,
     onChange
@@ -86,18 +84,18 @@ const ZoomSlider = ({
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
 
-    const [ zoomLevel, setZoomLevel ] = useState((initialValue || 1) * ZOOM_SLIDER_SCALE);
+    const [ saturation, setSaturation ] = useState((initialValue || 1) * 100);
 
-    const _onZoomLevelChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-        const newZoomLevel = Number(event.currentTarget.value);
+    const _onSaturationSliderChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+        const newSaturation = event.currentTarget.value;
 
-        onChange(newZoomLevel / ZOOM_SLIDER_SCALE);
-        setZoomLevel(newZoomLevel);
+        onChange(newSaturation);
+        setSaturation(Number(newSaturation));
     }, [ onChange ]);
 
     return (
         <div
-            aria-label = { t('zoomSlider') }
+            aria-label = { t('saturationSlider') }
             className = { classes.bigContainer }>
             <div>{ label }</div>
             <div
@@ -106,25 +104,26 @@ const ZoomSlider = ({
                 <span className = { classes.icon }>
                     <Icon
                         size = { 22 }
-                        src = { IconZoom } />
+                        src = { IconSaturation } />
                 </span>
                 <div className = { classes.sliderContainer }>
                     <input
                         aria-label = { label }
-                        aria-valuemax = { ZOOM_SLIDER_MAXIMUM }
-                        aria-valuemin = { ZOOM_SLIDER_MINIMUM }
-                        aria-valuenow = { zoomLevel }
-                        className = { cx('popupmenu__zoom-slider', classes.slider) }
-                        max = { ZOOM_SLIDER_MAXIMUM }
-                        min = { ZOOM_SLIDER_MINIMUM }
-                        onChange = { _onZoomLevelChange }
+                        aria-valuemax = { 150 }
+                        aria-valuemin = { 50 }
+                        aria-valuenow = { saturation }
+                        className = { cx('popupmenu__volume-slider', classes.slider) }
+                        max = { 150 }
+                        min = { 50 }
+                        onChange = { _onSaturationSliderChange }
                         tabIndex = { 0 }
                         type = 'range'
-                        value = { zoomLevel } />
+                        value = { saturation } />
                 </div>
+                <br />
             </div>
         </div>
     );
 };
 
-export default ZoomSlider;
+export default SaturationSlider;

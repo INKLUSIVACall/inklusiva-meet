@@ -15,7 +15,8 @@ import {
     PIN_PARTICIPANT,
     RAISE_HAND_UPDATED,
     SCREENSHARE_PARTICIPANT_NAME_CHANGED,
-    SET_LOADABLE_AVATAR_URL
+    SET_LOADABLE_AVATAR_URL,
+    UPDATE_IC_ROLES
 } from './actionTypes';
 import { LOCAL_PARTICIPANT_DEFAULT_ID, PARTICIPANT_ROLE } from './constants';
 import {
@@ -190,6 +191,15 @@ ReducerRegistry.register<IParticipantsState>('features/base/participants',
         }
 
         delete state.pinnedParticipant;
+
+        return {
+            ...state
+        };
+    }
+    case UPDATE_IC_ROLES: {
+        const { id, roles } = action;
+
+        _updateParticipantProperty(state, id, 'icRoles', roles);
 
         return {
             ...state
