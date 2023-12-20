@@ -1,3 +1,4 @@
+import { ICRole } from '../conference/icRoles';
 import { IJitsiConference } from '../conference/reducer';
 
 export enum FakeParticipant {
@@ -23,6 +24,7 @@ export interface IParticipant {
         'screen-sharing'?: boolean | string;
     };
     getId?: Function;
+    icRoles?: ICRole[];
     id: string;
     isJigasi?: boolean;
     isReplaced?: boolean;

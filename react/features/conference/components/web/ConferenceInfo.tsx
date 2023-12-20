@@ -119,16 +119,16 @@ const COMPONENTS: Array<{
         id: 'recording-status'
     },
     {
+        Component: AssistantRelationLabel,
+        id: 'assistant-relation'
+    },
+    {
         Component: VisualCuesStatusLabel,
         id: 'visual-cues-status'
     },
     {
         Component: AcousticCuesStatusLabel,
         id: 'acoustic-cues-status'
-    },
-    {
-        Component: AssistantRelationLabel,
-        id: 'assistant-relation'
     }
 ];
 
