@@ -104,6 +104,7 @@ import {
     participantSourcesUpdated,
     participantUpdated,
     screenshareParticipantDisplayNameChanged,
+    updateIcRoles,
     updateRemoteParticipantFeatures
 } from './react/features/base/participants/actions';
 import {
@@ -2005,8 +2006,8 @@ export default {
         );
 
         room.on(
-            JitsiConferenceEvents.USER_IC_ROLES_CHANGED, ev => {
-                console.log('USER_IC_ROLES_CHANGED', ev);
+            JitsiConferenceEvents.USER_IC_ROLES_CHANGED, (id, roles) => {
+                APP.store.dispatch(updateIcRoles(id, roles));
             }
         );
 
