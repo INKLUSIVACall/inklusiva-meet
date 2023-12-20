@@ -1,6 +1,7 @@
 import { IStore } from '../../app/types';
 import { showNotification } from '../../notifications/actions';
 import { NOTIFICATION_TIMEOUT_TYPE } from '../../notifications/constants';
+import { ICRole } from '../conference/icRoles';
 import { IJitsiConference } from '../conference/reducer';
 import { set } from '../redux/functions';
 
@@ -27,7 +28,8 @@ import {
     REMOVE_IC_ROLE,
     SCREENSHARE_PARTICIPANT_NAME_CHANGED,
     SET_LOADABLE_AVATAR_URL,
-    SET_LOCAL_PARTICIPANT_RECORDING_STATUS
+    SET_LOCAL_PARTICIPANT_RECORDING_STATUS,
+    UPDATE_IC_ROLES
 } from './actionTypes';
 import {
     DISCO_REMOTE_CONTROL_FEATURE
@@ -128,6 +130,25 @@ export function removeIcRole(id: string, icRole: string, partnerId: string | nul
         id,
         icRole,
         partnerId
+    };
+}
+
+/**
+ * Create an action for updating the IC roles of a participant.
+ *
+ * @param {string} id - Participant's ID.
+ * @param {ICRole[]} roles - Participant's IC roles.
+ * @returns {{
+ *    type: UPDATE_IC_ROLES,
+ *    id: string
+ *    roles: ICRole[]
+ *    }}
+ */
+export function updateIcRoles(id: string, roles: ICRole[]) {
+    return {
+        type: UPDATE_IC_ROLES,
+        id,
+        roles
     };
 }
 
