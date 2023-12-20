@@ -36,6 +36,7 @@ const AcousticCuesStatusLabel = () => {
                     className = { classes.acousticCuesStatusLabel }
                     icon = { IconVolumeOff }
                     iconColor = '#fff'
+                    iconSize = { '24' }
                     id = 'acousticCuesStatusLabel' />
             </Tooltip>
         );

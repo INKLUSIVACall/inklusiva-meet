@@ -3,23 +3,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
 
 import { IReduxState } from '../../../app/types';
+import { IC_ROLES } from '../../../base/conference/icRoles';
 import { openDialog } from '../../../base/dialog/actions';
-import { IconChatUnread, IconLink } from '../../../base/icons/svg';
+import { IconGear } from '../../../base/icons/svg';
 import Label from '../../../base/label/components/web/Label';
 import { COLORS } from '../../../base/label/constants';
 import Tooltip from '../../../base/tooltip/components/Tooltip';
 import TranscriptLinkDialog from '../../../inklusiva/transcription/components/TranscriptLinkDialog';
 import { getTranscriptionLink } from '../../../inklusiva/transcription/functions.web';
-import { get } from 'lodash';
-import { getLocalParticipant } from '../../../base/participants/functions';
-import { IC_ROLES } from '../../../base/conference/icRoles';
 
 const useStyles = makeStyles()(theme => {
     return {
-        transcriptionLinkLabelForUser: {
-            backgroundColor: 'transparent',
-            borderColor: 'transparent',
-            color: '#fff'
+        transcriptionLinkLabelForCaptioner: {
         }
     };
 });
@@ -29,35 +24,37 @@ const useStyles = makeStyles()(theme => {
  *
  * @returns {ReactElement}
  */
-const TranscriptLink = () => {
+const TranscriptLinkEdit = () => {
     const { classes } = useStyles();
 
-    const transcriptionLink = useSelector(getTranscriptionLink);
+    const conference = useSelector((state: IReduxState) => state['features/base/conference'].conference);
+    const dispatch = useDispatch();
+
+    const isCaptioner = conference?.checkLocalHasRole(IC_ROLES.CAPTIONER);
 
     const onClick = () => {
-        window.open(transcriptionLink, '_blank');
+        dispatch(openDialog(TranscriptLinkDialog, { conference }));
     };
 
-    if (transcriptionLink !== '') {
+
+    if (isCaptioner) {
         return (
             <Tooltip
-                content = { 'Zum Transcript' }
+                content = { 'Transcript-Link bearbeiten' }
                 position = 'bottom'>
                 <Label
-                    accessibilityText = { 'Link zum Transcript' }
-                    className = { classes.transcriptionLinkLabelForUser }
+                    accessibilityText = { 'Transcript-Link bearbeiten' }
+                    className = { classes.transcriptionLinkLabelForCaptioner }
                     color = { COLORS.white }
-                    icon = { IconLink }
+                    icon = { IconGear }
                     iconColor = '#fff'
                     iconSize = { '24' }
-                    id = 'transcriptLinkLabel'
+                    id = 'transcriptLinkEditLabel'
                     // eslint-disable-next-line react/jsx-no-bind
-                    text = { transcriptionLink }
                     onClick = { onClick } />
             </Tooltip>
         );
     }
-
 };
 
-export default TranscriptLink;
+export default TranscriptLinkEdit;

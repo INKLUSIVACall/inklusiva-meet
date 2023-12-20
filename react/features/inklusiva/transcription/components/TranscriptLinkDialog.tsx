@@ -1,18 +1,33 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { makeStyles } from 'tss-react/mui';
 
-import Dialog from '../../../base/ui/components/web/Dialog';
-import { getTranscriptionLink } from '../functions.web';
 import { IC_ROLES } from '../../../base/conference/icRoles';
+import Dialog from '../../../base/ui/components/web/Dialog';
 import { updateTranscriptLink } from '../actions.web';
-import { TextField } from '@mui/material';
+import { getTranscriptionLink } from '../functions.web';
+
+
+const useStyles = makeStyles()(theme => {
+    return {
+        transcriptionLinkDialogText: {
+            marginBottom: '1em'
+        },
+        transcriptionLinkDialogInput: {
+            width: '100%'
+        }
+    };
+});
 
 const TranscriptLinkDialog = () => {
     let transcriptionLink = useSelector(getTranscriptionLink);
     const { conference } = useSelector(state => state['features/base/conference']);
-    //const isCaptioner = conference.checkLocalHasRole(IC_ROLES.CAPTIONER);
+
+    // const isCaptioner = conference.checkLocalHasRole(IC_ROLES.CAPTIONER);
     const isCaptioner = true;
     const dispatch = useDispatch();
+
+    const { classes } = useStyles();
 
     const _onSubmit = () => {
         dispatch(updateTranscriptLink(transcriptionLink ?? ''));
@@ -27,13 +42,21 @@ const TranscriptLinkDialog = () => {
                 size = { 'medium' }
                 titleKey = 'Transkript-Link' >
                 <div>
-                    <p>
-                        Hier können Sie den Link zum Transkript ändern:
+                    <p
+                        className = { classes.transcriptionLinkDialogText } >
+                        Hier können Sie den Link zum Transkript ändern.
                     </p>
+                    <label
+                        htmlFor = 'transcriptionLink'
+                        id = 'transcriptionLinkLabel'>
+                        Link zum Transkript
+                    </label>
                     <input
+                        className = { classes.transcriptionLinkDialogInput }
                         defaultValue = { transcriptionLink }
-                        type = 'text'
-                        onChange={ event => transcriptionLink = event.target.value } />
+                        id = 'transcriptionLink'
+                        onChange = { event => transcriptionLink = event.target.value }
+                        type = 'text' />
                 </div>
             </Dialog>
         );
