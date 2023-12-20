@@ -25,8 +25,8 @@ import SpeakerStatsLabel from './SpeakerStatsLabel';
 import SubjectText from './SubjectText';
 import ToggleTopPanelLabel from './ToggleTopPanelLabel';
 import TranscriptLink from './TranscriptLink';
-import VisualCuesStatusLabel from './VisualCuesStatusLabel';
 import TranscriptLinkEdit from './TranscriptLinkEdit';
+import VisualCuesStatusLabel from './VisualCuesStatusLabel';
 
 /**
  * The type of the React {@code Component} props of {@link Subject}.
@@ -130,10 +130,6 @@ const COMPONENTS: Array<{
     {
         Component: AcousticCuesStatusLabel,
         id: 'acoustic-cues-status'
-    },
-    {
-        Component: AssistantRelationLabel,
-        id: 'assistant-relation'
     },
     {
         Component: TranscriptLinkEdit,
