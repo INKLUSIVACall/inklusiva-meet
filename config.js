@@ -1315,30 +1315,30 @@ var config = {
         // IMPORTANT!: This is work in progress so many of the various tokens are not yet applied in code
         // or they are partially applied.
      **/
-        customTheme: {
-            palette: {
-                action01: 'green',
-                ui01: "orange !important",
-                ui02: "maroon",
-                surface02: 'darkgreen',
-                ui03: "violet",
-                ui04: "magenta",
-                ui05: "blueviolet",
-                action01: 'green',
-                action01Hover: 'lightgreen',
-                disabled01: 'beige',
-                success02: 'cadetblue',
-                action02Hover: 'aliceblue',
-                surface02: 'red'
-            },
-            typography: {
-                labelRegular: {
-                    fontSize: 25,
-                    lineHeight: 30,
-                    fontWeight: 500,
-                }
-            }
-        }
+    //     palette: {
+    // customTheme: {
+    //         action01: 'green',
+    //         ui01: "orange !important",
+    //         ui02: "maroon",
+    //         surface02: 'darkgreen',
+    //         ui03: "violet",
+    //         ui04: "magenta",
+    //         ui05: "blueviolet",
+    //         action01: 'green',
+    //         action01Hover: 'lightgreen',
+    //         disabled01: 'beige',
+    //         success02: 'cadetblue',
+    //         action02Hover: 'aliceblue',
+    //         surface02: 'red'
+    //     },
+    //     typography: {
+    //         labelRegular: {
+    //             fontSize: 25,
+    //             lineHeight: 30,
+    //             fontWeight: 500,
+    //         }
+    //     }
+    // }
     // }
     // dynamicBrandingUrl: '',
 
