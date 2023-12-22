@@ -137,7 +137,6 @@ export default function ToolboxButtonWithIcon(props: IProps) {
         iconProps.containerId = iconId;
     }
 
-
     return (
         <div
             className = 'settings-button-container'

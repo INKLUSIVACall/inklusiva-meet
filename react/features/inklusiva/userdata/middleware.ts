@@ -9,6 +9,7 @@ import { SET_USERDATA } from './actionTypes';
 import logger from './logger';
 import { IUserData } from './reducer';
 import { font } from '../../base/ui/Tokens';
+import { setNotificationsEnabled } from '../../notifications/actions';
 
 const toBoolean = function(value: any) {
     if (typeof value === 'boolean') {
@@ -77,6 +78,12 @@ function _setUserdata(store: IStore, next: Function, action: AnyAction) {
     return next(action);
 }
 
+/**
+ * Parses the user data that is supplied via JWT to a valid {@code IUserData}.
+ *
+ * @param {IUserData} ud - The user data to parse.
+ * @returns {Object} - The parsed user data.
+ */
 function _parseUserData(ud: IUserData) {
     const userData: IUserData = {
         support: {},
@@ -152,3 +159,4 @@ function _parseFontSize(fontSizeValue: string | number) {
         break;
     }
 }
+

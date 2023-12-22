@@ -104,6 +104,7 @@ import {
     participantSourcesUpdated,
     participantUpdated,
     screenshareParticipantDisplayNameChanged,
+    updateIcRoles,
     updateRemoteParticipantFeatures
 } from './react/features/base/participants/actions';
 import {
@@ -2001,6 +2002,12 @@ export default {
                     titleKey: 'notify.dataChannelClosed',
                     uid: DATA_CHANNEL_CLOSED_NOTIFICATION_ID
                 }, NOTIFICATION_TIMEOUT_TYPE.STICKY));
+            }
+        );
+
+        room.on(
+            JitsiConferenceEvents.USER_IC_ROLES_CHANGED, (id, roles) => {
+                APP.store.dispatch(updateIcRoles(id, roles));
             }
         );
 

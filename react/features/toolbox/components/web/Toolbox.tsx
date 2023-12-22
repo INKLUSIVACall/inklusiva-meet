@@ -369,12 +369,11 @@ const Toolbox = ({
         const { mainMenuButtons, overflowMenuButtons } = getVisibleButtons();
 
         if (!_distressButton) {
-            mainMenuButtons.splice(mainMenuButtons.findIndex(({ key }) => key === 'distress'), 1);
+            mainMenuButtons.splice(
+                mainMenuButtons.findIndex(({ key }) => key === 'distress'),
+                1
+            );
         }
-
-        const sayHello = function() {
-            alert('Hello');
-        };
 
         const raiseHandInOverflowMenu = overflowMenuButtons.some(({ key }) => key === 'raisehand');
         const showReactionsInOverflowMenu
@@ -481,7 +480,8 @@ const Toolbox = ({
         return null;
     }
 
-    const rootClassNames = `new-toolbox ${_visible ? 'visible' : ''} ${_toolbarButtons.length ? '' : 'no-buttons'} ${_chatOpen ? 'shift-right' : ''
+    const rootClassNames = `new-toolbox ${_visible ? 'visible' : ''} ${_toolbarButtons.length ? '' : 'no-buttons'} ${
+        _chatOpen ? 'shift-right' : ''
     }`;
 
     return (

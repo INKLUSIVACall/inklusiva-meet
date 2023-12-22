@@ -227,6 +227,13 @@ export function getSortedParticipantIds(stateful: IStateful) {
     ];
 }
 
+/**
+ * Returns the position of a participant in the raised hand queue.
+ *
+ * @param {IStateful} stateful - The redux state.
+ * @param {string} participantId - The participant id.
+ * @returns {number}
+ */
 export function getRaisedHandPosition(stateful: IStateful, participantId: string) {
     const raisedHandParticipants = getRaiseHandsQueue(stateful).map(({ id }) => id);
 

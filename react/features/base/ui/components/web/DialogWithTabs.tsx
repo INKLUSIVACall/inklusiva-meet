@@ -19,7 +19,7 @@ const useStyles = makeStyles()(theme => {
     return {
         dialog: {
             flexDirection: 'row',
-            height: '680px',
+            height: '780px',
 
             '@media (min-width: 608px) and (max-width: 712px)': {
                 width: '560px'
@@ -41,7 +41,7 @@ const useStyles = makeStyles()(theme => {
         sidebar: {
             display: 'flex',
             flexDirection: 'column',
-            minWidth: '250px',
+            minWidth: '290px',
             maxWidth: '100%',
             borderRight: `1px solid ${theme.palette.ui03}`,
 

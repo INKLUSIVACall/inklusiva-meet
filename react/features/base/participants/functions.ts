@@ -25,6 +25,7 @@ import {
 } from './constants';
 import { preloadImage } from './preloadImage';
 import { FakeParticipant, IJitsiParticipant, IParticipant, ISourceInfo } from './types';
+import { IC_ROLES } from '../conference/icRoles';
 
 
 /**
@@ -569,7 +570,7 @@ export function getPinnedParticipant(stateful: IStateful) {
 }
 
 /**
- * Returns true if the participant is a moderator.
+ * Returns true if the participant is an XMPP moderator.
  *
  * @param {string} participant - Participant object.
  * @returns {boolean}
@@ -579,11 +580,32 @@ export function isParticipantModerator(participant?: IParticipant) {
 }
 
 /**
+ * Returns true if the participant is an Inklusiva Call Host.
+ *
+ * @param {string} participant - Participant object.
+ * @returns {boolean}
+ */
+export function isParticipantHost(participant?: IParticipant) {
+    return participant?.role === PARTICIPANT_ROLE.MODERATOR && !participant?.conference?.checkMemberHasRole(participant?.id, IC_ROLES.COHOST);
+}
+
+/**
+ * Returns true if the participant is a co-host.
+ *
+ * @param {string} participant - Participant object.
+ * @returns {boolean}
+ */
+export function isParticipantCoHost(participant?: IParticipant) {
+    return participant?.role === PARTICIPANT_ROLE.MODERATOR && participant?.conference?.checkMemberHasRole(participant?.id, IC_ROLES.COHOST);
+}
+
+/**
  * Checks if a user has an inclusiva Call role.
- * @param {string} icRole  - Role name
+ *
+ * @param {string} icRole  - Role name.
  * @param {IParticipant} participant - Participant.
  * @param {IParticipant} partner - Partner.
- * @returns 
+ * @returns
  */
 export function checkParticipantHasICRole(icRole: string, participant?: IParticipant, partner?: IParticipant) {
     return participant?.conference?.checkMemberHasRole(participant?.id, icRole, partner?.id);
@@ -751,3 +773,32 @@ export const setShareDialogVisiblity = (addPeopleFeatureEnabled: boolean, dispat
         dispatch(toggleShareDialog(true));
     }
 };
+
+/**
+ * Checks, wether a given participant has a given IC-ROle.
+ *
+ * @param {IStatefule} stateful - Redux state.
+ * @param {string} participantId - ID of the participant to be checked.
+ * @param {string} roleName - Name of the role to be found.
+ * @returns {boolean}
+ */
+export function participantHasRole(stateful: IStateful, participantId: string | undefined, roleName: string) {
+    if (participantId === undefined) {
+        return false;
+    }
+    const participant = getParticipantById(stateful, participantId);
+
+    return participant?.icRoles?.find(
+            role => role.name === roleName
+    ) !== undefined;
+}
+
+export function getParticipantWithICRoleAndPartner(stateful: IStateful, icRole: string, partner: string): IParticipant | undefined {
+    const state = toState(stateful);
+    const { remote } = state['features/base/participants'];
+
+    return Array.from(remote.values()).find(
+        participant => participant.icRoles?.find(role => role.name === icRole && role.partner === partner)
+    );
+}
+

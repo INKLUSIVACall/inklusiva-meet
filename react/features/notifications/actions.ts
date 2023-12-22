@@ -20,6 +20,7 @@ import {
     SILENT_LEFT_THRESHOLD
 } from './constants';
 import { INotificationProps } from './types';
+import { SHOW_NOTIFICATION_AS_MESSAGE } from '../chat/actionTypes';
 
 /**
  * Function that returns notification timeout value based on notification timeout type.
@@ -123,7 +124,8 @@ export function showNotification(props: INotificationProps = {}, type?: string) 
                 || disabledNotifications.includes(titleKey ?? ''))
             && (!notifications
                 || notifications.includes(descriptionKey ?? '')
-                || notifications.includes(titleKey ?? ''));
+                || notifications.includes(titleKey ?? ''))
+            && getState()['features/inklusiva/userdata'].ui?.visualCues;
 
         if (typeof APP !== 'undefined') {
             APP.API.notifyNotificationTriggered(titleKey, descriptionKey);
@@ -137,6 +139,13 @@ export function showNotification(props: INotificationProps = {}, type?: string) 
                 uid: props.uid || Date.now().toString()
             });
         }
+
+        return dispatch({
+            type: SHOW_NOTIFICATION_AS_MESSAGE,
+            props,
+            timeout: getNotificationTimeout(type, notificationTimeouts),
+            uid: props.uid || Date.now().toString()
+        });
     };
 }
 

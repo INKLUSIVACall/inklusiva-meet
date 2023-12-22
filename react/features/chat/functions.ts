@@ -8,6 +8,7 @@ import { IReduxState } from '../app/types';
 import { getLocalizedDateFormatter } from '../base/i18n/dateUtil';
 import i18next from '../base/i18n/i18next';
 import { escapeRegexp } from '../base/util/helpers';
+import { INotificationProps } from '../notifications/types';
 
 import { MESSAGE_TYPE_ERROR, MESSAGE_TYPE_LOCAL, TIMESTAMP_FORMAT } from './constants';
 import { IMessage } from './types';
@@ -171,4 +172,28 @@ export function getPrivateNoticeMessage(message: IMessage) {
     return i18next.t('chat.privateNotice', {
         recipient: message.messageType === MESSAGE_TYPE_LOCAL ? message.recipient : i18next.t('chat.you')
     });
+}
+
+/**
+ * Takes a notification in form of an action and deconstructs it to build a valid message text.
+ *
+ * @param {Object} action - The notification action.
+ * @returns {string}
+ */
+export function buildMessageTextFromNotification(action: { props: INotificationProps; timeout: number; uid: string; }) {
+    const { titleKey, title, descriptionKey, titleArguments } = action.props;
+
+    // case for raised hand notifications.
+    if (title) {
+        return `${title ?? ''}${i18next.t(descriptionKey ?? '')}`;
+    }
+    if (titleArguments) {
+        // case for participant joined/ left notifications.
+        if (titleArguments.name) {
+            return `${titleArguments?.name ?? ''}${i18next.t(titleKey ?? '')} ${i18next.t(descriptionKey ?? '')}`;
+        }
+    }
+
+    // case for other notifications.
+    return `${i18next.t(titleKey ?? '')}. ${i18next.t(descriptionKey ?? '')}.`;
 }

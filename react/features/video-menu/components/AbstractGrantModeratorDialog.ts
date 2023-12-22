@@ -4,8 +4,9 @@ import { WithTranslation } from 'react-i18next';
 import { createRemoteVideoMenuButtonEvent } from '../../analytics/AnalyticsEvents';
 import { sendAnalytics } from '../../analytics/functions';
 import { IReduxState, IStore } from '../../app/types';
-import { grantModerator } from '../../base/participants/actions';
+import { grantModerator, removeIcRole } from '../../base/participants/actions';
 import { getParticipantById } from '../../base/participants/functions';
+import { IC_ROLES } from '../../base/conference/icRoles';
 
 interface IProps extends WithTranslation {
 
@@ -57,6 +58,7 @@ export default class AbstractGrantModeratorDialog
             }));
 
         dispatch(grantModerator(participantID));
+        dispatch(removeIcRole(participantID, IC_ROLES.COHOST)); //Just in case
 
         return true;
     }

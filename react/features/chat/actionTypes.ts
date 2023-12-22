@@ -9,7 +9,7 @@
  *     messageType: string,
  *     message: string,
  *     timestamp: string,
- * }
+ * }.
  */
 export const ADD_MESSAGE = 'ADD_MESSAGE';
 
@@ -18,7 +18,7 @@ export const ADD_MESSAGE = 'ADD_MESSAGE';
  *
  * {
  *     type: CLEAR_MESSAGES
- * }
+ * }.
  */
 export const CLEAR_MESSAGES = 'CLEAR_MESSAGES';
 
@@ -27,7 +27,7 @@ export const CLEAR_MESSAGES = 'CLEAR_MESSAGES';
  *
  * {
  *     type: CLOSE_CHAT
- * }
+ * }.
  */
 export const CLOSE_CHAT = 'CLOSE_CHAT';
 
@@ -37,7 +37,7 @@ export const CLOSE_CHAT = 'CLOSE_CHAT';
  * {
  *     type: EDIT_MESSAGE,
  *     message: Object
- * }
+ * }.
  */
 export const EDIT_MESSAGE = 'EDIT_MESSAGE';
 
@@ -46,7 +46,7 @@ export const EDIT_MESSAGE = 'EDIT_MESSAGE';
  *
  * {
  *     type: OPEN_CHAT
- * }
+ * }.
  */
 export const OPEN_CHAT = 'OPEN_CHAT';
 
@@ -58,7 +58,7 @@ export const OPEN_CHAT = 'OPEN_CHAT';
  *     type: SEND_MESSAGE,
  *     ignorePrivacy: boolean,
  *     message: string
- * }
+ * }.
  */
 export const SEND_MESSAGE = 'SEND_MESSAGE';
 
@@ -69,7 +69,7 @@ export const SEND_MESSAGE = 'SEND_MESSAGE';
  * {
  *     participant: Participant,
  *     type: SET_PRIVATE_MESSAGE_RECIPIENT
- * }
+ * }.
  */
 export const SET_PRIVATE_MESSAGE_RECIPIENT = 'SET_PRIVATE_MESSAGE_RECIPIENT';
 
@@ -79,7 +79,7 @@ export const SET_PRIVATE_MESSAGE_RECIPIENT = 'SET_PRIVATE_MESSAGE_RECIPIENT';
  * {
  *     isPollsTabFocused: boolean,
  *     type: SET_PRIVATE_MESSAGE_RECIPIENT
- * }
+ * }.
  */
 export const SET_IS_POLL_TAB_FOCUSED = 'SET_IS_POLL_TAB_FOCUSED';
 
@@ -89,25 +89,35 @@ export const SET_IS_POLL_TAB_FOCUSED = 'SET_IS_POLL_TAB_FOCUSED';
  * {
  *     participant: Object,
  *     type: SET_LOBBY_CHAT_RECIPIENT
- * }
+ * }.
  */
- export const SET_LOBBY_CHAT_RECIPIENT = 'SET_LOBBY_CHAT_RECIPIENT';
+export const SET_LOBBY_CHAT_RECIPIENT = 'SET_LOBBY_CHAT_RECIPIENT';
 
- /**
-  * The type of action sets the state of lobby messaging status.
-  *
-  * {
-  *     type: SET_LOBBY_CHAT_ACTIVE_STATE
-  *     payload: boolean
-  * }
-  */
- export const SET_LOBBY_CHAT_ACTIVE_STATE = 'SET_LOBBY_CHAT_ACTIVE_STATE';
+/**
+ * The type of action sets the state of lobby messaging status.
+ *
+ * {
+ *     type: SET_LOBBY_CHAT_ACTIVE_STATE
+ *     payload: boolean
+ * }.
+ */
+export const SET_LOBBY_CHAT_ACTIVE_STATE = 'SET_LOBBY_CHAT_ACTIVE_STATE';
 
- /**
-  * The type of action removes the lobby messaging from participant.
-  *
-  * {
-  *     type: REMOVE_LOBBY_CHAT_PARTICIPANT
-  * }
-  */
- export const REMOVE_LOBBY_CHAT_PARTICIPANT = 'REMOVE_LOBBY_CHAT_PARTICIPANT';
+/**
+ * The type of action removes the lobby messaging from participant.
+ *
+ * {
+ *     type: REMOVE_LOBBY_CHAT_PARTICIPANT
+ * }.
+ */
+export const REMOVE_LOBBY_CHAT_PARTICIPANT = 'REMOVE_LOBBY_CHAT_PARTICIPANT';
+
+/**
+ * The type of action which signals to show a notification as a message.
+ * {
+ *    type: SHOW_NOTIFICATION_AS_MESSAGE,
+ *    payload: Object
+ *    }.
+ */
+export const SHOW_NOTIFICATION_AS_MESSAGE = 'SHOW_NOTIFICATION_AS_MESSAGE';
+

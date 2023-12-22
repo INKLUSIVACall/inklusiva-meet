@@ -11,5 +11,7 @@ export const CONFERENCE_INFO = {
         'visitors-count',
         'insecure-room',
         'top-panel-toggle'
-    ]
+    ],
+    detailIndicatorsLeft: [ 'visual-cues-status', 'acoustic-cues-status', 'recording-status', 'assistant-relation' ],
+    detailIndicatorsRight: [ 'transcript-link', 'transcript-link-edit' ]
 };

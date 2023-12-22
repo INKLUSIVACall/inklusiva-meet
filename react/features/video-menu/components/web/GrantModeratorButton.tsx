@@ -6,7 +6,7 @@ import { IReduxState } from '../../../app/types';
 import { openDialog } from '../../../base/dialog/actions';
 import { IconModerator } from '../../../base/icons/svg';
 import { PARTICIPANT_ROLE } from '../../../base/participants/constants';
-import { getLocalParticipant, getParticipantById, isParticipantModerator } from '../../../base/participants/functions';
+import { getLocalParticipant, getParticipantById, isParticipantHost, isParticipantModerator } from '../../../base/participants/functions';
 import ContextMenuItem from '../../../base/ui/components/web/ContextMenuItem';
 import { NOTIFY_CLICK_MODE } from '../../../toolbox/constants';
 import { IButtonProps } from '../../types';
@@ -29,7 +29,7 @@ const GrantModeratorButton = ({
     const localParticipant = useSelector(getLocalParticipant);
     const targetParticipant = useSelector((state: IReduxState) => getParticipantById(state, participantID));
     const visible = useMemo(() => Boolean(localParticipant?.role === PARTICIPANT_ROLE.MODERATOR)
-        && !isParticipantModerator(targetParticipant), [ isParticipantModerator, localParticipant, targetParticipant ]);
+        && !isParticipantHost(targetParticipant), [ isParticipantHost, localParticipant, targetParticipant ]);
 
     const handleClick = useCallback(() => {
         notifyClick?.();

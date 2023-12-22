@@ -1,3 +1,4 @@
+import { ICRole } from '../conference/icRoles';
 import { IJitsiConference } from '../conference/reducer';
 
 export enum FakeParticipant {
@@ -23,6 +24,7 @@ export interface IParticipant {
         'screen-sharing'?: boolean | string;
     };
     getId?: Function;
+    icRoles?: ICRole[];
     id: string;
     isJigasi?: boolean;
     isReplaced?: boolean;
@@ -61,13 +63,13 @@ export interface ISourceInfo {
 }
 
 export interface IJitsiParticipant {
+    addICRole: (icRole: string, partnerId: string | null) => void;
     getDisplayName: () => string;
     getId: () => string;
     getJid: () => string;
     getRole: () => string;
     getSources: () => Map<string, Map<string, ISourceInfo>>;
     getTags: () => string[];
-    addICRole: (icRole: string, partnerId: string|null) => void;
-    removeICRole: (icRole: string, partnerId: string|null) => void;
     isHidden: () => boolean;
+    removeICRole: (icRole: string, partnerId: string | null) => void;
 }
