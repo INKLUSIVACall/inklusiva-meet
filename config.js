@@ -51,6 +51,8 @@ var config = {
     // Keep URL query parameters (such as JWT query parameter) intact, don't remove from address bar
     keepUrlParameters: true,
 
+    hiddenDomain: "recorder.inklusiva-meet.4morgen.de",
+
     // Websocket URL (XMPP)
     // websocket: 'wss://jitsi-meet.example.com/' + subdir + 'xmpp-websocket',
 
@@ -313,21 +315,21 @@ var config = {
     //          'https://jitsi-meet.example.com/subfolder/static/oauth.html',
     // },
 
-    // recordingService: {
+    recordingService: {
     //     // When integrations like dropbox are enabled only that will be shown,
     //     // by enabling fileRecordingsServiceEnabled, we show both the integrations
     //     // and the generic recording service (its configuration and storage type
     //     // depends on jibri configuration)
-    //     enabled: false,
+         enabled: true,
 
     //     // Whether to show the possibility to share file recording with other people
     //     // (e.g. meeting participants), based on the actual implementation
     //     // on the backend.
-    //     sharingEnabled: false,
+         sharingEnabled: true,
 
     //     // Hide the warning that says we only store the recording for 24 hours.
-    //     hideStorageWarning: false,
-    // },
+         hideStorageWarning: false,
+    },
 
     // DEPRECATED. Use recordingService.enabled instead.
     // fileRecordingsServiceEnabled: false,
@@ -348,9 +350,9 @@ var config = {
     // },
 
     // Customize the Live Streaming dialog. Can be modified for a non-YouTube provider.
-    // liveStreaming: {
+    liveStreaming: {
     //    // Whether to enable live streaming or not.
-    //    enabled: false,
+        enabled: true,
     //    // Terms link
     //    termsLink: 'https://www.youtube.com/t/terms',
     //    // Data privacy link
@@ -359,7 +361,7 @@ var config = {
     //    validatorRegExpString: '^(?:[a-zA-Z0-9]{4}(?:-(?!$)|$)){4}',
     //    // Documentation reference for the live streaming feature.
     //    helpLink: 'https://jitsi.org/live'
-    // },
+    },
 
     // DEPRECATED. Use liveStreaming.enabled instead.
     // liveStreamingEnabled: false,
@@ -377,37 +379,37 @@ var config = {
     // autoCaptionOnRecord: false,
 
     // Transcription options.
-    // transcription: {
+    transcription: {
     //     // Whether the feature should be enabled or not.
-    //     enabled: false,
+         enabled: true,
 
     //     // Translation languages.
     //     // Available languages can be found in
     //     // ./src/react/features/transcribing/translation-languages.json.
-    //     translationLanguages: ['en', 'es', 'fr', 'ro'],
+         translationLanguages: ['de'],
 
     //     // Important languages to show on the top of the language list.
-    //     translationLanguagesHead: ['en'],
+         translationLanguagesHead: ['de'],
 
     //     // If true transcriber will use the application language.
     //     // The application language is either explicitly set by participants in their settings or automatically
     //     // detected based on the environment, e.g. if the app is opened in a chrome instance which
     //     // is using french as its default language then transcriptions for that participant will be in french.
     //     // Defaults to true.
-    //     useAppLanguage: true,
+         useAppLanguage: false,
 
     //     // Transcriber language. This settings will only work if "useAppLanguage"
     //     // is explicitly set to false.
     //     // Available languages can be found in
     //     // ./src/react/features/transcribing/transcriber-langs.json.
-    //     preferredLanguage: 'en-US',
+         preferredLanguage: 'de-DE',
 
     //     // Disable start transcription for all participants.
-    //     disableStartForAll: false,
+         disableStartForAll: false,
 
     //     // Enables automatic turning on captions when recording is started
-    //     autoCaptionOnRecord: false,
-    // },
+         autoCaptionOnRecord: false,
+     },
 
     // Misc
 
