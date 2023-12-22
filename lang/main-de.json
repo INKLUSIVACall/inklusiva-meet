@@ -1275,7 +1275,7 @@
         "audioOnlyOn": "Modus „Nur Audio“ aktivieren",
         "audioRoute": "Audiogerät auswählen",
         "audioSettings": "Ton-Einstellungen",
-        "assistance": "Assistenz anbieten / suchen",
+        "assistance": "Assistenz",
         "authenticate": "Anmelden",
         "backgroundNoises": "Hintergrundgeräusche reduzieren",
         "balance": "Balance",
@@ -1368,9 +1368,9 @@
         "toggleCamera": "Kamera wechseln",
         "unmute": "Stummschaltung aufheben",
         "videoSettings": "Kameraeinstellungen",
-        "videomute": "Kamera stoppen",
+        "videomute": "Kamera ausschalten",
         "videomuteGUMPending": "Verbinde Ihre Kamera",
-        "videounmute": "Kamera einschalten",
+        "videounmute": "Kamera ein",
         "userVideo": {
             "containerHeadline": "Teilnehmer-Videos",
             "interpreterHeadline": "Dolmetscher-Videos einschalten",
@@ -1387,13 +1387,13 @@
             "fpsSliderHeadline": "Bildübertragungsrate"
         },
         "distressbtn": {
-            "btn_engage_headline": "Ich möchte einen Notfallbutton",
+            "btn_engage_headline": "Notfallbutton",
             "btn_engage_label": "Notfallbutton aktivieren",
             "btn_engage_desc": "Der Notfallbutton ermöglicht einen sofortigen Einfluss auf die Audio- und Videoübertragung im Meeting. Einer bestimmten Begleitperson kann eine vorab geschriebene Nachricht übermittelt werden.",
             "dimlights_label": "Kacheln dimmen",
             "setvolume_label": "Lautstärke anpassen",
             "messagebtn_enable_label": "Nachricht versenden",
-            "sliders_headline": "Aktionen nach dem Klick:",
+            "sliders_headline": "Aktionen nach dem Klick",
             "messagebtn_enable_desc": "Nach dem Klick auf den Notfallbutton wird eine private Nachricht an eine Begleitperson gesendet. Vorerst ist das der Moderator. Im Meeting kann eine bevorzugte Begleitperson eingestellt werden.",
             "message_headline": "Nachricht verfassen",
             "message_desc": "In diesem Feld kann eine eigene Notfallnachricht verfasst werden."

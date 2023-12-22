@@ -10,9 +10,8 @@ import Label from '../../../base/label/components/web/Label';
 import { COLORS } from '../../../base/label/constants';
 import Tooltip from '../../../base/tooltip/components/Tooltip';
 import TranscriptLinkDialog from '../../../inklusiva/transcription/components/TranscriptLinkDialog';
-import { getTranscriptionLink } from '../../../inklusiva/transcription/functions.web';
 
-const useStyles = makeStyles()(theme => {
+const useStyles = makeStyles()(() => {
     return {
         transcriptionLinkLabelForCaptioner: {
         }
@@ -55,6 +54,8 @@ const TranscriptLinkEdit = () => {
             </Tooltip>
         );
     }
+
+    return null;
 };
 
 export default TranscriptLinkEdit;

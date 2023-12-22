@@ -7,9 +7,9 @@ import AbstractDialogTab, {
     IProps as AbstractDialogTabProps
 } from '../../base/dialog/components/web/AbstractDialogTab';
 import { translate } from '../../base/i18n/functions';
+import { getRemoteParticipants } from '../../base/participants/functions';
 import Checkbox from '../../base/ui/components/web/Checkbox';
 import Slider from '../../base/ui/components/web/Slider';
-import { getRemoteParticipants } from '../../base/participants/functions';
 
 
 /**
@@ -92,7 +92,19 @@ const styles = (theme: Theme) => {
         },
         inputblockContainer: {
             marginBottom: theme.spacing(5)
+        },
+        controlContainer: {
+            display: 'flex'
+        },
+        controlColumn: {
+            flex: '1 1 auto',
+            marginBottom: '10px !important'
+        },
+        valueColum: {
+            flex: '0 0 20%',
+            paddingLeft: theme.spacing(5)
         }
+
     };
 };
 
@@ -127,9 +139,9 @@ class UserVideoTab extends AbstractDialogTab<IProps, any> {
 
         return (
             <div className = { classes.container }>
-                <b className = { classes.headline }>
+                <h2>
                     {t('toolbar.userVideo.containerHeadline')}
-                </b>
+                </h2>
                 <div className = { classes.inputblockContainer }>
                     <Checkbox
                         checked = { otherParticipants }
@@ -177,89 +189,117 @@ class UserVideoTab extends AbstractDialogTab<IProps, any> {
                         {t('toolbar.userVideo.screensharingDescription')}
                     </div>
                 </div>
-                <div className = { classes.inputblockContainer }>
-                    <Slider
-                        className = { classes.inputElement }
-                        defaultValue = { contrast }
-                        label = { t('toolbar.userVideo.contrastSliderHeadline') }
-                        max = { 100 }
-                        min = { 0 }
-                        name = 'contrast-slider'
-                        // eslint-disable-next-line react/jsx-no-bind
-                        onChange = { event =>
-                            super._onChange({
-                                contrast: event.target.value
-                            })
-                        }
-                        step = { 1 } />
-                    <span>{ contrast }%</span>
-                    <Slider
-                        className = { classes.inputElement }
-                        defaultValue = { brightness }
-                        label = { t('toolbar.userVideo.brightnessSliderHeadline') }
-                        max = { 100 }
-                        min = { 0 }
-                        name = 'brightness-slider'
-                        // eslint-disable-next-line react/jsx-no-bind
-                        onChange = { event =>
-                            super._onChange({
-                                brightness: event.target.value
+                <div className = { classes.controlContainer }>
+                    <div className = { classes.controlColumn }>
+                        <Slider
+                            className = { classes.inputElement }
+                            defaultValue = { contrast }
+                            label = { t('toolbar.userVideo.contrastSliderHeadline') }
+                            max = { 100 }
+                            min = { 0 }
+                            name = 'contrast-slider'
+                            // eslint-disable-next-line react/jsx-no-bind
+                            onChange = { event =>
+                                super._onChange({
+                                    contrast: event.target.value
+                                })
+                            }
+                            step = { 1 } />
+                    </div>
+                    <div className = { classes.valueColum } >
+                        { contrast }%
+                    </div>
+                </div>
+                <div className = { classes.controlContainer }>
+                    <div className = { classes.controlColumn }>
+                        <Slider
+                            className = { classes.inputElement }
+                            defaultValue = { brightness }
+                            label = { t('toolbar.userVideo.brightnessSliderHeadline') }
+                            max = { 100 }
+                            min = { 0 }
+                            name = 'brightness-slider'
+                            // eslint-disable-next-line react/jsx-no-bind
+                            onChange = { event =>
+                                super._onChange({
+                                    brightness: event.target.value
+
                                 // for (let p of participants.keys()) {
                                 //     console.log(123456, p)
                                 //     dispatch(setParticipantBrightness(p, brightness))
                                 // };
-                            })
-                        }
-                        step = { 1 } />
-                    <span>{ brightness }%</span>
-                    <Slider
-                        className = { classes.inputElement }
-                        defaultValue = { dimming }
-                        label = { t('toolbar.userVideo.dimSliderHeadline') }
-                        max = { 100 }
-                        min = { 0 }
-                        name = 'dimmer-slider'
-                        // eslint-disable-next-line react/jsx-no-bind
-                        onChange = { event =>
-                            super._onChange({
-                                dimming: event.target.value
-                            })
-                        }
-                        step = { 1 } />
-                    <span>{ dimming }%</span>
-                    <Slider
-                        className = { classes.inputElement }
-                        defaultValue = { saturation }
-                        label = { t('toolbar.userVideo.saturationSliderHeadline') }
-                        max = { 100 }
-                        min = { 0 }
-                        name = 'saturation-slider'
-                        // eslint-disable-next-line react/jsx-no-bind
-                        onChange = { event =>
-                            super._onChange({
-                                saturation: event.target.value
-                            })
-                        }
-                        step = { 1 } />
-                    <span>{ saturation }%</span>
-                    <Slider
-                        className = { classes.inputElement }
-                        defaultValue = { zoom }
-                        label = { t('toolbar.userVideo.zoomSliderHeadline') }
-                        max = { 200 }
-                        min = { 0 }
-                        name = 'zoom-slider'
-                        // eslint-disable-next-line react/jsx-no-bind
-                        onChange = { event =>
-                            super._onChange({
-                                zoom: event.target.value
-                            })
-                        }
-                        step = { 1 } />
-                    <span>{ zoom }%</span>
+                                })
+                            }
+                            step = { 1 } />
+                    </div>
+                    <div className = { classes.valueColum } >
+                        { brightness }%
+                    </div>
+                </div>
+                <div className = { classes.controlContainer }>
+                    <div className = { classes.controlColumn }>
+                        <Slider
+                            className = { classes.inputElement }
+                            defaultValue = { dimming }
+                            label = { t('toolbar.userVideo.dimSliderHeadline') }
+                            max = { 100 }
+                            min = { 0 }
+                            name = 'dimmer-slider'
+                            // eslint-disable-next-line react/jsx-no-bind
+                            onChange = { event =>
+                                super._onChange({
+                                    dimming: event.target.value
+                                })
+                            }
+                            step = { 1 } />
+                    </div>
+                    <div className = { classes.valueColum } >
+                        { dimming }%
+                    </div>
+                </div>
+                <div className = { classes.controlContainer }>
+                    <div className = { classes.controlColumn }>
+                        <Slider
+                            className = { classes.inputElement }
+                            defaultValue = { saturation }
+                            label = { t('toolbar.userVideo.saturationSliderHeadline') }
+                            max = { 100 }
+                            min = { 0 }
+                            name = 'saturation-slider'
+                            // eslint-disable-next-line react/jsx-no-bind
+                            onChange = { event =>
+                                super._onChange({
+                                    saturation: event.target.value
+                                })
+                            }
+                            step = { 1 } />
+                    </div>
+                    <div className = { classes.valueColum } >
+                        { saturation }%
+                    </div>
+                </div>
+                <div className = { classes.controlContainer }>
+                    <div className = { classes.controlColumn }>
+                        <Slider
+                            className = { classes.inputElement }
+                            defaultValue = { zoom }
+                            label = { t('toolbar.userVideo.zoomSliderHeadline') }
+                            max = { 200 }
+                            min = { 0 }
+                            name = 'zoom-slider'
+                            // eslint-disable-next-line react/jsx-no-bind
+                            onChange = { event =>
+                                super._onChange({
+                                    zoom: event.target.value
+                                })
+                            }
+                            step = { 1 } />
+                    </div>
+                    <div className = { classes.valueColum } >
+                        { zoom }%
+                    </div>
                 </div>
             </div>
-
         );
     }
 }

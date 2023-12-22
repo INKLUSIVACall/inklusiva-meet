@@ -42,6 +42,8 @@ const VisualCuesStatusLabel = () => {
             </Tooltip>
         );
     }
+
+    return null;
 };
 
 export default VisualCuesStatusLabel;

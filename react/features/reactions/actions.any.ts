@@ -117,9 +117,10 @@ export function displayReactionSoundsNotification(): IReactionsAction {
 /**
  * Displays a Notification instead of playing a sound.
  *
+ * @param {string} message - The message to be displayed.
  * @returns {void}
  */
-export function displayNotificationInsteadOfReactionSound(message): IReactionsAction {
+export function displayNotificationInsteadOfReactionSound(message: string): IReactionsAction {
     return {
         type: DISPLAY_NOTIFICATION_INSTEAD_OF_REACTION_SOUND,
         message

@@ -41,6 +41,8 @@ const AcousticCuesStatusLabel = () => {
             </Tooltip>
         );
     }
+
+    return null;
 };
 
 export default AcousticCuesStatusLabel;
