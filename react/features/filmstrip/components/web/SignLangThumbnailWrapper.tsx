@@ -62,6 +62,9 @@ class SignLangThumbnailWrapper extends Component<IProps> {
         this._position = { x : props._initialPosition.x, y : props._initialPosition.y };
 
         this.shouldComponentUpdate = shouldComponentUpdate.bind(this);
+
+        document.addEventListener('mouseup', (ev) => { return this._mouseUp(ev); });
+        document.addEventListener('mousemove', (ev) => { return this._mouseMove(ev); });
     }
 
     /**
@@ -82,9 +85,9 @@ class SignLangThumbnailWrapper extends Component<IProps> {
         }        
 
         return (
-            <div style= {{ position: "absolute", height: "80%", width: "20%", zIndex: 10, left: this._position.x, top: this._position.y }}>
+            <div style= {{ position: "absolute", height: "80%", width: "35%", zIndex: 10, left: this._position.x, top: this._position.y }}>
                 <div style= {{ position: "absolute", height: "5%", width: "100%", backgroundColor:"lightblue", cursor: "grab" }} 
-                    onMouseDown={ (ev) => { return this._mouseDown(ev); } } onMouseUp={ (ev) => { return this._mouseUp(ev); } } onMouseMove={ (ev) => { return this._mouseMove(ev); } }>
+                    onMouseDown={ (ev) => { return this._mouseDown(ev); } } >
                     &nbsp;
                 </div>
                 <div style= {{ position: "absolute", height: "95%", width: "100%", top: "5% "}}>
@@ -118,13 +121,13 @@ class SignLangThumbnailWrapper extends Component<IProps> {
         return true;
     }
 
-    _mouseUp(event: React.MouseEvent<HTMLDivElement, MouseEvent>) : boolean {
+    _mouseUp(event: MouseEvent) : boolean {
         this._dragging = false;
 
         return true;
     }
 
-    _mouseMove(event: React.MouseEvent<HTMLDivElement, MouseEvent>) : boolean {
+    _mouseMove(event: MouseEvent) : boolean {
         if (this._dragging) {
             this._position = {
                 x: this._dragPositionStart.x + (event.clientX - this._dragMouseStart.x),
