@@ -1,13 +1,13 @@
-import {
-    SET_USERDATA,
-    TOGGLE_OWN_AUDIO_INPUT,
-    SET_OTHERS_AUDIO_INPUT_ENABLED
-} from './actionTypes';
 import { IStore } from '../../app/types';
+import { SET_AUDIO_CUES_ENABLED_STATE } from '../uisettings/actionTypes';
+
 import {
-    isOwnAudioInputEnabled,
+    SET_OTHERS_AUDIO_INPUT_ENABLED,
+    SET_USERDATA
+} from './actionTypes';
+import {
     isOthersAudioInputEnabled
- } from './functions';
+} from './functions';
 
 
 /**
@@ -45,7 +45,8 @@ export function setOthersAudioInputEnabledState(enabled: boolean): any {
 
 export function setAudioCuesEnabledState(enabled: boolean): any {
     return {
-        type: SET_AUDIO_CUES_ENABLED,
+        type: SET_AUDIO_CUES_ENABLED_STATE,
         enabled
     };
 }
+

@@ -53,6 +53,7 @@ import {
     sendReactionsWebhook
 } from './functions.any';
 import logger from './logger';
+import { IReactionsAction } from './reducer';
 import { RAISE_HAND_SOUND_FILE } from './sounds';
 
 
@@ -153,7 +154,7 @@ MiddlewareRegistry.register((store: IStore) => (next: Function) => (action: AnyA
                     dispatch(playSound(`${REACTIONS[reaction.reaction].soundId}${reaction.threshold}`))
                 );
             } else {
-                reactions.forEach(reaction =>
+                reactions.forEach((reaction: string) =>
                     dispatch(displayNotificationInsteadOfReactionSound(reaction))
                 );
             }
@@ -229,7 +230,7 @@ MiddlewareRegistry.register((store: IStore) => (next: Function) => (action: AnyA
 
         // the following code can be used to display a notification for the reaction.
         // This is not used at the moment because reactions are displayed in the chat either way.
-        /*dispatch(showNotification({
+        /* dispatch(showNotification({
             titleKey: 'Es wurde eine Reaktion gesendet',
             descriptionKey: 'Die gesendete Reaktion war: ' + action.message
         }, NOTIFICATION_TIMEOUT_TYPE.MEDIUM));*/

@@ -1,14 +1,16 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
 
+import { IReduxState } from '../../../app/types';
 import { IC_ROLES } from '../../../base/conference/icRoles';
+import { translate } from '../../../base/i18n/functions';
 import Dialog from '../../../base/ui/components/web/Dialog';
 import { updateTranscriptLink } from '../actions.web';
 import { getTranscriptionLink } from '../functions.web';
 
 
-const useStyles = makeStyles()(theme => {
+const useStyles = makeStyles()(() => {
     return {
         transcriptionLinkDialogText: {
             marginBottom: '1em'
@@ -19,12 +21,20 @@ const useStyles = makeStyles()(theme => {
     };
 });
 
-const TranscriptLinkDialog = () => {
-    let transcriptionLink = useSelector(getTranscriptionLink);
-    const { conference } = useSelector(state => state['features/base/conference']);
+interface IProps {
 
-    // const isCaptioner = conference.checkLocalHasRole(IC_ROLES.CAPTIONER);
-    const isCaptioner = true;
+    /**
+     * Whether the current user is a captioner.
+     *
+     * @returns {boolean}
+     */
+    isCaptioner: boolean;
+
+}
+const TranscriptLinkDialog = (props: IProps) => {
+
+    let transcriptionLink = useSelector(getTranscriptionLink);
+
     const dispatch = useDispatch();
 
     const { classes } = useStyles();
@@ -33,7 +43,7 @@ const TranscriptLinkDialog = () => {
         dispatch(updateTranscriptLink(transcriptionLink ?? ''));
     };
 
-    if (isCaptioner) {
+    if (props.isCaptioner) {
         return (
             <Dialog
                 cancel = {{ translationKey: 'Abbrechen' }}
@@ -83,4 +93,12 @@ const TranscriptLinkDialog = () => {
     );
 };
 
-export default TranscriptLinkDialog;
+const _mapStateToProps = (state: IReduxState) => {
+    const { conference } = state['features/base/conference'];
+
+    return {
+        isCaptioner: conference?.checkLocalHasRole(IC_ROLES.CAPTIONER) ?? false
+    };
+};
+
+export default translate(connect(_mapStateToProps)(TranscriptLinkDialog));

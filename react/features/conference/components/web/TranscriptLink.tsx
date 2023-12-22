@@ -1,20 +1,14 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
 
-import { IReduxState } from '../../../app/types';
-import { openDialog } from '../../../base/dialog/actions';
-import { IconChatUnread, IconLink } from '../../../base/icons/svg';
+import { IconLink } from '../../../base/icons/svg';
 import Label from '../../../base/label/components/web/Label';
 import { COLORS } from '../../../base/label/constants';
 import Tooltip from '../../../base/tooltip/components/Tooltip';
-import TranscriptLinkDialog from '../../../inklusiva/transcription/components/TranscriptLinkDialog';
 import { getTranscriptionLink } from '../../../inklusiva/transcription/functions.web';
-import { get } from 'lodash';
-import { getLocalParticipant } from '../../../base/participants/functions';
-import { IC_ROLES } from '../../../base/conference/icRoles';
 
-const useStyles = makeStyles()(theme => {
+const useStyles = makeStyles()(() => {
     return {
         transcriptionLinkLabelForUser: {
             backgroundColor: 'transparent',
@@ -50,13 +44,15 @@ const TranscriptLink = () => {
                     icon = { IconLink }
                     iconColor = '#fff'
                     iconSize = { '24' }
+                    onClick = { onClick }
                     id = 'transcriptLinkLabel'
                     // eslint-disable-next-line react/jsx-no-bind
-                    text = { transcriptionLink }
-                    onClick = { onClick } />
+                    text = { transcriptionLink } />
             </Tooltip>
         );
     }
+
+    return null;
 
 };
 

@@ -10,7 +10,6 @@ import { translate } from '../../base/i18n/functions';
 import Checkbox from '../../base/ui/components/web/Checkbox';
 import Slider from '../../base/ui/components/web/Slider';
 
-
 /**
  * The type of the React {@code Component} props of {@link OwnAudioTab}.
  */
@@ -71,30 +70,34 @@ const styles = (theme: Theme) => {
         },
         textareaElement: {
             marginBottom: theme.spacing(1),
-            fontSize: '1rem'
+            fontSize: '1rem',
+            width: '100%'
         },
         description: {
             marginBottom: theme.spacing(3),
-            fontSize: '0.875rem'
+            marginTop: theme.spacing(2),
+            fontSize: '0.875rem',
+            fontWeight: 'normal'
         },
         inputblockContainer: {
             marginBottom: theme.spacing(5),
             fontSize: '0.875rem'
+        },
+        controlContainer: {
+            display: 'flex'
+        },
+        controlColumn: {
+            flex: '1 1 auto',
+            marginBottom: '10px !important'
+        },
+        valueColum: {
+            flex: '0 0 20%',
+            paddingLeft: theme.spacing(5)
         }
     };
 };
 
 class DistressBtnTab extends AbstractDialogTab<IProps, any> {
-    /**
-     * Initializes a new {@code NotfallBtnTab} instance.
-     *
-     * @param {Object} props - The read-only properties with which the new
-     * instance is to be initialized.
-     */
-    constructor(props: IProps) {
-        super(props);
-    }
-
     /**
      * Implements React's {@link Component#render()}.
      *
@@ -102,107 +105,95 @@ class DistressBtnTab extends AbstractDialogTab<IProps, any> {
      * @returns {ReactElement}
      */
     render() {
-        const { classes, active, dimming, volume, message, message_text, t }
-            = this.props;
+        const { classes, active, dimming, volume, message, message_text, t } = this.props;
 
         return (
             <div className = { classes.container }>
-                <div className = { classes.inputblockContainer }>
-                    <b className = { classes.headline }>
-                        {t('toolbar.distressbtn.btn_engage_headline')}
-                    </b>
-                    <Checkbox
-                        checked={active}
-                        className={classes.inputElement}
-                        onChange={() =>
-                            super._onChange({
-                                active: !active,
-                            })
-                        }
-                        label={t("toolbar.distressbtn.btn_engage_label")}
-                        // eslint-disable-next-line react/jsx-no-bind
-                        name="distressbtn_enable"/>
+                <h2>{t('toolbar.distressbtn.btn_engage_headline')}</h2>
+                <Checkbox
+                    checked = { active }
+                    className = { classes.inputElement }
+                    label = { t('toolbar.distressbtn.btn_engage_label') }
+                    name = 'distressbtn_enable'
+                    onChange = { () =>
+                        super._onChange({
+                            active: !active
+                        })
+                    } />
 
-                    <div className = { classes.description }>
-                        {t('toolbar.distressbtn.btn_engage_desc')}
-                    </div>
-                </div>
-                <div className = { classes.inputblockContainer }>
-                    <b className = { classes.headline }>
-                        {t('toolbar.distressbtn.sliders_headline')}
-                    </b>
-                    <Slider
-                        className={classes.inputElement}
-                        label={t("toolbar.distressbtn.dimlights_label")}
-                        max={100}
-                        min={0}
-                        step={1}
-                        defaultValue={dimming}
-                        // eslint-disable-next-line react/jsx-no-bind
-                        onChange={(event) =>
-                            super._onChange({
-                                dimming: event.target.value,
-                            })
-                        }/>
-                    <span>{dimming}%</span>
+                <div className = { classes.description }>{t('toolbar.distressbtn.btn_engage_desc')}</div>
 
-                    <Slider
-                        className={classes.inputElement}
-                        label={t("toolbar.distressbtn.setvolume_label")}
-                        max={100}
-                        min={0}
-                        step={1}
-                        defaultValue={volume}
-                        // eslint-disable-next-line react/jsx-no-bind
-                        onChange={(event) =>
-                            super._onChange({
-                                volume: event.target.value,
-                            })
-                        }/>
-                    <span>{volume}%</span>
-                </div>
-                <div className = { classes.inputblockContainer }>
-                    <Checkbox
-                        checked={message}
-                        className={classes.inputElement}
-                        onChange={() =>
-                            super._onChange({
-                                message: !message,
-                            })
-                        }
-                        label={t("toolbar.distressbtn.messagebtn_enable_label")}
-                        // eslint-disable-next-line react/jsx-no-bind
-                        name="messagebtn_enable"/>
+                <h3>{t('toolbar.distressbtn.sliders_headline')}</h3>
 
-                    <div className = { classes.description }>
-                        {t('toolbar.distressbtn.messagebtn_enable_desc')}
+                <div className = { classes.controlContainer }>
+                    <div className = { classes.controlColumn }>
+                        <Slider
+                            className = { classes.inputElement }
+                            defaultValue = { dimming }
+                            label = { t('toolbar.distressbtn.dimlights_label') }
+                            max = { 100 }
+                            min = { 0 }
+                            onChange = { event =>
+                                super._onChange({
+                                    dimming: event.target.value
+                                })
+                            }
+                            step = { 1 } />
                     </div>
-                    <div>
-                        <b className = { classes.headline }>
-                            {t('toolbar.distressbtn.message_headline')}{' '}
-                        </b>
-                    </div>
-                    <div
-                        aria-hidden = 'true'
-                        className = { classes.description }
-                        id = 'textarea_desc'>
-                        {t('toolbar.distressbtn.message_desc')}
-                    </div>
-                    <textarea
-                        aria-describedby = 'textarea_desc'
-                        aria-label = 'Notfallnachricht'
-                        className = { classes.textareaElement }
-                        cols = { 35 }
-                        defaultValue = { message_text }
-                        id = 'distress_message'
-                        onChange = { event =>
-                            super._onChange({
-                                message_text: event.target.value
-                            })
-                        }
-                        placeholder = { message_text }
-                        rows = { 10 } />
+                    <div className = { classes.valueColum }>{dimming}%</div>
                 </div>
+
+                <div className = { classes.controlContainer }>
+                    <div className = { classes.controlColumn }>
+                        <Slider
+                            className = { classes.inputElement }
+                            defaultValue = { volume }
+                            label = { t('toolbar.distressbtn.setvolume_label') }
+                            max = { 100 }
+                            min = { 0 }
+                            onChange = { event =>
+                                super._onChange({
+                                    volume: event.target.value
+                                })
+                            }
+                            step = { 1 } />
+                    </div>
+                    <div className = { classes.valueColum }>{volume}%</div>
+                </div>
+                <h3>{t('toolbar.distressbtn.message_headline')}</h3>
+
+                <Checkbox
+                    checked = { message }
+                    className = { classes.inputElement }
+                    label = { t('toolbar.distressbtn.messagebtn_enable_label') }
+                    name = 'messagebtn_enable'
+                    onChange = { () =>
+                        super._onChange({
+                            message: !message
+                        })
+                    } />
+
+                <div className = { classes.description }>{t('toolbar.distressbtn.messagebtn_enable_desc')}</div>
+                <div />
+                <div
+                    aria-hidden = 'true'
+                    className = { classes.description }
+                    id = 'textarea_desc'>
+                    {t('toolbar.distressbtn.message_desc')}
+                </div>
+                <textarea
+                    aria-describedby = 'textarea_desc'
+                    aria-label = 'Notfallnachricht'
+                    className = { classes.textareaElement }
+                    defaultValue = { message_text }
+                    id = 'distress_message'
+                    onChange = { event =>
+                        super._onChange({
+                            message_text: event.target.value
+                        })
+                    }
+                    placeholder = { message_text }
+                    rows = { 3 } />
             </div>
         );
     }

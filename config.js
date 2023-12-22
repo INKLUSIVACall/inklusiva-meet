@@ -1286,6 +1286,7 @@ var config = {
      If there is no url set or there are missing fields, the defaults are applied.
      The config file should be in JSON.
      None of the fields are mandatory and the response must have the shape:
+
     {
         // The domain url to apply (will replace the domain in the sharing conference link/embed section)
         inviteDomain: 'example-company.org,
@@ -1311,8 +1312,10 @@ var config = {
         // https://github.com/jitsi/jitsi-meet/blob/master/react/features/base/ui/Tokens.ts
         // IMPORTANT!: This is work in progress so many of the various tokens are not yet applied in code
         // or they are partially applied.
+     **/
         customTheme: {
             palette: {
+                action01: 'green',
                 ui01: "orange !important",
                 ui02: "maroon",
                 surface02: 'darkgreen',
@@ -1324,6 +1327,7 @@ var config = {
                 disabled01: 'beige',
                 success02: 'cadetblue',
                 action02Hover: 'aliceblue',
+                surface02: 'red'
             },
             typography: {
                 labelRegular: {
@@ -1333,8 +1337,7 @@ var config = {
                 }
             }
         }
-    }
-    */
+    // }
     // dynamicBrandingUrl: '',
 
     // Options related to the participants pane.
@@ -1578,26 +1581,26 @@ var config = {
     // Prevent the filmstrip from autohiding when screen width is under a certain threshold
     // disableFilmstripAutohiding: false,
 
-    // filmstrip: {
-    //     // Disables user resizable filmstrip. Also, allows configuration of the filmstrip
-    //     // (width, tiles aspect ratios) through the interfaceConfig options.
-    //     disableResizable: false,
+    filmstrip: {
+        // Disables user resizable filmstrip. Also, allows configuration of the filmstrip
+        // (width, tiles aspect ratios) through the interfaceConfig options.
+        disableResizable: true,
 
-    //     // Disables the stage filmstrip
-    //     // (displaying multiple participants on stage besides the vertical filmstrip)
-    //     disableStageFilmstrip: false,
+        // Disables the stage filmstrip
+        // (displaying multiple participants on stage besides the vertical filmstrip)
+        disableStageFilmstrip: true,
 
-    //     // Default number of participants that can be displayed on stage.
-    //     // The user can change this in settings. Number must be between 1 and 6.
-    //     stageFilmstripParticipants: 1,
+        // Default number of participants that can be displayed on stage.
+        // The user can change this in settings. Number must be between 1 and 6.
+        stageFilmstripParticipants: 1,
 
-    //     // Disables the top panel (only shown when a user is sharing their screen).
-    //     disableTopPanel: false,
+        // Disables the top panel (only shown when a user is sharing their screen).
+        disableTopPanel: false,
 
-    //     // The minimum number of participants that must be in the call for
-    //     // the top panel layout to be used.
-    //     minParticipantCountForTopPanel: 50,
-    // },
+        // The minimum number of participants that must be in the call for
+        // the top panel layout to be used.
+        minParticipantCountForTopPanel: 50,
+    },
 
     // Tile view related config options.
     // tileView: {
