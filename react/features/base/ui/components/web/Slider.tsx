@@ -58,17 +58,23 @@ const useStyles = makeStyles()(theme => {
         formControl: {
             ...withPixelLineHeight(theme.typography.bodyLongRegular),
             color: theme.palette.text01,
-            display: 'inline-flex',
+            display: 'flex',
             alignItems: 'center',
             fontSize: '0.875rem',
 
             '&.is-mobile': {
                 ...withPixelLineHeight(theme.typography.bodyLongRegularLarge)
-
             }
         },
-        label: {
-            marginRight: '15px'
+        controlColumn: {
+            flex: '1 1 auto'
+        },
+        labelColumn: {
+            flex: '0 0 50%',
+            fontSize: '1rem'
+        },
+        labelFormat: {
+            fontWeight: '400 !important'
         }
     };
 });
@@ -89,16 +95,20 @@ const Slider = ({
 
     return (
         <div className = { cx(styles.formControl, isMobile && 'is-mobile', className) }>
-            <label className = { cx(styles.label, isMobile && 'is-mobile', className) }>{label}</label>
-            <input
-                defaultValue = { defaultValue }
-                disabled = { disabled }
-                max = { max }
-                min = { min }
-                name = { name }
-                onChange = { onChange }
-                step = { step }
-                type = 'range' />
+            <div className = { styles.labelColumn }>
+                <label className = { cx(styles.labelFormat, isMobile && 'is-mobile', className) }>{label}</label>
+            </div>
+            <div className = { styles.controlColumn }>
+                <input
+                    defaultValue = { defaultValue }
+                    disabled = { disabled }
+                    max = { max }
+                    min = { min }
+                    name = { name }
+                    onChange = { onChange }
+                    step = { step }
+                    type = 'range' />
+            </div>
         </div>
     );
 };

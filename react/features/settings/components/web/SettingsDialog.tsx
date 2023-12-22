@@ -414,7 +414,6 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
             icon: IconShortcuts
         });
 
-
     tabs.push({
         name: SETTINGS_TABS.SIGNLANG_TAB,
         component: SignLangTab,

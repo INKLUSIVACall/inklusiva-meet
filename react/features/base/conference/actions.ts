@@ -138,6 +138,12 @@ function _addConferenceListeners(conference: IJitsiConference, dispatch: IStore[
         JitsiConferenceEvents.LOCK_STATE_CHANGED,
         (locked: boolean) => dispatch(lockStateChanged(conference, locked)));
 
+    conference.on(
+        JitsiConferenceEvents.USER_IC_ROLES_CHANGED,
+        (id: string, roles: []) => {
+            console.log('USER_IC_ROLES_CHANGED', id, roles);
+        });
+
     // Dispatches into features/base/media follow:
 
     conference.on(

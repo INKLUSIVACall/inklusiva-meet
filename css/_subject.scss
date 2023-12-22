@@ -27,7 +27,7 @@
     display: flex;
     justify-content: center;
     margin: 0 auto;
-    height: 28px;
+    height: 32px;
 
     @media (max-width: 500px) {
         flex-wrap: wrap;
@@ -39,9 +39,23 @@
     display: flex;
     justify-content: center;
     position: absolute;
-    top: 0;
-    height: 48px;
-    max-width: calc(100% - 24px);
+    top: 10;
+    height: 65px;
+    max-width: calc(100% - 40px);
+    background: #00000059;
+    margin: auto 20px;
+    border-radius: 10px;
+    margin-top: 1;
+}
+
+#detailIndicatorsLeft {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+#detailIndicatorsRight {
+    display: flex;
+    flex-direction: row;
 }
 
 @keyframes hideSubject {

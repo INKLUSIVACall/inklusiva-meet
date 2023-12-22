@@ -1,13 +1,14 @@
-import React, { Fragment } from "react";
+import React, { Fragment } from 'react';
 
-import Icon from "../../icons/components/Icon";
-import Tooltip from "../../tooltip/components/Tooltip";
-import ContextMenuItem from "../../ui/components/web/ContextMenuItem";
+import Icon from '../../icons/components/Icon';
+import Tooltip from '../../tooltip/components/Tooltip';
+import ContextMenuItem from '../../ui/components/web/ContextMenuItem';
 
-import AbstractToolboxItem from "./AbstractToolboxItem";
-import type { IProps as AbstractToolboxItemProps } from "./AbstractToolboxItem";
+import AbstractToolboxItem from './AbstractToolboxItem';
+import type { IProps as AbstractToolboxItemProps } from './AbstractToolboxItem';
 
 interface IProps extends AbstractToolboxItemProps {
+
     /**
      * Whether or not the item is displayed in a context menu.
      */
@@ -42,7 +43,7 @@ export default class ToolboxItem extends AbstractToolboxItem<IProps> {
      * @returns {void}
      */
     _onKeyPress(event?: React.KeyboardEvent) {
-        if (event?.key === "Enter") {
+        if (event?.key === 'Enter') {
             event.preventDefault();
             this.props.onClick();
         }
@@ -58,49 +59,60 @@ export default class ToolboxItem extends AbstractToolboxItem<IProps> {
      * @returns {ReactElement}
      */
     _renderItem() {
-        const { contextMenu, disabled, elementAfter, icon, onClick, onKeyDown, showLabel, tooltipPosition, toggled } = this.props;
-        const className = showLabel ? "overflow-menu-item" : "toolbox-button";
+        const { contextMenu, disabled, elementAfter, icon, onClick, onKeyDown, showLabel, tooltipPosition, toggled }
+            = this.props;
+        const className = showLabel ? 'overflow-menu-item' : 'toolbox-button';
         const props = {
-            "aria-pressed": toggled,
-            "aria-disabled": disabled,
-            "aria-label": this.accessibilityLabel,
-            className: className + (disabled ? " disabled" : ""),
+            'aria-pressed': toggled,
+            'aria-disabled': disabled,
+            'aria-label': this.accessibilityLabel,
+            className: className + (disabled ? ' disabled' : ''),
             onClick: disabled ? undefined : onClick,
             onKeyDown: disabled ? undefined : onKeyDown,
             onKeyPress: this._onKeyPress,
             tabIndex: 0,
-            role: "button",
+            role: 'button'
         };
 
-        const elementType = showLabel ? "li" : "div";
+        const elementType = showLabel ? 'li' : 'div';
         const useTooltip = this.tooltip && this.tooltip.length > 0;
 
         if (contextMenu) {
             return (
-                <ContextMenuItem accessibilityLabel={this.accessibilityLabel} disabled={disabled} icon={icon} onClick={onClick} onKeyDown={onKeyDown} onKeyPress={this._onKeyPress} text={this.label} />
+                <ContextMenuItem
+                    accessibilityLabel = { this.accessibilityLabel }
+                    disabled = { disabled }
+                    icon = { icon }
+                    onClick = { onClick }
+                    onKeyDown = { onKeyDown }
+                    onKeyPress = { this._onKeyPress }
+                    text = { this.label } />
             );
         }
-        const labelStyle = {
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "7.5rem",
-            fontSize: "1.0rem",
-            paddingTop: "0.4rem",
-            lineHeight: "1.4",
-        };
+
+        // const labelStyle = {
+        //     display: 'flex',
+        //     justifyContent: 'center',
+        //     alignItems: 'center',
+        //     width: '7.5rem',
+        //     fontSize: '1.0rem',
+        //     paddingTop: '0.4rem',
+        //     lineHeight: '1.4'
+        // };
         let children = (
             <Fragment>
                 {this._renderIcon()}
                 {showLabel && <span>{this.label}</span>}
-                <div style={labelStyle}>{this.tooltip}</div>
+                {/* <div style = { labelStyle }>{this.tooltip}</div> */}
                 {elementAfter}
             </Fragment>
         );
 
         if (useTooltip) {
             children = (
-                <Tooltip content={this.tooltip ?? ""} position={tooltipPosition}>
+                <Tooltip
+                    content = { this.tooltip ?? '' }
+                    position = { tooltipPosition }>
                     {children}
                 </Tooltip>
             );
@@ -117,9 +129,13 @@ export default class ToolboxItem extends AbstractToolboxItem<IProps> {
      */
     _renderIcon() {
         const { customClass, disabled, icon, showLabel, toggled } = this.props;
-        const iconComponent = <Icon size={showLabel ? undefined : 24} src={icon} />;
-        const elementType = showLabel ? "span" : "div";
-        const className = `${showLabel ? "overflow-menu-item-icon" : "toolbox-icon"} ${toggled ? "toggled" : ""} ${disabled ? "disabled" : ""} ${customClass ?? ""}`;
+        const iconComponent = (<Icon
+            size = { showLabel ? undefined : 24 }
+            src = { icon } />);
+        const elementType = showLabel ? 'span' : 'div';
+        const className = `${showLabel ? 'overflow-menu-item-icon' : 'toolbox-icon'} ${toggled ? 'toggled' : ''} ${
+            disabled ? 'disabled' : ''
+        } ${customClass ?? ''}`;
 
         return React.createElement(elementType, { className }, iconComponent);
     }

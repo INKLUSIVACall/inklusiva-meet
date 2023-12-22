@@ -36,6 +36,11 @@ interface IProps {
     iconColor?: string;
 
     /**
+     * Size for the icon.
+     */
+    iconSize?: string;
+
+    /**
      * HTML ID attribute to add to the root of {@code Label}.
      */
     id?: string;
@@ -63,7 +68,7 @@ const useStyles = makeStyles()(theme => {
             display: 'flex',
             margin: '0 2px',
             padding: '6px',
-            height: 28,
+            height: 32,
             boxSizing: 'border-box'
         },
         withIcon: {
@@ -95,6 +100,7 @@ const Label = ({
     color,
     icon,
     iconColor,
+    iconSize,
     id,
     onClick,
     text
@@ -124,7 +130,7 @@ const Label = ({
             tabIndex = { onClick ? 0 : undefined }>
             {icon && <Icon
                 color = { iconColor }
-                size = '16'
+                size = { iconSize ?? '16' }
                 src = { icon } />}
             {accessibilityText && <span className = 'sr-only'>{accessibilityText}</span>}
             {text && <span className = { icon && classes.withIcon }>{text}</span>}

@@ -45,8 +45,8 @@ const DEFAULT_STATE = {
 
 export interface IJitsiConference {
     addCommandListener: Function;
-    addLobbyMessageListener: Function;
     addICRole: Function;
+    addLobbyMessageListener: Function;
     addLocalICRole: Function;
     addTrack: Function;
     authenticateAndUpgradeRole: Function;
@@ -76,6 +76,7 @@ export interface IJitsiConference {
     getRole: Function;
     getSpeakerStats: () => ISpeakerStats;
     getSsrcByTrack: Function;
+    getTranscriptLink: Function;
     grantOwner: Function;
     isAVModerationSupported: Function;
     isCallstatsEnabled: Function;
@@ -131,6 +132,8 @@ export interface IJitsiConference {
     startVerification: Function;
     stopRecording: Function;
     toggleE2EE: Function;
+    transcriptionLink: string;
+    updateTranscriptLink: Function;
 }
 
 export interface IConferenceState {

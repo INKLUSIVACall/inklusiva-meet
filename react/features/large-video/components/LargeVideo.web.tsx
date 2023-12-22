@@ -11,8 +11,10 @@ import { getHideSelfView } from '../../base/settings/functions.any';
 import { getVideoTrackByParticipant } from '../../base/tracks/functions.web';
 import { setColorAlpha } from '../../base/util/helpers';
 import StageParticipantNameLabel from '../../display-name/components/web/StageParticipantNameLabel';
+import FadeOutOverlay from '../../filmstrip/components/web/FadeOutOverlay';
 import { FILMSTRIP_BREAKPOINT } from '../../filmstrip/constants';
 import { getVerticalViewMaxWidth, isFilmstripResizable } from '../../filmstrip/functions.web';
+import { getUserVideoTabProps } from '../../inklusiva/uservideo/functions';
 import SharedVideo from '../../shared-video/components/web/SharedVideo';
 import Captions from '../../subtitles/components/web/Captions';
 import { setTileView } from '../../video-layout/actions.web';
@@ -34,6 +36,16 @@ interface IProps {
     _backgroundAlpha?: number;
 
     /**
+     * The brightness value from the UserVideoTab.
+     */
+    _brightness?: number;
+
+    /**
+     * The contrast value from the UserVideoTab.
+     */
+    _contrast?: number;
+
+    /**
      * The user selected background color.
      */
     _customBackgroundColor: string;
@@ -42,6 +54,11 @@ interface IProps {
      * The user selected background image url.
      */
     _customBackgroundImageUrl: string;
+
+    /**
+     * The dimming value from the UserVideoTab.
+     */
+    _dimming?: number;
 
     /**
      * Whether the screen-sharing placeholder should be displayed or not.
@@ -85,6 +102,11 @@ interface IProps {
     _resizableFilmstrip: boolean;
 
     /**
+     * The saturation value from the UserVideoTab.
+     */
+    _saturation?: number;
+
+    /**
      * Whether or not the screen sharing is visible.
      */
     _seeWhatIsBeingShared: boolean;
@@ -113,6 +135,11 @@ interface IProps {
      * Whether or not the whiteboard is enabled.
      */
     _whiteboardEnabled: boolean;
+
+    /**
+     * The zoom value from the UserVideoTab.
+     */
+    _zoom?: number;
 
     /**
      * The Redux dispatch function.
@@ -197,6 +224,7 @@ class LargeVideo extends Component<IProps> {
         } = this.props;
         const style = this._getCustomStyles();
         const className = `videocontainer${_isChatOpen ? ' shift-right' : ''}`;
+        const largeVideo = true;
 
         return (
             <div
@@ -207,6 +235,9 @@ class LargeVideo extends Component<IProps> {
                 <SharedVideo />
                 {_whiteboardEnabled && <Whiteboard />}
                 <div id = 'etherpad' />
+
+                <FadeOutOverlay
+                    largeVideo = { largeVideo } />
 
                 <Watermarks />
 
@@ -291,12 +322,19 @@ class LargeVideo extends Component<IProps> {
     _getCustomStyles() {
         const styles: any = {};
         const {
+            _brightness,
+            _contrast,
             _customBackgroundColor,
             _customBackgroundImageUrl,
+            _saturation,
             _verticalFilmstripWidth,
             _verticalViewMaxWidth,
             _visibleFilmstrip
+
+            // _zoom
         } = this.props;
+
+        styles.filter = `brightness(${_brightness}%) contrast(${_contrast}%) saturate(${_saturation}%)`;
 
         styles.backgroundColor = _customBackgroundColor || interfaceConfig.DEFAULT_BACKGROUND;
 
@@ -359,11 +397,15 @@ function _mapStateToProps(state: IReduxState) {
     const isLocalScreenshareOnLargeVideo = largeVideoParticipant?.id?.includes(localParticipantId ?? '')
         && videoTrack?.videoType === VIDEO_TYPE.DESKTOP;
     const isOnSpot = defaultLocalDisplayName === SPOT_DISPLAY_NAME;
+    const userVideoTabProps = getUserVideoTabProps(state);
 
     return {
         _backgroundAlpha: state['features/base/config'].backgroundAlpha,
+        _brightness: userVideoTabProps.brightness,
+        _contrast: userVideoTabProps.contrast,
         _customBackgroundColor: backgroundColor,
         _customBackgroundImageUrl: backgroundImageUrl,
+        _dimming: userVideoTabProps.dimming,
         _displayScreenSharingPlaceholder: Boolean(isLocalScreenshareOnLargeVideo && !seeWhatIsBeingShared && !isOnSpot),
         _hideSelfView: getHideSelfView(state),
         _isChatOpen: isChatOpen,
@@ -372,12 +414,14 @@ function _mapStateToProps(state: IReduxState) {
         _localParticipantId: localParticipantId ?? '',
         _noAutoPlayVideo: Boolean(testingConfig?.noAutoPlayVideo),
         _resizableFilmstrip: isFilmstripResizable(state),
+        _saturation: userVideoTabProps.saturation,
         _seeWhatIsBeingShared: Boolean(seeWhatIsBeingShared),
         _showDominantSpeakerBadge: !hideDominantSpeakerBadge,
         _verticalFilmstripWidth: verticalFilmstripWidth.current,
         _verticalViewMaxWidth: getVerticalViewMaxWidth(state),
         _visibleFilmstrip: visible,
-        _whiteboardEnabled: isWhiteboardEnabled(state)
+        _whiteboardEnabled: isWhiteboardEnabled(state),
+        _zoom: userVideoTabProps.zoom
     };
 }
 

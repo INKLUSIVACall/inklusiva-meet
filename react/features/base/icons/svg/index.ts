@@ -22,6 +22,7 @@ export { default as IconCloudUpload } from './cloud-upload.svg';
 export { default as IconCode } from './code.svg';
 export { default as IconConnection } from './connection.svg';
 export { default as IconConnectionInactive } from './ninja.svg';
+export { default as IconContrast } from './contrast.svg'
 export { default as IconCopy } from './copy.svg';
 export { default as IconDeviceHeadphone } from './headset.svg';
 export { default as IconDotsHorizontal } from './dots-horizontal.svg';
@@ -111,6 +112,10 @@ export { default as IconWifi2Bars } from './wifi-2.svg';
 export { default as IconWifi3Bars } from './wifi-3.svg';
 export { default as IconYahoo } from './yahoo.svg';
 
+export { default as IconBrightness } from './brightness.svg'
+export { default as IconDimming } from './dimming.svg'
+export { default as IconSaturation } from './saturation.svg'
+export { default as IconZoom } from './zoom.svg'
 export { default as IconEmptyHourglass } from './empty-hourglass.svg';
 export { default as IconFullHourglass } from './full-hourglass.svg';
 export { default as IconLink } from './link.svg'

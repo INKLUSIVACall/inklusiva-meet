@@ -13,9 +13,12 @@ import {
     SET_IS_POLL_TAB_FOCUSED,
     SET_LOBBY_CHAT_ACTIVE_STATE,
     SET_LOBBY_CHAT_RECIPIENT,
-    SET_PRIVATE_MESSAGE_RECIPIENT
+    SET_PRIVATE_MESSAGE_RECIPIENT,
+    SHOW_NOTIFICATION_AS_MESSAGE
 } from './actionTypes';
 import { IMessage } from './types';
+import i18next from '../base/i18n/i18next';
+import { buildMessageTextFromNotification } from './functions';
 
 const DEFAULT_STATE = {
     isOpen: false,
@@ -169,6 +172,42 @@ ReducerRegistry.register<IChatState>('features/chat', (state = DEFAULT_STATE, ac
             isLobbyChatActive: false,
             lobbyMessageRecipient: undefined
         };
+    case SHOW_NOTIFICATION_AS_MESSAGE: {
+        const text = buildMessageTextFromNotification(action);
+
+        const newMessage: IMessage = {
+            displayName: 'Benachrichtigungen',
+            error: action.error ?? '',
+            id: action.uid,
+            isReaction: action.isReaction ?? false,
+            messageId: uuidv4(),
+            messageType: action.messageType ?? 'notification',
+            message: text,
+            privateMessage: action.privateMessage ?? false,
+            lobbyChat: action.lobbyChat ?? false,
+            recipient: action.recipient ?? undefined,
+            timestamp: action.timestamp ?? Date.now()
+        };
+
+        // React native, unlike web, needs a reverse sorted message list.
+        const messages = navigator.product === 'ReactNative'
+            ? [
+                newMessage,
+                ...state.messages
+            ]
+            : [
+                ...state.messages,
+                newMessage
+            ];
+
+        return {
+            ...state,
+            lastReadMessage:
+                action.hasRead ? newMessage : state.lastReadMessage,
+            nbUnreadMessages: state.isPollsTabFocused ? state.nbUnreadMessages + 1 : state.nbUnreadMessages,
+            messages
+        };
+    }
     }
 
     return state;

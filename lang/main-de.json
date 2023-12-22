@@ -73,6 +73,7 @@
             "joinedTitle": "Breakout-Räume"
         }
     },
+    "brightnessSlider": "Helligkeit ändern",
     "calendarSync": {
         "addMeetingURL": "Konferenzlink hinzufügen",
         "confirmAddLink": "Möchten Sie einen Jitsi-Link zu diesem Termin hinzufügen?",
@@ -193,6 +194,7 @@
         "video_ssrc": "Video-SSRC:",
         "yes": "Ja"
     },
+    "contrastSlider": "Kontrast ändern",
     "dateUtils": {
         "earlier": "Früher",
         "today": "Heute",
@@ -305,8 +307,10 @@
         "enterDisplayName": "Bitte geben Sie hier Ihren Namen ein",
         "error": "Fehler",
         "gracefulShutdown": "Der Dienst steht momentan wegen Wartungsarbeiten nicht zur Verfügung. Bitte versuchen Sie es später noch einmal.",
-        "grantModeratorDialog": "Möchten Sie wirklich Moderationsrechte an diese Person vergeben?",
-        "grantModeratorTitle": "Moderationsrechte vergeben",
+        "grantModeratorDialog": "Möchten Sie wirklich Host-Rechte an diese Person vergeben?",
+        "grantModeratorTitle": "Host-Rechte vergeben",
+        "grantCoModeratorDialog": "Möchten Sie wirklich Co-Host-Rechte an diese Person vergeben?",
+        "grantCoModeratorTitle": "Co-Host-Rechte vergeben",
         "hide": "Ausblenden",
         "hideShareAudioHelper": "Diese Meldung nicht mehr anzeigen",
         "incorrectPassword": "Name oder Passwort ungültig",
@@ -774,6 +778,7 @@
         "viewLobby": "Lobby ansehen",
         "waitingParticipants": "{{waitingParticipants}} Personen"
     },
+    "opacityAdjustSlider": "Kachel dimmen",
     "participantsPane": {
         "actions": {
             "allow": "Anwesenden erlauben:",
@@ -989,6 +994,7 @@
         "unavailableTitle": "Aufnahme nicht verfügbar",
         "uploadToCloud": "In die Cloud hochladen"
     },
+    "saturationSlider": "Sättigung ändern",
     "screenshareDisplayName": "{{name}}s Bildschirmfreigabe",
     "sectionList": {
         "pullToRefresh": "Ziehen, um zu aktualisieren"
@@ -1194,7 +1200,8 @@
             "feedback": "Feedback hinterlassen",
             "fullScreen": "Vollbildmodus ein-/ausschalten",
             "giphy": "GIPHY ein-/ausschalten",
-            "grantModerator": "Moderationsrechte vergeben",
+            "grantCoModerator": "Co-Host-Rechte vergeben",
+            "grantModerator": "Host-Rechte vergeben",
             "hangup": "Konferenz verlassen",
             "heading": "Toolbar",
             "help": "Hilfe",
@@ -1271,6 +1278,7 @@
         "audioOnlyOn": "Modus „Nur Audio“ aktivieren",
         "audioRoute": "Audiogerät auswählen",
         "audioSettings": "Ton-Einstellungen",
+        "assistance": "Assistenz",
         "authenticate": "Anmelden",
         "backgroundNoises": "Hintergrundgeräusche reduzieren",
         "balance": "Balance",
@@ -1363,11 +1371,15 @@
         "toggleCamera": "Kamera wechseln",
         "unmute": "Stummschaltung aufheben",
         "videoSettings": "Kameraeinstellungen",
-        "videomute": "Kamera stoppen",
+        "videomute": "Kamera ausschalten",
         "videomuteGUMPending": "Verbinde Ihre Kamera",
-        "videounmute": "Kamera einschalten",
+        "videounmute": "Kamera ein",
         "userVideo": {
             "containerHeadline": "Teilnehmer-Videos",
+            "interpreterHeadline": "Dolmetscher-Videos einschalten",
+            "interpreterDescription": "Während des Meetings sind alle Dolmetschervideos in den Kacheln zu sehen.",
+            "screensharingHeadline": "Geteilte Bildschirme anzeigen",
+            "screensharingDescription": "Während des Meetings sind geteilte Bildschirme zu sehen.",
             "videoVisibilityToggleHeadline": "Während des Meetings sind alle Teilnehmer-Videos in den Kacheln zu sehen.",
             "videoVisibilityEngage": "Teilnehmer-Videos einschalten",
             "contrastSliderHeadline": "Kontrast",
@@ -1378,13 +1390,13 @@
             "fpsSliderHeadline": "Bildübertragungsrate"
         },
         "distressbtn": {
-            "btn_engage_headline": "Ich möchte einen Notfallbutton",
+            "btn_engage_headline": "Notfallbutton",
             "btn_engage_label": "Notfallbutton aktivieren",
             "btn_engage_desc": "Der Notfallbutton ermöglicht einen sofortigen Einfluss auf die Audio- und Videoübertragung im Meeting. Einer bestimmten Begleitperson kann eine vorab geschriebene Nachricht übermittelt werden.",
             "dimlights_label": "Kacheln dimmen",
             "setvolume_label": "Lautstärke anpassen",
             "messagebtn_enable_label": "Nachricht versenden",
-            "sliders_headline": "Aktionen nach dem Klick:",
+            "sliders_headline": "Aktionen nach dem Klick",
             "messagebtn_enable_desc": "Nach dem Klick auf den Notfallbutton wird eine private Nachricht an eine Begleitperson gesendet. Vorerst ist das der Moderator. Im Meeting kann eine bevorzugte Begleitperson eingestellt werden.",
             "message_headline": "Nachricht verfassen",
             "message_desc": "In diesem Feld kann eine eigene Notfallnachricht verfasst werden."
@@ -1474,7 +1486,8 @@
         "domuteVideo": "Kamera ausschalten",
         "domuteVideoOfOthers": "Alle anderen Kameras auschalten",
         "flip": "Spiegeln",
-        "grantModerator": "Moderationsrechte vergeben",
+        "grantCoModerator": "Co-Host-Rechte vergeben",
+        "grantModerator": "Host-Rechte vergeben",
         "hideSelfView": "Eigene Ansicht ausblenden",
         "kick": "Hinauswerfen",
         "mirrorVideo": "Mein Video spiegeln",
@@ -1584,5 +1597,6 @@
         "accessibilityLabel": {
             "heading": "Whiteboard"
         }
-    }
+    },
+    "zoomSlider": "Kachel zoomen"
 }

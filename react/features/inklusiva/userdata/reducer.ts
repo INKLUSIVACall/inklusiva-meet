@@ -34,9 +34,10 @@ import {
     SET_USERVIDEO_BRIGHTNESS,
     SET_USERVIDEO_CONTRAST,
     SET_USERVIDEO_DIMMING,
-    SET_USERVIDEO_FPS,
+    SET_USERVIDEO_INTERPRETERS,
     SET_USERVIDEO_OTHER_PARTICIPANTS,
     SET_USERVIDEO_SATURATION,
+    SET_USERVIDEO_SCREESHARING,
     SET_USERVIDEO_ZOOM
 } from '../uservideo/actionTypes';
 
@@ -62,8 +63,10 @@ interface IVideo {
     contrast?: number;
     dimming?: number;
     fps?: number;
+    interpreter?: boolean;
     otherParticipants?: boolean;
     saturation?: number;
+    screensharing?: boolean;
     zoom?: number;
 }
 
@@ -136,7 +139,6 @@ ReducerRegistry.register<IUserData>(
 
         switch (action.type) {
         case SET_USERDATA: {
-            console.log('ACTION', action, payload);
             nextState = {
                 ...payload.userData
             };
@@ -272,8 +274,8 @@ ReducerRegistry.register<IUserData>(
 
             return nextState;
 
-        case SET_USERVIDEO_FPS:
-            nextState.video.fps = payload.value;
+        case SET_USERVIDEO_INTERPRETERS:
+            nextState.video.interpreter = payload.value;
 
             return nextState;
 
@@ -284,6 +286,11 @@ ReducerRegistry.register<IUserData>(
 
         case SET_USERVIDEO_SATURATION:
             nextState.video.saturation = payload.value;
+
+            return nextState;
+
+        case SET_USERVIDEO_SCREESHARING:
+            nextState.video.screensharing = payload.value;
 
             return nextState;
 
@@ -309,13 +316,10 @@ function _parseFontSize(fontSizeValue: number) {
     switch (fontSizeValue) {
     case 0:
         return '75%';
-        break;
     case 1:
         return '100%';
-        break;
     case 2:
         return '125%';
-        break;
     default:
         return '100%';
     }
@@ -331,13 +335,10 @@ function _parseIconSize(iconSizeValue: number) {
     switch (iconSizeValue) {
     case 0:
         return '0.75';
-        break;
     case 1:
         return '1';
-        break;
     case 2:
         return '1.5';
-        break;
     default:
         return '1';
     }
