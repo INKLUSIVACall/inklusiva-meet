@@ -49,7 +49,7 @@ export function areOtherParticipantsEnabled(state: IReduxState): boolean | undef
  * @param {IReduxState} state - The redux state.
  * @returns {boolean} Whether interpreters videos are enabled or disabled.
  */
-export function areInterpretersEnabled(state: IReduxState) : boolean | undefined {
+export function areInterpretersEnabled(state: IReduxState): boolean | undefined {
     return state['features/inklusiva/userdata'].video?.interpreter;
 }
 
@@ -59,7 +59,7 @@ export function areInterpretersEnabled(state: IReduxState) : boolean | undefined
  * @param {IReduxState} state - The redux state.
  * @returns {boolean} Whether screensharing is enabled or disabled.
  */
-export function isScreensharingEnabled(state: IReduxState) : boolean | undefined {
+export function isScreensharingEnabled(state: IReduxState): boolean | undefined {
     return state['features/inklusiva/userdata'].video?.screensharing;
 }
 
@@ -95,17 +95,17 @@ export function getUserVideoTabProps(stateful: IStateful) {
     const brightness = getUserVideoBrightnessValue(state);
     const contrast = getUserVideoContrastValue(state);
     const dimming = getUserVideoDimmingValue(state);
-    const interpreters = areInterpretersEnabled(state);
+    const interpreter = areInterpretersEnabled(state);
     const otherParticipants = areOtherParticipantsEnabled(state);
     const saturation = getUserVideoSaturationValue(state);
     const screensharing = isScreensharingEnabled(state);
     const zoom = getUserVideoZoomValue(state);
 
     return {
-        brightness,
         contrast,
+        brightness,
         dimming,
-        interpreters,
+        interpreter,
         otherParticipants,
         saturation,
         screensharing,

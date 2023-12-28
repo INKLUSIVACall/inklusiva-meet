@@ -11,8 +11,11 @@ import { getDistressBtnTabProps, isDistressBtnEnabled, isDistressBtnMessageEnabl
 
 /**
  *  Submits new values to the state inside the project store.
+ *
+ *  @param {Object} newState - The new state.
+ *  @returns {Function}
  */
-export function submitNewDistressBtnTab(newState: any) {
+export function submitNewDistressBtnTab(newState: any): Function {
     return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
         const currentState = getDistressBtnTabProps(getState());
 
@@ -28,8 +31,8 @@ export function submitNewDistressBtnTab(newState: any) {
         if (newState.volume !== currentState.volume) {
             dispatch(setDistressBtnVolumeValue(newState.volume));
         }
-        if (newState.message_text !== currentState.message_text) {
-            dispatch(setDistressBtnMessageText(newState.message_text));
+        if (newState.message_text !== currentState.messageText) {
+            dispatch(setDistressBtnMessageText(newState.messageText));
         }
     };
 }

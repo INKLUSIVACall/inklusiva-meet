@@ -82,9 +82,7 @@ const Tooltip = ({ containerClassName, content, children, position = 'top' }: IP
 
     const openPopover = () => {
         setVisible(true);
-        const ttContent = `<div class="tt-content">${content}</div>`;
-
-        dispatch(showTooltip(ttContent));
+        dispatch(showTooltip(content));
     };
 
     const closePopover = () => {

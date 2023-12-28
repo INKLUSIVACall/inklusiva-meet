@@ -5,12 +5,14 @@ import { connect } from 'react-redux';
 import VideoLayout from '../../../../modules/UI/videolayout/VideoLayout';
 import { IReduxState, IStore } from '../../app/types';
 import { VIDEO_TYPE } from '../../base/media/constants';
+import { pinParticipant } from '../../base/participants/actions';
 import { getLocalParticipant } from '../../base/participants/functions';
 import Watermarks from '../../base/react/components/web/Watermarks';
 import { getHideSelfView } from '../../base/settings/functions.any';
 import { getVideoTrackByParticipant } from '../../base/tracks/functions.web';
 import { setColorAlpha } from '../../base/util/helpers';
 import StageParticipantNameLabel from '../../display-name/components/web/StageParticipantNameLabel';
+import { addStageParticipant, clearStageParticipants, removeStageParticipant, togglePinStageParticipant } from '../../filmstrip/actions.web';
 import FadeOutOverlay from '../../filmstrip/components/web/FadeOutOverlay';
 import { FILMSTRIP_BREAKPOINT } from '../../filmstrip/constants';
 import { getVerticalViewMaxWidth, isFilmstripResizable } from '../../filmstrip/functions.web';
@@ -220,16 +222,22 @@ class LargeVideo extends Component<IProps> {
             _isChatOpen,
             _noAutoPlayVideo,
             _showDominantSpeakerBadge,
-            _whiteboardEnabled
+            _whiteboardEnabled,
+            dispatch
         } = this.props;
         const style = this._getCustomStyles();
         const className = `videocontainer${_isChatOpen ? ' shift-right' : ''}`;
         const largeVideo = true;
 
+        const unPin = () => {
+            dispatch(pinParticipant(null));
+        };
+
         return (
             <div
                 className = { className }
                 id = 'largeVideoContainer'
+                onClick = { unPin }
                 ref = { this._containerRef }
                 style = { style }>
                 <SharedVideo />

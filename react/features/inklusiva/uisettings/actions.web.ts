@@ -1,4 +1,12 @@
 import { IStore } from '../../app/types';
+import {
+    setUserVideoBrightnessValue,
+    setUserVideoContrastValue,
+    setUserVideoDimmingValue,
+    setUserVideoSaturationValue,
+    setUserVideoZoomValue,
+    toggleOtherParticipants
+} from '../uservideo/actions';
 
 import {
     SET_AUDIO_CUES_ENABLED_STATE,
@@ -16,30 +24,48 @@ import { getUISettingsTabProps, isAcousticCuesEnabled, isVisualCuesEnabled } fro
  */
 export function submitUISettingsTabProps(newState: {
     acousticCues: boolean;
+    brightness: number;
+    contrast: number;
+    dimming: number;
     fontSize: number;
     iconSize: number;
+    interpreter: boolean;
+    otherParticipants: boolean;
+    saturation: number;
     screenreader: boolean;
+    screensharing: boolean;
     visualCues: boolean;
-    }) {
+    zoom: number;
+}) {
     return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
         const currentState = getUISettingsTabProps(getState());
 
         if (newState.fontSize !== currentState.fontSize) {
             dispatch(setUISettingsFontSize(newState.fontSize));
         }
-
         if (newState.iconSize !== currentState.iconSize) {
             dispatch(setUISettingsIconSize(newState.iconSize));
         }
-
         if (newState.visualCues !== currentState.visualCues) {
-            // toggleVisualCues();
             dispatch(setVisualCuesEnabledState(newState.visualCues));
         }
-
-        if (newState.acousticCues !== currentState.acousticCues) {
-            // toggleAcousticCues();
-            dispatch(setAcousticCuesEnabledState(newState.acousticCues));
+        if (newState.brightness !== currentState.brightness) {
+            dispatch(setUserVideoBrightnessValue(newState.brightness));
+        }
+        if (newState.contrast !== currentState.contrast) {
+            dispatch(setUserVideoContrastValue(newState.contrast));
+        }
+        if (newState.dimming !== currentState.dimming) {
+            dispatch(setUserVideoDimmingValue(newState.dimming));
+        }
+        if (newState.otherParticipants !== currentState.otherParticipants) {
+            dispatch(toggleOtherParticipants());
+        }
+        if (newState.saturation !== currentState.saturation) {
+            dispatch(setUserVideoSaturationValue(newState.saturation));
+        }
+        if (newState.zoom !== currentState.zoom) {
+            dispatch(setUserVideoZoomValue(newState.zoom));
         }
     };
 }
@@ -69,7 +95,6 @@ export function setUISettingsIconSize(value: number): any {
         value
     };
 }
-
 
 /**
  * Sets the enabled state of the audio-cues.

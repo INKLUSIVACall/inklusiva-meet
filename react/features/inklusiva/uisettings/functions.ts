@@ -1,6 +1,7 @@
 import { IReduxState } from '../../app/types';
 import { IStateful } from '../../base/app/types';
 import { toState } from '../../base/redux/functions';
+import { getUserVideoTabProps } from '../uservideo/functions';
 
 /**
  * Gets value for fontSize.
@@ -55,11 +56,13 @@ export function getUISettingsTabProps(stateful: IStateful) {
     const iconSize = getUISettingsIconSize(state);
     const visualCues = isVisualCuesEnabled(state);
     const acousticCues = isAcousticCuesEnabled(state);
+    const videoProps = getUserVideoTabProps(state);
 
     return {
         fontSize,
         iconSize,
         visualCues,
-        acousticCues
+        acousticCues,
+        ...videoProps
     };
 }

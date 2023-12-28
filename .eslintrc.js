@@ -4,7 +4,8 @@ module.exports = {
         'plugin:react/recommended'
     ],
     'rules': {
-        'react/jsx-equals-spacing': [ 2, 'never' ]
+        'react/jsx-equals-spacing': [ 2, 'never' ],
+        "require-jsdoc" : 0
     },
     'ignorePatterns': [ '*.d.ts' ],
     parserOptions: {

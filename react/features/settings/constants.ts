@@ -6,12 +6,10 @@ export const SETTINGS_TABS = {
     NOTIFICATIONS: 'notifications_tab',
     PROFILE: 'profile_tab',
     SHORTCUTS: 'shortcuts_tab',
-    TRANSCRIPTION: 'transcription_tab',
-    SIGNLANG_TAB: 'signlang_tab',
+    SIGNLANGTRANSRIPTION_TAB: 'signlangtransription_tab',
     VIDEO: 'video_tab',
     VIRTUAL_BACKGROUND: 'virtual-background_tab',
     DISTRESSBTN_TAB: 'distressbtn_tab',
-    SUPPORT_TAB: 'support_tab',
     UI_TAB: 'ui_tab',
     USERVIDEO_TAB: 'user-video_tab'
 };
