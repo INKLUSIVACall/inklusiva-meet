@@ -1,8 +1,30 @@
 .settings-dialog {
+    .specialTab {
+        svg {
+            fill: #5aaed1;
+        }
+    }
+
+    .separatorAfter {
+        position: relative;
+        margin-bottom: 2rem;
+
+        &::after {
+            content: '';
+            border-bottom: 2px solid #292929;
+            margin: 0rem 0rem 0.8rem 0rem;
+            width: 100%;
+            position: absolute;
+            height: 10px;
+            left: 0;
+            bottom: -2rem;
+        }
+    }
+
     h2 {
         font-size: 1.5rem;
         font-weight: 400;
-        margin-bottom: 2rem;
+        margin-bottom: 1.2rem;
         color: #fff;
     }
 
@@ -14,4 +36,68 @@
         border-bottom: 1px solid #a9a9a93d;
         line-height: 3rem;
     }
+
+    p {
+        font-size: 1rem;
+        font-weight: 300;
+        margin-bottom: 1.5rem;
+        color: #fff;
+        line-height: 1.6rem;
+    }
+    input[type='radio'] {
+        margin-right: 1rem;
+        margin-top: 0.38rem;
+        height: 1rem;
+        width: 1rem;
+        line-height: 1rem;
+        flex-basis: max-content;
+    }
+
+    input[type='radio']:after {
+        width: 16px;
+        height: 16px;
+        border-radius: 16px;
+        top: 0px;
+        left: 0px;
+        position: relative;
+        background-color: #292929;
+        // background-color: #d1d3d1;
+        content: '';
+        display: inline-block;
+        visibility: visible;
+        cursor: pointer;
+        border: 1px solid #292929;
+    }
+
+    input[type='radio']:checked:after {
+        width: 16px;
+        height: 16px;
+        border-radius: 16px;
+        top: 0px;
+        left: 0px;
+        position: relative;
+        background-color: #5aaed1;
+        content: '';
+        display: inline-block;
+        visibility: visible;
+        cursor: pointer;
+        border: 1px solid lightgrey;
+    }
+}
+
+.mt-05 {
+    margin-top: 0.5rem !important;
+}
+.mt-1 {
+    margin-top: 1rem !important;
+}
+.mt-15 {
+    margin-top: 1.5rem !important;
+}
+.mt-2 {
+    margin-top: 2rem !important;
+}
+
+.mb-1 {
+    margin-bottom: 1rem !important;
 }

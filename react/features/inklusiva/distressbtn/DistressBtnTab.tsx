@@ -9,6 +9,7 @@ import AbstractDialogTab, {
 import { translate } from '../../base/i18n/functions';
 import Checkbox from '../../base/ui/components/web/Checkbox';
 import Slider from '../../base/ui/components/web/Slider';
+import { inklusivaSettingsStyles } from '../ui-constants';
 
 /**
  * The type of the React {@code Component} props of {@link OwnAudioTab}.
@@ -44,7 +45,7 @@ export interface IProps extends AbstractDialogTabProps, WithTranslation {
     /**
      * The actual distress message.
      */
-    message_text: string;
+    messageText: string;
 
     /**
      * Volume value for distress mode.
@@ -57,7 +58,6 @@ const styles = (theme: Theme) => {
         container: {
             display: 'flex',
             flexDirection: 'column' as const,
-            padding: '0 2px',
             width: '100%'
         },
         headline: {
@@ -79,21 +79,7 @@ const styles = (theme: Theme) => {
             fontSize: '0.875rem',
             fontWeight: 'normal'
         },
-        inputblockContainer: {
-            marginBottom: theme.spacing(5),
-            fontSize: '0.875rem'
-        },
-        controlContainer: {
-            display: 'flex'
-        },
-        controlColumn: {
-            flex: '1 1 auto',
-            marginBottom: '10px !important'
-        },
-        valueColum: {
-            flex: '0 0 20%',
-            paddingLeft: theme.spacing(5)
-        }
+        ...inklusivaSettingsStyles(theme)
     };
 };
 
@@ -105,32 +91,33 @@ class DistressBtnTab extends AbstractDialogTab<IProps, any> {
      * @returns {ReactElement}
      */
     render() {
-        const { classes, active, dimming, volume, message, message_text, t } = this.props;
+        const { classes, active, dimming, volume, message, messageText, t } = this.props;
 
         return (
             <div className = { classes.container }>
-                <h2>{t('toolbar.distressbtn.btn_engage_headline')}</h2>
+                <h2>{t('settings.distressbtn.btn_engage_headline')}</h2>
+                <p className = 'mt-05'>{t('settings.distressbtn.intro')}</p>
+                <h3>{t('settings.distressbtn.btn_engage_headline')}</h3>
                 <Checkbox
                     checked = { active }
                     className = { classes.inputElement }
-                    label = { t('toolbar.distressbtn.btn_engage_label') }
+                    label = { t('settings.distressbtn.btn_engage_label') }
                     name = 'distressbtn_enable'
                     onChange = { () =>
                         super._onChange({
                             active: !active
                         })
                     } />
+                <p className = 'mt-05'>{t('settings.distressbtn.btn_engage_desc')}</p>
 
-                <div className = { classes.description }>{t('toolbar.distressbtn.btn_engage_desc')}</div>
-
-                <h3>{t('toolbar.distressbtn.sliders_headline')}</h3>
+                <h3>{t('settings.distressbtn.sliders_headline')}</h3>
 
                 <div className = { classes.controlContainer }>
                     <div className = { classes.controlColumn }>
                         <Slider
                             className = { classes.inputElement }
                             defaultValue = { dimming }
-                            label = { t('toolbar.distressbtn.dimlights_label') }
+                            label = { t('settings.distressbtn.dimlights_label') }
                             max = { 100 }
                             min = { 0 }
                             onChange = { event =>
@@ -140,7 +127,7 @@ class DistressBtnTab extends AbstractDialogTab<IProps, any> {
                             }
                             step = { 1 } />
                     </div>
-                    <div className = { classes.valueColum }>{dimming}%</div>
+                    <div className = { classes.valueColumn }>{dimming}%</div>
                 </div>
 
                 <div className = { classes.controlContainer }>
@@ -148,7 +135,7 @@ class DistressBtnTab extends AbstractDialogTab<IProps, any> {
                         <Slider
                             className = { classes.inputElement }
                             defaultValue = { volume }
-                            label = { t('toolbar.distressbtn.setvolume_label') }
+                            label = { t('settings.distressbtn.setvolume_label') }
                             max = { 100 }
                             min = { 0 }
                             onChange = { event =>
@@ -158,42 +145,38 @@ class DistressBtnTab extends AbstractDialogTab<IProps, any> {
                             }
                             step = { 1 } />
                     </div>
-                    <div className = { classes.valueColum }>{volume}%</div>
+                    <div className = { classes.valueColumn }>{volume}%</div>
                 </div>
-                <h3>{t('toolbar.distressbtn.message_headline')}</h3>
 
-                <Checkbox
-                    checked = { message }
-                    className = { classes.inputElement }
-                    label = { t('toolbar.distressbtn.messagebtn_enable_label') }
-                    name = 'messagebtn_enable'
-                    onChange = { () =>
-                        super._onChange({
-                            message: !message
-                        })
-                    } />
+                <div className = { classes.inputblockContainer }>
+                    <div className = 'mt-15'>
+                        <Checkbox
+                            checked = { message }
+                            className = { classes.inputElement }
+                            label = { t('settings.distressbtn.messagebtn_enable_label') }
+                            name = 'messagebtn_enable'
+                            onChange = { () =>
+                                super._onChange({
+                                    message: !message
+                                })
+                            } />
+                    </div>
 
-                <div className = { classes.description }>{t('toolbar.distressbtn.messagebtn_enable_desc')}</div>
-                <div />
-                <div
-                    aria-hidden = 'true'
-                    className = { classes.description }
-                    id = 'textarea_desc'>
-                    {t('toolbar.distressbtn.message_desc')}
+                    <p className = 'mt-05'>{t('settings.distressbtn.messagebtn_enable_desc')}</p>
+                    <textarea
+                        aria-describedby = 'textarea_desc'
+                        aria-label = 'Notfallnachricht'
+                        className = { classes.textareaElement }
+                        defaultValue = { messageText }
+                        id = 'distress_message'
+                        onChange = { event =>
+                            super._onChange({
+                                messageText: event.target.value
+                            })
+                        }
+                        placeholder = { messageText }
+                        rows = { 3 } />
                 </div>
-                <textarea
-                    aria-describedby = 'textarea_desc'
-                    aria-label = 'Notfallnachricht'
-                    className = { classes.textareaElement }
-                    defaultValue = { message_text }
-                    id = 'distress_message'
-                    onChange = { event =>
-                        super._onChange({
-                            message_text: event.target.value
-                        })
-                    }
-                    placeholder = { message_text }
-                    rows = { 3 } />
             </div>
         );
     }

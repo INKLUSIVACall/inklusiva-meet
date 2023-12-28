@@ -13,6 +13,7 @@ import { translate } from '../../base/i18n/functions';
 import { createLocalTrack } from '../../base/lib-jitsi-meet/functions.web';
 import Checkbox from '../../base/ui/components/web/Checkbox';
 import Slider from '../../base/ui/components/web/Slider';
+import { inklusivaSettingsStyles } from '../../inklusiva/ui-constants';
 import { iAmVisitor as iAmVisitorCheck } from '../../visitors/functions';
 import logger from '../logger';
 
@@ -21,11 +22,20 @@ import AudioOutputPreview from './AudioOutputPreview';
 import DeviceHidContainer from './DeviceHidContainer.web';
 import DeviceSelector from './DeviceSelector.web';
 
-import { isOthersAudioInputEnabled } from '../../../features/inklusiva/userdata/functions';
 /**
  * The type of the React {@code Component} props of {@link AudioDevicesSelection}.
  */
 interface IProps extends AbstractDialogTabProps, WithTranslation {
+
+    /**
+     * Whether the acoustic cues are enabled or not.
+     */
+    acousticCues: boolean;
+
+    /**
+     * The amount of amplification.
+     */
+    amplify: number;
 
     /**
      * All known audio and video devices split by type. This prop comes from
@@ -35,6 +45,16 @@ interface IProps extends AbstractDialogTabProps, WithTranslation {
         audioInput?: MediaDeviceInfo[];
         audioOutput?: MediaDeviceInfo[];
     };
+
+    /**
+     * Whether to reduce background noise or not.
+     */
+    background: boolean;
+
+    /**
+     * The balance between left and right.
+     */
+    balance: number;
 
     /**
      * CSS classes object.
@@ -96,6 +116,11 @@ interface IProps extends AbstractDialogTabProps, WithTranslation {
     hideNoiseSuppression: boolean;
 
     /**
+     * The volume of high frequencies.
+     */
+    highFrequencies: number;
+
+    /**
      * Whether we are in visitors mode.
      */
     iAmVisitor: boolean;
@@ -104,21 +129,6 @@ interface IProps extends AbstractDialogTabProps, WithTranslation {
      * Wether noise suppression is on or not.
      */
     noiseSuppressionEnabled: boolean;
-
-    /**
-     * The id of the audio input device to preview.
-     */
-    selectedAudioInputId: string;
-
-    /**
-     * The id of the audio output device to preview.
-     */
-    selectedAudioOutputId: string;
-
-    /**
-     * Whether or not the users own audio is active.
-     */
-    ownAudioActive: boolean;
 
     /**
      * Whether or not others audio is active.
@@ -131,24 +141,19 @@ interface IProps extends AbstractDialogTabProps, WithTranslation {
     othersVolume: number;
 
     /**
-     * The volume of high frequencies.
+     * Whether or not the users own audio is active.
      */
-    highFrequencies: number;
+    ownAudioActive: boolean;
 
     /**
-     * The amount of amplification.
+     * The id of the audio input device to preview.
      */
-    amplify: number;
+    selectedAudioInputId: string;
 
     /**
-     * the balance between left and right.
+     * The id of the audio output device to preview.
      */
-    balance: number;
-
-    /**
-     * Whether to reduce background noise or not.
-     */
-    background: boolean;
+    selectedAudioOutputId: string;
 }
 
 /**
@@ -167,7 +172,6 @@ const styles = (theme: Theme) => {
         container: {
             display: 'flex',
             flexDirection: 'column' as const,
-            padding: '0 2px',
             width: '100%'
         },
 
@@ -186,6 +190,7 @@ const styles = (theme: Theme) => {
         },
 
         noiseSuppressionContainer: {
+            marginTop: theme.spacing(3),
             marginBottom: theme.spacing(3)
         },
 
@@ -195,7 +200,8 @@ const styles = (theme: Theme) => {
 
         othersAudioActiveContainer: {
             marginBottom: theme.spacing(3)
-        }
+        },
+        ...inklusivaSettingsStyles(theme)
     };
 };
 
@@ -205,7 +211,6 @@ const styles = (theme: Theme) => {
  * @augments Component
  */
 class AudioDevicesSelection extends AbstractDialogTab<IProps, IState> {
-
     /**
      * Whether current component is mounted or not.
      *
@@ -239,9 +244,7 @@ class AudioDevicesSelection extends AbstractDialogTab<IProps, IState> {
      */
     componentDidMount() {
         this._unMounted = false;
-        Promise.all([
-            this._createAudioInputTrack(this.props.selectedAudioInputId)
-        ])
+        Promise.all([ this._createAudioInputTrack(this.props.selectedAudioInputId) ])
             .catch(err => logger.warn('Failed to initialize preview tracks', err))
             .then(() => {
                 this.props.dispatch(getAvailableDevices());
@@ -256,8 +259,7 @@ class AudioDevicesSelection extends AbstractDialogTab<IProps, IState> {
      * @returns {void}
      */
     componentDidUpdate(prevProps: IProps) {
-        if (prevProps.selectedAudioInputId
-            !== this.props.selectedAudioInputId) {
+        if (prevProps.selectedAudioInputId !== this.props.selectedAudioInputId) {
             this._createAudioInputTrack(this.props.selectedAudioInputId);
         }
     }
@@ -288,27 +290,35 @@ class AudioDevicesSelection extends AbstractDialogTab<IProps, IState> {
             iAmVisitor,
             noiseSuppressionEnabled,
             selectedAudioOutputId,
-            ownAudioActive,
             othersAudio,
             othersVolume,
             highFrequencies,
             amplify,
             balance,
-            background,
+            acousticCues,
             t
         } = this.props;
         const { audioInput, audioOutput } = this._getSelectors();
 
+        const getAmplifyTextValue = (value: number) => t(`toolbar.amplifyTexts.value${value}`);
+        const getBalanceTextValue = (value: number) => t(`toolbar.balanceTexts.value${value}`);
+
         return (
             <div className = { classes.container }>
-                {!iAmVisitor && <div
-                    aria-live = 'polite'
-                    className = { classes.inputContainer }>
-                    {this._renderSelector(audioInput)}
-                </div>}
+                <h2>
+                    {t('settings.audioSettings.headline') }
+                </h2>
+                <p className = 'mt-05'> {t('settings.audioSettings.intro') } </p>
+                {!iAmVisitor && (
+                    <div
+                        aria-live = 'polite'
+                        className = { classes.inputContainer }>
+                        {this._renderSelector(audioInput)}
+                    </div>
+                )}
                 {!hideAudioInputPreview && hasAudioPermission && !iAmVisitor
-                        && <AudioInputPreview
-                            track = { this.state.previewAudioTrack } />}
+                    && <AudioInputPreview track = { this.state.previewAudioTrack } />
+                }
                 <div
                     aria-live = 'polite'
                     className = { classes.outputContainer }>
@@ -316,96 +326,123 @@ class AudioDevicesSelection extends AbstractDialogTab<IProps, IState> {
                     {!hideAudioOutputPreview && hasAudioPermission
                         && <AudioOutputPreview
                             className = { classes.outputButton }
-                            deviceId = { selectedAudioOutputId } />}
+                            deviceId = { selectedAudioOutputId } />
+                    }
                 </div>
-                {!hideNoiseSuppression && !iAmVisitor && (
-                    <div className = { classes.noiseSuppressionContainer }>
-                        <Checkbox
-                            checked = { noiseSuppressionEnabled }
-                            label = { t('toolbar.enableNoiseSuppression') }
-                            // eslint-disable-next-line react/jsx-no-bind
-                            onChange = { () => super._onChange({
-                                noiseSuppressionEnabled: !noiseSuppressionEnabled
-                            }) } />
-                    </div>
-                )}
-                {!hideDeviceHIDContainer && !iAmVisitor
-                    && <DeviceHidContainer />}
-                    <div className = { classes.ownAudioActiveContainer }>
-                        <Checkbox
-                            checked = { ownAudioActive }
-                            label = { t('toolbar.activateOwnAudio') }
-                            // eslint-disable-next-line react/jsx-no-bind
-                            onChange = { () => super._onChange({
-                                ownAudioActive: !ownAudioActive
-                            }) } />
-                    </div>
-                    <div className = { classes.othersAudioActiveContainer }>
-                        <Checkbox
-                            checked = { othersAudio }
-                            label = { t('toolbar.activateOthersAudio') }
-                            // eslint-disable-next-line react/jsx-no-bind
-                            onChange = { () => super._onChange({
+                {!hideDeviceHIDContainer && !iAmVisitor && <DeviceHidContainer />}
+
+                <div className = { classes.inputblockContainer }>
+                    <h3>Hörbare Signale</h3>
+                    <Checkbox
+                        checked = { acousticCues }
+                        className = { classes.inputElement }
+                        label = { t('settings.audioSettings.acousticCues.label') }
+                        name = 'acousticcues_enable'
+                        onChange = { () =>
+                            super._onChange({
+                                acousticCues: !acousticCues
+                            })
+                        } />
+                    <p className = 'mt-05'>
+                        { t('settings.audioSettings.acousticCues.description') }
+                    </p>
+                </div>
+                <div className = { classes.inputblockContainer }>
+                    <h3>Teilnehmenden-Ton</h3>
+                    <Checkbox
+                        checked = { othersAudio }
+                        label = { t('settings.audioSettings.activateOthersAudio') }
+                        onChange = { () =>
+                            super._onChange({
                                 othersAudio: !othersAudio
-                            }) } />
+                            })
+                        } />
+                    <p className = 'mt-05'>
+                        { t('settings.audioSettings.participantAudio.label') }
+                    </p>
+                </div>
+                <div className = { classes.inputblockContainer }>
+                    <div className = { classes.controlContainer }>
+                        <div className = { classes.controlColumn }>
+                            <Slider
+                                defaultValue = { othersVolume }
+                                label = { t('settings.audioSettings.othersVolume') }
+                                max = { 100 }
+                                min = { 0 }
+                                onChange = { event => {
+                                    super._onChange({
+                                        othersVolume: event.target.value
+                                    });
+                                } }
+                                step = { 1 } />
+                        </div>
+                        <div className = { classes.valueColumn }>{othersVolume} %</div>
                     </div>
-                    <div className = { classes.othersVolume }>
-                        <Slider
-                            label = { t('toolbar.othersVolume') }
-                            min = { 0 }
-                            max = { 100 }
-                            step = { 1 }
-                            defaultValue = { othersVolume }
-                            // eslint-disable-next-line react/jsx-no-bind
-                            onChange = { (event) => super._onChange({
-                                othersVolume: event.target.value
-                            }) } />
+                    <div className = { classes.controlContainer }>
+                        <div className = { classes.controlColumn }>
+                            <Slider
+                                defaultValue = { highFrequencies }
+                                label = { t('settings.audioSettings.highFrequencies') }
+                                max = { 100 }
+                                min = { 0 }
+                                onChange = { event =>
+                                    super._onChange({
+                                        highFrequencies: event.target.value
+                                    })
+                                }
+                                step = { 1 } />
+                        </div>
+                        <div className = { classes.valueColumn }>{highFrequencies} %</div>
                     </div>
-                    <div className = { classes.highFrequencies }>
-                        <Slider
-                            label = { t('toolbar.highFrequencies') }
-                            min = { 0 }
-                            max = { 100 }
-                            step = { 1 }
-                            defaultValue = { highFrequencies }
-                            // eslint-disable-next-line react/jsx-no-bind
-                            onChange = { (event) => super._onChange({
-                                highFrequencies: event.target.value
-                            }) } />
+                    <div className = { classes.controlContainer }>
+                        <div className = { classes.controlColumn }>
+                            <Slider
+                                defaultValue = { amplify }
+                                label = { t('settings.audioSettings.amplify') }
+                                max = { 3 }
+                                min = { 0 }
+                                onChange = { event =>
+                                    super._onChange({
+                                        amplify: event.target.value
+                                    })
+                                }
+                                step = { 1 } />
+                        </div>
+                        <div className = { classes.valueColumn }>{getAmplifyTextValue(amplify)}</div>
                     </div>
-                    <div className = { classes.amplify }>
-                        <Slider
-                            label = { t('toolbar.amplify') }
-                            min = { 0 }
-                            max = { 100 }
-                            step = { 1 }
-                            defaultValue = { amplify }
-                            // eslint-disable-next-line react/jsx-no-bind
-                            onChange = { (event) => super._onChange({
-                                amplify: event.target.value
-                            }) } />
+                    <div className = { classes.controlContainer }>
+                        <div className = { classes.controlColumn }>
+                            <Slider
+                                defaultValue = { balance }
+                                label = { t('settings.audioSettings.balance') }
+                                max = { 4 }
+                                min = { 0 }
+                                onChange = { event =>
+                                    super._onChange({
+                                        balance: event.target.value
+                                    })
+                                }
+                                step = { 1 } />
+                        </div>
+                        <div className = { classes.valueColumn }>{getBalanceTextValue(balance)}</div>
                     </div>
-                    <div className = { classes.balance }>
-                        <Slider
-                            label = { t('toolbar.balance') }
-                            min = { 0 }
-                            max = { 100 }
-                            step = { 1 }
-                            defaultValue = { balance }
-                            // eslint-disable-next-line react/jsx-no-bind
-                            onChange = { (event) => super._onChange({
-                                balance: event.target.value
-                            }) } />
-                    </div>
-                    <div className = { classes.background }>
-                        <Checkbox
-                            checked = { background }
-                            label = { t('toolbar.backgroundNoises') }
-                            // eslint-disable-next-line react/jsx-no-bind
-                            onChange = { () => super._onChange({
-                                background: !background
-                            }) } />
-                    </div>
+                    {!hideNoiseSuppression && !iAmVisitor && (
+                        <div className = 'mt-2'>
+                            <Checkbox
+                                checked = { noiseSuppressionEnabled }
+                                label = { t('toolbar.enableNoiseSuppression') }
+                                onChange = { () =>
+                                    super._onChange({
+                                        noiseSuppressionEnabled: !noiseSuppressionEnabled
+                                    })
+                                } />
+
+                            <p className = 'mt-05'>
+                                {t('settings.audioSettings.noiseSuppressionDescription')}
+                            </p>
+                        </div>
+                    )}
+                </div>
             </div>
         );
     }
@@ -451,8 +488,7 @@ class AudioDevicesSelection extends AbstractDialogTab<IProps, IState> {
      * @returns {Promise}
      */
     _disposeAudioInputPreview(): Promise<any> {
-        return this.state.previewAudioTrack
-            ? this.state.previewAudioTrack.dispose() : Promise.resolve();
+        return this.state.previewAudioTrack ? this.state.previewAudioTrack.dispose() : Promise.resolve();
     }
 
     /**
@@ -463,11 +499,9 @@ class AudioDevicesSelection extends AbstractDialogTab<IProps, IState> {
      * @returns {ReactElement}
      */
     _renderSelector(deviceSelectorProps: any) {
-        return deviceSelectorProps ? (
-            <DeviceSelector
-                { ...deviceSelectorProps }
-                key = { deviceSelectorProps.id } />
-        ) : null;
+        return deviceSelectorProps ? <DeviceSelector
+            { ...deviceSelectorProps }
+            key = { deviceSelectorProps.id } /> : null;
     }
 
     /**
@@ -489,7 +523,8 @@ class AudioDevicesSelection extends AbstractDialogTab<IProps, IState> {
             label: 'settings.selectMic',
             onSelect: (selectedAudioInputId: string) => super._onChange({ selectedAudioInputId }),
             selectedDeviceId: this.state.previewAudioTrack
-                ? this.state.previewAudioTrack.getDeviceId() : this.props.selectedAudioInputId
+                ? this.state.previewAudioTrack.getDeviceId()
+                : this.props.selectedAudioInputId
         };
         let audioOutput;
 
@@ -515,13 +550,7 @@ class AudioDevicesSelection extends AbstractDialogTab<IProps, IState> {
 const mapStateToProps = (state: IReduxState) => {
     return {
         availableDevices: state['features/base/devices'].availableDevices ?? {},
-        iAmVisitor: iAmVisitorCheck(state),
-        //othersAudioActive: isOthersAudioInputEnabled(state),
-        //othersVolume: state['features/inklusiva/usera'].audio?.volume ?? 100,
-        highFrequencies: state['features/inklusiva/userdata'].audio?.highFreq ?? 100,
-        amplify: state['features/inklusiva/userdata'].audio?.amplify ?? 100,
-        balance: state['features/inklusiva/userdata'].audio?.balance ?? 100,
-        background: state['features/inklusiva/userdata'].audio?.background ?? false,
+        iAmVisitor: iAmVisitorCheck(state)
     };
 };
 

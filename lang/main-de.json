@@ -923,7 +923,7 @@
         "setDisplayNameLabel": "Anzeigename festlegen",
         "setEmailInput": "E-Mail eingeben",
         "setEmailLabel": "E-Mail-Adresse für Gravatar",
-        "title": "Profil"
+        "title": "Basis"
     },
     "raisedHand": "Ich möchte sprechen",
     "raisedHandsLabel": "Anzahl gehobener Hände",
@@ -1012,7 +1012,7 @@
         }
     },
     "settings": {
-        "audio": "Audio",
+        "audio": "Hören",
         "buttonLabel": "Einstellungen",
         "calendar": {
             "about": "Die Kalenderintegration von {{appName}} wird verwendet, um ein sicheres Zugreifen auf Ihren Kalender und Auslesen der bevorstehenden Termine zu ermöglichen.",
@@ -1021,7 +1021,7 @@
             "signedIn": "Momentan wird auf Kalendertermine von {{email}} zugegriffen. Klicken Sie auf die folgende Schaltfläche „Trennen“, um den Zugriff auf die Kalendertermine zu stoppen.",
             "title": "Kalender"
         },
-        "distressBtnTab": "Notfallbutton",
+        "distressBtnTab": "Notfall",
         "desktopShareFramerate": "Framerate für Bildschirmfreigabe",
         "desktopShareHighFpsWarning": "Eine höhere Framerate könnte sich auf Ihre Datenrate auswirken. Sie müssen die Bildschirmfreigabe neustarten, damit die Einstellung übernommen wird.",
         "desktopShareWarning": "Sie müssen die Bildschirmfreigabe neustarten, damit die Einstellung übernommen wird.",
@@ -1051,7 +1051,7 @@
         "selectMic": "Mikrofon",
         "selfView": "Eigene Ansicht",
         "shortcuts": "Tastaturkürzel",
-        "SignLangTab": "Gebärdensprachen-Assistent",
+        "SignLangTranscriptionTab": "Dolmetschen",
         "speakers": "Lautsprecher",
         "startAudioMuted": "Alle Personen treten stummgeschaltet bei",
         "startReactionsMuted": "Interaktionstöne für alle deaktivieren",
@@ -1060,45 +1060,101 @@
         "talkWhileMuted": "Wenn bei Stummschaltung gesprochen wird",
         "title": "Einstellungen",
         "transcriptionTab": "Schriftdolmetschen-Assistent",
-        "uiSettings": {
-            "fontSize": "Schriftgröße",
-            "iconSize": "Icon-Größe",
-            "screenreader":{
-                "headline": "Ich nutze einen Screenreader",
-                "label": "Screenreader aktivieren",
-                "description": "Optimierte Ausgabe von Steuerelementen zur vereinfachten Ausgabe über einen Screenreader."
-            },
-            "acousticcues":{
-                "headline": "Akustische Signale",
-                "label": "Akustische Signale aktivieren",
-                "description": "Akustische Signale für Hinweise und Meldungen während des Meetings."
-            },
-            "visualcues":{
-                "headline": "Visuelle Hinweise",
-                "label": "Visuelle Hinweise aktivieren",
-                "description": "Visuelle Hinweise für Hinweise und Meldungen während des Meetings."
-            }
-        },
         "userVideoTab": "Teilnehmer-Video",
-        "uiTab": "Benutzeroberfläche",
+        "uiTab": "Sehen",
+        "audioSettings": {
+            "headline": "Einstellungen zu Hören",
+            "intro": "Auf dieser Seite können Sie hörbare Signale im Meeting einschalten, ausschalten und anpassen.",
+            "acousticCues": {
+                "headline": "Hörbare Signale",
+                "label": "Hörbare Signale aktivieren",
+                "description": "Schalten Sie diese Funktion an, um hörbare Signale für Hinweise und Meldungen während des Meetings zu bekommen."
+            },
+            "participantAudio": {
+                "headline": "Teilnehmenden-Ton",
+                "label": "Schalten Sie diese Funktion an, um alle Teilnehmenden zu hören."
+            },
+            "amplify": "Leise Töne verstärken",
+            "balance": "Balance (rechts/links)",
+            "highFrequencies": "Viel/Wenig hohe Frequenzen",
+            "noiseSuppressionDescription": "Schalten Sie diese Funktion ein, um Hintergrundgeräusche zu reduzieren und die Stimme des Sprechenden deutlicher zu machen.",
+            "activateOthersAudio": "Teilnehmer Audio aktiv",
+            "othersVolume": "Lautstärke"
+        },
+        "distressbtn": {
+            "intro": "Auf dieser Seite kann ein Notfall-Button zum Meeting hinzugefügt werden. Sie können selbst anpassen, was beim Einschalten den Notfall-Buttons passieren soll. Zum Beispiel können hörbare und sichtbare Signale gedämpft oder abgeschaltet werden. Was passieren soll, können Sie hier einstellen. Wenn Sie keinen Notfall-Button möchten, aktivieren Sie den Schalter nicht und machen Sie auf der nächsten Seite weiter.",
+            "btn_engage_headline": "Notfall-Button",
+            "btn_engage_label": "Notfallbutton aktivieren",
+            "btn_engage_desc": "Mit dem Notfall-Button können Sie die Ton- und Bild-Übertragung im Meeting beeinflussen. Schalten Sie diese Funktion an, um anzupassen, was passieren soll, wenn Sie auf den Notfall-Button klicken.",
+            "dimlights_label": "Kacheln dimmen",
+            "setvolume_label": "Lautstärke anpassen",
+            "messagebtn_enable_label": "Nachricht versenden",
+            "sliders_headline": "Einstellungen für den Notfall-Button",
+            "messagebtn_enable_desc": "Schalten Sie diese Funktion an, um eine private Nachricht zu schreiben. Die Nachricht wird dann nach dem Klick auf den Notfall-Button an eine Begleitperson gesendet. Die Begleitperson können Sie selbst festlegen. Wenn Sie niemanden festlegen, erhält der Moderator des Meetings die Nachricht.",
+            "message_headline": "Private Nachricht",
+            "message_desc": "In diesem Feld kann eine eigene Notfallnachricht verfasst werden."
+        },
         "uiSettings": {
+            "headline": "Darstellung des Meetings",
+            "intro": "Auf dieser Seite können Sie Einstellungen für die Darstellung des Meetings und der Video-Ausgabe festlegen.",
+
+            "sizeHeadline": "Schrift- und Icongröße",
             "fontSize": "Schriftgröße",
             "iconSize": "Icon-Größe",
-            "screenreader":{
+            "fontSizes": {
+                "size0": "Klein",
+                "size1": "Mittel",
+                "size2": "Groß"
+            },
+            "length": {
+                "size0": "Kurz",
+                "size1": "Mittel",
+                "size2": "Lang"
+            },
+            "screenreader": {
                 "headline": "Ich nutze einen Screenreader",
                 "label": "Screenreader aktivieren",
                 "description": "Optimierte Ausgabe von Steuerelementen zur vereinfachten Ausgabe über einen Screenreader."
             },
-            "acousticcues":{
-                "headline": "Akustische Signale",
-                "label": "Akustische Signale aktivieren",
-                "description": "Akustische Signale für Hinweise und Meldungen während des Meetings."
+            "visualcues": {
+                "headline": "Sichtbare Hinweise",
+                "label": "Sichtbare Hinweise aktivieren",
+                "description": "Schalten Sie diese Funktion an, um während des Meetings visuelle Hinweise und Meldungen zu bekommen. "
             },
-            "visualcues":{
-                "headline": "Visuelle Hinweise",
-                "label": "Visuelle Hinweise aktivieren",
-                "description": "Visuelle Hinweise für Hinweise und Meldungen während des Meetings."
-            }
+            "videoOutput": "Video-Ausgabe"
+        },
+        "transcription": {
+            "headline": "Dolmetschen",
+            "intro": "Auf dieser Seite können Sie auswählen, ob Sie DGS- oder Schrift-Dolmetschung nutzen möchten.",
+            "headlineDisplay": "Darstellung für DGS-Dolmetschung",
+            "display_option1": "Als Fenster: Der*die Dolmetschende ist in einem Extra-Fenster frei verschiebbar.",
+            "display_option2": "Als Kachel: Der*die Dolmetschende ist als Kachel zu sehen. Genauso wie alle anderen Teilnehmenden. Sie können die Kachel innerhalb der anderen Kacheln verschieben.",
+            "btn_engage_label": "Ich möchte den Assistent für die Schrift-Dolmetschung nutzen",
+            "btn_engage_desc": "Schalten Sie diese Funktion an, damit die Texte aus der Schrift-Dolmetschung im Meeting angezeigt werden. Einen Leselink können Sie auch dann nutzen, wenn diese Funktion nicht eingeschaltet ist.",
+            "windowsize_label": "Fenstergröße festlegen",
+            "fontsize_label": "Schriftgröße",
+            "history_label": "Länge vergangener Text",
+            "settings_desc": "Hier können Sie Einstellungen für die Schrift-Dolmetschung festlegen. Das betrifft nur die Schrift-Dolmetschung, die im Meeting-Fenster sichtbar ist. Es betrifft nicht die Schrift-Dolmetschung, die über einen Leselink zu sehen ist.",
+            "headlineTranscription": "Assistenz Schrift-Dolmetschung"
+        },
+        "userVideo": {
+            "containerHeadline": "Teilnehmer-Videos",
+            "interpreterHeadline": "Dolmetscher-Videos einschalten",
+            "interpreterDescription": "Während des Meetings sind alle Dolmetschervideos in den Kacheln zu sehen.",
+            "screensharingHeadline": "Geteilte Bildschirme anzeigen",
+            "screensharingDescription": "Während des Meetings sind geteilte Bildschirme zu sehen.",
+            "videoVisibilityToggleHeadline": "Während des Meetings sind alle Teilnehmer-Videos in den Kacheln zu sehen.",
+            "videoVisibilityEngage": "Teilnehmer-Videos einschalten",
+            "contrastSliderHeadline": "Kontrast",
+            "brightnessSliderHeadline": "Helligkeit",
+            "dimSliderHeadline": "Kacheln dimmen",
+            "saturationSliderHeadline": "Farbsättigung",
+            "zoomSliderHeadline": "Alle Videos zoomen",
+            "fpsSliderHeadline": "Bildübertragungsrate"
+        },
+        "basic": {
+            "languageHeadline": "Leicht lesbare Sprache",
+            "languageDescription": "Schalten Sie diese Funktion an, um leicht lesbare Sprache als Standard festzulegen. Die Funktion kann zum Beispiel für Menschen mit Dyslexie, Legasthenie und/oder Lernschwierigkeiten hilfreich sein."
         },
         "video": "Kamera"
     },
@@ -1261,19 +1317,22 @@
             "videomuteGUMPending": "Verbinde Ihre Kamera",
             "videounmute": "Kamera einschalten"
         },
-        "signlangtab":{
-            "btn_engage_headline": "Ich möchte den Assistenten Gebärdensprache nutzen",
-            "btn_engage_label": "Gebärdensprachen-Assistent",
-            "btn_engage_desc": "Der Assistent Gebärdensprache ermöglicht die Videoanzeige eines Gebärdensprache Dolmetscher:in.",
-            "display_headline": "Darstellung Dolmetscher:in",
-            "display_option1": "als übergeordnetes Fenster",
-            "display_option2": "als eine Kachel wie alle Teilnehmer",
-            "windowsize_label": "Fenstergröße festlegen"
-        },
         "activateOwnAudio": "Audio-Übertragung aktiv",
         "activateOthersAudio": "Teilnehmer Audio aktiv",
         "addPeople": "Personen zur Konferenz hinzufügen",
-        "amplify": "Leise Töne verstärken",
+        "amplifyTexts": {
+            "value0": "aus",
+            "value1": "leise",
+            "value2": "mittel",
+            "value3": "laut"
+        },
+        "balanceTexts": {
+            "value0": "links",
+            "value1": "links-mitte",
+            "value2": "mitte",
+            "value3": "recht-mitte",
+            "value4": "rechts"
+        },
         "audioOnlyOff": "Modus „Nur Audio“ deaktivieren",
         "audioOnlyOn": "Modus „Nur Audio“ aktivieren",
         "audioRoute": "Audiogerät auswählen",
@@ -1281,7 +1340,6 @@
         "assistance": "Assistenz",
         "authenticate": "Anmelden",
         "backgroundNoises": "Hintergrundgeräusche reduzieren",
-        "balance": "Balance",
         "boo": "Buhen",
         "callQuality": "Qualitätseinstellungen",
         "chat": "Chat öffnen / schließen",
@@ -1296,7 +1354,7 @@
         "download": "Unsere Apps herunterladen",
         "e2ee": "Ende-zu-Ende-Verschlüsselung",
         "embedMeeting": "Konferenz einbetten",
-        "enableNoiseSuppression": "Rauschunterdrückung einschalten",
+        "enableNoiseSuppression": "Hintergrundgeräusche reduzieren",
         "endConference": "Konferenz für alle beenden",
         "enterFullScreen": "Vollbildmodus",
         "enterTileView": "Kachelansicht einschalten",
@@ -1307,7 +1365,6 @@
         "hangup": "Konferenz verlassen",
         "help": "Hilfe",
         "hideWhiteboard": "Whiteboard ausblenden",
-        "highFrequencies": "Hohe Frequenzen",
         "invite": "Personen einladen",
         "joinBreakoutRoom": "In Breakout-Raum wechseln",
         "laugh": "Lachen",
@@ -1336,7 +1393,6 @@
         "noisyAudioInputTitle": "Ihr Mikrofon scheint lärmintensiv zu sein!",
         "openChat": "Chat öffnen",
         "openReactionsMenu": "Interaktionsmenü öffnen",
-        "othersVolume": "Lautstärke",
         "participants": "Anwesende",
         "pip": "Bild-in-Bild-Modus einschalten",
         "privateMessage": "Private Nachricht senden",
@@ -1373,49 +1429,7 @@
         "videoSettings": "Kameraeinstellungen",
         "videomute": "Kamera ausschalten",
         "videomuteGUMPending": "Verbinde Ihre Kamera",
-        "videounmute": "Kamera ein",
-        "userVideo": {
-            "containerHeadline": "Teilnehmer-Videos",
-            "interpreterHeadline": "Dolmetscher-Videos einschalten",
-            "interpreterDescription": "Während des Meetings sind alle Dolmetschervideos in den Kacheln zu sehen.",
-            "screensharingHeadline": "Geteilte Bildschirme anzeigen",
-            "screensharingDescription": "Während des Meetings sind geteilte Bildschirme zu sehen.",
-            "videoVisibilityToggleHeadline": "Während des Meetings sind alle Teilnehmer-Videos in den Kacheln zu sehen.",
-            "videoVisibilityEngage": "Teilnehmer-Videos einschalten",
-            "contrastSliderHeadline": "Kontrast",
-            "brightnessSliderHeadline": "Helligkeit",
-            "dimSliderHeadline": "Kacheln dimmen",
-            "saturationSliderHeadline": "Farbsättigung",
-            "zoomSliderHeadline": "Alle Videos zoomen",
-            "fpsSliderHeadline": "Bildübertragungsrate"
-        },
-        "distressbtn": {
-            "btn_engage_headline": "Notfallbutton",
-            "btn_engage_label": "Notfallbutton aktivieren",
-            "btn_engage_desc": "Der Notfallbutton ermöglicht einen sofortigen Einfluss auf die Audio- und Videoübertragung im Meeting. Einer bestimmten Begleitperson kann eine vorab geschriebene Nachricht übermittelt werden.",
-            "dimlights_label": "Kacheln dimmen",
-            "setvolume_label": "Lautstärke anpassen",
-            "messagebtn_enable_label": "Nachricht versenden",
-            "sliders_headline": "Aktionen nach dem Klick",
-            "messagebtn_enable_desc": "Nach dem Klick auf den Notfallbutton wird eine private Nachricht an eine Begleitperson gesendet. Vorerst ist das der Moderator. Im Meeting kann eine bevorzugte Begleitperson eingestellt werden.",
-            "message_headline": "Nachricht verfassen",
-            "message_desc": "In diesem Feld kann eine eigene Notfallnachricht verfasst werden."
-        },
-        "support":{
-                "eyesight_headline": "Angaben zu Sehen",
-                "eyesight_option1_label": "Ich bin blind und habe Unterstützungsbedarf",
-                "eyesight_option2_label": "Ich habe Seheinschränkungen und habe Unterstützungsbedarf",
-                "eyesight_option3_label": "Ich habe keinen Unterstützungsbedarf",
-                "hearing_headline": "Angaben zu Hören",
-                "hearing_option1_label": "Ich bin taub und habe Unterstützungsbedarf",
-                "hearing_option2_label": "Ich habe Höreinschränkungen und habe Unterstützungsbedarf",
-                "hearing_option3_label": "Ich habe keinen Unterstützungsbedarf",
-                "screenreader_label": "Ich nutze einen Screenreader",
-                "senses_label": "Ich bin schnell überreizt",
-                "learning_difficulties_label": "Ich habe Dyslexie, Legasthenie und/ oder Lernschwierigkeiten",
-                "warning_headline": "Achtung",
-                "warning_text": "Änderungen des Unterstützungsbedarfs hat eventuell Einfluss auf bereits hinterlegte Einstellungen."
-        }
+        "videounmute": "Kamera ein"
     },
     "transcribing": {
         "ccButtonTooltip": "Untertitel ein-/ausschalten",

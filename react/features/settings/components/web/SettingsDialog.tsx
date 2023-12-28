@@ -7,16 +7,13 @@ import {
     IconAudioOnly,
     IconBell,
     IconBellConcierge,
-    IconBubble,
     IconCalendar,
     IconGear,
-    IconHandHoldingHand,
     IconHands,
     IconImage,
     IconModerator,
     IconShortcuts,
     IconUser,
-    IconUsers,
     IconVideo,
     IconVolumeUp
 } from '../../../base/icons/svg';
@@ -32,21 +29,12 @@ import {
 import DistressBtnTab from '../../../inklusiva/distressbtn/DistressBtnTab';
 import { submitNewDistressBtnTab } from '../../../inklusiva/distressbtn/actions.web';
 import { getDistressBtnTabProps } from '../../../inklusiva/distressbtn/functions.web';
-import SignLangTab from '../../../inklusiva/signLang/SignLangTab';
+import SignLangTranscriptionTab from '../../../inklusiva/signLang/SignLangTranscriptionTab';
 import { submitSignLangTabProps } from '../../../inklusiva/signLang/actions.web';
 import { getSignLangTabProps } from '../../../inklusiva/signLang/functions.web';
-import { submitSupportTabProps } from '../../../inklusiva/support/actions.web';
-import SupportTab from '../../../inklusiva/support/components/SupportTab';
-import { getSupportTabProps } from '../../../inklusiva/support/functions.web';
-import { submitTranscriptionTabProps } from '../../../inklusiva/transcription/actions.web';
-import TranscriptionTab from '../../../inklusiva/transcription/components/TranscriptionTab';
-import { getTranscriptionTabProps } from '../../../inklusiva/transcription/functions.web';
 import UiSettingsTab from '../../../inklusiva/uisettings/UiSettingsTab';
 import { submitUISettingsTabProps } from '../../../inklusiva/uisettings/actions.web';
 import { getUISettingsTabProps } from '../../../inklusiva/uisettings/functions';
-import UserVideoTab from '../../../inklusiva/uservideo/UserVideoTab';
-import { submitNewUserVideoTab } from '../../../inklusiva/uservideo/actions';
-import { getUserVideoTabProps } from '../../../inklusiva/uservideo/functions';
 import { checkBlurSupport, checkVirtualBackgroundEnabled } from '../../../virtual-background/functions';
 import { iAmVisitor } from '../../../visitors/functions';
 import {
@@ -154,8 +142,6 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
     const showDeviceSettings = configuredTabs.includes('devices');
     const moreTabProps = getMoreTabProps(state);
     const distressBtnTabProps = getDistressBtnTabProps(state);
-    const supportTabProps = getSupportTabProps(state);
-    const userVideoTabProps = getUserVideoTabProps(state);
     const moderatorTabProps = getModeratorTabProps(state);
     const { showModeratorSettings } = moderatorTabProps;
     const showMoreTab = configuredTabs.includes('more');
@@ -169,12 +155,49 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
     const tabs: IDialogTab<any>[] = [];
     const _iAmVisitor = iAmVisitor(state);
 
-    const transcriptionTabProps = getTranscriptionTabProps(state);
-
     const signLangTabProps = getSignLangTabProps(state);
     const uiSettingsTabProps = getUISettingsTabProps(state);
 
     if (showDeviceSettings) {
+        if (showProfileSettings) {
+            tabs.push({
+                name: SETTINGS_TABS.PROFILE,
+                component: ProfileTab,
+                labelKey: 'profile.title',
+                props: getProfileTabProps(state),
+                submit: submitProfileTab,
+                icon: IconUser,
+                specialTab: true
+            });
+        }
+
+        tabs.push({
+            name: SETTINGS_TABS.UI_TAB,
+            component: UiSettingsTab,
+            labelKey: 'settings.uiTab',
+            props: uiSettingsTabProps,
+            propsUpdateFunction: (tabState: any, newProps: typeof uiSettingsTabProps) => {
+                return {
+                    ...newProps,
+                    fontSize: tabState?.fontSize,
+                    iconSize: tabState?.iconSize,
+                    acousticCues: tabState?.acousticCues,
+                    visualCues: tabState?.visualCues,
+                    contrast: tabState?.contrast,
+                    brightness: tabState?.brightness,
+                    dimming: tabState?.dimming,
+                    interpreter: tabState?.interpreter,
+                    otherParticipants: tabState?.otherParticipants,
+                    saturation: tabState?.saturation,
+                    screensharing: tabState?.screensharing,
+                    zoom: tabState?.zoom
+                };
+            },
+            submit: submitUISettingsTabProps,
+            icon: IconAudioOnly,
+            specialTab: true
+        });
+
         tabs.push({
             name: SETTINGS_TABS.AUDIO,
             component: AudioDevicesSelection,
@@ -186,9 +209,14 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
                 // current user selected devices. If this were not done, the
                 // tab would keep using a copy of the initial props it received,
                 // leaving the device list to become stale.
-
+                //
                 return {
                     ...newProps,
+                    othersVolume: tabState.othersVolume,
+                    highFrequencies: tabState.highFrequencies,
+                    amplify: tabState.amplify,
+                    balance: tabState.balance,
+                    acousticCues: tabState.acousticCues,
                     noiseSuppressionEnabled: tabState.noiseSuppressionEnabled,
                     selectedAudioInputId: tabState.selectedAudioInputId,
                     selectedAudioOutputId: tabState.selectedAudioOutputId,
@@ -196,8 +224,53 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
                 };
             },
             submit: (newState: any) => submitAudioDeviceSelectionTab(newState, isDisplayedOnWelcomePage),
-            icon: IconVolumeUp
+            icon: IconVolumeUp,
+            specialTab: true
         });
+
+        tabs.push({
+            name: SETTINGS_TABS.DISTRESSBTN_TAB,
+            component: DistressBtnTab,
+            labelKey: 'settings.distressBtnTab', // muss in Sprachdatei gesetzt werden
+            props: getDistressBtnTabProps(state),
+            propsUpdateFunction: (tabState: any, newProps: typeof distressBtnTabProps) => {
+            // Updates tab props, keeping users selection
+                return {
+                    ...newProps,
+                    active: tabState?.active,
+                    dimming: tabState?.dimming,
+                    volume: tabState?.volume,
+                    message: tabState?.message,
+                    messageText: tabState?.messageText
+                };
+            },
+            submit: submitNewDistressBtnTab,
+            icon: IconBellConcierge,
+            specialTab: true
+        });
+
+        tabs.push({
+            name: SETTINGS_TABS.SIGNLANGTRANSRIPTION_TAB,
+            component: SignLangTranscriptionTab,
+            labelKey: 'settings.SignLangTranscriptionTab',
+            props: signLangTabProps,
+            propsUpdateFunction: (tabState: any, newProps: typeof signLangTabProps) => {
+                return {
+                    ...newProps,
+                    signLangActive: tabState?.signLangActive,
+                    signLangDisplay: tabState?.signLangDisplay,
+                    signLangWindowSize: tabState?.signLangWindowSize,
+                    transcriptionActive: tabState?.transcriptionActive,
+                    transcriptionFontSize: tabState?.transcriptionFontSize,
+                    transcriptionHistory: tabState.transcriptionHistory
+                };
+            },
+            submit: submitSignLangTabProps,
+            icon: IconHands,
+            specialTab: true,
+            separatorAfter: true
+        });
+
         !_iAmVisitor
             && tabs.push({
                 name: SETTINGS_TABS.VIDEO,
@@ -311,82 +384,6 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
         });
     }
 
-    if (showProfileSettings) {
-        tabs.push({
-            name: SETTINGS_TABS.PROFILE,
-            component: ProfileTab,
-            labelKey: 'profile.title',
-            props: getProfileTabProps(state),
-            submit: submitProfileTab,
-            icon: IconUser
-        });
-    }
-
-    tabs.push({
-        name: SETTINGS_TABS.USERVIDEO_TAB,
-        component: UserVideoTab,
-        labelKey: 'settings.userVideoTab',
-        props: getUserVideoTabProps(state),
-        propsUpdateFunction: (tabState: any, newProps: typeof userVideoTabProps) => {
-            // Updates tab props, keeping users selection
-
-            return {
-                ...newProps,
-                otherParticipants: tabState?.otherParticipants,
-                brightness: tabState?.brightness,
-                contrast: tabState?.contrast,
-                dimming: tabState?.dimming,
-                fps: tabState?.fps,
-                saturation: tabState.saturation,
-                zoom: tabState?.zoom
-            };
-        },
-        submit: submitNewUserVideoTab,
-        icon: IconUsers
-    });
-
-    tabs.push({
-        name: SETTINGS_TABS.DISTRESSBTN_TAB,
-        component: DistressBtnTab,
-        labelKey: 'settings.distressBtnTab', // muss in Sprachdatei gesetzt werden
-        props: getDistressBtnTabProps(state),
-        propsUpdateFunction: (tabState: any, newProps: typeof distressBtnTabProps) => {
-            // Updates tab props, keeping users selection
-
-            return {
-                ...newProps,
-                active: tabState?.active,
-                dimming: tabState?.dimming,
-                volume: tabState?.volume,
-                message: tabState?.message,
-                message_text: tabState?.message_text
-            };
-        },
-        submit: submitNewDistressBtnTab,
-        icon: IconBellConcierge
-    });
-
-    tabs.push({
-        name: SETTINGS_TABS.SUPPORT_TAB,
-        component: SupportTab,
-        labelKey: 'settings.supportTab', // muss in Sprachdatei gesetzt werden
-        props: getSupportTabProps(state),
-        propsUpdateFunction: (tabState: any, newProps: typeof supportTabProps) => {
-            // Updates tab props, keeping users selection
-
-            return {
-                ...newProps,
-                eyesight: tabState?.eyesight,
-                hearing: tabState?.hearing,
-                senses: tabState?.senses,
-                learning_difficulties: tabState?.learning_difficulties,
-                screenreader: tabState?.screenreader
-            };
-        },
-        submit: submitSupportTabProps,
-        icon: IconHandHoldingHand
-    });
-
     if (showCalendarSettings && !_iAmVisitor) {
         tabs.push({
             name: SETTINGS_TABS.CALENDAR,
@@ -414,58 +411,6 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
             icon: IconShortcuts
         });
 
-    tabs.push({
-        name: SETTINGS_TABS.SIGNLANG_TAB,
-        component: SignLangTab,
-        labelKey: 'settings.SignLangTab',
-        props: signLangTabProps,
-        propsUpdateFunction: (tabState: any, newProps: typeof signLangTabProps) => {
-            // Updates tab props, keeping users selection
-            return {
-                ...newProps,
-                active: tabState?.active,
-                display: tabState?.display,
-                windowSize: tabState?.windowSize
-            };
-        },
-        submit: submitSignLangTabProps,
-        icon: IconHands
-    });
-
-    tabs.push({
-        name: SETTINGS_TABS.TRANSCRIPTION,
-        component: TranscriptionTab,
-        labelKey: 'settings.transcriptionTab',
-        props: transcriptionTabProps,
-        propsUpdateFunction: (tabState: any, newProps: typeof transcriptionTabProps) => {
-            return {
-                ...newProps,
-                active: tabState?.active,
-                fontSize: tabState?.fontSize,
-                history: tabState?.history
-            };
-        },
-        submit: submitTranscriptionTabProps,
-        icon: IconBubble
-    });
-
-    tabs.push({
-        name: SETTINGS_TABS.UI_TAB,
-        component: UiSettingsTab,
-        labelKey: 'settings.uiTab',
-        props: uiSettingsTabProps,
-        propsUpdateFunction: (tabState: any, newProps: typeof uiSettingsTabProps) => {
-            return {
-                ...newProps,
-                fontSize: tabState?.fontSize,
-                iconSize: tabState?.iconSize,
-                acousticCues: tabState?.acousticCues,
-                visualCues: tabState?.visualCues
-            };
-        },
-        submit: submitUISettingsTabProps,
-        icon: IconAudioOnly
-    });
 
     if (showMoreTab && !_iAmVisitor) {
         tabs.push({

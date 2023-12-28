@@ -9,7 +9,7 @@ import AbstractDialogTab, {
 import { translate } from '../../base/i18n/functions';
 import Checkbox from '../../base/ui/components/web/Checkbox';
 import Slider from '../../base/ui/components/web/Slider';
-
+import { inklusivaSettingsStyles } from '../../inklusiva/ui-constants';
 
 /**
  * The type of the React {@code Component} props of {@link OwnAudioTab}.
@@ -22,15 +22,30 @@ export interface IProps extends AbstractDialogTabProps, WithTranslation {
     acousticCues: boolean;
 
     /**
+     * Brightness value for user videos.
+     */
+    brightness: number;
+
+    /**
      * CSS classes object.
      */
     classes: any;
+
+    /**
+     * Contrast value for user videos.
+     */
+    contrast: number;
 
     /**
      * The currently selected language to display in the language select
      * dropdown.
      */
     currentLanguage: string;
+
+    /**
+     * Dimming value for user videos.
+     */
+    dimming: number;
 
     /**
      * The global FontSize modifier. Can range from 0-2 (representing the values klein, mittel, groß).
@@ -43,11 +58,34 @@ export interface IProps extends AbstractDialogTabProps, WithTranslation {
     iconSize: number;
 
     /**
+     * Are Interpreters Videos enabled?
+     */
+    interpreter: boolean;
+
+    /**
+     * Are User Videos enabled?
+     */
+    otherParticipants: boolean;
+
+    /**
+     * Saturation value for user videos.
+     */
+    saturation: number;
+
+    /**
+     * Is screensharing enabled?
+     */
+    screensharing: boolean;
+
+    /**
      * Whether the visual cues are enabled or not.
      */
     visualCues: boolean;
 
-
+    /**
+     * Zoom value for user videos.
+     */
+    zoom: number;
 }
 
 const styles = (theme: Theme) => {
@@ -55,7 +93,6 @@ const styles = (theme: Theme) => {
         container: {
             display: 'flex',
             flexDirection: 'column' as const,
-            padding: '0 2px',
             width: '100%'
         },
         headline: {
@@ -64,7 +101,7 @@ const styles = (theme: Theme) => {
         inputElement: {
             marginBottom: theme.spacing(1),
             fontWeight: 'bold',
-            fontSize: '0.875rem'
+            fontSize: ''
         },
         textareaElement: {
             marginBottom: theme.spacing(1)
@@ -72,9 +109,7 @@ const styles = (theme: Theme) => {
         description: {
             marginBottom: theme.spacing(3)
         },
-        inputblockContainer: {
-            marginBottom: theme.spacing(5)
-        }
+        ...inklusivaSettingsStyles(theme)
     };
 };
 
@@ -82,15 +117,6 @@ const styles = (theme: Theme) => {
  * React {@code Component} for modifying the user's UI settings.
  */
 class UiSettingsTab extends AbstractDialogTab<IProps, any> {
-    /**
-     * Initializes a new {@code OwnAudioTab} instance.
-     *
-     * @param {Object} props - The read-only properties with which the new
-     * instance is to be initialized.
-     */
-    constructor(props: IProps) {
-        super(props);
-    }
 
     /**
      * Implements React's {@link Component#render()}.
@@ -99,80 +125,225 @@ class UiSettingsTab extends AbstractDialogTab<IProps, any> {
      * @returns {ReactElement}
      */
     render() {
-        const { classes, fontSize, iconSize, visualCues, acousticCues, t } = this.props;
+        const {
+            classes,
+            fontSize,
+            iconSize,
+            visualCues,
+            contrast,
+            brightness,
+            dimming,
+            interpreter,
+            otherParticipants,
+            saturation,
+            screensharing,
+            zoom,
+            t
+        } = this.props;
+
+        const getSizeDescription = (size: number) => t(`settings.uiSettings.fontSizes.size${size}`);
 
         return (
             <div className = { classes.container }>
+                <h2> {t('settings.uiSettings.headline')} </h2>
+                <p className = 'mt-05'> {t('settings.uiSettings.intro')} </p>
                 <div className = { classes.inputblockContainer }>
-                    <Slider
-                        className = { classes.inputElement }
-                        defaultValue = { fontSize }
-                        label = { t('settings.uiSettings.fontSize') }
-                        max = { 2 }
-                        min = { 0 }
-                        onChange = { event =>
-                            super._onChange({
-                                fontSize: parseInt(event.target.value, 10)
-                            })
-                        }
-                        step = { 1 } />
-                </div>
-                <div className = { classes.inputblockContainer }>
-                    <Slider
-                        className = { classes.inputElement }
-                        defaultValue = { iconSize }
-                        label = { t('settings.uiSettings.iconSize') }
-                        max = { 2 }
-                        min = { 0 }
-                        onChange = { event =>
-                            super._onChange({
-                                iconSize: parseInt(event.target.value, 10)
-                            })
-                        }
-                        step = { 1 } />
-                </div>
-                <div className = { classes.inputblockContainer }>
-                    <div>
-                        <b className = { classes.headline }>
-                            {t('settings.uiSettings.acousticcues.headline')}
-                        </b>
-                    </div>
-                    <Checkbox
-                        checked = { acousticCues }
-                        className = { classes.inputElement }
-                        label = { t('settings.uiSettings.acousticcues.label') }
-                        // eslint-disable-next-line react/jsx-no-bind
-                        name = 'acousticcues_enable'
-                        onChange = { () =>
-                            super._onChange({
-                                acousticCues: !acousticCues
-                            })
-                        } />
-
-                    <div className = { classes.description }>
-                        {t('settings.uiSettings.acousticcues.description')}
-                    </div>
-                </div>
-                <div className = { classes.inputblockContainer }>
-                    <div>
-                        <b className = { classes.headline }>
-                            {t('settings.uiSettings.visualcues.headline')}
-                        </b>
-                    </div>
+                    <h3>{t('settings.uiSettings.visualcues.headline')}</h3>
+                    <p> {t('settings.uiSettings.visualcues.description')} </p>
                     <Checkbox
                         checked = { visualCues }
                         className = { classes.inputElement }
                         label = { t('settings.uiSettings.visualcues.label') }
-                        // eslint-disable-next-line react/jsx-no-bind
                         name = 'visualcues_enable'
+                        // eslint-disable-next-line react/jsx-no-bind
                         onChange = { () =>
                             super._onChange({
                                 visualCues: !visualCues
                             })
                         } />
+                </div>
 
-                    <div className = { classes.description }>
-                        {t('settings.uiSettings.visualcues.description')}
+                <div className = { classes.inputblockContainer }>
+                    <h3>{t('settings.uiSettings.fontSize')}</h3>
+                    <div className = { classes.controlContainer }>
+                        <div className = { classes.controlColumn }>
+                            <Slider
+                                className = { classes.inputElement }
+                                defaultValue = { fontSize }
+                                label = { t('settings.uiSettings.fontSize') }
+                                max = { 2 }
+                                min = { 0 }
+                                // eslint-disable-next-line react/jsx-no-bind
+                                onChange = { event =>
+                                    super._onChange({
+                                        fontSize: parseInt(event.target.value, 10)
+                                    })
+                                }
+                                step = { 1 } />
+                        </div>
+                        <div className = { classes.valueColumn }>
+                            {getSizeDescription(fontSize) }
+                        </div>
+                    </div>
+                    <div className = { classes.controlContainer }>
+                        <div className = { classes.controlColumn }>
+                            <Slider
+                                className = { classes.inputElement }
+                                defaultValue = { iconSize }
+                                label = { t('settings.uiSettings.iconSize') }
+                                max = { 2 }
+                                min = { 0 }
+                                // eslint-disable-next-line react/jsx-no-bind
+                                onChange = { event =>
+                                    super._onChange({
+                                        iconSize: parseInt(event.target.value, 10)
+                                    })
+                                }
+                                step = { 1 } />
+                        </div>
+                        <div className = { classes.valueColumn }>
+                            {getSizeDescription(iconSize) }
+                        </div>
+                    </div>
+                </div>
+                <div className = { classes.inputblockContainer }>
+                    <h3 className = 'mt-1'>{t('settings.uiSettings.videoOutput')}</h3>
+                    <Checkbox
+                        checked = { otherParticipants }
+                        className = { classes.inputElement }
+                        label = { t('settings.userVideo.videoVisibilityEngage') }
+                        name = 'video-visibility-toggle'
+                        // eslint-disable-next-line react/jsx-no-bind
+                        onChange = { () =>
+                            super._onChange({
+                                otherParticipants: !otherParticipants
+                            })
+                        } />
+                </div>
+
+                {/* TODO: Vorläufig auskommentiert, erst die noch verbleibenden Probleme mit der Darstellung lösen. */}
+
+                {/* <div className = { classes.inputblockContainer }> */}
+                {/*     <Checkbox */}
+                {/*         checked = { interpreter } */}
+                {/*         className = { classes.inputElement } */}
+                {/*         label = { t('settings.userVideo.interpreterHeadline') } */}
+                {/*         name = 'video-visibility-toggle' */}
+                {/*         // eslint-disable-next-line react/jsx-no-bind */}
+                {/*         onChange = { () => */}
+                {/*             super._onChange({ */}
+                {/*                 interpreter: !interpreter */}
+                {/*             }) */}
+                {/*         } /> */}
+                {/* </div> */}
+                {/* <div className = { classes.inputblockContainer }> */}
+                {/*     <Checkbox */}
+                {/*         checked = { screensharing } */}
+                {/*         className = { classes.inputElement } */}
+                {/*         label = { t('settings.userVideo.screensharingHeadline') } */}
+                {/*         name = 'video-visibility-toggle' */}
+                {/*         // eslint-disable-next-line react/jsx-no-bind */}
+                {/*         onChange = { () => */}
+                {/*             super._onChange({ */}
+                {/*                 screensharing: !screensharing */}
+                {/*             }) */}
+                {/*         } /> */}
+                {/* </div> */}
+                <div className = { classes.inputblockContainer }>
+                    <div className = { classes.controlContainer }>
+                        <div className = { classes.controlColumn }>
+                            <Slider
+                                className = { classes.inputElement }
+                                defaultValue = { contrast }
+                                label = { t('settings.userVideo.contrastSliderHeadline') }
+                                max = { 100 }
+                                min = { 0 }
+                                name = 'contrast-slider'
+                                // eslint-disable-next-line react/jsx-no-bind
+                                onChange = { event =>
+                                    super._onChange({
+                                        contrast: event.target.value
+                                    })
+                                }
+                                step = { 1 } />
+                        </div>
+                        <div className = { classes.valueColumn }>{contrast}%</div>
+                    </div>
+                    <div className = { classes.controlContainer }>
+                        <div className = { classes.controlColumn }>
+                            <Slider
+                                className = { classes.inputElement }
+                                defaultValue = { brightness }
+                                label = { t('settings.userVideo.brightnessSliderHeadline') }
+                                max = { 100 }
+                                min = { 0 }
+                                name = 'brightness-slider'
+                                // eslint-disable-next-line react/jsx-no-bind
+                                onChange = { event =>
+                                    super._onChange({
+                                        brightness: event.target.value
+                                    })
+                                }
+                                step = { 1 } />
+                        </div>
+                        <div className = { classes.valueColumn }>{brightness}%</div>
+                    </div>
+                    <div className = { classes.controlContainer }>
+                        <div className = { classes.controlColumn }>
+                            <Slider
+                                className = { classes.inputElement }
+                                defaultValue = { dimming }
+                                label = { t('settings.userVideo.dimSliderHeadline') }
+                                max = { 100 }
+                                min = { 0 }
+                                name = 'dimmer-slider'
+                                // eslint-disable-next-line react/jsx-no-bind
+                                onChange = { event =>
+                                    super._onChange({
+                                        dimming: event.target.value
+                                    })
+                                }
+                                step = { 1 } />
+                        </div>
+                        <div className = { classes.valueColumn }>{dimming}%</div>
+                    </div>
+                    <div className = { classes.controlContainer }>
+                        <div className = { classes.controlColumn }>
+                            <Slider
+                                className = { classes.inputElement }
+                                defaultValue = { saturation }
+                                label = { t('settings.userVideo.saturationSliderHeadline') }
+                                max = { 100 }
+                                min = { 0 }
+                                name = 'saturation-slider'
+                                // eslint-disable-next-line react/jsx-no-bind
+                                onChange = { event =>
+                                    super._onChange({
+                                        saturation: event.target.value
+                                    })
+                                }
+                                step = { 1 } />
+                        </div>
+                        <div className = { classes.valueColumn }>{saturation}%</div>
+                    </div>
+                    <div className = { classes.controlContainer }>
+                        <div className = { classes.controlColumn }>
+                            <Slider
+                                className = { classes.inputElement }
+                                defaultValue = { zoom }
+                                label = { t('settings.userVideo.zoomSliderHeadline') }
+                                max = { 200 }
+                                min = { 0 }
+                                name = 'zoom-slider'
+                                // eslint-disable-next-line react/jsx-no-bind
+                                onChange = { event =>
+                                    super._onChange({
+                                        zoom: event.target.value
+                                    })
+                                }
+                                step = { 1 } />
+                        </div>
+                        <div className = { classes.valueColumn }>{zoom}%</div>
                     </div>
                 </div>
             </div>

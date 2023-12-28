@@ -1,6 +1,12 @@
 import ReducerRegistry from '../../base/redux/ReducerRegistry';
 import { equals } from '../../base/redux/functions';
 import {
+    SET_AUDIO_AMPLIFY,
+    SET_AUDIO_BALANCE,
+    SET_AUDIO_HIGH_FREQUENCIES,
+    SET_AUDIO_OTHERS_VOLUME
+} from '../audiosettings/actionTypes';
+import {
     SET_DISTRESSBTN_DIMMING_VALUE,
     SET_DISTRESSBTN_ENABLED,
     SET_DISTRESSBTN_MESSAGE_ENABLED,
@@ -12,13 +18,6 @@ import {
     SET_SIGNLANG_ENABLED,
     SET_SIGNLANG_WINDOWSIZE_VALUE
 } from '../signLang/actionTypes';
-import {
-    SET_EYESIGHT_STRING,
-    SET_HEARING_STRING,
-    SET_LEARNING_DIFFICULTIES_ENABLED,
-    SET_SCREENREADER_ENABLED,
-    SET_SENSES_ENABLED
-} from '../support/actionTypes';
 import {
     SET_TRANSCRIPTION_ENABLED,
     SET_TRANSCRIPTION_FONTSIZE_VALUE,
@@ -206,31 +205,6 @@ ReducerRegistry.register<IUserData>(
 
             return nextState;
 
-        case SET_EYESIGHT_STRING:
-            nextState.support.eyesight = payload.supportEyesightString;
-
-            return nextState;
-
-        case SET_HEARING_STRING:
-            nextState.support.hearing = payload.supportHearingString;
-
-            return nextState;
-
-        case SET_SENSES_ENABLED:
-            nextState.support.senses = payload.supportSensesEnabled;
-
-            return nextState;
-
-        case SET_LEARNING_DIFFICULTIES_ENABLED:
-            nextState.support.learning_difficulties = payload.supportLearningDifficultiesEnabled;
-
-            return nextState;
-
-        case SET_SCREENREADER_ENABLED:
-            nextState.ui.screenreader = payload.supportScreenreaderEnabled;
-
-            return nextState;
-
         case SET_UI_FONTSIZE: {
             const root = document.querySelector(':root') as HTMLElement;
 
@@ -299,6 +273,26 @@ ReducerRegistry.register<IUserData>(
 
             return nextState;
 
+        case SET_AUDIO_OTHERS_VOLUME:
+            nextState.audio.volume = payload.value;
+
+            return nextState;
+
+        case SET_AUDIO_HIGH_FREQUENCIES:
+            nextState.audio.highFreq = payload.value;
+
+            return nextState;
+
+        case SET_AUDIO_AMPLIFY:
+            nextState.audio.amplify = payload.value;
+
+            return nextState;
+
+        case SET_AUDIO_BALANCE:
+            nextState.audio.balance = payload.value;
+
+            return nextState;
+
         default:
             return state;
         }
@@ -343,4 +337,3 @@ function _parseIconSize(iconSizeValue: number) {
         return '1';
     }
 }
-

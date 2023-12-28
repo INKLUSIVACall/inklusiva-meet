@@ -44,20 +44,20 @@ export function getTranscriptionLink(state: IReduxState): string | undefined {
     return conference?.transcriptionLink ?? '';
 }
 
-/** ...............................
+/** .....................................................
  *  Returns all states of TranscriptionTab
  *
  * @param stateful
  */
 export function getTranscriptionTabProps(stateful: IStateful) {
     const state = toState(stateful);
-    const active = isTranscriptionEnabled(state);
-    const fontSize = getFontSize(state);
-    const history = getHistory(state);
+    const transcriptionActive = isTranscriptionEnabled(state);
+    const transcriptionFontSize = getFontSize(state);
+    const transcriptionHistory = getHistory(state);
 
     return {
-        active,
-        fontSize,
-        history
+        transcriptionActive,
+        transcriptionFontSize,
+        transcriptionHistory
     };
 }

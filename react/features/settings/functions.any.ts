@@ -200,8 +200,10 @@ export function getProfileTabProps(stateful: IStateful) {
     } = state['features/base/conference'];
     const { hideEmailInSettings } = state['features/base/config'];
     const localParticipant = getLocalParticipant(state);
+    const learningDifficulties = state['features/inklusiva/userdata'].support.learning_difficulties ?? false;
 
     return {
+        learningDifficulties,
         authEnabled: Boolean(conference && authEnabled),
         authLogin,
         displayName: localParticipant?.name,

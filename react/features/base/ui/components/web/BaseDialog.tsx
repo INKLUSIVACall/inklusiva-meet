@@ -79,7 +79,9 @@ const useStyles = makeStyles()(theme => {
             },
 
             '&.large': {
-                width: '864px'
+                // width: '864px'
+                width: '70vw',
+                maxWidth: '1120px'
             },
 
             '&.unmount': {
