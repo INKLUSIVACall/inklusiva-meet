@@ -4,13 +4,14 @@ import { IStore } from '../app/types';
 import { setAudioInputDevice, setVideoInputDevice } from '../base/devices/actions';
 import { getDeviceLabelById, setAudioOutputDeviceId } from '../base/devices/functions';
 import { updateSettings } from '../base/settings/actions';
+import { setAmplify, setBalance, setHighFreq, setOthersVolume } from '../inklusiva/audiosettings/actions';
+import { setAcousticCuesEnabledState } from '../inklusiva/uisettings/actions.web';
 import { toggleOthersAudioInput } from '../inklusiva/userdata/actions';
 import { toggleNoiseSuppression } from '../noise-suppression/actions';
 import { setScreenshareFramerate } from '../screen-share/actions';
 
 import { getAudioDeviceSelectionDialogProps, getVideoDeviceSelectionDialogProps } from './functions';
 import logger from './logger';
-
 
 /**
  * Submits the settings related to audio device selection.
@@ -65,6 +66,26 @@ export function submitAudioDeviceSelectionTab(newState: any, isDisplayedOnWelcom
 
         if (newState.othersAudio !== currentState.othersAudio) {
             dispatch(toggleOthersAudioInput());
+        }
+        if (newState.acousticCues !== currentState.acousticCues) {
+            dispatch(setAcousticCuesEnabledState(newState.acousticCues));
+        }
+
+        if (newState.othersVolume !== currentState.othersVolume) {
+            dispatch(setOthersVolume(newState.othersVolume));
+        }
+
+        if (newState.balance !== currentState.balance) {
+            dispatch(setBalance(newState.balance));
+        }
+
+        if (newState.amplify !== currentState.amplify) {
+            dispatch(setAmplify(newState.amplify));
+        }
+
+        console.log(newState);
+        if (newState.highFrequencies !== currentState.highFrequencies) {
+            dispatch(setHighFreq(newState.highFrequencies));
         }
     };
 }

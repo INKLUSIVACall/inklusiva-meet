@@ -1,4 +1,13 @@
 import { IStore } from '../../app/types';
+import { IStateful } from '../../base/app/types';
+import { getRemoteParticipants } from '../../base/participants/functions';
+import {
+    setParticipantBrightness,
+    setParticipantContrast,
+    setParticipantOpacitySetting,
+    setParticipantSaturation,
+    setParticipantZoomLevel
+} from '../../filmstrip/actions.web';
 
 import {
     SET_USERVIDEO_BRIGHTNESS,
@@ -11,22 +20,12 @@ import {
     SET_USERVIDEO_ZOOM
 } from './actionTypes';
 import {
-    areOtherParticipantsEnabled,
     areInterpretersEnabled,
+    areOtherParticipantsEnabled,
     getUserVideoTabProps,
     isScreensharingEnabled
 } from './functions';
 
-import { 
-    setParticipantBrightness,
-    setParticipantContrast,
-    setParticipantOpacitySetting,
-    setParticipantSaturation,
-    setParticipantZoomLevel
-} from '../../filmstrip/actions.web';
-
-import { getRemoteParticipants } from '../../base/participants/functions';
-import { IStateful } from '../../base/app/types';
 
 /**
  * Submits new values to the state inside the project store.
@@ -82,11 +81,11 @@ export function toggleOtherParticipants(): any {
 export function toggleInterpreters(): any {
     return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
         if (areInterpretersEnabled(getState())) {
-            dispatch(setUserVideoInterpretersState(false))
+            dispatch(setUserVideoInterpretersState(false));
         } else {
             dispatch(setUserVideoInterpretersState(true));
         }
-    }
+    };
 }
 
 /**
@@ -97,11 +96,11 @@ export function toggleInterpreters(): any {
 export function toggleScreensharing(): any {
     return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
         if (isScreensharingEnabled(getState())) {
-            dispatch(setUserVideoScreensharingState(false))
+            dispatch(setUserVideoScreensharingState(false));
         } else {
             dispatch(setUserVideoScreensharingState(true));
         }
-    }
+    };
 }
 
 /**
@@ -166,7 +165,7 @@ export function setUserVideoInterpretersState(enabled: boolean): any {
     return {
         type: SET_USERVIDEO_INTERPRETERS,
         enabled
-    }
+    };
 }
 
 /**
@@ -179,7 +178,7 @@ export function setUserVideoScreensharingState(enabled: boolean): any {
     return {
         type: SET_USERVIDEO_SCREESHARING,
         enabled
-    }
+    };
 }
 
 /**

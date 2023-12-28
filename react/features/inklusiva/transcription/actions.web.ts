@@ -6,36 +6,15 @@ import {
     SET_TRANSCRIPTION_HISTORY_VALUE,
     UPDATE_TRANSCRIPT_LINK
 } from './actionTypes';
-import { getTranscriptionTabProps, isTranscriptionEnabled } from './functions.web';
+import { isTranscriptionEnabled } from './functions.web';
 
-/**
- * Action to submit the transcription tab props.
- *
- * @param {Object} newState - The new state.
- * @returns {Function}
- */
-export function submitTranscriptionTabProps(newState: any): Function {
-    return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
-        const currentState = getTranscriptionTabProps(getState());
-
-        if (newState.active !== currentState.active) {
-            dispatch(toggleActive());
-        }
-        if (newState.fontSize !== currentState.fontSize) {
-            dispatch(setFontSizeValue(newState.fontSize));
-        }
-        if (newState.history !== currentState.history) {
-            dispatch(setHistoryValue(newState.history));
-        }
-    };
-}
 
 /**
  * Action to toggle the transcription enabled flag.
  *
  * @returns {any}
  */
-export function toggleActive(): any {
+export function toggleActiveTranscription(): any {
     return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
         if (isTranscriptionEnabled(getState())) {
             dispatch(setTranscriptionEnabled(false));
@@ -59,13 +38,14 @@ export function setTranscriptionEnabled(transcriptionEnabled: boolean): any {
     };
 }
 
+
 /**
  * Action to set the transcription font size value.
  *
  * @param {number} fontSizeValue - The new value.
  * @returns {Object}
  */
-export function setFontSizeValue(fontSizeValue: number): any {
+export function setTranscriptionFontSizeValue(fontSizeValue: number): any {
     return {
         type: SET_TRANSCRIPTION_FONTSIZE_VALUE,
         fontSizeValue
@@ -78,7 +58,7 @@ export function setFontSizeValue(fontSizeValue: number): any {
  * @param {number} historyValue - The new value.
  * @returns {Object}
  */
-export function setHistoryValue(historyValue: number): any {
+export function setTranscriptionHistoryValue(historyValue: number): any {
     return {
         type: SET_TRANSCRIPTION_HISTORY_VALUE,
         historyValue

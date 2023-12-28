@@ -776,7 +776,7 @@ class Thumbnail extends Component<IProps, IState> {
         };
 
         if (_isSignLanguageTranslatorOverlay) {
-            styles.thumbnail.position = 'static';            
+            styles.thumbnail.position = 'static';
         }
 
         if (_isHidden) {

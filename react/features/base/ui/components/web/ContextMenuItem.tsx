@@ -133,6 +133,7 @@ const useStyles = makeStyles()(theme => {
         selected: {
             borderLeft: `3px solid ${theme.palette.action01Hover}`,
             paddingLeft: '13px',
+            background: theme.palette.ui02,
             backgroundColor: theme.palette.ui02
         },
 

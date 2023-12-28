@@ -65,13 +65,13 @@ export function getDistressBtnTabProps(stateful: IStateful) {
     const dimming = getDistressBtnDimmingValue(state);
     const volume = getDistressBtnVolumeValue(state);
     const message = isDistressBtnMessageEnabled(state);
-    const message_text = getDistressBtnMessageText(state);
+    const messageText = getDistressBtnMessageText(state);
 
     return {
         active,
         dimming,
         volume,
         message,
-        message_text
+        messageText
     };
 }

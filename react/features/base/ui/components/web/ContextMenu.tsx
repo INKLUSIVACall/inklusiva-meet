@@ -137,6 +137,7 @@ const useStyles = makeStyles()(theme => {
             right: `${participantsPaneTheme.panePadding}px`,
             top: 0,
             zIndex: 2,
+            maxWidth: '280px',
             maxHeight: `${MAX_HEIGHT}px`,
             overflowY: 'auto',
             padding: `${theme.spacing(2)} 0`

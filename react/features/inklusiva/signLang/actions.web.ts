@@ -1,22 +1,35 @@
-import { IReduxState, IStore } from "../../app/types";
-import { IStateful } from "../../base/app/types";
-import { toState } from "../../base/redux/functions";
-import { SET_SIGNLANG_DISPLAY_STRING, SET_SIGNLANG_ENABLED,SET_SIGNLANG_WINDOWSIZE_VALUE } from "./actionTypes";
-import { getSignLangTabProps, isSignLangEnabled, getWindowSize, getDisplayString } from "./functions.web";
+import { IStore } from '../../app/types';
+import {
+    setTranscriptionFontSizeValue,
+    setTranscriptionHistoryValue,
+    toggleActiveTranscription
+} from '../transcription/actions.web';
 
+import { SET_SIGNLANG_DISPLAY_STRING, SET_SIGNLANG_ENABLED, SET_SIGNLANG_WINDOWSIZE_VALUE } from './actionTypes';
+import { getSignLangTabProps, isSignLangEnabled } from './functions.web';
 
-export function submitSignLangTabProps(newState: any){
-
-    return(dispatch: IStore['dispatch'], getState: IStore['getState']) =>{
+export function submitSignLangTabProps(newState: any) {
+    return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
         const currentState = getSignLangTabProps(getState());
-        if (newState.active !== currentState.active){
+
+        if (newState.signLangActive !== currentState.signLangActive) {
             dispatch(toggleActive());
         }
-        if (newState.display !== currentState.display){
-            dispatch(setDisplayString(newState.display))
+        if (newState.signLangDisplay !== currentState.signLangDisplay) {
+            dispatch(setDisplayString(newState.signLangDisplay));
         }
-        if (newState.windowSize !== currentState.windowSize){
-            dispatch(setWindowSize(newState.windowSize));
+        if (newState.signLangWindowSize !== currentState.signLangWindowSize) {
+            dispatch(setWindowSize(newState.signLangWindowSize));
+        }
+
+        if (newState.transcriptionActive !== currentState.transcriptionActive) {
+            dispatch(toggleActiveTranscription());
+        }
+        if (newState.transcriptionFontSize !== currentState.transcriptionFontSize) {
+            dispatch(setTranscriptionFontSizeValue(newState.transcriptionFontSize));
+        }
+        if (newState.transcriptionHistory !== currentState.transcriptionHistory) {
+            dispatch(setTranscriptionHistoryValue(newState.transcriptionHistory));
         }
     };
 }
@@ -32,23 +45,22 @@ export function toggleActive(): any {
 }
 
 export function setSignLangEnabledState(enabled: boolean): any {
-    
     return {
         type: SET_SIGNLANG_ENABLED,
         enabled
     };
 }
 
-export function setDisplayString(displayValue: string): any{
+export function setDisplayString(displayValue: string): any {
     return {
-    type: SET_SIGNLANG_DISPLAY_STRING,
-    displayValue
-    }
+        type: SET_SIGNLANG_DISPLAY_STRING,
+        displayValue
+    };
 }
 
-export function setWindowSize(value: number): any{
-    return{
+export function setWindowSize(value: number): any {
+    return {
         type: SET_SIGNLANG_WINDOWSIZE_VALUE,
         value
-    }
+    };
 }

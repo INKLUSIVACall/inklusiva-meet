@@ -13,8 +13,9 @@ export const THRESHOLDS = [
             'chat',
             'raisehand',
             'reactions',
-            'participants',
-            'tileview'
+            'participants'
+
+            // 'tileview'
         ]
     },
     {
@@ -27,8 +28,9 @@ export const THRESHOLDS = [
             'desktop',
             'chat',
             'raisehand',
-            'participants',
-            'tileview'
+            'participants'
+
+            // 'tileview'
         ]
     },
     {

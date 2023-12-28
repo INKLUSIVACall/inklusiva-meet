@@ -128,35 +128,33 @@ class TranscriptionTab extends AbstractDialogTab<IProps, any> {
                 <div className = { classes.inputblockContainer }>
                     <Slider
                         className = { classes.inputElement }
+                        defaultValue = { fontSize }
                         label = { t('toolbar.transcription.fontsize_label') }
                         max = { 200 }
                         min = { 0 }
-                        step = { 1 }
-                        defaultValue = { fontSize }
-                        // eslint-disable-next-line react/jsx-no-bind
                         onChange = { event =>
                             super._onChange({
                                 fontSize: event.target.value
                             })
-                        } />
+                        }
+                        step = { 1 } />
                     <span>{fontSize}%</span>
                 </div>
 
                 <div className = { classes.inputblockContainer }>
                     <Slider
                         className = { classes.inputElement }
-                        label = { t('toolbar.transcription.history_label') }
+                        defaultValue = { history }
 
+                        label = { t('toolbar.transcription.history_label') }
                         max = { 100 }
                         min = { 0 }
-                        step = { 1 }
-                        defaultValue = { history }
-                        // eslint-disable-next-line react/jsx-no-bind
                         onChange = { event => {
                             super._onChange({
                                 history: event.target.value
                             });
-                        } } />
+                        } }
+                        step = { 1 } />
                     <span>{textlength}</span>
                 </div>
             </div>
