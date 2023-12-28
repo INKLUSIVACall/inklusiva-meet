@@ -14,7 +14,9 @@ import AbstractDialogTab, {
 import { translate } from '../../../base/i18n/functions';
 import { withPixelLineHeight } from '../../../base/styles/functions.web';
 import Button from '../../../base/ui/components/web/Button';
+import Checkbox from '../../../base/ui/components/web/Checkbox';
 import Input from '../../../base/ui/components/web/Input';
+import { inklusivaSettingsStyles } from '../../../inklusiva/ui-constants';
 
 /**
  * The type of the React {@code Component} props of {@link ProfileTab}.
@@ -62,9 +64,15 @@ export interface IProps extends AbstractDialogTabProps, WithTranslation {
     id: string;
 
     /**
+     * Whether easy language mode is enabled.
+     */
+    learningDifficulties: boolean;
+
+    /**
      * If the display name is read only.
      */
     readOnlyName: boolean;
+
 }
 
 const styles = (theme: Theme) => {
@@ -96,7 +104,9 @@ const styles = (theme: Theme) => {
 
         name: {
             marginBottom: theme.spacing(1)
-        }
+        },
+
+        ...inklusivaSettingsStyles(theme)
     };
 };
 
@@ -163,6 +173,7 @@ class ProfileTab extends AbstractDialogTab<IProps, any> {
             hideEmailInSettings,
             id,
             readOnlyName,
+            learningDifficulties,
             t
         } = this.props;
 
@@ -195,6 +206,22 @@ class ProfileTab extends AbstractDialogTab<IProps, any> {
                         value = { email } />
                 </div>}
                 { authEnabled && this._renderAuth() }
+
+                <div className = { classes.inputblockContainer }>
+                    <h2>{ t('settings.basic.languageHeadline')}</h2>
+                    <p>{ t('settings.basic.languageDescription')}</p>
+                    <Checkbox
+                        checked = { learningDifficulties }
+                        className = { classes.inputElement }
+                        label = { t('settings.basic.languageHeadline') }
+                        name = 'learning_difficulties_enable'
+                        onChange = { () =>
+                            super._onChange({
+                                learningDifficulties: !learningDifficulties
+                            })
+                        } />
+                </div>
+
             </div>
         );
     }

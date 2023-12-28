@@ -22,11 +22,7 @@ import {
     getUserSelectedMicDeviceId,
     getUserSelectedOutputDeviceId
 } from '../base/settings/functions.web';
-import { isNoiseSuppressionEnabled } from '../noise-suppression/functions';
-import { isPrejoinPageVisible } from '../prejoin/functions';
-import { SS_DEFAULT_FRAME_RATE, SS_SUPPORTED_FRAMERATES } from '../settings/constants';
-import { isDeviceHidSupported } from '../web-hid/functions';
-
+import { isAcousticCuesEnabled } from '../inklusiva/uisettings/functions';
 import {
     getAmplifyValue,
     getBalanceValue,
@@ -36,6 +32,11 @@ import {
     isOthersAudioInputEnabled,
     isOwnAudioInputEnabled
 } from '../inklusiva/userdata/functions';
+import { isNoiseSuppressionEnabled } from '../noise-suppression/functions';
+import { isPrejoinPageVisible } from '../prejoin/functions';
+import { SS_DEFAULT_FRAME_RATE, SS_SUPPORTED_FRAMERATES } from '../settings/constants';
+import { isDeviceHidSupported } from '../web-hid/functions';
+
 
 /**
  * Returns the properties for the audio device selection dialog from Redux state.
@@ -63,11 +64,13 @@ export function getAudioDeviceSelectionDialogProps(stateful: IStateful, isDispla
 
     const ownAudio = isOwnAudioInputEnabled(state);
     const othersAudio = isOthersAudioInputEnabled(state);
-    const volume = getVolumeValue(state);
+    const othersVolume = getVolumeValue(state);
     const highFrequencies = getHighFrequenciesValue(state);
     const amplify = getAmplifyValue(state);
     const balance = getBalanceValue(state);
     const background = isFilterBackgroundNoiseEnabled(state);
+    const acousticCues = isAcousticCuesEnabled(state);
+
 
     // When the previews are disabled we don't need multiple audio input support in order to change the mic. This is the
     // case for Safari on iOS.
@@ -103,11 +106,12 @@ export function getAudioDeviceSelectionDialogProps(stateful: IStateful, isDispla
 
         ownAudio,
         othersAudio,
-        volume,
+        othersVolume,
         highFrequencies,
         amplify,
         balance,
-        background
+        background,
+        acousticCues
     };
 }
 

@@ -46,7 +46,8 @@ const useStyles = makeStyles()(theme => {
             color: theme.palette.text01,
             display: 'inline-flex',
             alignItems: 'center',
-            fontSize: '0.875rem',
+            fontSize: '1rem',
+            fontWeight: 500,
 
             '&.is-mobile': {
                 ...withPixelLineHeight(theme.typography.bodyLongRegularLarge)
@@ -178,3 +179,4 @@ const Checkbox = ({
 };
 
 export default Checkbox;
+

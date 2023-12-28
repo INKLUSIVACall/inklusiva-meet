@@ -100,7 +100,7 @@ const styles = (theme: Theme) => {
             flex: '1 1 auto',
             marginBottom: '10px !important'
         },
-        valueColum: {
+        valueColumn: {
             flex: '0 0 20%',
             paddingLeft: theme.spacing(5)
         }
@@ -206,7 +206,7 @@ class UserVideoTab extends AbstractDialogTab<IProps, any> {
                             }
                             step = { 1 } />
                     </div>
-                    <div className = { classes.valueColum } >
+                    <div className = { classes.valueColumn } >
                         { contrast }%
                     </div>
                 </div>
@@ -232,7 +232,7 @@ class UserVideoTab extends AbstractDialogTab<IProps, any> {
                             }
                             step = { 1 } />
                     </div>
-                    <div className = { classes.valueColum } >
+                    <div className = { classes.valueColumn } >
                         { brightness }%
                     </div>
                 </div>
@@ -253,7 +253,7 @@ class UserVideoTab extends AbstractDialogTab<IProps, any> {
                             }
                             step = { 1 } />
                     </div>
-                    <div className = { classes.valueColum } >
+                    <div className = { classes.valueColumn } >
                         { dimming }%
                     </div>
                 </div>
@@ -274,7 +274,7 @@ class UserVideoTab extends AbstractDialogTab<IProps, any> {
                             }
                             step = { 1 } />
                     </div>
-                    <div className = { classes.valueColum } >
+                    <div className = { classes.valueColumn } >
                         { saturation }%
                     </div>
                 </div>
@@ -295,7 +295,7 @@ class UserVideoTab extends AbstractDialogTab<IProps, any> {
                             }
                             step = { 1 } />
                     </div>
-                    <div className = { classes.valueColum } >
+                    <div className = { classes.valueColumn } >
                         { zoom }%
                     </div>
                 </div>

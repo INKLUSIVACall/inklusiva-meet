@@ -149,6 +149,7 @@ import {
 } from './react/features/notifications/constants';
 import { isModerationNotificationDisplayed } from './react/features/notifications/functions';
 import { mediaPermissionPromptVisibilityChanged } from './react/features/overlay/actions';
+import { open as openParticipantsPane } from './react/features/participants-pane/actions.web';
 import { suspendDetected } from './react/features/power-monitor/actions';
 import { initPrejoin, makePrecallTest } from './react/features/prejoin/actions';
 import { isPrejoinPageVisible } from './react/features/prejoin/functions';
@@ -160,9 +161,11 @@ import { AudioMixerEffect } from './react/features/stream-effects/audio-mixer/Au
 import { createRnnoiseProcessor } from './react/features/stream-effects/rnnoise';
 import { endpointMessageReceived } from './react/features/subtitles/actions.any';
 import { handleToggleVideoMuted } from './react/features/toolbox/actions.any';
+import { setTileView } from './react/features/video-layout/actions.any';
 import { muteLocal } from './react/features/video-menu/actions.any';
 import { iAmVisitor } from './react/features/visitors/functions';
 import UIEvents from './service/UI/UIEvents';
+
 
 const logger = Logger.getLogger(__filename);
 
@@ -358,6 +361,8 @@ class ConferenceConnector {
      *
      */
     _handleConferenceJoined() {
+        APP.store.dispatch(setTileView(true));
+        APP.store.dispatch(openParticipantsPane());
         this._unsubscribe();
         this._resolve();
     }

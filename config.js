@@ -1353,14 +1353,15 @@ var config = {
     // },
 
     // Options related to the breakout rooms feature.
-    // breakoutRooms: {
-    //     // Hides the add breakout room button. This replaces `hideAddRoomButton`.
-    //     hideAddRoomButton: false,
-    //     // Hides the auto assign participants button.
-    //     hideAutoAssignButton: false,
-    //     // Hides the join breakout room button.
-    //     hideJoinRoomButton: false,
-    // },
+    breakoutRooms: {
+        //     // Hides the add breakout room button. This replaces `hideAddRoomButton`.
+        hideAddRoomButton: false,
+
+        //     // Hides the auto assign participants button.
+        //     hideAutoAssignButton: false,
+        //     // Hides the join breakout room button.
+        hideJoinRoomButton: false,
+    },
 
     // When true, virtual background feature will be disabled.
     // disableVirtualBackground: false,
