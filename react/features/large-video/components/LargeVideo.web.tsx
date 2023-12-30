@@ -233,6 +233,10 @@ class LargeVideo extends Component<IProps> {
         };
 
 
+        const unPin = () => {
+            dispatch(pinParticipant(null));
+        };
+
         return (
             <div
                 className = { className }
