@@ -10,6 +10,7 @@ import { translate } from '../../base/i18n/functions';
 import Checkbox from '../../base/ui/components/web/Checkbox';
 import Slider from '../../base/ui/components/web/Slider';
 import { inklusivaSettingsStyles } from '../../inklusiva/ui-constants';
+import { BRIGHTNESS_SLIDER_MAXIMUM, BRIGHTNESS_SLIDER_MINIMUM, CONTRAST_SLIDER_MAXIMUM, CONTRAST_SLIDER_MINIMUM, OPACITY_SLIDER_MAXIMUM, OPACITY_SLIDER_MINIMUM, SATURATION_SLIDER_MAXIMUM, SATURATION_SLIDER_MINIMUM, ZOOM_SLIDER_MAXIMUM, ZOOM_SLIDER_MINIMUM } from '../../video-menu/constants';
 
 /**
  * The type of the React {@code Component} props of {@link OwnAudioTab}.
@@ -256,8 +257,8 @@ class UiSettingsTab extends AbstractDialogTab<IProps, any> {
                                 className = { classes.inputElement }
                                 defaultValue = { contrast }
                                 label = { t('settings.userVideo.contrastSliderHeadline') }
-                                max = { 100 }
-                                min = { 0 }
+                                max = { CONTRAST_SLIDER_MAXIMUM }
+                                min = { CONTRAST_SLIDER_MINIMUM }
                                 name = 'contrast-slider'
                                 // eslint-disable-next-line react/jsx-no-bind
                                 onChange = { event =>
@@ -275,8 +276,8 @@ class UiSettingsTab extends AbstractDialogTab<IProps, any> {
                                 className = { classes.inputElement }
                                 defaultValue = { brightness }
                                 label = { t('settings.userVideo.brightnessSliderHeadline') }
-                                max = { 100 }
-                                min = { 0 }
+                                max = { BRIGHTNESS_SLIDER_MAXIMUM }
+                                min = { BRIGHTNESS_SLIDER_MINIMUM }
                                 name = 'brightness-slider'
                                 // eslint-disable-next-line react/jsx-no-bind
                                 onChange = { event =>
@@ -294,8 +295,8 @@ class UiSettingsTab extends AbstractDialogTab<IProps, any> {
                                 className = { classes.inputElement }
                                 defaultValue = { dimming }
                                 label = { t('settings.userVideo.dimSliderHeadline') }
-                                max = { 100 }
-                                min = { 0 }
+                                max = { OPACITY_SLIDER_MAXIMUM }
+                                min = { OPACITY_SLIDER_MINIMUM }
                                 name = 'dimmer-slider'
                                 // eslint-disable-next-line react/jsx-no-bind
                                 onChange = { event =>
@@ -313,8 +314,8 @@ class UiSettingsTab extends AbstractDialogTab<IProps, any> {
                                 className = { classes.inputElement }
                                 defaultValue = { saturation }
                                 label = { t('settings.userVideo.saturationSliderHeadline') }
-                                max = { 100 }
-                                min = { 0 }
+                                max = { SATURATION_SLIDER_MAXIMUM }
+                                min = { SATURATION_SLIDER_MINIMUM }
                                 name = 'saturation-slider'
                                 // eslint-disable-next-line react/jsx-no-bind
                                 onChange = { event =>
@@ -332,8 +333,8 @@ class UiSettingsTab extends AbstractDialogTab<IProps, any> {
                                 className = { classes.inputElement }
                                 defaultValue = { zoom }
                                 label = { t('settings.userVideo.zoomSliderHeadline') }
-                                max = { 200 }
-                                min = { 0 }
+                                max = { ZOOM_SLIDER_MAXIMUM }
+                                min = { ZOOM_SLIDER_MINIMUM }
                                 name = 'zoom-slider'
                                 // eslint-disable-next-line react/jsx-no-bind
                                 onChange = { event =>

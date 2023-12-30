@@ -3,17 +3,17 @@
  *
  * {
  *     type: RESIZE_FILMSTRIP,
- * }
+ * }.
  */
 export const RESIZE_FILMSTRIP = 'RESIZE_FILMSTRIP';
 
- /**
+/**
  * The type of (redux) action which sets whether the filmstrip is enabled.
  *
  * {
  *     type: SET_FILMSTRIP_ENABLED,
  *     enabled: boolean
- * }
+ * }.
  */
 export const SET_FILMSTRIP_ENABLED = 'SET_FILMSTRIP_ENABLED';
 
@@ -23,7 +23,7 @@ export const SET_FILMSTRIP_ENABLED = 'SET_FILMSTRIP_ENABLED';
  * {
  *     type: SET_FILMSTRIP_VISIBLE,
  *     visible: boolean
- * }
+ * }.
  */
 export const SET_FILMSTRIP_VISIBLE = 'SET_FILMSTRIP_VISIBLE';
 
@@ -44,8 +44,8 @@ export const SET_FILMSTRIP_VISIBLE = 'SET_FILMSTRIP_VISIBLE';
  *             width: number
  *         },
  *         filmstripWidth: number
- *     }
- * }
+ *     }.
+ * }.
  */
 export const SET_TILE_VIEW_DIMENSIONS = 'SET_TILE_VIEW_DIMENSIONS';
 
@@ -55,7 +55,7 @@ export const SET_TILE_VIEW_DIMENSIONS = 'SET_TILE_VIEW_DIMENSIONS';
  * {
  *     type: SET_HORIZONTAL_VIEW_DIMENSIONS,
  *     dimensions: Object
- * }
+ * }.
  */
 export const SET_HORIZONTAL_VIEW_DIMENSIONS = 'SET_HORIZONTAL_VIEW_DIMENSIONS';
 
@@ -64,7 +64,7 @@ export const SET_HORIZONTAL_VIEW_DIMENSIONS = 'SET_HORIZONTAL_VIEW_DIMENSIONS';
  * {
  *      type: SET_REMOTE_PARTICIPANTS,
  *      participants: Array<string>
- * }
+ * }.
  */
 export const SET_REMOTE_PARTICIPANTS = 'SET_REMOTE_PARTICIPANTS';
 
@@ -74,7 +74,7 @@ export const SET_REMOTE_PARTICIPANTS = 'SET_REMOTE_PARTICIPANTS';
  * {
  *     type: SET_VERTICAL_VIEW_DIMENSIONS,
  *     dimensions: Object
- * }
+ * }.
  */
 export const SET_VERTICAL_VIEW_DIMENSIONS = 'SET_VERTICAL_VIEW_DIMENSIONS';
 
@@ -85,7 +85,7 @@ export const SET_VERTICAL_VIEW_DIMENSIONS = 'SET_VERTICAL_VIEW_DIMENSIONS';
  *     type: SET_VOLUME,
  *     participantId: string,
  *     volume: number
- * }
+ * }.
  */
 export const SET_VOLUME = 'SET_VOLUME';
 
@@ -96,19 +96,18 @@ export const SET_VOLUME = 'SET_VOLUME';
  *     type: SET_FREQUENCY_FILTER_SETTING,
  *     participantId: string,
  *     setting: number
- * }
+ * }.
  */
 export const SET_FREQUENCY_FILTER_SETTING = 'SET_FREQUENCY_FILTER_SETTING';
 
 /**
  * The type of (redux) action which sets the brightness settings for a thumnail's video.
- *
  * {
  *     type: SET_PARTICIPANT_BRIGHTNESS,
  *     local: boolean,
  *     participantId: string|null,
  *     brightness: number
- * }
+ * }.
  */
 export const SET_PARTICIPANT_BRIGHTNESS = 'SET_PARTICIPANT_BRIGHTNESS';
 
@@ -120,7 +119,7 @@ export const SET_PARTICIPANT_BRIGHTNESS = 'SET_PARTICIPANT_BRIGHTNESS';
  *     local: boolean,
  *     participantId: string|null,
  *     contrast: number
- * }
+ * }.
  */
 export const SET_PARTICIPANT_CONTRAST = 'SET_PARTICIPANT_CONTRAST';
 
@@ -132,7 +131,7 @@ export const SET_PARTICIPANT_CONTRAST = 'SET_PARTICIPANT_CONTRAST';
  *     local: boolean,
  *     participantId: string|null,
  *     opacity: number
- * }
+ * }.
  */
 export const SET_PARTICIPANT_OPACITY = 'SET_PARTICIPANT_OPACITY';
 
@@ -144,7 +143,7 @@ export const SET_PARTICIPANT_OPACITY = 'SET_PARTICIPANT_OPACITY';
  *     local: boolean,
  *     participantId: string|null,
  *     saturation: number
- * }
+ * }.
  */
 export const SET_PARTICIPANT_SATURATION = 'SET_PARTICIPANT_SATURATION';
 
@@ -155,9 +154,56 @@ export const SET_PARTICIPANT_SATURATION = 'SET_PARTICIPANT_SATURATION';
  *     type: SET_PARTICIPANT_OPACITY,
  *     participantId: string,
  *     zoomLevel: number
- * }
+ * }.
  */
 export const SET_PARTICIPANT_ZOOM_LEVEL = 'SET_PARTICIPANT_ZOOM_LEVEL';
+
+
+/**
+ * The type of (redux) action which resets the brightness settings for all participants.
+ *
+ * {
+ *     type: RESET_PARTICIPANT_CONTRAST,
+ * }.
+ */
+export const RESET_PARTICIPANT_BRIGHTNESS = 'RESET_PARTICIPANT_BRIGHTNESS';
+
+/**
+ * The type of (redux) action which resets the contrast settings for all participants.
+ *
+ * {
+ *     type: RESET_PARTICIPANT_CONTRAST,
+ * }.
+ */
+export const RESET_PARTICIPANT_CONTRAST = 'RESET_PARTICIPANT_CONTRAST';
+
+/**
+ * The type of (redux) action which resets the opacity settings for all participants.
+ *
+ * {
+ *     type: RESET_PARTICIPANT_OPACITY,
+ * }.
+ */
+export const RESET_PARTICIPANT_OPACITY = 'RESET_PARTICIPANT_OPACITY';
+
+/**
+ * The type of (redux) action which resets the saturation settings for participants.
+ *
+ * {
+ *     type: RESET_PARTICIPANT_SATURATION,
+ * }.
+ */
+export const RESET_PARTICIPANT_SATURATION = 'RESET_PARTICIPANT_SATURATION';
+
+/**
+ * The type of (redux) action which resets the zoom level for all participants.
+ *
+ * {
+ *     type: RESET_PARTICIPANT_OPACITY,
+ * }.
+ */
+export const RESET_PARTICIPANT_ZOOM_LEVEL = 'RESET_PARTICIPANT_ZOOM_LEVEL';
+
 
 /**
  * The type of the action which sets the list of visible remote participants in the filmstrip by storing the start and
@@ -167,7 +213,7 @@ export const SET_PARTICIPANT_ZOOM_LEVEL = 'SET_PARTICIPANT_ZOOM_LEVEL';
  *      type: SET_VISIBLE_REMOTE_PARTICIPANTS,
  *      startIndex: number,
  *      endIndex: number
- * }
+ * }.
  */
 export const SET_VISIBLE_REMOTE_PARTICIPANTS = 'SET_VISIBLE_REMOTE_PARTICIPANTS';
 
@@ -176,7 +222,7 @@ export const SET_VISIBLE_REMOTE_PARTICIPANTS = 'SET_VISIBLE_REMOTE_PARTICIPANTS'
  * {
  *      type: SET_FILMSTRIP_HEIGHT,
  *      height: number
- * }
+ * }.
  */
 export const SET_FILMSTRIP_HEIGHT = 'SET_FILMSTRIP_HEIGHT';
 
@@ -185,7 +231,7 @@ export const SET_FILMSTRIP_HEIGHT = 'SET_FILMSTRIP_HEIGHT';
  * {
  *      type: SET_FILMSTRIP_WIDTH,
  *      width: number
- * }
+ * }.
  */
 export const SET_FILMSTRIP_WIDTH = 'SET_FILMSTRIP_WIDTH';
 
@@ -194,7 +240,7 @@ export const SET_FILMSTRIP_WIDTH = 'SET_FILMSTRIP_WIDTH';
  * {
  *      type: SET_USER_FILMSTRIP_HEIGHT,
  *      height: number
- * }
+ * }.
  */
 export const SET_USER_FILMSTRIP_HEIGHT = 'SET_USER_FILMSTRIP_HEIGHT';
 
@@ -203,7 +249,7 @@ export const SET_USER_FILMSTRIP_HEIGHT = 'SET_USER_FILMSTRIP_HEIGHT';
  * {
  *      type: SET_USER_FILMSTRIP_WIDTH,
  *      width: number
- * }
+ * }.
  */
 export const SET_USER_FILMSTRIP_WIDTH = 'SET_USER_FILMSTRIP_WIDTH';
 
@@ -212,7 +258,7 @@ export const SET_USER_FILMSTRIP_WIDTH = 'SET_USER_FILMSTRIP_WIDTH';
  * {
  *      type: SET_USER_IS_RESIZING,
  *      resizing: boolean
- * }
+ * }.
  */
 export const SET_USER_IS_RESIZING = 'SET_USER_IS_RESIZING';
 
@@ -222,7 +268,7 @@ export const SET_USER_IS_RESIZING = 'SET_USER_IS_RESIZING';
  * {
  *     type: SET_STAGE_FILMSTRIP_DIMENSIONS,
  *     dimensions: Object
- * }
+ * }.
  */
 export const SET_STAGE_FILMSTRIP_DIMENSIONS = 'SET_STAGE_FILMSTRIP_DIMENSIONS';
 
@@ -233,7 +279,7 @@ export const SET_STAGE_FILMSTRIP_DIMENSIONS = 'SET_STAGE_FILMSTRIP_DIMENSIONS';
  *     type: ADD_STAGE_PARTICIPANT,
  *     participantId: string,
  *     pinned: boolean
- * }
+ * }.
  */
 export const ADD_STAGE_PARTICIPANT = 'ADD_STAGE_PARTICIPANT';
 
@@ -243,7 +289,7 @@ export const ADD_STAGE_PARTICIPANT = 'ADD_STAGE_PARTICIPANT';
  * {
  *     type: REMOVE_STAGE_PARTICIPANT,
  *     participantId: string,
- * }
+ * }.
  */
 export const REMOVE_STAGE_PARTICIPANT = 'REMOVE_STAGE_PARTICIPANT';
 
@@ -253,7 +299,7 @@ export const REMOVE_STAGE_PARTICIPANT = 'REMOVE_STAGE_PARTICIPANT';
  * {
  *     type: SET_STAGE_PARTICIPANTS,
  *     queue: Array<Object>
- * }
+ * }.
  */
 export const SET_STAGE_PARTICIPANTS = 'SET_STAGE_PARTICIPANTS';
 
@@ -262,7 +308,7 @@ export const SET_STAGE_PARTICIPANTS = 'SET_STAGE_PARTICIPANTS';
  * {
  *     type: TOGGLE_PIN_STAGE_PARTICIPANT,
  *     participantId: String
- * }
+ * }.
  */
 export const TOGGLE_PIN_STAGE_PARTICIPANT = 'TOGGLE_PIN_STAGE_PARTICIPANT';
 
@@ -270,7 +316,7 @@ export const TOGGLE_PIN_STAGE_PARTICIPANT = 'TOGGLE_PIN_STAGE_PARTICIPANT';
  * The type of Redux action which clears the list of stage participants.
  * {
  *     type: CLEAR_STAGE_PARTICIPANTS
- * }
+ * }.
  */
 export const CLEAR_STAGE_PARTICIPANTS = 'CLEAR_STAGE_PARTICIPANTS';
 
@@ -280,7 +326,7 @@ export const CLEAR_STAGE_PARTICIPANTS = 'CLEAR_STAGE_PARTICIPANTS';
  * {
  *     type: SET_SCREENSHARE_FILMSTRIP_PARTICIPANT,
  *     participantId: string|undefined
- * }
+ * }.
  */
 export const SET_SCREENSHARE_FILMSTRIP_PARTICIPANT = 'SET_SCREENSHARE_FILMSTRIP_PARTICIPANT';
 
@@ -288,7 +334,7 @@ export const SET_SCREENSHARE_FILMSTRIP_PARTICIPANT = 'SET_SCREENSHARE_FILMSTRIP_
  * The type of Redux action which sets the dimensions of the screenshare tile.
  * {
  *     type: SET_SCREENSHARING_TILE_DIMENSIONS
- * }
+ * }.
  */
 export const SET_SCREENSHARING_TILE_DIMENSIONS = 'SET_SCREENSHARING_TILE_DIMENSIONS';
 
@@ -296,6 +342,6 @@ export const SET_SCREENSHARING_TILE_DIMENSIONS = 'SET_SCREENSHARING_TILE_DIMENSI
  * The type of Redux action which sets the visibility of the top panel.
  * {
  *     type: SET_TOP_PANEL_VISIBILITY
- * }
+ * }.
  */
 export const SET_TOP_PANEL_VISIBILITY = 'SET_TOP_PANEL_VISIBILITY';

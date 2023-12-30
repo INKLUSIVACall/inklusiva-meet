@@ -25,10 +25,46 @@ export const ZOOM_SLIDER_MINIMUM = 100;
  */
 export const ZOOM_SLIDER_MAXIMUM = 300;
 
+
 /**
- * Scale of the zoom slider value.
+ * Minimum value of the brightness slider.
  */
-export const ZOOM_SLIDER_SCALE = 100;
+export const BRIGHTNESS_SLIDER_MINIMUM = 50;
+
+/**
+ * Maximum value of the brightness slider.
+ */
+export const BRIGHTNESS_SLIDER_MAXIMUM = 150;
+
+/**
+ * Minimum value of the contrast slider.
+ */
+export const CONTRAST_SLIDER_MINIMUM = 0;
+
+/**
+ * Maximum value of the contrast slider.
+ */
+export const CONTRAST_SLIDER_MAXIMUM = 100;
+
+/**
+ * Minimum value of the saturation slider.
+ */
+export const OPACITY_SLIDER_MINIMUM = 0;
+
+/**
+ * Maximum value of the saturation slider.
+ */
+export const OPACITY_SLIDER_MAXIMUM = 100;
+
+/**
+ * Minimum value of the saturation slider.
+ */
+export const SATURATION_SLIDER_MINIMUM = 0;
+
+/**
+ * Maximum value of the saturation slider.
+ */
+export const SATURATION_SLIDER_MAXIMUM = 100;
 
 /**
  * Participant context menu button keys.

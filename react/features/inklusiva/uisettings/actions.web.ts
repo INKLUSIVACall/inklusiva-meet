@@ -1,4 +1,5 @@
 import { IStore } from '../../app/types';
+import { resetParticipantBrightness, resetParticipantContrast, resetParticipantOpacitySetting, resetParticipantSaturation, resetParticipantZoomLevel } from '../../filmstrip/actions.web';
 import {
     setUserVideoBrightnessValue,
     setUserVideoContrastValue,
@@ -51,21 +52,26 @@ export function submitUISettingsTabProps(newState: {
         }
         if (newState.brightness !== currentState.brightness) {
             dispatch(setUserVideoBrightnessValue(newState.brightness));
+            dispatch(resetParticipantBrightness());
         }
         if (newState.contrast !== currentState.contrast) {
             dispatch(setUserVideoContrastValue(newState.contrast));
+            dispatch(resetParticipantContrast());
         }
         if (newState.dimming !== currentState.dimming) {
             dispatch(setUserVideoDimmingValue(newState.dimming));
+            dispatch(resetParticipantOpacitySetting());
         }
         if (newState.otherParticipants !== currentState.otherParticipants) {
             dispatch(toggleOtherParticipants());
         }
         if (newState.saturation !== currentState.saturation) {
             dispatch(setUserVideoSaturationValue(newState.saturation));
+            dispatch(resetParticipantSaturation());
         }
         if (newState.zoom !== currentState.zoom) {
             dispatch(setUserVideoZoomValue(newState.zoom));
+            dispatch(resetParticipantZoomLevel());
         }
     };
 }

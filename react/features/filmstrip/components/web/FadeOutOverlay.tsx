@@ -1,27 +1,18 @@
-import React, { Component } from 'react';
-import { Theme } from '@mui/material';
 import { withStyles } from '@mui/styles';
-import { IReduxState, IStore } from '../../../app/types';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
+import { IReduxState } from '../../../app/types';
 
 /**
  * The type of the React {@code Component} props of {@link FadeOutOverlay}.
  */
-export interface IProps  {
-    /**
-     * Opacity of the overlay.
-     */
-    opacity: number;
+export interface IProps {
 
     /**
-     * Is local?
+     * An object containing CSS classes.
      */
-    local: boolean;
-
-    /**
-     * Is Large Video?
-     */
-    largeVideo: boolean;
+    classes: any;
 
     /**
      * Large Video Opacity.
@@ -29,17 +20,13 @@ export interface IProps  {
     largeVideoOpacity: number;
 
     /**
-     * Participant ID.
+     * Opacity of the overlay.
      */
-    partcipantId?: string;
+    opacity: number;
 
-    /**
-     * An object containing CSS classes.
-     */
-    classes: any;
 }
 
-const defaultStyles = (theme: Theme) => {
+const defaultStyles = () => {
     return {
         containerFade: {
             position: 'absolute' as const,
@@ -49,11 +36,11 @@ const defaultStyles = (theme: Theme) => {
             width: '100%',
             borderRadius: '4px',
             backgroundColor: '#000000',
-            zIndex: 1,
+            zIndex: 2,
             opacity: 0
         }
-    }
-}
+    };
+};
 
 /**
  * Implements a fade out overlay.
@@ -61,15 +48,6 @@ const defaultStyles = (theme: Theme) => {
  * @augments Component
  */
 class FadeOutOverlay extends Component<IProps> {
-    /**
-     * Initializes a new Thumbnail instance.
-     *
-     * @param {Object} props - The read-only React Component props with which
-     * the new instance is to be initialized.
-     */
-    constructor(props: IProps) {
-        super(props);
-    }
 
     /**
      * Implements React's {@link Component#render()}.
@@ -83,39 +61,18 @@ class FadeOutOverlay extends Component<IProps> {
         } = this.props;
 
         return (
-            <div className = { classes.containerFade } style={{opacity: opacity}} />
+            <div
+                className = { classes.containerFade }
+                style = {{ opacity }} />
         );
     }
 }
 
-/**
- * Maps (parts of) the redux state to the associated props for this component.
- *
- * @param {Object} state - The Redux state.
- * @param {Object} ownProps - The own props of the component.
- * @private
- */
 function _mapStateToProps(state: IReduxState, ownProps: any): any {
-    const { opacity, participantId, local, largeVideo } = ownProps;
-
-    const { participantsOpacity, localOpacity } = state['features/filmstrip'];
-    const largeVideoOpacity = state['features/inklusiva/userdata'].video?.dimming;
-
-    let resultOpacity = 1;
-
-    if (local) {
-        resultOpacity = localOpacity ?? 1;
-    } else if (largeVideo) {
-        resultOpacity = largeVideoOpacity ?? 1;
-    } else {
-        resultOpacity = participantsOpacity ? (participantsOpacity[participantId] ?? 0) : 0;
-    }
+    const { opacity } = ownProps;
 
     return {
-        participantId: participantId,
-        local: local,
-        largeVideo: largeVideo,
-        opacity: resultOpacity
+        opacity
     };
 }
 

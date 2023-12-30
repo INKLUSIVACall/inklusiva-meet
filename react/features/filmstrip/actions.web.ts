@@ -12,6 +12,11 @@ import {
     ADD_STAGE_PARTICIPANT,
     CLEAR_STAGE_PARTICIPANTS,
     REMOVE_STAGE_PARTICIPANT,
+    RESET_PARTICIPANT_BRIGHTNESS,
+    RESET_PARTICIPANT_CONTRAST,
+    RESET_PARTICIPANT_OPACITY,
+    RESET_PARTICIPANT_SATURATION,
+    RESET_PARTICIPANT_ZOOM_LEVEL,
     RESIZE_FILMSTRIP,
     SET_FILMSTRIP_HEIGHT,
     SET_FILMSTRIP_WIDTH,
@@ -407,15 +412,80 @@ export function setFrequencyFilterSetting(participantId: string, setting: number
 }
 
 /**
+ * Resets the brightness for a thumbnails video.
+ *
+ * @returns {{
+ *    type: RESET_PARTICIPANT_BRIGHTNESS
+ *    }}
+ */
+export function resetParticipantBrightness() {
+    return {
+        type: RESET_PARTICIPANT_BRIGHTNESS
+    };
+}
+
+/**
+ * Resets the contrast for a thumbnails video.
+ *
+ * @returns {{
+ *   type: RESET_PARTICIPANT_CONTRAST
+ *   }}
+ */
+export function resetParticipantContrast() {
+    return {
+        type: RESET_PARTICIPANT_CONTRAST
+    };
+}
+
+/**
+ * Resets the opacity for a thumbnails video.
+ *
+ * @returns {{
+ *  type: RESET_PARTICIPANT_OPACITY
+ *  }}
+ */
+export function resetParticipantOpacitySetting() {
+    return {
+        type: RESET_PARTICIPANT_OPACITY
+    };
+}
+
+/**
+ * Resets the saturation for a thumbnails video.
+ *
+ * @returns {{
+ * type: RESET_PARTICIPANT_SATURATION
+ * }}
+ */
+export function resetParticipantSaturation() {
+    return {
+        type: RESET_PARTICIPANT_SATURATION
+    };
+}
+
+/**
+ * Resets the zoom level for a thumbnails video.
+ *
+ * @returns {{
+ * type: RESET_PARTICIPANT_ZOOM_LEVEL
+ * }}
+ */
+export function resetParticipantZoomLevel() {
+    return {
+        type: RESET_PARTICIPANT_ZOOM_LEVEL
+    };
+}
+
+/**
  * Sets the brightness for a thumbnails video.
  *
  * @param {string} participantId - The participant ID associated with the brightness.
  * @param {number} brightness - Brightness of the user.
- * @returns {{
+ * @returns {
  *     type: SET_PARTICIPANT_BRIGHTNESS
  *     participantId: string,
  *     brightness: number
- * }}
+ * }
  */
 export function setParticipantBrightness(participantId: string, brightness: number) {
     return {
@@ -447,7 +517,6 @@ export function setParticipantContrast(participantId: string, contrast: number) 
 /**
  * Sets the opacity for a thumbnails video.
  *
- * @param {boolean} local - Is this the local user?
  * @param {string} participantId - The participant ID associated with the audio.
  * @param {number} opacity - Opacity of the user.
  * @returns {{
@@ -458,13 +527,11 @@ export function setParticipantContrast(participantId: string, contrast: number) 
  * }}
  */
 export function setParticipantOpacitySetting(
-        local: boolean | undefined,
         participantId: string | null,
         opacity: number
 ) {
     return {
         type: SET_PARTICIPANT_OPACITY,
-        local: local === undefined ? false : local,
         participantId,
         opacity
     };
@@ -494,7 +561,7 @@ export function setParticipantSaturation(participantId: string, saturation: numb
  * Sets the zoom level for a thumbnails video.
  *
  * @param {string} participantId - The participant ID associated with the audio.
- * @param {number} zoomLevel - zoom level of the user.
+ * @param {number} zoomLevel - Zoom level of the user.
  * @returns {{
  *     type: SET_PARTICIPANT_ZOOM_LEVEL,
  *     participantId: string,

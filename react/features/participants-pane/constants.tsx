@@ -130,7 +130,7 @@ export const BREAKOUTROOM_BUTTON_STATUS = true;
 /**
  * Default breakoutroom list status.
  */
-export const BREAKOUTROOM_LIST_STATUS = false;
+export const BREAKOUTROOM_LIST_STATUS = true;
 
 /**
  * Default mute all button status.

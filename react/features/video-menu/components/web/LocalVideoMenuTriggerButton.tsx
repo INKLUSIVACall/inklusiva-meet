@@ -18,6 +18,7 @@ import ContextMenuItemGroup from '../../../base/ui/components/web/ContextMenuIte
 import ConnectionIndicatorContent from '../../../connection-indicator/components/web/ConnectionIndicatorContent';
 import { THUMBNAIL_TYPE } from '../../../filmstrip/constants';
 import { isStageFilmstripAvailable } from '../../../filmstrip/functions.web';
+import VideoSettingsContextMenu from '../../../inklusiva/sessiondata/VideoSettingsContextMenu';
 import { NOTIFY_CLICK_MODE } from '../../../toolbox/constants';
 import { renderConnectionStatus } from '../../actions.web';
 import { PARTICIPANT_MENU_BUTTONS as BUTTONS } from '../../constants';
@@ -117,7 +118,8 @@ const useStyles = makeStyles()(() => {
             marginTop: 0,
             right: 'auto',
             padding: '0',
-            minWidth: '200px'
+            minWidth: '200px',
+            maxHeight: '80vh'
         },
 
         flipText: {
@@ -214,6 +216,9 @@ const LocalVideoMenuTriggerButton = ({
                             participantID = { _localParticipantId } />
                     }
                 </ContextMenuItemGroup>
+                <VideoSettingsContextMenu
+                    participantId = { _localParticipantId }
+                    soundControl = { false } />
             </ContextMenu>
         );
 
