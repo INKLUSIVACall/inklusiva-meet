@@ -1,8 +1,8 @@
 import { IReduxState } from '../app/types';
 import { IStateful } from '../base/app/types';
+import { IC_ROLES } from '../base/conference/icRoles';
 import { isMobileBrowser } from '../base/environment/utils';
 import { MEDIA_TYPE } from '../base/media/constants';
-import { IC_ROLES } from '../base/conference/icRoles';
 import {
     getLocalParticipant,
     getParticipantById,
@@ -14,11 +14,7 @@ import {
 import { IJitsiParticipant, IParticipant } from '../base/participants/types';
 import { toState } from '../base/redux/functions';
 import { getHideSelfView } from '../base/settings/functions.any';
-import {
-    getVideoTrackByParticipant,
-    isLocalTrackMuted,
-    isRemoteTrackMuted
-} from '../base/tracks/functions';
+import { getVideoTrackByParticipant, isLocalTrackMuted, isRemoteTrackMuted } from '../base/tracks/functions';
 import { isTrackStreamingStatusActive } from '../connection-indicator/functions';
 import ParticipantsCounter from '../participants-pane/components/web/ParticipantsCounter';
 import { isSharingStatus } from '../shared-video/functions';
@@ -96,10 +92,9 @@ export function shouldRemoteVideosBeVisible(state: IReduxState) {
             || (participantCount > 1
                 && disable1On1Mode !== null
                 && (state['features/toolbox'].visible
-                    || ((pinnedParticipant = getPinnedParticipant(state))
-                        && pinnedParticipant.local)))
-
-            || disable1On1Mode);
+                    || ((pinnedParticipant = getPinnedParticipant(state)) && pinnedParticipant.local)))
+            || disable1On1Mode
+    );
 }
 
 /**
@@ -142,8 +137,10 @@ export function isVideoPlayable(stateful: IStateful, id: string) {
  */
 export function calculateThumbnailSizeForHorizontalView(clientHeight = 0) {
     const topBottomMargin = 15;
-    const availableHeight = Math.min(clientHeight,
-        (interfaceConfig.FILM_STRIP_MAX_HEIGHT || DEFAULT_FILMSTRIP_WIDTH) + topBottomMargin);
+    const availableHeight = Math.min(
+        clientHeight,
+        (interfaceConfig.FILM_STRIP_MAX_HEIGHT || DEFAULT_FILMSTRIP_WIDTH) + topBottomMargin
+    );
     const height = availableHeight - topBottomMargin;
 
     return {
@@ -169,12 +166,14 @@ export function calculateThumbnailSizeForHorizontalView(clientHeight = 0) {
 export function calculateThumbnailSizeForVerticalView(clientWidth = 0, filmstripWidth = 0, isResizable = false) {
     const availableWidth = Math.min(
         Math.max(clientWidth - VERTICAL_VIEW_HORIZONTAL_MARGIN, 0),
-        (isResizable ? filmstripWidth : interfaceConfig.FILM_STRIP_MAX_HEIGHT) || DEFAULT_FILMSTRIP_WIDTH);
+        (isResizable ? filmstripWidth : interfaceConfig.FILM_STRIP_MAX_HEIGHT) || DEFAULT_FILMSTRIP_WIDTH
+    );
 
     return {
         local: {
-            height: Math.floor(availableWidth
-                / (interfaceConfig.LOCAL_THUMBNAIL_RATIO || DEFAULT_LOCAL_TILE_ASPECT_RATIO)),
+            height: Math.floor(
+                availableWidth / (interfaceConfig.LOCAL_THUMBNAIL_RATIO || DEFAULT_LOCAL_TILE_ASPECT_RATIO)
+            ),
             width: availableWidth
         },
         remote: {
@@ -204,8 +203,11 @@ export function getThumbnailMinHeight(clientWidth: number) {
  * @param {number} clientWidth - The width of the window.
  * @returns {number} The default aspect ratio for a tile.
  */
-export function getTileDefaultAspectRatio(disableResponsiveTiles: boolean,
-        disableTileEnlargement: boolean, clientWidth: number) {
+export function getTileDefaultAspectRatio(
+        disableResponsiveTiles: boolean,
+        disableTileEnlargement: boolean,
+        clientWidth: number
+) {
     if (!disableResponsiveTiles && disableTileEnlargement && clientWidth < ASPECT_RATIO_BREAKPOINT) {
         return SQUARE_TILE_ASPECT_RATIO;
     }
@@ -225,18 +227,21 @@ export function getNumberOfPartipantsForTileView(state: IReduxState) {
     const { localScreenShare } = state['features/base/participants'];
     const localParticipantsCount = localScreenShare ? 2 : 1;
 
-    let numberOfFloatingSignLangTranslators:number = 0;
+    let numberOfFloatingSignLangTranslators = 0;
     const { assistant } = state['features/inklusiva/userdata'];
-    if (assistant.signLang.display === "window") {
+
+    if (assistant.signLang.display === 'window') {
         const { conference } = state['features/base/conference'];
+
         conference?.getParticipants()?.forEach((participant: IJitsiParticipant) => {
-            if ( conference?.checkMemberHasRole(participant?.getId(), IC_ROLES.SIGN_LANG_TRANSLATOR)) {
-                numberOfFloatingSignLangTranslators ++;
+            if (conference?.checkMemberHasRole(participant?.getId(), IC_ROLES.SIGN_LANG_TRANSLATOR)) {
+                numberOfFloatingSignLangTranslators++;
             }
         });
     }
 
-    const numberOfParticipants = getParticipantCountWithFake(state)
+    const numberOfParticipants
+        = getParticipantCountWithFake(state)
         - (iAmRecorder ? 1 : 0)
         - (disableSelfView ? localParticipantsCount : 0)
         - numberOfFloatingSignLangTranslators;
@@ -264,7 +269,8 @@ export function calculateNonResponsiveTileViewDimensions(state: IReduxState) {
         disableResponsiveTiles: true
     });
 
-    if (typeof size === 'undefined') { // The columns don't fit into the screen. We will have horizontal scroll.
+    if (typeof size === 'undefined') {
+        // The columns don't fit into the screen. We will have horizontal scroll.
         const aspectRatio = disableTileEnlargement
             ? getTileDefaultAspectRatio(true, disableTileEnlargement, clientWidth)
             : TILE_PORTRAIT_ASPECT_RATIO;
@@ -359,8 +365,9 @@ export function calculateResponsiveTileViewDimensions({
 
             let area = Math.round(
                 (currentHeight + TILE_VERTICAL_MARGIN)
-                * (currentWidth + TILE_HORIZONTAL_MARGIN)
-                * numberOfVisibleParticipants);
+                    * (currentWidth + TILE_HORIZONTAL_MARGIN)
+                    * numberOfVisibleParticipants
+            );
 
             const currentDimensions = {
                 maxArea: area,
@@ -375,12 +382,14 @@ export function calculateResponsiveTileViewDimensions({
             if (!minHeightEnforced) {
                 if (area > dimensions.maxArea) {
                     dimensions = currentDimensions;
-                } else if ((area === dimensions.maxArea)
+                } else if (
+                    area === dimensions.maxArea
                     && ((oldNumberOfVisibleParticipants > desiredNumberOfVisibleTiles
-                            && oldNumberOfVisibleParticipants >= numberOfParticipants)
+                        && oldNumberOfVisibleParticipants >= numberOfParticipants)
                         || (oldNumberOfVisibleParticipants < numberOfParticipants
                             && numberOfVisibleParticipants <= desiredNumberOfVisibleTiles))
-                ) { // If the area of the new candidates and the old ones are equal we prefer the one that will have
+                ) {
+                    // If the area of the new candidates and the old ones are equal we prefer the one that will have
                     // closer number of visible participants to desiredNumberOfVisibleTiles config.
                     dimensions = currentDimensions;
                 }
@@ -407,7 +416,8 @@ export function calculateResponsiveTileViewDimensions({
         ({ height, width, columns, rows } = minHeightEnforcedDimensions);
     } else if (zeroVisibleRowsDimensions.maxArea > 0) {
         ({ height, width, columns, rows } = zeroVisibleRowsDimensions);
-    } else { // This would mean that we can't fit even one thumbnail with minimal size.
+    } else {
+        // This would mean that we can't fit even one thumbnail with minimal size.
         const aspectRatio = disableTileEnlargement
             ? getTileDefaultAspectRatio(false, disableTileEnlargement, clientWidth)
             : TILE_PORTRAIT_ASPECT_RATIO;
@@ -453,10 +463,12 @@ export function calculateThumbnailSizeForTileView({
 }) {
     const aspectRatio = getTileDefaultAspectRatio(disableResponsiveTiles, disableTileEnlargement, clientWidth);
     const minHeight = minTileHeight || getThumbnailMinHeight(clientWidth);
-    const viewWidth = clientWidth - (columns * TILE_HORIZONTAL_MARGIN)
+    const viewWidth
+        = clientWidth
+        - columns * TILE_HORIZONTAL_MARGIN
         - (noHorizontalContainerMargin ? SCROLL_SIZE : TILE_VIEW_GRID_HORIZONTAL_MARGIN);
     const availableHeight = clientHeight - TILE_VIEW_GRID_VERTICAL_MARGIN;
-    const viewHeight = availableHeight - (minVisibleRows * TILE_VERTICAL_MARGIN);
+    const viewHeight = availableHeight - minVisibleRows * TILE_VERTICAL_MARGIN;
     const initialWidth = viewWidth / columns;
     let initialHeight = viewHeight / minVisibleRows;
     let minHeightEnforced = false;
@@ -469,7 +481,8 @@ export function calculateThumbnailSizeForTileView({
     if (disableTileEnlargement) {
         const aspectRatioHeight = initialWidth / aspectRatio;
 
-        if (aspectRatioHeight < minHeight) { // we can't fit the required number of columns.
+        if (aspectRatioHeight < minHeight) {
+            // we can't fit the required number of columns.
             return;
         }
 
@@ -494,13 +507,14 @@ export function calculateThumbnailSizeForTileView({
         width = initialHeight * aspectRatio;
     } else if (initialRatio >= TILE_PORTRAIT_ASPECT_RATIO) {
         width = initialWidth;
-    // eslint-disable-next-line no-negated-condition
+        // eslint-disable-next-line no-negated-condition
     } else if (!minHeightEnforced) {
         height = initialWidth / TILE_PORTRAIT_ASPECT_RATIO;
 
         if (height >= minHeight) {
             width = initialWidth;
-        } else { // The width is so small that we can't reach the minimum height with portrait aspect ratio.
+        } else {
+            // The width is so small that we can't reach the minimum height with portrait aspect ratio.
             return;
         }
     } else {
@@ -539,7 +553,7 @@ export function getVerticalFilmstripVisibleAreaWidth() {
  * @param {Object} input - Object containing all necessary information for determining the display mode for
  * the thumbnail.
  * @returns {number} - One of <tt>DISPLAY_VIDEO</tt> or <tt>DISPLAY_AVATAR</tt>.
-*/
+ */
 export function computeDisplayModeFromInput(input: any) {
     const {
         filmstripType,
@@ -567,8 +581,11 @@ export function computeDisplayModeFromInput(input: any) {
         return DISPLAY_AVATAR;
     }
 
-    if (!tileViewActive && filmstripType === FILMSTRIP_TYPE.MAIN && ((isScreenSharing && isRemoteParticipant)
-        || (stageParticipantsVisible && isActiveParticipant))) {
+    if (
+        !tileViewActive
+        && filmstripType === FILMSTRIP_TYPE.MAIN
+        && ((isScreenSharing && isRemoteParticipant) || (stageParticipantsVisible && isActiveParticipant))
+    ) {
         return DISPLAY_AVATAR;
     } else if (isCurrentlyOnLargeVideo && !tileViewActive) {
         // Display name is always and only displayed when user is on the stage
@@ -588,7 +605,7 @@ export function computeDisplayModeFromInput(input: any) {
  * @param {Object} props - The Thumbnail component's props.
  * @param {Object} state - The Thumbnail component's state.
  * @returns {Object}
-*/
+ */
 export function getDisplayModeInput(props: any, state: { canPlayEventReceived: boolean; }) {
     const {
         _currentLayout,
@@ -643,8 +660,11 @@ export function isFilmstripResizable(state: IReduxState) {
     const { filmstrip } = state['features/base/config'];
     const _currentLayout = getCurrentLayout(state);
 
-    return !filmstrip?.disableResizable && !isMobileBrowser()
-        && (_currentLayout === LAYOUTS.VERTICAL_FILMSTRIP_VIEW || _currentLayout === LAYOUTS.STAGE_FILMSTRIP_VIEW);
+    return (
+        !filmstrip?.disableResizable
+        && !isMobileBrowser()
+        && (_currentLayout === LAYOUTS.VERTICAL_FILMSTRIP_VIEW || _currentLayout === LAYOUTS.STAGE_FILMSTRIP_VIEW)
+    );
 }
 
 /**
@@ -657,7 +677,7 @@ export function showGridInVerticalView(state: IReduxState) {
     const resizableFilmstrip = isFilmstripResizable(state);
     const { width } = state['features/filmstrip'];
 
-    return resizableFilmstrip && ((width.current ?? 0) > FILMSTRIP_GRID_BREAKPOINT);
+    return resizableFilmstrip && (width.current ?? 0) > FILMSTRIP_GRID_BREAKPOINT;
 }
 
 /**
@@ -747,9 +767,12 @@ export function isStageFilmstripAvailable(state: IReduxState, minParticipantCoun
     const { remoteScreenShares } = state['features/video-layout'];
     const sharedVideo = isSharingStatus(state['features/shared-video']?.status ?? '');
 
-    return isStageFilmstripEnabled(state) && !sharedVideo
+    return (
+        isStageFilmstripEnabled(state)
+        && !sharedVideo
         && activeParticipants.length >= minParticipantCount
-        && (isTopPanelEnabled(state) || remoteScreenShares.length === 0);
+        && (isTopPanelEnabled(state) || remoteScreenShares.length === 0)
+    );
 }
 
 /**
@@ -763,8 +786,11 @@ export function isStageFilmstripAvailable(state: IReduxState, minParticipantCoun
 export function isStageFilmstripTopPanel(state: IReduxState, minParticipantCount = 0) {
     const { remoteScreenShares } = state['features/video-layout'];
 
-    return isTopPanelEnabled(state)
-        && isStageFilmstripAvailable(state, minParticipantCount) && remoteScreenShares.length > 0;
+    return (
+        isTopPanelEnabled(state)
+        && isStageFilmstripAvailable(state, minParticipantCount)
+        && remoteScreenShares.length > 0
+    );
 }
 
 /**
@@ -832,7 +858,6 @@ export function isTopPanelEnabled(state: IReduxState) {
     const participantsCount = getParticipantCount(state);
 
     return !filmstrip?.disableTopPanel && participantsCount >= (filmstrip?.minParticipantCountForTopPanel ?? 50);
-
 }
 
 /**
@@ -863,4 +888,186 @@ export function getParticipantContrast(state: IReduxState) {
  */
 export function getParticipantsSaturation(state: IReduxState) {
     return state['features/filmstrip'].participantsSaturation;
+}
+
+/**
+ * Function to return a numeric integer as decimal.
+ * This is used for dom filter usage.
+ *
+ * @param { number } value - The value to convert.
+ * @returns { number } - The converted value.
+ */
+function returnAsDecimal(value?: number) {
+    let result = value;
+
+    if (!value || value < 1 || result === undefined) {
+        result = 1;
+    }
+
+    return result / 100;
+}
+
+/**
+ * Function returns the brightness parameter from the redux state.
+ *
+ * @param { IReduxState } state - The redux state.
+ * @param { string } participantId - The participant id.
+ * @param { boolean } asDecimal - Whether to return the value as decimal or not.
+ * @returns { number } - The redux value.
+ */
+export function getParticipantsBrightnessByParticipantId(state: IReduxState, participantId: string, asDecimal = false) {
+    const { participantsBrightness } = state['features/filmstrip'];
+
+    // try to get the value from the redux state and fallback to the default value from settings.
+    const value = participantsBrightness[participantId]
+        ? participantsBrightness[participantId]
+        : state['features/inklusiva/userdata'].video.brightness;
+
+    if (asDecimal) {
+        return returnAsDecimal(value);
+    }
+
+    return value;
+}
+
+/**
+ * Function returns the contrast parameter from the redux state.
+ *
+ * @param { IReduxState } state - The redux state.
+ * @param { string } participantId - The participant id.
+ * @param { boolean } asDecimal - Whether to return the value as decimal or not.
+ * @returns { number } - The redux value.
+ */
+export function getParticipantsContrastByParticipantId(state: IReduxState, participantId: string, asDecimal = false) {
+    const { participantsContrast } = state['features/filmstrip'];
+
+    // try to get the value from the redux state and fallback to the default value from settings.
+    const value = participantsContrast[participantId]
+        ? participantsContrast[participantId]
+        : state['features/inklusiva/userdata'].video.contrast;
+
+    if (asDecimal) {
+        return returnAsDecimal(value);
+    }
+
+    return value;
+}
+
+/**
+ * Function returns the saturation parameter from the redux state.
+ *
+ * @param { IReduxState } state - The redux state.
+ * @param { string } participantId - The participant id.
+ * @param { boolean } asDecimal - Whether to return the value as decimal or not.
+ * @returns { number } - The redux value.
+ */
+export function getParticipantsSaturationByParticipantId(state: IReduxState, participantId: string, asDecimal = false) {
+    const { participantsSaturation } = state['features/filmstrip'];
+
+    // try to get the value from the redux state and fallback to the default value from settings.
+    const value = participantsSaturation[participantId]
+        ? participantsSaturation[participantId]
+        : state['features/inklusiva/userdata'].video.saturation;
+
+    if (asDecimal) {
+        return returnAsDecimal(value);
+    }
+
+    return value;
+}
+
+/**
+ * Function returns the opacity parameter from the redux state.
+ *
+ * @param { IReduxState } state - The redux state.
+ * @param { string } participantId - The participant id.
+ * @param { boolean } asDecimal - Whether to return the value as decimal or not.pa.
+ * @returns { number } - The redux value.
+ */
+export function getParticipantsOpacityByParticipantId(state: IReduxState, participantId: string, asDecimal = false) {
+    const { participantsOpacity } = state['features/filmstrip'];
+
+    // try to get the value from the redux state and fallback to the default value from settings.
+    const value = participantsOpacity[participantId]
+        ? participantsOpacity[participantId]
+        : state['features/inklusiva/userdata'].video.dimming ?? 0;
+
+    if (asDecimal) {
+        return returnAsDecimal(value);
+    }
+
+    return value;
+}
+
+/**
+ * Function returns the zoom parameter from the redux state.
+ *
+ * @param { IReduxState } state - The redux state.
+ * @param { string } participantId - The participant id.
+ * @param { boolean } asDecimal - Whether to return the value as decimal or not.
+ * @returns { number } - The redux value.
+ */
+export function getParticipantsZoomByParticipantId(state: IReduxState, participantId: string, asDecimal = false) {
+    const { participantZoomLevel } = state['features/filmstrip'];
+
+    // try to get the value from the redux state and fallback to the default value from settings.
+    const value = participantZoomLevel[participantId]
+        ? participantZoomLevel[participantId]
+        : state['features/inklusiva/userdata'].video.zoom ?? 100;
+
+    if (asDecimal) {
+        return returnAsDecimal(value);
+    }
+
+    return value;
+}
+
+/**
+ * Function returns the volume parameter from the redux state.
+ *
+ * @param { IReduxState } state - The redux state.
+ * @param { string } participantId - The participant id.
+ * @param { boolean } asDecimal - Whether to return the value as decimal or not.
+ * @returns { number } - The redux value.
+ */
+export function getParticipantsVolumeByParticipantId(state: IReduxState, participantId: string, asDecimal = false) {
+    const { participantsVolume } = state['features/filmstrip'];
+
+    // try to get the value from the redux state and fallback to the default value from settings.
+    const value = participantsVolume[participantId]
+        ? participantsVolume[participantId]
+        : state['features/inklusiva/userdata'].audio.volume;
+
+    if (asDecimal) {
+        return returnAsDecimal(value);
+    }
+
+    return value;
+}
+
+/**
+ * Function returns the frequency setting parameter from the redux state.
+ *
+ * @param { IReduxState } state - The redux state.
+ * @param { string } participantId - The participant id.
+ * @param { boolean } asDecimal - Whether to return the value as decimal or not.
+ * @returns { number } - The redux value.
+ */
+export function getParticipantsFrequencySettingByParticipantId(
+        state: IReduxState,
+        participantId: string,
+        asDecimal = false
+) {
+    const { participantsFrequencySetting } = state['features/filmstrip'];
+
+    // try to get the value from the redux state and fallback to the default value from settings.
+    const value = participantsFrequencySetting[participantId]
+        ? participantsFrequencySetting[participantId]
+        : state['features/inklusiva/userdata'].audio.highFreq;
+
+    if (asDecimal) {
+        return returnAsDecimal(value);
+    }
+
+    return value;
 }

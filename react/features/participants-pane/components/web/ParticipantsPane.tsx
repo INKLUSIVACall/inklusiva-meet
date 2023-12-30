@@ -15,19 +15,13 @@ import { findAncestorByClass } from '../../../base/ui/functions.web';
 import { isAddBreakoutRoomButtonVisible } from '../../../breakout-rooms/functions';
 import MuteEveryoneDialog from '../../../video-menu/components/web/MuteEveryoneDialog';
 import { close } from '../../actions.web';
-import {
-    getParticipantsPaneOpen,
-    isMoreActionsVisible,
-    isMuteAllVisible
-} from '../../functions';
+import { BREAKOUTROOM_BUTTON_STATUS, BREAKOUTROOM_LIST_STATUS } from '../../constants';
+import { getParticipantsPaneOpen, isMoreActionsVisible, isMuteAllVisible } from '../../functions';
 import { AddBreakoutRoomButton } from '../breakout-rooms/components/web/AddBreakoutRoomButton';
 import { RoomList } from '../breakout-rooms/components/web/RoomList';
 
-import { FooterContextMenu } from './FooterContextMenu';
 import AllParticipants from './AllParticipants';
-
-
-import { BREAKOUTROOM_BUTTON_STATUS, BREAKOUTROOM_LIST_STATUS } from '../../constants';
+import { FooterContextMenu } from './FooterContextMenu';
 
 const useStyles = makeStyles()(theme => {
     return {
@@ -91,7 +85,8 @@ const ParticipantsPane = () => {
     const { classes } = useStyles();
     const paneOpen = useSelector(getParticipantsPaneOpen);
     const isBreakoutRoomsSupported = useSelector((state: IReduxState) => state['features/base/conference'])
-        .conference?.getBreakoutRooms()?.isSupported();
+        .conference?.getBreakoutRooms()
+        ?.isSupported();
     const showAddRoomButton = useSelector(isAddBreakoutRoomButtonVisible);
     const showFooter = useSelector(isLocalParticipantModerator);
     const showMuteAllButton = useSelector(isMuteAllVisible);
@@ -102,11 +97,14 @@ const ParticipantsPane = () => {
     const [ contextOpen, setContextOpen ] = useState(false);
     const [ searchString, setSearchString ] = useState('');
 
-    const onWindowClickListener = useCallback((e: any) => {
-        if (contextOpen && !findAncestorByClass(e.target, classes.footerMoreContainer)) {
-            setContextOpen(false);
-        }
-    }, [ contextOpen ]);
+    const onWindowClickListener = useCallback(
+        (e: any) => {
+            if (contextOpen && !findAncestorByClass(e.target, classes.footerMoreContainer)) {
+                setContextOpen(false);
+            }
+        },
+        [ contextOpen ]
+    );
 
     useEffect(() => {
         window.addEventListener('click', onWindowClickListener);
@@ -149,8 +147,8 @@ const ParticipantsPane = () => {
                     <AllParticipants
                         searchString = { searchString }
                         setSearchString = { setSearchString } />
-                    { BREAKOUTROOM_LIST_STATUS && isBreakoutRoomsSupported && <RoomList searchString = { searchString } />}
-                    { BREAKOUTROOM_BUTTON_STATUS && showAddRoomButton && <AddBreakoutRoomButton />}
+                    {BREAKOUTROOM_LIST_STATUS && isBreakoutRoomsSupported && <RoomList searchString = { searchString } />}
+                    {BREAKOUTROOM_BUTTON_STATUS && showAddRoomButton && <AddBreakoutRoomButton />}
                 </div>
                 {showFooter && (
                     <div className = { classes.footer }>
@@ -181,6 +179,5 @@ const ParticipantsPane = () => {
         </div>
     );
 };
-
 
 export default ParticipantsPane;

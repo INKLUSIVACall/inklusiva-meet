@@ -83,7 +83,6 @@ export function submitAudioDeviceSelectionTab(newState: any, isDisplayedOnWelcom
             dispatch(setAmplify(newState.amplify));
         }
 
-        console.log(newState);
         if (newState.highFrequencies !== currentState.highFrequencies) {
             dispatch(setHighFreq(newState.highFrequencies));
         }

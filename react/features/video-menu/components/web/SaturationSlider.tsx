@@ -4,10 +4,10 @@ import { makeStyles } from 'tss-react/mui';
 
 import Icon from '../../../base/icons/components/Icon';
 import {
-    IconVolumeUp,
     IconSaturation
 } from '../../../base/icons/svg';
-import { getUserVideoSaturationValue } from '../../../inklusiva/uservideo/functions';
+import { inklusivaContextMenuStyles } from '../../../inklusiva/ui-constants';
+import { SATURATION_SLIDER_MAXIMUM, SATURATION_SLIDER_MINIMUM } from '../../constants';
 
 /**
  * The type of the React {@code Component} props of {@link OpacityAdjustSlider}.
@@ -32,43 +32,7 @@ interface IProps {
 
 const useStyles = makeStyles()(theme => {
     return {
-        bigContainer: {
-            display: 'flex',
-            flexDirection: 'column',
-            padding: '10px 16px',
-
-            '&:hover': {
-                backgroundColor: theme.palette.ui02
-            }
-        },
-
-        container: {
-            minHeight: '40px',
-            minWidth: '180px',
-            width: '100%',
-            boxSizing: 'border-box',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center'
-        },
-
-        icon: {
-            minWidth: '20px',
-            marginRight: '16px',
-            position: 'relative'
-        },
-
-        sliderContainer: {
-            position: 'relative',
-            width: '100%'
-        },
-
-        slider: {
-            position: 'absolute',
-            width: '100%',
-            top: '50%',
-            transform: 'translate(0, -50%)'
-        }
+        ...inklusivaContextMenuStyles(theme)
     };
 });
 
@@ -84,7 +48,7 @@ const SaturationSlider = ({
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
 
-    const [ saturation, setSaturation ] = useState((initialValue || 1) * 100);
+    const [ saturation, setSaturation ] = useState(initialValue || 1);
 
     const _onSaturationSliderChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         const newSaturation = event.currentTarget.value;
@@ -96,31 +60,27 @@ const SaturationSlider = ({
     return (
         <div
             aria-label = { t('saturationSlider') }
-            className = { classes.bigContainer }>
-            <div>{ label }</div>
+            className = { classes.contextMenuSlider }>
+            <label className = { classes.contextMenuSliderLabel }>{ label }</label>
             <div
-                className = { cx('popupmenu__contents', classes.container) }
+                className = { cx('popupmenu__contents', classes.contextMenuSliderInner) }
                 onClick = { _onClick }>
-                <span className = { classes.icon }>
+                <span className = { classes.contextMenuSliderIcon }>
                     <Icon
                         size = { 22 }
                         src = { IconSaturation } />
                 </span>
-                <div className = { classes.sliderContainer }>
-                    <input
-                        aria-label = { label }
-                        aria-valuemax = { 150 }
-                        aria-valuemin = { 50 }
-                        aria-valuenow = { saturation }
-                        className = { cx('popupmenu__volume-slider', classes.slider) }
-                        max = { 150 }
-                        min = { 50 }
-                        onChange = { _onSaturationSliderChange }
-                        tabIndex = { 0 }
-                        type = 'range'
-                        value = { saturation } />
-                </div>
-                <br />
+                <input
+                    aria-label = { label }
+                    aria-valuemax = { SATURATION_SLIDER_MAXIMUM }
+                    aria-valuemin = { SATURATION_SLIDER_MINIMUM }
+                    aria-valuenow = { saturation }
+                    max = { SATURATION_SLIDER_MAXIMUM }
+                    min = { SATURATION_SLIDER_MINIMUM }
+                    onChange = { _onSaturationSliderChange }
+                    tabIndex = { 0 }
+                    type = 'range'
+                    value = { saturation } />
             </div>
         </div>
     );

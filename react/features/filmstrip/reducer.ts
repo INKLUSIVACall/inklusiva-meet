@@ -4,6 +4,11 @@ import ReducerRegistry from '../base/redux/ReducerRegistry';
 import {
     CLEAR_STAGE_PARTICIPANTS,
     REMOVE_STAGE_PARTICIPANT,
+    RESET_PARTICIPANT_BRIGHTNESS,
+    RESET_PARTICIPANT_CONTRAST,
+    RESET_PARTICIPANT_OPACITY,
+    RESET_PARTICIPANT_SATURATION,
+    RESET_PARTICIPANT_ZOOM_LEVEL,
     SET_FILMSTRIP_ENABLED,
     SET_FILMSTRIP_HEIGHT,
     SET_FILMSTRIP_VISIBLE,
@@ -406,13 +411,6 @@ ReducerRegistry.register<IFilmstripState>(
             };
         }
         case SET_PARTICIPANT_OPACITY: {
-            if (action.local) {
-                return {
-                    ...state,
-                    localOpacity: action.opacity
-                };
-            }
-
             return {
                 ...state,
                 participantsOpacity: {
@@ -439,6 +437,41 @@ ReducerRegistry.register<IFilmstripState>(
                     ...state.participantZoomLevel,
 
                     [action.participantId]: action.zoomLevel
+                }
+            };
+        }
+        case RESET_PARTICIPANT_BRIGHTNESS: {
+            return {
+                ...state,
+                participantsBrightness: {
+                }
+            };
+        }
+        case RESET_PARTICIPANT_CONTRAST: {
+            return {
+                ...state,
+                participantsContrast: {
+                }
+            };
+        }
+        case RESET_PARTICIPANT_OPACITY: {
+            return {
+                ...state,
+                participantsOpacity: {
+                }
+            };
+        }
+        case RESET_PARTICIPANT_SATURATION: {
+            return {
+                ...state,
+                participantsSaturation: {
+                }
+            };
+        }
+        case RESET_PARTICIPANT_ZOOM_LEVEL: {
+            return {
+                ...state,
+                participantZoomLevel: {
                 }
             };
         }

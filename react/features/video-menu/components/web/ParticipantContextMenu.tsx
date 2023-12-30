@@ -6,6 +6,7 @@ import { makeStyles } from 'tss-react/mui';
 import { IReduxState, IStore } from '../../../app/types';
 import { isSupported as isAvModerationSupported } from '../../../av-moderation/functions';
 import Avatar from '../../../base/avatar/components/Avatar';
+import { IC_ROLES } from '../../../base/conference/icRoles';
 import { getButtonNotifyMode, getParticipantMenuButtonsWithNotifyClick } from '../../../base/config/functions.web';
 import { isIosMobileBrowser, isMobileBrowser } from '../../../base/environment/utils';
 import { MEDIA_TYPE } from '../../../base/media/constants';
@@ -28,6 +29,7 @@ import {
     setVolume
 } from '../../../filmstrip/actions.web';
 import { isStageFilmstripAvailable } from '../../../filmstrip/functions.web';
+import VideoSettingsContextMenu from '../../../inklusiva/sessiondata/VideoSettingsContextMenu';
 import { QUICK_ACTION_BUTTON } from '../../../participants-pane/constants';
 import { getQuickActionButtonType, isForceMuted } from '../../../participants-pane/functions';
 import { requestRemoteControl, stopController } from '../../../remote-control/actions';
@@ -42,6 +44,7 @@ import ConnectionStatusButton from './ConnectionStatusButton';
 import ContrastSlider from './ContrastSlider';
 import CustomOptionButton from './CustomOptionButton';
 import FrequencyFilterSlider from './FrequencyFilterSlider';
+import GrantCoHostButton from './GrantCoHostButton';
 import GrantModeratorButton from './GrantModeratorButton';
 import KickButton from './KickButton';
 import MuteButton from './MuteButton';
@@ -57,8 +60,6 @@ import TogglePinToStageButton from './TogglePinToStageButton';
 import VerifyParticipantButton from './VerifyParticipantButton';
 import VolumeSlider from './VolumeSlider';
 import ZoomSlider from './ZoomSlider';
-import { IC_ROLES } from '../../../base/conference/icRoles';
-import GrantCoHostButton from './GrantCoHostButton';
 
 interface IProps {
 
@@ -152,9 +153,12 @@ const ParticipantContextMenu = ({
     const localParticipant = useSelector(getLocalParticipant);
     const _isModerator = Boolean(localParticipant?.role === PARTICIPANT_ROLE.MODERATOR);
 
-    const _isCoHost = _isModerator && conference?.checkLocalHasRole(IC_ROLES.COHOST) && Boolean(localParticipant?.role === PARTICIPANT_ROLE.MODERATOR);
+    const _isCoHost
+        = _isModerator
+        && conference?.checkLocalHasRole(IC_ROLES.COHOST)
+        && Boolean(localParticipant?.role === PARTICIPANT_ROLE.MODERATOR);
     const _isHost = _isModerator && !_isCoHost;
-    
+
     const _isVideoForceMuted = useSelector<IReduxState>(state => isForceMuted(participant, MEDIA_TYPE.VIDEO, state));
     const _isAudioMuted = useSelector((state: IReduxState) => isParticipantAudioMuted(participant, state));
     const _isVideoMuted = useSelector((state: IReduxState) => isParticipantVideoMuted(participant, state));
@@ -167,56 +171,7 @@ const ParticipantContextMenu = ({
     } = useSelector((state: IReduxState) => state['features/base/config']);
     const visitorsMode = useSelector((state: IReduxState) => iAmVisitor(state));
     const { disableKick, disableGrantModerator, disablePrivateChat } = remoteVideoMenu;
-    const {
-        participantsVolume,
-        participantsFrequencySetting,
-        participantsBrightness,
-        participantsContrast,
-        participantsOpacity,
-        participantsSaturation,
-        localOpacity,
-        participantZoomLevel
-    } = useSelector((state: IReduxState) => state['features/filmstrip']);
 
-    const _volume
-        = (participant?.local ?? true ? undefined : participant?.id ? participantsVolume[participant?.id] : undefined)
-        ?? 1;
-    const _frequencySliderSetting
-        = (participant?.local ?? true
-            ? undefined
-            : participant?.id
-                ? participantsFrequencySetting[participant?.id]
-                : undefined) ?? 0;
-    const _brightnessSliderSetting
-        = (participant?.local ?? true
-            ? undefined
-            : participant?.id
-                ? participantsBrightness[participant?.id]
-                : undefined) ?? 0;
-    const _contrastSliderSetting
-    = (participant?.local ?? true
-        ? undefined
-        : participant?.id
-            ? participantsContrast[participant?.id]
-            : undefined) ?? 1;
-    const _opacitySliderSetting
-        = (participant?.local ?? true
-            ? localOpacity
-            : participant?.id
-                ? participantsOpacity[participant?.id]
-                : undefined) ?? 0;
-    const _saturationSliderSetting
-    = (participant?.local ?? true
-        ? undefined
-        : participant?.id
-            ? participantsSaturation[participant?.id]
-            : undefined) ?? 1;
-    const _zoomSliderValue
-        = (participant?.local ?? true
-            ? undefined
-            : participant?.id
-                ? participantZoomLevel[participant?.id]
-                : undefined) ?? 0;
     const isBreakoutRoom = useSelector(isInBreakoutRoom);
     const isModerationSupported = useSelector((state: IReduxState) => isAvModerationSupported()(state));
     const stageFilmstrip = useSelector(isStageFilmstripAvailable);
@@ -225,55 +180,6 @@ const ParticipantContextMenu = ({
 
     const _currentRoomId = useSelector(getCurrentRoomId);
     const _rooms: IRoom[] = Object.values(useSelector(getBreakoutRooms));
-
-    const _onVolumeChange = useCallback(
-        value => {
-            dispatch(setVolume(participant.id, value));
-        },
-        [ setVolume, dispatch ]
-    );
-
-    const _onFrequencyAdjustChange = useCallback(
-        value => {
-            dispatch(setFrequencyFilterSetting(participant.id, value));
-        },
-        [ setFrequencyFilterSetting, dispatch ]
-    );
-
-    const _onBrightnessChange = useCallback(
-        value => {
-            dispatch(setParticipantBrightness(participant.id, value));
-        },
-        [ setParticipantBrightness, dispatch ]
-    );
-
-    const _onContrastChange = useCallback(
-        value => {
-            dispatch(setParticipantContrast(participant.id, value));
-        },
-        [ setParticipantContrast, dispatch ]
-    );
-
-    const _onParticipantOpacityAdjustChange = useCallback(
-        value => {
-            dispatch(setParticipantOpacitySetting(participant.local, participant.id, value / 100.0));
-        },
-        [ setParticipantOpacitySetting, dispatch ]
-    );
-
-    const _onSaturationChange = useCallback(
-        value => {
-            dispatch(setParticipantSaturation(participant.id, value));
-        },
-        [ setParticipantSaturation, dispatch ]
-    );
-
-    const _onZoomLevelChange = useCallback(
-        value => {
-            dispatch(setParticipantZoomLevel(participant.id, value));
-        },
-        [ setParticipantZoomLevel, dispatch ]
-    );
 
     const _getCurrentParticipantId = useCallback(() => {
         const drawer = _overflowDrawer && !thumbnailMenu;
@@ -314,11 +220,8 @@ const ParticipantContextMenu = ({
     const buttons2: JSX.Element[] = [];
 
     const showVolumeSlider
-        = !startSilent
-        && !isIosMobileBrowser()
-        && (_overflowDrawer || thumbnailMenu)
-        && typeof _volume === 'number'
-        && !isNaN(_volume);
+        = (!startSilent && !isIosMobileBrowser() && (_overflowDrawer || thumbnailMenu))
+        || (!startSilent && !isIosMobileBrowser() && !participant?.local);
 
     const getButtonProps = useCallback(
         (key: string) => {
@@ -334,7 +237,7 @@ const ParticipantContextMenu = ({
             };
         },
         [ _getCurrentParticipantId, buttonsWithNotifyClick, getButtonNotifyMode, notifyClick ]
-    );        
+    );
 
     if (_isModerator) {
         if (isModerationSupported) {
@@ -472,45 +375,10 @@ const ParticipantContextMenu = ({
             )}
             {buttons.length > 0 && <ContextMenuItemGroup>{buttons}</ContextMenuItemGroup>}
             <ContextMenuItemGroup>{buttons2}</ContextMenuItemGroup>
-            {showVolumeSlider && (
-                <ContextMenuItemGroup>
-                    <VolumeSlider
-                        initialValue = { _volume }
-                        key = 'volume-slider'
-                        onChange = { _onVolumeChange } />
-                    <FrequencyFilterSlider
-                        initialValue = { _frequencySliderSetting }
-                        key = 'frequency-adjust-slider'
-                        onChange = { _onFrequencyAdjustChange } />
-                </ContextMenuItemGroup>
-            )}
-            <ContextMenuItemGroup>
-                <ContrastSlider
-                    initialValue = { _contrastSliderSetting }
-                    key = 'cotrast-slider'
-                    label = { t('contrastSlider') }
-                    onChange = { _onContrastChange } />
-                <BrightnessSlider
-                    initialValue = { _brightnessSliderSetting }
-                    key = 'brightness-slider'
-                    label = { t('brightnessSlider') }
-                    onChange = { _onBrightnessChange } />
-                <OpacityAdjustSlider
-                    initialValue = { _opacitySliderSetting * 100 }
-                    key = 'opacity-adjust-slider'
-                    label = { t('opacityAdjustSlider') }
-                    onChange = { _onParticipantOpacityAdjustChange } />
-                <SaturationSlider
-                    initialValue = { _saturationSliderSetting }
-                    key = 'saturation-slider'
-                    label = { t('saturationSlider') }
-                    onChange = { _onSaturationChange } />
-                <ZoomSlider
-                    initialValue = { _zoomSliderValue }
-                    key = 'zoom-slider'
-                    label = { t('zoomSlider') }
-                    onChange = { _onZoomLevelChange } />
-            </ContextMenuItemGroup>
+            <VideoSettingsContextMenu
+                participantId = { participant.id }
+                soundControl = { showVolumeSlider ?? false } />
+
             {breakoutRoomsButtons.length > 0 && (
                 <ContextMenuItemGroup>
                     <div className = { styles.text }>{t('breakoutRooms.actions.sendToBreakoutRoom')}</div>

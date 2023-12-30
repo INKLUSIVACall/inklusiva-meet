@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useCallback } from 'react';
 import { connect } from 'react-redux';
 
 // @ts-expect-error
@@ -15,7 +15,7 @@ import StageParticipantNameLabel from '../../display-name/components/web/StagePa
 import { addStageParticipant, clearStageParticipants, removeStageParticipant, togglePinStageParticipant } from '../../filmstrip/actions.web';
 import FadeOutOverlay from '../../filmstrip/components/web/FadeOutOverlay';
 import { FILMSTRIP_BREAKPOINT } from '../../filmstrip/constants';
-import { getVerticalViewMaxWidth, isFilmstripResizable } from '../../filmstrip/functions.web';
+import { getParticipantsBrightnessByParticipantId, getParticipantsContrastByParticipantId, getParticipantsOpacityByParticipantId, getParticipantsSaturationByParticipantId, getParticipantsZoomByParticipantId, getVerticalViewMaxWidth, isFilmstripResizable } from '../../filmstrip/functions.web';
 import { getUserVideoTabProps } from '../../inklusiva/uservideo/functions';
 import SharedVideo from '../../shared-video/components/web/SharedVideo';
 import Captions from '../../subtitles/components/web/Captions';
@@ -227,11 +227,11 @@ class LargeVideo extends Component<IProps> {
         } = this.props;
         const style = this._getCustomStyles();
         const className = `videocontainer${_isChatOpen ? ' shift-right' : ''}`;
-        const largeVideo = true;
 
         const unPin = () => {
             dispatch(pinParticipant(null));
         };
+
 
         return (
             <div
@@ -245,8 +245,7 @@ class LargeVideo extends Component<IProps> {
                 <div id = 'etherpad' />
 
                 <FadeOutOverlay
-                    largeVideo = { largeVideo } />
-
+                    opacity = { this.props._dimming } />
                 <Watermarks />
 
                 <div
@@ -405,15 +404,29 @@ function _mapStateToProps(state: IReduxState) {
     const isLocalScreenshareOnLargeVideo = largeVideoParticipant?.id?.includes(localParticipantId ?? '')
         && videoTrack?.videoType === VIDEO_TYPE.DESKTOP;
     const isOnSpot = defaultLocalDisplayName === SPOT_DISPLAY_NAME;
-    const userVideoTabProps = getUserVideoTabProps(state);
+
+    // setting the defaults
+    let brightness = state['features/inklusiva/userdata'].video.brightness;
+    let contrast = state['features/inklusiva/userdata'].video.contrast;
+    let saturation = state['features/inklusiva/userdata'].video.saturation;
+    let opacity = state['features/inklusiva/userdata'].video.dimming ?? 100 / 100;
+    let zoomLevel = state['features/inklusiva/userdata'].video.zoom;
+
+    if (largeVideoParticipant) {
+        brightness = getParticipantsBrightnessByParticipantId(state, largeVideoParticipant.id);
+        contrast = getParticipantsContrastByParticipantId(state, largeVideoParticipant.id);
+        saturation = getParticipantsSaturationByParticipantId(state, largeVideoParticipant.id);
+        opacity = getParticipantsOpacityByParticipantId(state, largeVideoParticipant.id) / 100;
+        zoomLevel = getParticipantsZoomByParticipantId(state, largeVideoParticipant.id) / 100;
+    }
 
     return {
         _backgroundAlpha: state['features/base/config'].backgroundAlpha,
-        _brightness: userVideoTabProps.brightness,
-        _contrast: userVideoTabProps.contrast,
+        _brightness: brightness,
+        _contrast: contrast,
         _customBackgroundColor: backgroundColor,
         _customBackgroundImageUrl: backgroundImageUrl,
-        _dimming: userVideoTabProps.dimming,
+        _dimming: opacity,
         _displayScreenSharingPlaceholder: Boolean(isLocalScreenshareOnLargeVideo && !seeWhatIsBeingShared && !isOnSpot),
         _hideSelfView: getHideSelfView(state),
         _isChatOpen: isChatOpen,
@@ -422,14 +435,14 @@ function _mapStateToProps(state: IReduxState) {
         _localParticipantId: localParticipantId ?? '',
         _noAutoPlayVideo: Boolean(testingConfig?.noAutoPlayVideo),
         _resizableFilmstrip: isFilmstripResizable(state),
-        _saturation: userVideoTabProps.saturation,
+        _saturation: saturation,
         _seeWhatIsBeingShared: Boolean(seeWhatIsBeingShared),
         _showDominantSpeakerBadge: !hideDominantSpeakerBadge,
         _verticalFilmstripWidth: verticalFilmstripWidth.current,
         _verticalViewMaxWidth: getVerticalViewMaxWidth(state),
         _visibleFilmstrip: visible,
         _whiteboardEnabled: isWhiteboardEnabled(state),
-        _zoom: userVideoTabProps.zoom
+        _zoom: zoomLevel
     };
 }
 

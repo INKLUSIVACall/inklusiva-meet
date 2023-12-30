@@ -4,9 +4,10 @@ import { makeStyles } from 'tss-react/mui';
 
 import Icon from '../../../base/icons/components/Icon';
 import {
-    IconVolumeUp,
     IconDimming
 } from '../../../base/icons/svg';
+import { inklusivaContextMenuStyles } from '../../../inklusiva/ui-constants';
+import { OPACITY_SLIDER_MAXIMUM, OPACITY_SLIDER_MINIMUM } from '../../constants';
 
 /**
  * The type of the React {@code Component} props of {@link OpacityAdjustSlider}.
@@ -33,43 +34,7 @@ interface IProps {
 
 const useStyles = makeStyles()(theme => {
     return {
-        bigContainer: {
-            display: 'flex',
-            flexDirection: 'column',
-            padding: '10px 16px',
-
-            '&:hover': {
-                backgroundColor: theme.palette.ui02
-            }
-        },
-
-        container: {
-            minHeight: '40px',
-            minWidth: '180px',
-            width: '100%',
-            boxSizing: 'border-box',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center'
-        },
-
-        icon: {
-            minWidth: '20px',
-            marginRight: '16px',
-            position: 'relative'
-        },
-
-        sliderContainer: {
-            position: 'relative',
-            width: '100%'
-        },
-
-        slider: {
-            position: 'absolute',
-            width: '100%',
-            top: '50%',
-            transform: 'translate(0, -50%)'
-        }
+        ...inklusivaContextMenuStyles(theme)
     };
 });
 
@@ -97,31 +62,27 @@ const OpacityAdjustSlider = ({
     return (
         <div
             aria-label = { t('opacityAdjustSlider') }
-            className = { classes.bigContainer }>
-            <div>{ label }</div>
+            className = { classes.contextMenuSlider }>
+            <label className = { classes.contextMenuSliderLabel }>{ label }</label>
             <div
-                className = { cx('popupmenu__contents', classes.container) }
+                className = { cx('popupmenu__contents', classes.contextMenuSliderInner) }
                 onClick = { _onClick }>
-                <span className = { classes.icon }>
+                <span className = { classes.contextMenuSliderIcon }>
                     <Icon
                         size = { 22 }
                         src = { IconDimming } />
                 </span>
-                <div className = { classes.sliderContainer }>
-                    <input
-                        aria-label = { label }
-                        aria-valuemax = { 100 }
-                        aria-valuemin = { 0 }
-                        aria-valuenow = { opacity }
-                        className = { cx('popupmenu__volume-slider', classes.slider) }
-                        max = { 100 }
-                        min = { 0 }
-                        onChange = { _onFrequencyAdjustChange }
-                        tabIndex = { 0 }
-                        type = 'range'
-                        value = { opacity } />
-                </div>
-                <br />
+                <input
+                    aria-label = { label }
+                    aria-valuemax = { OPACITY_SLIDER_MAXIMUM }
+                    aria-valuemin = { OPACITY_SLIDER_MINIMUM }
+                    aria-valuenow = { opacity }
+                    max = { OPACITY_SLIDER_MAXIMUM }
+                    min = { OPACITY_SLIDER_MINIMUM }
+                    onChange = { _onFrequencyAdjustChange }
+                    tabIndex = { 0 }
+                    type = 'range'
+                    value = { opacity } />
             </div>
         </div>
     );

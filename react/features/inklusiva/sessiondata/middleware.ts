@@ -1,7 +1,9 @@
 import { SET_VIDEO_MUTED } from '../../base/media/actionTypes';
 import { MEDIA_TYPE, VIDEO_MUTISM_AUTHORITY } from '../../base/media/constants';
+import { getLocalParticipant } from '../../base/participants/functions';
 import MiddlewareRegistry from '../../base/redux/MiddlewareRegistry';
 import { setParticipantOpacitySetting, setVolume } from '../../filmstrip/actions.web';
+import { getParticipantsOpacityByParticipantId } from '../../filmstrip/functions.web';
 import { muteLocal } from '../../video-menu/actions.any';
 
 import { SET_INDISTRESS_DISABLED, SET_INDISTRESS_ENABLED } from './actionTypes';
@@ -13,42 +15,42 @@ MiddlewareRegistry.register(store => next => action => {
     const state = store.getState();
     const userData = state['features/inklusiva/userdata'];
     const dimmingValue = userData?.distressbutton?.dimming ?? 50;
+    const defaultOpacity = userData?.video?.dimming ?? 1;
+    const localParticipant = getLocalParticipant(state);
 
     if (action.type === SET_INDISTRESS_ENABLED) {
+
+        // apply dimming to all remote participants
         state['features/filmstrip'].remoteParticipants.forEach((participantId: string) => {
-            store.dispatch(setParticipantOpacitySetting(false, participantId, dimmingValue / 100.0));
+            store.dispatch(setParticipantOpacitySetting(participantId, dimmingValue));
             store.dispatch(setVolume(participantId, 0));
         });
 
-        // eigenes Video muten
-        store.dispatch({
-            type: SET_VIDEO_MUTED,
-            authority: VIDEO_MUTISM_AUTHORITY.USER,
-            ensureTrack: false,
-            muted: true
-        });
+        // apply dimming to local participant
+        if (localParticipant) {
+            store.dispatch(setParticipantOpacitySetting(localParticipant.id, dimmingValue));
+        }
 
         // TODO: Direkte Message an Betreuer
-        store.dispatch(setParticipantOpacitySetting(true, null, dimmingValue / 100.0));
+
         store.dispatch(muteLocal(true, MEDIA_TYPE.AUDIO, true));
+        store.dispatch(muteLocal(true, MEDIA_TYPE.VIDEO, true));
     }
 
     if (action.type === SET_INDISTRESS_DISABLED) {
+        // reset dimming for all remote participants
         state['features/filmstrip'].remoteParticipants.forEach((participantId: string) => {
-            store.dispatch(setParticipantOpacitySetting(false, participantId, 1));
+            store.dispatch(setParticipantOpacitySetting(participantId, defaultOpacity));
             store.dispatch(setVolume(participantId, 100));
         });
 
-        // eigenes Video wieder aktivieren
-        store.dispatch({
-            type: SET_VIDEO_MUTED,
-            authority: VIDEO_MUTISM_AUTHORITY.USER,
-            ensureTrack: false,
-            muted: false
-        });
+        // reset dimming to local participant
+        if (localParticipant) {
+            store.dispatch(setParticipantOpacitySetting(localParticipant.id, defaultOpacity));
+        }
 
-        store.dispatch(setParticipantOpacitySetting(true, null, 1));
         store.dispatch(muteLocal(false, MEDIA_TYPE.AUDIO, true));
+        store.dispatch(muteLocal(false, MEDIA_TYPE.VIDEO, true));
     }
 
     return next(action);
