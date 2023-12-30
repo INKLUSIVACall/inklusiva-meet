@@ -1,4 +1,13 @@
 import { IStore } from '../../app/types';
+import { IStateful } from '../../base/app/types';
+import { getRemoteParticipants } from '../../base/participants/functions';
+import {
+    setParticipantBrightness,
+    setParticipantContrast,
+    setParticipantOpacitySetting,
+    setParticipantSaturation,
+    setParticipantZoomLevel
+} from '../../filmstrip/actions.web';
 
 import {
     SET_USERVIDEO_BRIGHTNESS,
