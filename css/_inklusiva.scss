@@ -85,6 +85,21 @@
     }
 }
 
+button.primary {
+    border: 0px;
+    padding: 0.2rem 0.5rem;
+    border: 2px solid #2e5e72;
+
+    &:hover {
+        border: 2px solid lightgrey;
+    }
+}
+
+.icLabelTransparent {
+    background: none;
+    font-size: 0.875rem;
+}
+
 .mt-05 {
     margin-top: 0.5rem !important;
 }

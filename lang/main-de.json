@@ -842,6 +842,12 @@
         }
     },
     "poweredby": "Betrieben von",
+    "assisteesPanel": {
+        "headline": "Die folgenden Benutzer benötigen Unterstützung.",
+        "desc1": "Sollten Sie eine Betreuungsperson für einen der aufgelisteten Teilnehmer sein, können Sie hier die Assistenz übernehmen.",
+        "desc2": "Betreuer von Teilnehmern können über einen einzelnen Button-Klick einen Breakout Raum, oder einen Chat öffnen oder bekommen beispielsweise eine automatische Nachricht, wenn der Teilnehmer den Notfallbutton aktiviert hat.",
+        "buttonAssist": "Teilnehmer unterstützen"
+    },
     "prejoin": {
         "audioAndVideoError": "Audio- und Videofehler:",
         "audioDeviceProblem": "Es gibt ein Problem mit Ihrem Audiogerät.",
