@@ -16,6 +16,7 @@ import MainFilmstrip from '../../../filmstrip/components/web/MainFilmstrip';
 import ScreenshareFilmstrip from '../../../filmstrip/components/web/ScreenshareFilmstrip';
 import SignLangTranslatorFilmStrip from '../../../filmstrip/components/web/SignLangTranslatorFilmStrip';
 import StageFilmstrip from '../../../filmstrip/components/web/StageFilmstrip';
+import AssisteesPanel from '../../../inklusiva/rolematching/AssisteesPanel';
 import { getUserVideoTabProps } from '../../../inklusiva/uservideo/functions';
 import CalleeInfoContainer from '../../../invite/components/callee-info/CalleeInfoContainer';
 import LargeVideo from '../../../large-video/components/LargeVideo.web';
@@ -251,8 +252,7 @@ class Conference extends AbstractConference<IProps, any> {
                     <Notice />
                     <div
                         id = 'videospace'
-                        onTouchStart = { this._onVidespaceTouchStart }
-                        style = { this._useStyle() }>
+                        onTouchStart = { this._onVidespaceTouchStart } >
                         <LargeVideo />
                         {
                             _showPrejoin || _showLobby || (<>
@@ -286,6 +286,7 @@ class Conference extends AbstractConference<IProps, any> {
                         : this.renderNotificationsContainer())
                     }
 
+                    <AssisteesPanel />
                     <CalleeInfoContainer />
 
                     { _showPrejoin && <Prejoin />}
@@ -305,20 +306,6 @@ class Conference extends AbstractConference<IProps, any> {
     _useStyle() {
         const styles: any = {};
 
-        /* const {
-            _userVideoBrightness,
-            _userVideoContrast,
-            _userVideoDimming,
-            _userVideoSaturation,
-            _userVideoZoom
-        } = this.props; */
-
-
-        /* styles.filter = `brightness(${_userVideoBrightness}%)
-            contrast(${_userVideoContrast}%)
-            opacity(${_userVideoDimming ? 100 - _userVideoDimming : 100}%)
-            saturate(${_userVideoSaturation}%)`;
-        styles.zoom = `${_userVideoZoom}%`; */
 
         return styles;
     }

@@ -19,15 +19,6 @@ import ContextMenuItemGroup from '../../../base/ui/components/web/ContextMenuIte
 import { getBreakoutRooms, getCurrentRoomId, isInBreakoutRoom } from '../../../breakout-rooms/functions';
 import { IRoom } from '../../../breakout-rooms/types';
 import { displayVerification } from '../../../e2ee/functions';
-import {
-    setFrequencyFilterSetting,
-    setParticipantBrightness,
-    setParticipantContrast,
-    setParticipantOpacitySetting,
-    setParticipantSaturation,
-    setParticipantZoomLevel,
-    setVolume
-} from '../../../filmstrip/actions.web';
 import { isStageFilmstripAvailable } from '../../../filmstrip/functions.web';
 import VideoSettingsContextMenu from '../../../inklusiva/sessiondata/VideoSettingsContextMenu';
 import { QUICK_ACTION_BUTTON } from '../../../participants-pane/constants';
@@ -39,11 +30,8 @@ import { iAmVisitor } from '../../../visitors/functions';
 import { PARTICIPANT_MENU_BUTTONS as BUTTONS } from '../../constants';
 
 import AskToUnmuteButton from './AskToUnmuteButton';
-import BrightnessSlider from './BrightnessSlider';
 import ConnectionStatusButton from './ConnectionStatusButton';
-import ContrastSlider from './ContrastSlider';
 import CustomOptionButton from './CustomOptionButton';
-import FrequencyFilterSlider from './FrequencyFilterSlider';
 import GrantCoHostButton from './GrantCoHostButton';
 import GrantModeratorButton from './GrantModeratorButton';
 import KickButton from './KickButton';
@@ -51,15 +39,11 @@ import MuteButton from './MuteButton';
 import MuteEveryoneElseButton from './MuteEveryoneElseButton';
 import MuteEveryoneElsesVideoButton from './MuteEveryoneElsesVideoButton';
 import MuteVideoButton from './MuteVideoButton';
-import OpacityAdjustSlider from './OpacityAdjustSlider';
 import PrivateMessageMenuButton from './PrivateMessageMenuButton';
 import RemoteControlButton, { REMOTE_CONTROL_MENU_STATES } from './RemoteControlButton';
-import SaturationSlider from './SaturationSlider';
 import SendToRoomButton from './SendToRoomButton';
 import TogglePinToStageButton from './TogglePinToStageButton';
 import VerifyParticipantButton from './VerifyParticipantButton';
-import VolumeSlider from './VolumeSlider';
-import ZoomSlider from './ZoomSlider';
 
 interface IProps {
 

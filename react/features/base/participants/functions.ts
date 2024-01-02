@@ -9,6 +9,7 @@ import { IStateful } from '../app/types';
 import { GRAVATAR_BASE_URL } from '../avatar/constants';
 import { isCORSAvatarURL } from '../avatar/functions';
 import { getCurrentConference } from '../conference/functions';
+import { IC_ROLES } from '../conference/icRoles';
 import { ADD_PEOPLE_ENABLED } from '../flags/constants';
 import { getFeatureFlag } from '../flags/functions';
 import i18next from '../i18n/i18next';
@@ -25,8 +26,6 @@ import {
 } from './constants';
 import { preloadImage } from './preloadImage';
 import { FakeParticipant, IJitsiParticipant, IParticipant, ISourceInfo } from './types';
-import { IC_ROLES } from '../conference/icRoles';
-
 
 /**
  * Temp structures for avatar urls to be checked/preloaded.
@@ -49,9 +48,7 @@ const AVATAR_CHECKER_FUNCTIONS = [
         const isGravatarDisabled = config.gravatar?.disabled;
 
         if (participant?.email && !isGravatarDisabled) {
-            const gravatarBaseURL = config.gravatar?.baseUrl
-                || config.gravatarBaseURL
-                || GRAVATAR_BASE_URL;
+            const gravatarBaseURL = config.gravatar?.baseUrl || config.gravatarBaseURL || GRAVATAR_BASE_URL;
 
             return getGravatarURL(participant.email, gravatarBaseURL);
         }
@@ -71,12 +68,8 @@ const AVATAR_CHECKER_FUNCTIONS = [
  */
 export function getActiveSpeakersToBeDisplayed(stateful: IStateful) {
     const state = toState(stateful);
-    const {
-        dominantSpeaker,
-        fakeParticipants,
-        sortedRemoteVirtualScreenshareParticipants,
-        speakersList
-    } = state['features/base/participants'];
+    const { dominantSpeaker, fakeParticipants, sortedRemoteVirtualScreenshareParticipants, speakersList }
+        = state['features/base/participants'];
     const { visibleRemoteParticipants } = state['features/filmstrip'];
     let activeSpeakers = new Map(speakersList);
 
@@ -132,7 +125,6 @@ export function getFirstLoadableAvatarUrl(participant: IParticipant, store: ISto
     const fullPromise = deferred.promise
         .then(() => _getFirstLoadableAvatarUrl(participant, store))
         .then((result: any) => {
-
             if (AVATAR_QUEUE.length) {
                 const next: any = AVATAR_QUEUE.shift();
 
@@ -222,9 +214,11 @@ export function getParticipantById(stateful: IStateful, id: string): IParticipan
     const state = toState(stateful)['features/base/participants'];
     const { local, localScreenShare, remote } = state;
 
-    return remote.get(id)
+    return (
+        remote.get(id)
         || (local?.id === id ? local : undefined)
-        || (localScreenShare?.id === id ? localScreenShare : undefined);
+        || (localScreenShare?.id === id ? localScreenShare : undefined)
+    );
 }
 
 /**
@@ -252,12 +246,8 @@ export function getParticipantByIdOrUndefined(stateful: IStateful, participantID
  */
 export function getParticipantCount(stateful: IStateful) {
     const state = toState(stateful);
-    const {
-        local,
-        remote,
-        fakeParticipants,
-        sortedRemoteVirtualScreenshareParticipants
-    } = state['features/base/participants'];
+    const { local, remote, fakeParticipants, sortedRemoteVirtualScreenshareParticipants }
+        = state['features/base/participants'];
 
     return remote.size - fakeParticipants.size - sortedRemoteVirtualScreenshareParticipants.size + (local ? 1 : 0);
 }
@@ -390,10 +380,7 @@ export function getParticipantCountWithFake(stateful: IStateful) {
 export function getParticipantDisplayName(stateful: IStateful, id: string): string {
     const state = toState(stateful);
     const participant = getParticipantById(state, id);
-    const {
-        defaultLocalDisplayName,
-        defaultRemoteDisplayName
-    } = state['features/base/config'];
+    const { defaultLocalDisplayName, defaultRemoteDisplayName } = state['features/base/config'];
 
     if (participant) {
         if (isScreenShareParticipant(participant)) {
@@ -463,8 +450,8 @@ export function getScreenshareParticipantDisplayName(stateful: IStateful, id: st
  * @returns {Array<string>}
  */
 export function getScreenshareParticipantIds(stateful: IStateful): Array<string> {
-    return toState(stateful)['features/base/tracks']
-        .filter(track => track.videoType === VIDEO_TYPE.DESKTOP && !track.muted)
+    return toState(stateful)
+        ['features/base/tracks'].filter(track => track.videoType === VIDEO_TYPE.DESKTOP && !track.muted)
         .map(t => t.participantId);
 }
 
@@ -480,7 +467,8 @@ export function getScreenshareParticipantIds(stateful: IStateful): Array<string>
 export function getSourceNamesByMediaType(
         stateful: IStateful,
         id: string,
-        mediaType: string): Array<string> | undefined {
+        mediaType: string
+): Array<string> | undefined {
     const participant: IParticipant | undefined = getParticipantById(stateful, id);
 
     if (!participant) {
@@ -586,7 +574,10 @@ export function isParticipantModerator(participant?: IParticipant) {
  * @returns {boolean}
  */
 export function isParticipantHost(participant?: IParticipant) {
-    return participant?.role === PARTICIPANT_ROLE.MODERATOR && !participant?.conference?.checkMemberHasRole(participant?.id, IC_ROLES.COHOST);
+    return (
+        participant?.role === PARTICIPANT_ROLE.MODERATOR
+        && !participant?.conference?.checkMemberHasRole(participant?.id, IC_ROLES.COHOST)
+    );
 }
 
 /**
@@ -596,7 +587,10 @@ export function isParticipantHost(participant?: IParticipant) {
  * @returns {boolean}
  */
 export function isParticipantCoHost(participant?: IParticipant) {
-    return participant?.role === PARTICIPANT_ROLE.MODERATOR && participant?.conference?.checkMemberHasRole(participant?.id, IC_ROLES.COHOST);
+    return (
+        participant?.role === PARTICIPANT_ROLE.MODERATOR
+        && participant?.conference?.checkMemberHasRole(participant?.id, IC_ROLES.COHOST)
+    );
 }
 
 /**
@@ -755,8 +749,7 @@ export function hasRaisedHand(participant?: IParticipant): boolean {
 export const addPeopleFeatureControl = (stateful: IStateful) => {
     const state = toState(stateful);
 
-    return getFeatureFlag(state, ADD_PEOPLE_ENABLED, true)
-    && (isAddPeopleEnabled(state) || isDialOutEnabled(state));
+    return getFeatureFlag(state, ADD_PEOPLE_ENABLED, true) && (isAddPeopleEnabled(state) || isDialOutEnabled(state));
 };
 
 /**
@@ -788,17 +781,18 @@ export function participantHasRole(stateful: IStateful, participantId: string | 
     }
     const participant = getParticipantById(stateful, participantId);
 
-    return participant?.icRoles?.find(
-            role => role.name === roleName
-    ) !== undefined;
+    return participant?.icRoles?.find(role => role.name === roleName) !== undefined;
 }
 
-export function getParticipantWithICRoleAndPartner(stateful: IStateful, icRole: string, partner: string): IParticipant | undefined {
+export function getParticipantWithICRoleAndPartner(
+        stateful: IStateful,
+        icRole: string,
+        partner: string
+): IParticipant | undefined {
     const state = toState(stateful);
     const { remote } = state['features/base/participants'];
 
-    return Array.from(remote.values()).find(
-        participant => participant.icRoles?.find(role => role.name === icRole && role.partner === partner)
+    return Array.from(remote.values()).find(participant =>
+        participant.icRoles?.find(role => role.name === icRole && role.partner === partner)
     );
 }
-

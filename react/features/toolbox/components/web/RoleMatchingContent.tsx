@@ -7,15 +7,13 @@ import { IReduxState, IStore } from '../../../app/types';
 import { getCurrentConference } from '../../../base/conference/functions';
 import { ICRole, IC_ROLES } from '../../../base/conference/icRoles';
 import { IJitsiConference } from '../../../base/conference/reducer';
-import { IconUser } from '../../../base/icons/svg';
 import { getLocalParticipant, getRemoteParticipants } from '../../../base/participants/functions';
 import { IParticipant } from '../../../base/participants/types';
-import { IProps as AbstractButtonProps } from '../../../base/toolbox/components/AbstractButton';
 import Button from '../../../base/ui/components/web/Button';
 import ContextMenu from '../../../base/ui/components/web/ContextMenu';
 import ContextMenuItem from '../../../base/ui/components/web/ContextMenuItem';
 import ContextMenuItemGroup from '../../../base/ui/components/web/ContextMenuItemGroup';
-import { BUTTON_TYPES, TEXT_OVERFLOW_TYPES } from '../../../base/ui/constants.web';
+import { BUTTON_TYPES } from '../../../base/ui/constants.web';
 import { hideRoleMatching } from '../../../inklusiva/rolematching/functions';
 
 
@@ -86,16 +84,6 @@ interface IProps {
 const RoleMatchingContent = (props: IProps) => {
     const { classes } = useStyles();
 
-    // Transform the remote participants map into an array of objects with the name and id of the participant.
-    const assistees = Array.from(props._remoteParticipants?.values() || [])
-        .filter(participant => props._conference?.checkMemberHasRole(participant.id, IC_ROLES.ASSISTED))
-        .map(participant => {
-            return {
-                name: participant.name,
-                participantId: participant.id
-            };
-        });
-
     let assistedBy: IParticipant | null = null;
     let assistedByName = '';
 
@@ -115,38 +103,6 @@ const RoleMatchingContent = (props: IProps) => {
         props._hideVisibility();
     };
 
-    const _onClickOfferAssistance = function(participantId: string) {
-        props._conference?.addLocalICRole(IC_ROLES.ASSISTANT, participantId);
-        props._hideVisibility();
-    };
-
-    /**
-     * Renders a single microphone entry.
-     *
-     * @param {Object} data - An object with the deviceId, jitsiTrack & label of the microphone.
-     * @param {number} index - The index of the element, used for creating a key.
-     * @param {length} length - The length of the microphone list.
-     * @returns {React$Node}
-     */
-    const _renderAssistees = (data: { name: string; participantId: string; }, index: number, length: number) => (
-        <li
-            aria-posinset = { index }
-            aria-setsize = { length }
-            key = { index }
-            role = 'radio'
-            tabIndex = { 0 }>
-            <ContextMenuItem
-                accessibilityLabel = { 'alfj' }
-                overflowType = { TEXT_OVERFLOW_TYPES.SCROLL_ON_HOVER }>
-                <Button
-                    className = { classes.button }
-                    label = { `... ${data.name}` }
-                    onClick = { () => _onClickOfferAssistance(data.participantId) }
-                    type = { BUTTON_TYPES.PRIMARY } />
-            </ContextMenuItem>
-        </li>
-    );
-
     return (
         <ContextMenu
             aria-labelledby = 'audio-settings-button'
@@ -160,6 +116,7 @@ const RoleMatchingContent = (props: IProps) => {
                         <Button
                             className = { classes.button }
                             label = 'Ich benötige Assistenz'
+                            // eslint-disable-next-line react/jsx-no-bind
                             onClick = { _onClickNeedAssistance }
                             type = { BUTTON_TYPES.PRIMARY } />
                     </ContextMenuItem>
@@ -171,23 +128,6 @@ const RoleMatchingContent = (props: IProps) => {
                     </ContextMenuItem>
                 )}
             </ContextMenuItemGroup>
-            {assistees.length > 0 && (
-                <ContextMenuItemGroup>
-                    <ContextMenuItem
-                        accessibilityLabel = { 'Ich übernehme Assistenz für...' }
-                        className = { classes.header }
-                        icon = { IconUser }
-                        id = { 'assistees' }
-                        text = { 'Ich übernehme Assistenz für...' } />
-                    <ul
-                        aria-labelledby = { 'assistees' }
-                        className = { classes.list }
-                        role = 'radiogroup'
-                        tabIndex = { -1 }>
-                        {assistees.map((data: any, i: number) => _renderAssistees(data, i, assistees.length))}
-                    </ul>
-                </ContextMenuItemGroup>
-            )}
         </ContextMenu>
     );
 };
@@ -200,23 +140,8 @@ const mapStateToProps = (state: IReduxState) => {
     };
 };
 
-/**
- * Maps dispatching of some action to React component props.
- *
- * @param {Function} dispatch - Redux action dispatcher.
- * @private
- * @returns {{
- *     _toggleVisibility: Function
- * }}
- */
 const mapDispatchToProps = (dispatch: IStore['dispatch']) => {
     return {
-        /**
-         * Dispatches actions to store the last applied transform to a video.
-         *
-         * @private
-         * @returns {void}
-         */
         _hideVisibility() {
             dispatch(hideRoleMatching());
         }
