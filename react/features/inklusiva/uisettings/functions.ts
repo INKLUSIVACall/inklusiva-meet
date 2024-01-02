@@ -49,7 +49,7 @@ export function isAcousticCuesEnabled(state: IReduxState): boolean | undefined {
  * @param {IReduxState} state - The Redux state.
  * @returns {boolean} Whether OtherParticipants is enabled or disabled.
  */
-export function arOtherParticinatsEnabled(state: IReduxState): boolean | undefined {
+export function arOtherParticipantsEnabled(state: IReduxState): boolean | undefined {
     return state['features/inklusiva/userdata'].video?.otherParticipants;
 }
 
@@ -69,7 +69,7 @@ export function isInterpeterEnabled(state: IReduxState): boolean | undefined {
  * @param {IReduxState} state - The Redux state.
  * @returns {boolean} Whether Screensharing is enabled or disabled.
  */
-export function isScreensharingeEnabled(state: IReduxState): boolean | undefined {
+export function isScreensharingEnabled(state: IReduxState): boolean | undefined {
     return state['features/inklusiva/userdata'].video?.screensharing;
 }
 

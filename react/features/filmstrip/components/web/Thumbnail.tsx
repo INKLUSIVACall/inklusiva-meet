@@ -73,6 +73,7 @@ import ThumbnailAudioIndicator from './ThumbnailAudioIndicator';
 import ThumbnailBottomIndicators from './ThumbnailBottomIndicators';
 import ThumbnailTopIndicators from './ThumbnailTopIndicators';
 import VirtualScreenshareParticipant from './VirtualScreenshareParticipant';
+import { IJitsiConference } from '../../../base/conference/reducer';
 
 /**
  * The type of the React {@code Component} state of {@link Thumbnail}.
@@ -114,6 +115,11 @@ export interface IProps extends WithTranslation {
      * The Participant's video brightness.
      */
     _brightness: number;
+
+    /**
+     * The conference state
+     */
+    _conference: IJitsiConference;
 
     /**
      * The Participant's video contrast.
@@ -1022,11 +1028,11 @@ class Thumbnail extends Component<IProps, IState> {
     _getContainerClassName() {
         let className = 'videocontainer';
         const { displayMode } = this.state;
-        const { _interpreter, _isDominantSpeakerDisabled, _otherParticipants, _participant, _raisedHand, _thumbnailType, classes } = this.props;
+        const { _conference, _interpreter, _isDominantSpeakerDisabled, _otherParticipants, _participant, _raisedHand, _thumbnailType, classes } = this.props;
 
         if (!_otherParticipants) {
-            console.log(123456, _participant.role)
-            if (_interpreter && (_participant.role == 'signlangtranslator')) {
+            console.log(123456, _interpreter, _conference?.checkMemberHasRole(_participant.id, IC_ROLES.SIGN_LANG_TRANSLATOR))
+            if (_interpreter && _conference?.checkMemberHasRole(_participant.id, IC_ROLES.SIGN_LANG_TRANSLATOR)) {
                 className += ` ${DISPLAY_MODE_TO_CLASS_NAME[displayMode]}`;
             } else {
                 className += 'display-avatar-only'; 
@@ -1489,12 +1495,15 @@ function _mapStateToProps(state: IReduxState, ownProps: any): Object {
         zoomLevel = getParticipantsZoomByParticipantId(state, participant.id) / 100;
     }
 
+    const { conference } = state['features/base/conference'];
+
     let otherParticipants = state['features/inklusiva/userdata'].video?.otherParticipants;
     let interpreter = state['features/inklusiva/userdata'].video?.interpreter;
 
     return {
         _audioTrack,
         _brightness: brightness,
+        _conference: conference,
         _contrast: contrast,
         _opacity: opacity,
         _currentLayout,
