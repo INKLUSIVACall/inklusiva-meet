@@ -1,5 +1,6 @@
 import { IStore } from '../../app/types';
 import { resetParticipantBrightness, resetParticipantContrast, resetParticipantOpacitySetting, resetParticipantSaturation, resetParticipantZoomLevel } from '../../filmstrip/actions.web';
+import { SET_USERVIDEO_INTERPRETERS } from '../uservideo/actionTypes';
 import {
     setUserVideoBrightnessValue,
     setUserVideoContrastValue,
@@ -10,6 +11,7 @@ import {
     toggleOtherParticipants,
     toggleScreensharing
 } from '../uservideo/actions';
+import { areOtherParticipantsEnabled } from '../uservideo/functions';
 
 import {
     SET_AUDIO_CUES_ENABLED_STATE,
