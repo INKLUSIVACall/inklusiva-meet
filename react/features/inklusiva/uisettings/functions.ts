@@ -44,6 +44,37 @@ export function isAcousticCuesEnabled(state: IReduxState): boolean | undefined {
 }
 
 /**
+ * Returns state of OtherParticipants.
+ *
+ * @param {IReduxState} state - The Redux state.
+ * @returns {boolean} Whether OtherParticipants is enabled or disabled.
+ */
+export function arOtherParticinatsEnabled(state: IReduxState): boolean | undefined {
+    return state['features/inklusiva/userdata'].video?.otherParticipants;
+}
+
+/**
+ * Returns state of Interpreter.
+ *
+ * @param {IReduxState} state - The Redux state.
+ * @returns {boolean} Whether Interpreter is enabled or disabled.
+ */
+export function isInterpeterEnabled(state: IReduxState): boolean | undefined {
+    return state['features/inklusiva/userdata'].video?.interpreter;
+}
+
+/**
+ * Returns state of Screensharing.
+ *
+ * @param {IReduxState} state - The Redux state.
+ * @returns {boolean} Whether Screensharing is enabled or disabled.
+ */
+export function isScreensharingeEnabled(state: IReduxState): boolean | undefined {
+    return state['features/inklusiva/userdata'].video?.screensharing;
+}
+
+
+/**
  *  Gets UISettings Props.
  *
  * @param {IStateful} stateful - The redux state.

@@ -141,6 +141,11 @@ export interface IProps extends WithTranslation {
     _height: number;
 
     /**
+     * Are Interpreter Videos enabled?
+     */
+    _interpreter: boolean;
+
+    /**
      * Whether or not the participant is displayed on the stage filmstrip.
      * Used to hide the video from the vertical filmstrip.
      */
@@ -206,6 +211,11 @@ export interface IProps extends WithTranslation {
      * The Participant's opacity.
      */
     _opacity: number;
+
+    /**
+     * OtherParticipants Videos enabled?
+     */
+    _otherParticipants: boolean;
 
     /**
      * An object with information about the participant related to the thumbnail.
@@ -1012,9 +1022,18 @@ class Thumbnail extends Component<IProps, IState> {
     _getContainerClassName() {
         let className = 'videocontainer';
         const { displayMode } = this.state;
-        const { _isDominantSpeakerDisabled, _participant, _raisedHand, _thumbnailType, classes } = this.props;
+        const { _interpreter, _isDominantSpeakerDisabled, _otherParticipants, _participant, _raisedHand, _thumbnailType, classes } = this.props;
 
-        className += ` ${DISPLAY_MODE_TO_CLASS_NAME[displayMode]}`;
+        if (!_otherParticipants) {
+            console.log(123456, _participant.role)
+            if (_interpreter && (_participant.role == 'signlangtranslator')) {
+                className += ` ${DISPLAY_MODE_TO_CLASS_NAME[displayMode]}`;
+            } else {
+                className += 'display-avatar-only'; 
+            }
+        } else {
+            className += ` ${DISPLAY_MODE_TO_CLASS_NAME[displayMode]}`;
+        }
 
         if (_raisedHand) {
             className += ` ${classes.raisedHand}`;
@@ -1097,6 +1116,7 @@ class Thumbnail extends Component<IProps, IState> {
             _audioTrack,
             _disableLocalVideoFlip,
             _gifSrc,
+            _interpreter,
             _isMobile,
             _isMobilePortrait,
             _isScreenSharing,
@@ -1133,6 +1153,7 @@ class Thumbnail extends Component<IProps, IState> {
             videoEventListeners.onCanPlay = this._onCanPlay;
         }
 
+        
         const video = _videoTrack && (
             <VideoTrack
                 className = { local ? videoTrackClassName : '' }
@@ -1468,6 +1489,9 @@ function _mapStateToProps(state: IReduxState, ownProps: any): Object {
         zoomLevel = getParticipantsZoomByParticipantId(state, participant.id) / 100;
     }
 
+    let otherParticipants = state['features/inklusiva/userdata'].video?.otherParticipants;
+    let interpreter = state['features/inklusiva/userdata'].video?.interpreter;
+
     return {
         _audioTrack,
         _brightness: brightness,
@@ -1477,6 +1501,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any): Object {
         _defaultLocalDisplayName: defaultLocalDisplayName,
         _disableLocalVideoFlip: Boolean(disableLocalVideoFlip),
         _disableTileEnlargement: Boolean(disableTileEnlargement),
+        _interpreter: interpreter,
         _isActiveParticipant: isActiveParticipant,
         _isHidden: isLocal && iAmRecorder && !iAmSipGateway,
         _isAudioOnly: Boolean(state['features/base/audio-only'].enabled),
@@ -1488,6 +1513,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any): Object {
         _isVideoPlayable: id && isVideoPlayable(state, id),
         _isVirtualScreenshareParticipant,
         _localFlipX: Boolean(localFlipX),
+        _otherParticipants: otherParticipants,
         _participant: participant,
         _raisedHand: hasRaisedHand(participant),
         _saturation: saturation,
