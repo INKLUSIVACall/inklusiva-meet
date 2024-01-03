@@ -277,8 +277,6 @@ class LargeVideo extends Component<IProps> {
                             playsInline = { true } /* for Safari on iOS to work */ /> }
                     </div>
                 </div>
-                { interfaceConfig.DISABLE_TRANSCRIPTION_SUBTITLES
-                    || <Captions /> }
                 {_showDominantSpeakerBadge && <StageParticipantNameLabel />}
             </div>
         );
