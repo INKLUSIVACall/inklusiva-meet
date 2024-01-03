@@ -8,42 +8,68 @@ local LOGLEVEL = "debug";
 local muc_util = module:require "muc/util";
 local valid_affiliations = muc_util.valid_affiliations;
 local is_healthcheck_room = module:require "util".is_healthcheck_room;
+local i = require('inspect')
 
 module:log("info", "loaded");
 
 module:hook("muc-occupant-pre-join", function (event)
-    local room, occupant = event.room, event.occupant;
+    local room, occupant, stanza = event.room, event.occupant, event.stanza;
 
     if is_healthcheck_room(room.jid) then
         return;
     end
+
+    
+
+	local isTranscriber = false
+	local nick = stanza:child_with_name('nick')
+	if nick ~= nil then
+		if nick:get_text() == 'Transcriber' then
+			isTranscriber = true
+		end
+		module:log("info", "TRANSCRIBER", i(isTranscriber))
+	end
+
 
     if room._data.lobbyroom == nil then
         module:log(LOGLEVEL, "skip room with no active lobby - %s", room.jid)
         return;
     end
 
-    if not event.origin.auth_token then
-        module:log(LOGLEVEL, "skip user with no token - %s", occupant.bare_jid)
-        return
-    end
+	if not isTranscriber then
+	    if not event.origin.auth_token then
+		module:log(LOGLEVEL, "skip user with no token - %s", occupant.bare_jid)
+		return
+	    end
 
-    local context = event.origin.jitsi_meet_context_user;
+	    local context = event.origin.jitsi_meet_context_user;
 
-    if context then
-        if context['lobby_bypass'] == true then
-            module:log(LOGLEVEL, "Bypassing lobby for room %s occupant %s", room.jid, occupant.bare_jid);
+	    if context then
+		if context['lobby_bypass'] == true then
+		    module:log(LOGLEVEL, "Bypassing lobby for room %s occupant %s", room.jid, occupant.bare_jid);
 
-            occupant.role = 'participant';
+		    occupant.role = 'participant';
 
-            -- set affiliation to "member" if not yet assigned by other plugins
-            local affiliation = room:get_affiliation(occupant.bare_jid);
-            if valid_affiliations[affiliation or "none"] < valid_affiliations.member then
-                module:log(LOGLEVEL, "Setting affiliation for %s -> member", occupant.bare_jid);
-                room:set_affiliation(true, occupant.bare_jid, 'member');
-            end
-        end
-    end
+		    -- set affiliation to "member" if not yet assigned by other plugins
+		    local affiliation = room:get_affiliation(occupant.bare_jid);
+		    if valid_affiliations[affiliation or "none"] < valid_affiliations.member then
+			module:log(LOGLEVEL, "Setting affiliation for %s -> member", occupant.bare_jid);
+			room:set_affiliation(true, occupant.bare_jid, 'member');
+		    end
+		end
+	    end
+	else 
+	    module:log(LOGLEVEL, "Bypassing transcriver for room %s occupant %s", room.jid, occupant.bare_jid);
+
+	    occupant.role = 'participant';
+
+	    -- set affiliation to "member" if not yet assigned by other plugins
+	    local affiliation = room:get_affiliation(occupant.bare_jid);
+	    if valid_affiliations[affiliation or "none"] < valid_affiliations.member then
+		module:log(LOGLEVEL, "Setting affiliation for %s -> member", occupant.bare_jid);
+		room:set_affiliation(true, occupant.bare_jid, 'member');
+	    end
+	end
 
 end, -3);
 --- Run just before lobby(priority -4) and members_only (-5).
