@@ -1,5 +1,5 @@
-import React, { ReactElement } from 'react';
-import { connect, useSelector } from 'react-redux';
+import React, { ReactElement, useEffect } from 'react';
+import { connect, useDispatch } from 'react-redux';
 
 import { IReduxState, IStore } from '../../../app/types';
 import { IC_ROLES } from '../../../base/conference/icRoles';
@@ -13,10 +13,10 @@ import {
 } from '../../../base/participants/functions';
 import { IParticipant } from '../../../base/participants/types';
 import Tooltip from '../../../base/tooltip/components/Tooltip';
-import { openChat } from '../../../chat/actions.web';
-import { createBreakoutRoom } from '../../../breakout-rooms/actions';
+import { createBreakoutRoom, moveToRoom, sendParticipantToRoom } from '../../../breakout-rooms/actions';
 import { getBreakoutRooms } from '../../../breakout-rooms/functions';
-import { IStateful } from '../../../base/app/types';
+import { IRoom } from '../../../breakout-rooms/types';
+import { openChat } from '../../../chat/actions.web';
 
 /**
  * The type of the React {@code Component} props of {@link AssistantRelationLabel}.
@@ -24,9 +24,9 @@ import { IStateful } from '../../../base/app/types';
 interface IProps {
 
     /**
-     * Redux dispatch function.
+     * List of breakout rooms.
      */
-    dispatch: IStore['dispatch'];
+    _breakoutRooms: IRoom[];
 
     /**
      * The function to get the participant with a specific IC role and partner.
@@ -35,12 +35,12 @@ interface IProps {
      * @param {string} partnerId - The partner ID.
      * @returns {IParticipant | undefined}
      */
-    getParticipantWithICRoleAndPartner: Function;
+    _getParticipantWithICRoleAndPartner: Function;
 
     /**
      * The local participant.
      */
-    localParticipant?: IParticipant;
+    _localParticipant?: IParticipant;
 
     /**
      * The function to check if a participant has a specific role.
@@ -49,13 +49,12 @@ interface IProps {
      * @param {string} role - The role to check.
      * @returns {boolean}
      */
-    participantHasRole: Function;
-
+    _participantHasRole: Function;
 
     /**
      * The remote participants.
      */
-    remoteParticipants?: Map<string, IParticipant>;
+    _remoteParticipants?: Map<string, IParticipant>;
 }
 
 /**
@@ -64,21 +63,23 @@ interface IProps {
  * @param {IProps} props - The props of the component.
  * @returns {ReactElement}
  */
-const AssistantRelationLabel = (props: IProps): ReactElement => {
-    const dispatch = props.dispatch;
-
+const AssistantRelationLabel = ({
+    _breakoutRooms,
+    _localParticipant,
+    _remoteParticipants,
+    _participantHasRole,
+    _getParticipantWithICRoleAndPartner
+}: IProps): ReactElement => {
+    const dispatch: IStore['dispatch'] = useDispatch();
     let labelText: string | undefined;
     let tooltipText = '';
     let visible = false;
     let otherParticipant: IParticipant | undefined;
 
-    const localId = props.localParticipant?.id;
+    const localId = _localParticipant?.id;
 
-    if (props.participantHasRole(localId, IC_ROLES.ASSISTED)) {
-        const rolePartner = props.getParticipantWithICRoleAndPartner(
-            IC_ROLES.ASSISTANT,
-            props.localParticipant ? localId : ''
-        );
+    if (_participantHasRole(localId, IC_ROLES.ASSISTED)) {
+        const rolePartner = _getParticipantWithICRoleAndPartner(IC_ROLES.ASSISTANT, _localParticipant ? localId : '');
 
         if (rolePartner === undefined) {
             tooltipText = 'Warte auf Assistenz';
@@ -91,13 +92,13 @@ const AssistantRelationLabel = (props: IProps): ReactElement => {
         otherParticipant = rolePartner;
     }
 
-    if (props.participantHasRole(localId, IC_ROLES.ASSISTANT)) {
-        const assistantRoleDefinition = (props.localParticipant?.icRoles ?? []).find(
+    if (_participantHasRole(localId, IC_ROLES.ASSISTANT)) {
+        const assistantRoleDefinition = (_localParticipant?.icRoles ?? []).find(
             role => role.name === IC_ROLES.ASSISTANT
         );
 
-        if (props.participantHasRole(assistantRoleDefinition?.partner ?? undefined, IC_ROLES.ASSISTED)) {
-            const assistedParticipant = props.remoteParticipants?.get(assistantRoleDefinition?.partner ?? '');
+        if (_participantHasRole(assistantRoleDefinition?.partner ?? undefined, IC_ROLES.ASSISTED)) {
+            const assistedParticipant = _remoteParticipants?.get(assistantRoleDefinition?.partner ?? '');
 
             tooltipText = `${assistedParticipant?.name} wird von mir betreut`;
             labelText = assistedParticipant?.name ?? '';
@@ -105,6 +106,7 @@ const AssistantRelationLabel = (props: IProps): ReactElement => {
             otherParticipant = assistedParticipant;
         }
     }
+    visible = true;
 
     /**
      * OnClick handler for opening the private chat between the two participants.
@@ -115,8 +117,32 @@ const AssistantRelationLabel = (props: IProps): ReactElement => {
         dispatch(openChat(otherParticipant));
     };
 
+    const breakoutRoomName = '_private_';
+
+    useEffect(() => {
+        // iterate over all breakout rooms and check if there is a breakout room with the name
+        const breakoutRoom = Object.values(_breakoutRooms).find(room => room.name === breakoutRoomName);
+
+        // check if there is a participant with the localId in the breakout room
+        if (breakoutRoom && otherParticipant && _localParticipant) {
+            const localParticipantInRoom = Object.values(breakoutRoom.participants).find(
+                participant => participant.jid === localId
+            );
+            const otherParticipantInRoom = Object.values(breakoutRoom.participants).find(
+                participant => participant.jid !== otherParticipant.id
+            );
+
+            if (!localParticipantInRoom && _localParticipant) {
+                dispatch(moveToRoom(breakoutRoom.jid));
+            }
+            if (!otherParticipantInRoom && otherParticipant) {
+                dispatch(sendParticipantToRoom(otherParticipant.id, breakoutRoom.jid));
+            }
+        }
+    }, [ _breakoutRooms ]);
+
     const openBreakoutRoom = () => {
-        dispatch(createBreakoutRoom());
+        dispatch(createBreakoutRoom(breakoutRoomName));
     };
 
     let buttons = <></>;
@@ -130,6 +156,7 @@ const AssistantRelationLabel = (props: IProps): ReactElement => {
                     icon = { IconChatUnread }
                     iconColor = '#fff'
                     id = 'assistantRelationLabel'
+                    // eslint-disable-next-line react/jsx-no-bind
                     onClick = { openPrivateChat } />
                 <Label
                     accessibilityText = { tooltipText }
@@ -137,6 +164,7 @@ const AssistantRelationLabel = (props: IProps): ReactElement => {
                     icon = { IconShare }
                     iconColor = '#fff'
                     id = 'assistantRelationLabel'
+                    // eslint-disable-next-line react/jsx-no-bind
                     onClick = { openBreakoutRoom } />
             </>
         );
@@ -155,21 +183,23 @@ const AssistantRelationLabel = (props: IProps): ReactElement => {
                     id = 'assistantRelationLabel'
                     text = { labelText } />
             </Tooltip>
-            { buttons }
+            {buttons}
         </>
-    ) : <></>;
+    )
+        : <></>
+    ;
 };
 
 const mapStateToProps = (state: IReduxState) => {
     return {
-        remoteParticipants: getRemoteParticipants(state),
-        localParticipant: getLocalParticipant(state),
-        participantHasRole: (participantId: string, role: string) =>
-            participantHasRole(state, participantId, role),
-        getParticipantWithICRoleAndPartner: (role: string, partnerId: string) =>
+        // _breakoutRooms: Object.values(getBreakoutRooms(state)).filter(room => !room.isMainRoom),
+        _breakoutRooms: getBreakoutRooms(state),
+        _remoteParticipants: getRemoteParticipants(state),
+        _localParticipant: getLocalParticipant(state),
+        _participantHasRole: (participantId: string, role: string) => participantHasRole(state, participantId, role),
+        _getParticipantWithICRoleAndPartner: (role: string, partnerId: string) =>
             getParticipantWithICRoleAndPartner(state, role, partnerId)
     };
 };
-
 
 export default connect(mapStateToProps)(AssistantRelationLabel);

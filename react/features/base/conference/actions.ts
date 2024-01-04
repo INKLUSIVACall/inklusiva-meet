@@ -139,7 +139,11 @@ function _addConferenceListeners(conference: IJitsiConference, dispatch: IStore[
         (locked: boolean) => dispatch(lockStateChanged(conference, locked)));
 
     conference.on(
-        JitsiConferenceEvents.USER_IC_ROLES_CHANGED,
+        JitsiConferenceEvents.UPDATE_BREAKOUT_ROOMS,
+        (breakoutRooms: any) => {
+            console.log('BOR UPDATED', breakoutRooms);
+        });
+    conference.on(JitsiConferenceEvents.USER_IC_ROLES_CHANGED,
         (id: string, roles: []) => {
             console.log('USER_IC_ROLES_CHANGED', id, roles);
         });
