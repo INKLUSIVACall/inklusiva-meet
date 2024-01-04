@@ -73,6 +73,7 @@ import ThumbnailAudioIndicator from './ThumbnailAudioIndicator';
 import ThumbnailBottomIndicators from './ThumbnailBottomIndicators';
 import ThumbnailTopIndicators from './ThumbnailTopIndicators';
 import VirtualScreenshareParticipant from './VirtualScreenshareParticipant';
+import { IJitsiConference } from '../../../base/conference/reducer';
 
 /**
  * The type of the React {@code Component} state of {@link Thumbnail}.
@@ -116,6 +117,11 @@ export interface IProps extends WithTranslation {
     _brightness: number;
 
     /**
+     * The conference state
+     */
+    _conference: IJitsiConference;
+
+    /**
      * The Participant's video contrast.
      */
     _contrast: number;
@@ -139,6 +145,11 @@ export interface IProps extends WithTranslation {
      * The height of the Thumbnail.
      */
     _height: number;
+
+    /**
+     * Are Interpreter Videos enabled?
+     */
+    _interpreter: boolean;
 
     /**
      * Whether or not the participant is displayed on the stage filmstrip.
@@ -206,6 +217,11 @@ export interface IProps extends WithTranslation {
      * The Participant's opacity.
      */
     _opacity: number;
+
+    /**
+     * OtherParticipants Videos enabled?
+     */
+    _otherParticipants: boolean;
 
     /**
      * An object with information about the participant related to the thumbnail.
@@ -1012,9 +1028,18 @@ class Thumbnail extends Component<IProps, IState> {
     _getContainerClassName() {
         let className = 'videocontainer';
         const { displayMode } = this.state;
-        const { _isDominantSpeakerDisabled, _participant, _raisedHand, _thumbnailType, classes } = this.props;
+        const { _conference, _interpreter, _isDominantSpeakerDisabled, _otherParticipants, _participant, _raisedHand, _thumbnailType, classes } = this.props;
 
-        className += ` ${DISPLAY_MODE_TO_CLASS_NAME[displayMode]}`;
+        if (!_otherParticipants) {
+            console.log(123456, _interpreter, _conference?.checkMemberHasRole(_participant.id, IC_ROLES.SIGN_LANG_TRANSLATOR))
+            if (_interpreter && _conference?.checkMemberHasRole(_participant.id, IC_ROLES.SIGN_LANG_TRANSLATOR)) {
+                className += ` ${DISPLAY_MODE_TO_CLASS_NAME[displayMode]}`;
+            } else {
+                className += 'display-avatar-only'; 
+            }
+        } else {
+            className += ` ${DISPLAY_MODE_TO_CLASS_NAME[displayMode]}`;
+        }
 
         if (_raisedHand) {
             className += ` ${classes.raisedHand}`;
@@ -1097,6 +1122,7 @@ class Thumbnail extends Component<IProps, IState> {
             _audioTrack,
             _disableLocalVideoFlip,
             _gifSrc,
+            _interpreter,
             _isMobile,
             _isMobilePortrait,
             _isScreenSharing,
@@ -1133,6 +1159,7 @@ class Thumbnail extends Component<IProps, IState> {
             videoEventListeners.onCanPlay = this._onCanPlay;
         }
 
+        
         const video = _videoTrack && (
             <VideoTrack
                 className = { local ? videoTrackClassName : '' }
@@ -1468,15 +1495,22 @@ function _mapStateToProps(state: IReduxState, ownProps: any): Object {
         zoomLevel = getParticipantsZoomByParticipantId(state, participant.id) / 100;
     }
 
+    const { conference } = state['features/base/conference'];
+
+    let otherParticipants = state['features/inklusiva/userdata'].video?.otherParticipants;
+    let interpreter = state['features/inklusiva/userdata'].video?.interpreter;
+
     return {
         _audioTrack,
         _brightness: brightness,
+        _conference: conference,
         _contrast: contrast,
         _opacity: opacity,
         _currentLayout,
         _defaultLocalDisplayName: defaultLocalDisplayName,
         _disableLocalVideoFlip: Boolean(disableLocalVideoFlip),
         _disableTileEnlargement: Boolean(disableTileEnlargement),
+        _interpreter: interpreter,
         _isActiveParticipant: isActiveParticipant,
         _isHidden: isLocal && iAmRecorder && !iAmSipGateway,
         _isAudioOnly: Boolean(state['features/base/audio-only'].enabled),
@@ -1488,6 +1522,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any): Object {
         _isVideoPlayable: id && isVideoPlayable(state, id),
         _isVirtualScreenshareParticipant,
         _localFlipX: Boolean(localFlipX),
+        _otherParticipants: otherParticipants,
         _participant: participant,
         _raisedHand: hasRaisedHand(participant),
         _saturation: saturation,

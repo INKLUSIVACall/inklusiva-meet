@@ -1,19 +1,23 @@
 import { IStore } from '../../app/types';
 import { resetParticipantBrightness, resetParticipantContrast, resetParticipantOpacitySetting, resetParticipantSaturation, resetParticipantZoomLevel } from '../../filmstrip/actions.web';
+import { SET_USERVIDEO_INTERPRETERS } from '../uservideo/actionTypes';
 import {
     setUserVideoBrightnessValue,
     setUserVideoContrastValue,
     setUserVideoDimmingValue,
     setUserVideoSaturationValue,
     setUserVideoZoomValue,
-    toggleOtherParticipants
+    toggleInterpreters,
+    toggleOtherParticipants,
+    toggleScreensharing
 } from '../uservideo/actions';
+import { areOtherParticipantsEnabled } from '../uservideo/functions';
 
 import {
     SET_AUDIO_CUES_ENABLED_STATE,
     SET_UI_FONTSIZE,
     SET_UI_ICONSIZE,
-    SET_VISUAL_CUES_ENABLED_STATE
+    SET_VISUAL_CUES_ENABLED_STATE,
 } from './actionTypes';
 import { getUISettingsTabProps, isAcousticCuesEnabled, isVisualCuesEnabled } from './functions';
 
@@ -64,6 +68,12 @@ export function submitUISettingsTabProps(newState: {
         }
         if (newState.otherParticipants !== currentState.otherParticipants) {
             dispatch(toggleOtherParticipants());
+        }
+        if (newState.interpreter !== currentState.interpreter) {
+            dispatch(toggleInterpreters());
+        }
+        if (newState.screensharing !== currentState.screensharing) {
+            dispatch(toggleScreensharing());
         }
         if (newState.saturation !== currentState.saturation) {
             dispatch(setUserVideoSaturationValue(newState.saturation));
