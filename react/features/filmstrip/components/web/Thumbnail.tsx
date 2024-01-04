@@ -11,6 +11,7 @@ import { sendAnalytics } from '../../../analytics/functions';
 import { IReduxState, IStore } from '../../../app/types';
 import Avatar from '../../../base/avatar/components/Avatar';
 import { IC_ROLES } from '../../../base/conference/icRoles';
+import { IJitsiConference } from '../../../base/conference/reducer';
 import { isMobileBrowser } from '../../../base/environment/utils';
 import { translate } from '../../../base/i18n/functions';
 import { JitsiTrackEvents } from '../../../base/lib-jitsi-meet';
@@ -73,7 +74,6 @@ import ThumbnailAudioIndicator from './ThumbnailAudioIndicator';
 import ThumbnailBottomIndicators from './ThumbnailBottomIndicators';
 import ThumbnailTopIndicators from './ThumbnailTopIndicators';
 import VirtualScreenshareParticipant from './VirtualScreenshareParticipant';
-import { IJitsiConference } from '../../../base/conference/reducer';
 
 /**
  * The type of the React {@code Component} state of {@link Thumbnail}.
@@ -117,7 +117,7 @@ export interface IProps extends WithTranslation {
     _brightness: number;
 
     /**
-     * The conference state
+     * The conference state.
      */
     _conference: IJitsiConference;
 
@@ -1028,17 +1028,23 @@ class Thumbnail extends Component<IProps, IState> {
     _getContainerClassName() {
         let className = 'videocontainer';
         const { displayMode } = this.state;
-        const { _conference, _interpreter, _isDominantSpeakerDisabled, _otherParticipants, _participant, _raisedHand, _thumbnailType, classes } = this.props;
+        const {
+            _conference,
+            _interpreter,
+            _isDominantSpeakerDisabled,
+            _otherParticipants,
+            _participant,
+            _raisedHand,
+            _thumbnailType,
+            classes
+        } = this.props;
 
-        if (!_otherParticipants) {
-            console.log(123456, _interpreter, _conference?.checkMemberHasRole(_participant.id, IC_ROLES.SIGN_LANG_TRANSLATOR))
-            if (_interpreter && _conference?.checkMemberHasRole(_participant.id, IC_ROLES.SIGN_LANG_TRANSLATOR)) {
-                className += ` ${DISPLAY_MODE_TO_CLASS_NAME[displayMode]}`;
-            } else {
-                className += 'display-avatar-only'; 
-            }
-        } else {
+        if (_otherParticipants) {
             className += ` ${DISPLAY_MODE_TO_CLASS_NAME[displayMode]}`;
+        } else if (_interpreter && _conference?.checkMemberHasRole(_participant.id, IC_ROLES.SIGN_LANG_TRANSLATOR)) {
+            className += ` ${DISPLAY_MODE_TO_CLASS_NAME[displayMode]}`;
+        } else {
+            className += 'display-avatar-only';
         }
 
         if (_raisedHand) {
@@ -1159,7 +1165,6 @@ class Thumbnail extends Component<IProps, IState> {
             videoEventListeners.onCanPlay = this._onCanPlay;
         }
 
-        
         const video = _videoTrack && (
             <VideoTrack
                 className = { local ? videoTrackClassName : '' }
@@ -1206,8 +1211,7 @@ class Thumbnail extends Component<IProps, IState> {
                 </Tooltip>
                 {!_gifSrc && (local ? <span id = 'localVideoWrapper'>{video}</span> : video)}
                 <div className = { classes.containerBackground } />
-                <FadeOutOverlay
-                    opacity = { _opacity } />
+                <FadeOutOverlay opacity = { _opacity } />
                 {/* put the bottom container before the top container in the dom,
                 because it contains the participant name that should be announced first by screen readers */}
                 <div
@@ -1497,8 +1501,8 @@ function _mapStateToProps(state: IReduxState, ownProps: any): Object {
 
     const { conference } = state['features/base/conference'];
 
-    let otherParticipants = state['features/inklusiva/userdata'].video?.otherParticipants;
-    let interpreter = state['features/inklusiva/userdata'].video?.interpreter;
+    const otherParticipants = state['features/inklusiva/userdata'].video?.otherParticipants;
+    const interpreter = state['features/inklusiva/userdata'].video?.interpreter;
 
     return {
         _audioTrack,

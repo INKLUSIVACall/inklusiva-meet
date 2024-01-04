@@ -50,7 +50,7 @@ export function areOtherParticipantsEnabled(state: IReduxState): boolean | undef
  * @returns {boolean} Whether interpreters videos are enabled or disabled.
  */
 export function areInterpretersEnabled(state: IReduxState): boolean | undefined {
-    return state['features/inklusiva/userdata'].video?.interpreter;
+    return state['features/inklusiva/userdata'].video?.interpreter ?? true;
 }
 
 /**
@@ -60,7 +60,7 @@ export function areInterpretersEnabled(state: IReduxState): boolean | undefined 
  * @returns {boolean} Whether screensharing is enabled or disabled.
  */
 export function isScreensharingEnabled(state: IReduxState): boolean | undefined {
-    return state['features/inklusiva/userdata'].video?.screensharing;
+    return state['features/inklusiva/userdata'].video?.screensharing ?? true;
 }
 
 /**

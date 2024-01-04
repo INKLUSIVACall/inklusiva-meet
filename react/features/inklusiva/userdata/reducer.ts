@@ -249,7 +249,7 @@ ReducerRegistry.register<IUserData>(
             return nextState;
 
         case SET_USERVIDEO_INTERPRETERS:
-            nextState.video.interpreter = payload.value;
+            nextState.video.interpreter = payload.enabled;
 
             return nextState;
 
@@ -264,7 +264,7 @@ ReducerRegistry.register<IUserData>(
             return nextState;
 
         case SET_USERVIDEO_SCREESHARING:
-            nextState.video.screensharing = payload.value;
+            nextState.video.screensharing = payload.enabled;
 
             return nextState;
 
