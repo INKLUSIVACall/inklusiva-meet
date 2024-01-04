@@ -1,9 +1,9 @@
 import React, { ReactElement } from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 
-import { IReduxState } from '../../../app/types';
+import { IReduxState, IStore } from '../../../app/types';
 import { IC_ROLES } from '../../../base/conference/icRoles';
-import { IconHandHoldingHand } from '../../../base/icons/svg';
+import { IconChatUnread, IconHandHoldingHand } from '../../../base/icons/svg';
 import Label from '../../../base/label/components/web/Label';
 import {
     getLocalParticipant,
@@ -13,11 +13,20 @@ import {
 } from '../../../base/participants/functions';
 import { IParticipant } from '../../../base/participants/types';
 import Tooltip from '../../../base/tooltip/components/Tooltip';
+import { openChat } from '../../../chat/actions.web';
+import { createBreakoutRoom } from '../../../breakout-rooms/actions';
+import { getBreakoutRooms } from '../../../breakout-rooms/functions';
+import { IStateful } from '../../../base/app/types';
 
 /**
  * The type of the React {@code Component} props of {@link AssistantRelationLabel}.
  */
 interface IProps {
+
+    /**
+     * Redux dispatch function.
+     */
+    dispatch: IStore['dispatch'];
 
     /**
      * The function to get the participant with a specific IC role and partner.
@@ -56,9 +65,12 @@ interface IProps {
  * @returns {ReactElement}
  */
 const AssistantRelationLabel = (props: IProps): ReactElement => {
+    const dispatch = props.dispatch;
+
     let labelText: string | undefined;
     let tooltipText = '';
     let visible = false;
+    let otherParticipant: IParticipant | undefined;
 
     const localId = props.localParticipant?.id;
 
@@ -76,6 +88,7 @@ const AssistantRelationLabel = (props: IProps): ReactElement => {
             tooltipText = `Ich werde von ${labelText} betreut`;
         }
         visible = true;
+        otherParticipant = rolePartner;
     }
 
     if (props.participantHasRole(localId, IC_ROLES.ASSISTANT)) {
@@ -89,21 +102,61 @@ const AssistantRelationLabel = (props: IProps): ReactElement => {
             tooltipText = `${assistedParticipant?.name} wird von mir betreut`;
             labelText = assistedParticipant?.name ?? '';
             visible = true;
+            otherParticipant = assistedParticipant;
         }
     }
 
+    /**
+     * OnClick handler for opening the private chat between the two participants.
+     *
+     * @returns {void}
+     */
+    const openPrivateChat = () => {
+        dispatch(openChat(otherParticipant));
+    };
+
+    const openBreakoutRoom = () => {
+        dispatch(createBreakoutRoom());
+    };
+
+    let buttons = <></>;
+
+    if (otherParticipant) {
+        buttons = (
+            <>
+                <Label
+                    accessibilityText = { tooltipText }
+                    className = { 'icLabelTransparent' }
+                    icon = { IconChatUnread }
+                    iconColor = '#fff'
+                    id = 'assistantRelationLabel'
+                    onClick = { openPrivateChat } />
+                <Label
+                    accessibilityText = { tooltipText }
+                    className = { 'icLabelTransparent' }
+                    icon = { IconHandHoldingHand }
+                    iconColor = '#fff'
+                    id = 'assistantRelationLabel'
+                    onClick = { openBreakoutRoom } />
+            </>
+        );
+    }
+
     return visible ? (
-        <Tooltip
-            content = { tooltipText }
-            position = 'bottom'>
-            <Label
-                accessibilityText = { tooltipText }
-                className = { 'icLabelTransparent' }
-                icon = { IconHandHoldingHand }
-                iconColor = '#fff'
-                id = 'assistantRelationLabel'
-                text = { labelText } />
-        </Tooltip>
+        <>
+            <Tooltip
+                content = { tooltipText }
+                position = 'bottom'>
+                <Label
+                    accessibilityText = { tooltipText }
+                    className = { 'icLabelTransparent' }
+                    icon = { IconHandHoldingHand }
+                    iconColor = '#fff'
+                    id = 'assistantRelationLabel'
+                    text = { labelText } />
+            </Tooltip>
+            { buttons }
+        </>
     ) : <></>;
 };
 
