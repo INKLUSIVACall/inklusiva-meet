@@ -142,6 +142,8 @@ class UiSettingsTab extends AbstractDialogTab<IProps, any> {
             t
         } = this.props;
 
+        console.log(interpreter, screensharing, otherParticipants);
+
         const getSizeDescription = (size: number) => t(`settings.uiSettings.fontSizes.size${size}`);
 
         return (
@@ -222,35 +224,34 @@ class UiSettingsTab extends AbstractDialogTab<IProps, any> {
                         } />
                 </div>
 
-                {!otherParticipants && (
-                    <>
-                        <div className = { classes.inputblockContainer }>
-                            <Checkbox
-                                checked = { interpreter }
-                                className = { [ classes.inputElement, 'ml-2' ].join(' ') }
-                                label = { t('settings.userVideo.interpreterHeadline') }
-                                name = 'video-visibility-toggle'
-                                // eslint-disable-next-line react/jsx-no-bind
-                                onChange = { () =>
-                                    super._onChange({
-                                        interpreter: !interpreter
-                                    })
-                                } />
-                        </div>
-                        <div className = { classes.inputblockContainer }>
-                            <Checkbox
-                                checked = { screensharing }
-                                className = { [ classes.inputElement, 'ml-2' ].join(' ') }
-                                label = { t('settings.userVideo.screensharingHeadline') }
-                                name = 'video-visibility-toggle'
-                                // eslint-disable-next-line react/jsx-no-bind
-                                onChange = { () =>
-                                    super._onChange({
-                                        screensharing: !screensharing
-                                    })
-                                } />
-                        </div>
-                    </>)}
+                <div className = { classes.inputblockContainer }>
+                    <Checkbox
+                        checked = { interpreter }
+                        className = { [ classes.inputElement, 'ml-2' ].join(' ') }
+                        disabled = { otherParticipants }
+                        label = { t('settings.userVideo.interpreterHeadline') }
+                        name = 'video-visibility-toggle'
+                        // eslint-disable-next-line react/jsx-no-bind
+                        onChange = { () =>
+                            super._onChange({
+                                interpreter: !interpreter
+                            })
+                        } />
+                </div>
+                <div className = { classes.inputblockContainer }>
+                    <Checkbox
+                        checked = { screensharing }
+                        className = { [ classes.inputElement, 'ml-2' ].join(' ') }
+                        disabled = { otherParticipants }
+                        label = { t('settings.userVideo.screensharingHeadline') }
+                        name = 'video-visibility-toggle'
+                        // eslint-disable-next-line react/jsx-no-bind
+                        onChange = { () =>
+                            super._onChange({
+                                screensharing: !screensharing
+                            })
+                        } />
+                </div>
 
                 <div className = { classes.inputblockContainer }>
                     <div className = { classes.controlContainer }>

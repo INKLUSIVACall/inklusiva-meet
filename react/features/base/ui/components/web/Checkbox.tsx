@@ -59,6 +59,10 @@ const useStyles = makeStyles()(theme => {
             cursor: 'not-allowed'
         },
 
+        disabledLabel: {
+            color: theme.palette.text03
+        },
+
         activeArea: {
             display: 'grid',
             placeContent: 'center',
@@ -173,7 +177,7 @@ const Checkbox = ({
                     size = { 18 }
                     src = { IconCheck } />
             </div>
-            <div>{label}</div>
+            <div className = { disabled ? styles.disabledLabel : '' }>{label}</div>
         </label>
     );
 };

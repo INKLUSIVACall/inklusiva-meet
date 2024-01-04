@@ -17,7 +17,7 @@ import {
     SET_AUDIO_CUES_ENABLED_STATE,
     SET_UI_FONTSIZE,
     SET_UI_ICONSIZE,
-    SET_VISUAL_CUES_ENABLED_STATE,
+    SET_VISUAL_CUES_ENABLED_STATE
 } from './actionTypes';
 import { getUISettingsTabProps, isAcousticCuesEnabled, isVisualCuesEnabled } from './functions';
 
