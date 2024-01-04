@@ -1145,9 +1145,9 @@
         },
         "userVideo": {
             "containerHeadline": "Teilnehmer-Videos",
-            "interpreterHeadline": "Dolmetscher-Videos einschalten",
+            "interpreterHeadline": "Dolmetscher-Videos dennoch einschalten",
             "interpreterDescription": "Während des Meetings sind alle Dolmetschervideos in den Kacheln zu sehen.",
-            "screensharingHeadline": "Geteilte Bildschirme anzeigen",
+            "screensharingHeadline": "Geteilte Bildschirme dennoch anzeigen",
             "screensharingDescription": "Während des Meetings sind geteilte Bildschirme zu sehen.",
             "videoVisibilityToggleHeadline": "Während des Meetings sind alle Teilnehmer-Videos in den Kacheln zu sehen.",
             "videoVisibilityEngage": "Teilnehmer-Videos einschalten",
