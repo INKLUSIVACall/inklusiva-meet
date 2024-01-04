@@ -3,7 +3,7 @@ import { connect, useSelector } from 'react-redux';
 
 import { IReduxState, IStore } from '../../../app/types';
 import { IC_ROLES } from '../../../base/conference/icRoles';
-import { IconChatUnread, IconHandHoldingHand } from '../../../base/icons/svg';
+import { IconChatUnread, IconHandHoldingHand, IconShare } from '../../../base/icons/svg';
 import Label from '../../../base/label/components/web/Label';
 import {
     getLocalParticipant,
@@ -134,7 +134,7 @@ const AssistantRelationLabel = (props: IProps): ReactElement => {
                 <Label
                     accessibilityText = { tooltipText }
                     className = { 'icLabelTransparent' }
-                    icon = { IconHandHoldingHand }
+                    icon = { IconShare }
                     iconColor = '#fff'
                     id = 'assistantRelationLabel'
                     onClick = { openBreakoutRoom } />
