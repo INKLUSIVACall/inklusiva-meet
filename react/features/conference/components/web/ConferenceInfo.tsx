@@ -116,7 +116,12 @@ const COMPONENTS: Array<{
         id: 'transcript-link'
     },
     {
-        Component: RecordingStatusLabel,
+        Component: () => (
+            <>
+                <RecordingStatusLabel mode = { JitsiRecordingConstants.mode.FILE } />
+                <RecordingStatusLabel mode = { JitsiRecordingConstants.mode.STREAM } />
+            </>
+        ),
         id: 'recording-status'
     },
     {
