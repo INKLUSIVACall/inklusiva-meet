@@ -67,6 +67,16 @@ export const SATURATION_SLIDER_MINIMUM = 0;
 export const SATURATION_SLIDER_MAXIMUM = 100;
 
 /**
+ * Minimum value of the frequency slider.
+ */
+export const FREQUENCY_FILTER_SLIDER_MINIMUM = 0;
+
+/**
+ * Maximum value of the frequency slider.
+ */
+export const FREQUENCY_FILTER_SLIDER_MAXIMUM = 100;
+
+/**
  * Participant context menu button keys.
  */
 export const PARTICIPANT_MENU_BUTTONS = {

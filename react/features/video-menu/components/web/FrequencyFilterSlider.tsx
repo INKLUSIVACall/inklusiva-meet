@@ -5,6 +5,7 @@ import { makeStyles } from 'tss-react/mui';
 import Icon from '../../../base/icons/components/Icon';
 import { IconNoiseSuppressionOn } from '../../../base/icons/svg';
 import { inklusivaContextMenuStyles } from '../../../inklusiva/ui-constants';
+import { FREQUENCY_FILTER_SLIDER_MAXIMUM, FREQUENCY_FILTER_SLIDER_MINIMUM } from '../../constants';
 
 /**
  * The type of the React {@code Component} props of {@link FrequencyFilterSlider}.
@@ -71,11 +72,11 @@ const FrequencyFilterSlider = ({
                         src = { IconNoiseSuppressionOn } />
                 </span>
                 <input
-                    aria-valuemax = { 5 }
-                    aria-valuemin = { 0 }
+                    aria-valuemax = { FREQUENCY_FILTER_SLIDER_MAXIMUM }
+                    aria-valuemin = { FREQUENCY_FILTER_SLIDER_MINIMUM }
                     aria-valuenow = { frequencySetting }
-                    max = { 5 }
-                    min = { 0 }
+                    max = { FREQUENCY_FILTER_SLIDER_MAXIMUM }
+                    min = { FREQUENCY_FILTER_SLIDER_MINIMUM }
                     onChange = { _onFrequencyAdjustChange }
                     tabIndex = { 0 }
                     type = 'range'

@@ -365,18 +365,18 @@ class AudioDevicesSelection extends AbstractDialogTab<IProps, IState> {
                     <div className = { classes.controlContainer }>
                         <div className = { classes.controlColumn }>
                             <Slider
-                                defaultValue = { othersVolume }
+                                defaultValue = { othersVolume * 100 }
                                 label = { t('settings.audioSettings.othersVolume') }
                                 max = { 100 }
                                 min = { 0 }
                                 onChange = { event => {
                                     super._onChange({
-                                        othersVolume: event.target.value
+                                        othersVolume: event.target.value / 100
                                     });
                                 } }
                                 step = { 1 } />
                         </div>
-                        <div className = { classes.valueColumn }>{othersVolume} %</div>
+                        <div className = { classes.valueColumn }>{Math.floor(othersVolume * 100)} %</div>
                     </div>
                     <div className = { classes.controlContainer }>
                         <div className = { classes.controlColumn }>
