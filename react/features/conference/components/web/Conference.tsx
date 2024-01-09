@@ -16,6 +16,7 @@ import MainFilmstrip from '../../../filmstrip/components/web/MainFilmstrip';
 import ScreenshareFilmstrip from '../../../filmstrip/components/web/ScreenshareFilmstrip';
 import SignLangTranslatorFilmStrip from '../../../filmstrip/components/web/SignLangTranslatorFilmStrip';
 import StageFilmstrip from '../../../filmstrip/components/web/StageFilmstrip';
+import AssistancePanel from '../../../inklusiva/rolematching/AssistancePanel';
 import AssisteesPanel from '../../../inklusiva/rolematching/AssisteesPanel';
 import { getUserVideoTabProps } from '../../../inklusiva/uservideo/functions';
 import CalleeInfoContainer from '../../../invite/components/callee-info/CalleeInfoContainer';
@@ -288,6 +289,7 @@ class Conference extends AbstractConference<IProps, any> {
                     }
 
                     <AssisteesPanel />
+                    <AssistancePanel />
                     <CalleeInfoContainer />
 
                     { interfaceConfig.DISABLE_TRANSCRIPTION_SUBTITLES

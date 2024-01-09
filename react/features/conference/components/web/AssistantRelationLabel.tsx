@@ -106,7 +106,6 @@ const AssistantRelationLabel = ({
             otherParticipant = assistedParticipant;
         }
     }
-    visible = true;
 
     /**
      * OnClick handler for opening the private chat between the two participants.
@@ -117,7 +116,9 @@ const AssistantRelationLabel = ({
         dispatch(openChat(otherParticipant));
     };
 
-    const breakoutRoomName = '_private_';
+    const breakoutRoomName = otherParticipant
+        ? `_${otherParticipant.id}_${_localParticipant?.id}_${otherParticipant.name}-${_localParticipant?.name}`
+        : '';
 
     useEffect(() => {
         // iterate over all breakout rooms and check if there is a breakout room with the name
@@ -129,14 +130,15 @@ const AssistantRelationLabel = ({
                 participant => participant.jid === localId
             );
             const otherParticipantInRoom = Object.values(breakoutRoom.participants).find(
-                participant => participant.jid !== otherParticipant.id
+                participant => otherParticipant && participant.jid !== otherParticipant.id
             );
+
+            if (!otherParticipantInRoom && otherParticipant) {
+                dispatch(sendParticipantToRoom(otherParticipant.id, breakoutRoom.id));
+            }
 
             if (!localParticipantInRoom && _localParticipant) {
                 dispatch(moveToRoom(breakoutRoom.jid));
-            }
-            if (!otherParticipantInRoom && otherParticipant) {
-                dispatch(sendParticipantToRoom(otherParticipant.id, breakoutRoom.jid));
             }
         }
     }, [ _breakoutRooms ]);
@@ -145,30 +147,28 @@ const AssistantRelationLabel = ({
         dispatch(createBreakoutRoom(breakoutRoomName));
     };
 
-    let buttons = <></>;
-
-    if (otherParticipant) {
-        buttons = (
-            <>
-                <Label
-                    accessibilityText = { tooltipText }
-                    className = { 'icLabelTransparent' }
-                    icon = { IconChatUnread }
-                    iconColor = '#fff'
-                    id = 'assistantRelationLabel'
-                    // eslint-disable-next-line react/jsx-no-bind
-                    onClick = { openPrivateChat } />
-                <Label
-                    accessibilityText = { tooltipText }
-                    className = { 'icLabelTransparent' }
-                    icon = { IconShare }
-                    iconColor = '#fff'
-                    id = 'assistantRelationLabel'
-                    // eslint-disable-next-line react/jsx-no-bind
-                    onClick = { openBreakoutRoom } />
-            </>
-        );
-    }
+    const buttons = otherParticipant ? (
+        <>
+            <Label
+                accessibilityText = { tooltipText }
+                className = { 'icLabelTransparent' }
+                icon = { IconChatUnread }
+                iconColor = '#fff'
+                id = 'assistantRelationLabel'
+                // eslint-disable-next-line react/jsx-no-bind
+                onClick = { openPrivateChat } />
+            <Label
+                accessibilityText = { tooltipText }
+                className = { 'icLabelTransparent' }
+                icon = { IconShare }
+                iconColor = '#fff'
+                id = 'assistantRelationLabel'
+                // eslint-disable-next-line react/jsx-no-bind
+                onClick = { openBreakoutRoom } />
+        </>
+    )
+        : <></>
+    ;
 
     return visible ? (
         <>
@@ -193,7 +193,7 @@ const AssistantRelationLabel = ({
 const mapStateToProps = (state: IReduxState) => {
     return {
         // _breakoutRooms: Object.values(getBreakoutRooms(state)).filter(room => !room.isMainRoom),
-        _breakoutRooms: getBreakoutRooms(state),
+        _breakoutRooms: Object.values(getBreakoutRooms(state)),
         _remoteParticipants: getRemoteParticipants(state),
         _localParticipant: getLocalParticipant(state),
         _participantHasRole: (participantId: string, role: string) => participantHasRole(state, participantId, role),

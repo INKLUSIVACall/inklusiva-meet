@@ -14,7 +14,7 @@ import {
 } from '../../../base/config/functions.web';
 import { isMobileBrowser } from '../../../base/environment/utils';
 import { translate } from '../../../base/i18n/functions';
-import { isLocalParticipantModerator } from '../../../base/participants/functions';
+import { getLocalParticipant, isLocalParticipantModerator } from '../../../base/participants/functions';
 import ContextMenu from '../../../base/ui/components/web/ContextMenu';
 import { isReactionsButtonEnabled, isReactionsEnabled } from '../../../reactions/functions.web';
 import { iAmVisitor } from '../../../visitors/functions';
@@ -65,11 +65,6 @@ interface IProps extends WithTranslation {
      * Whether or not the toolbox is disabled. It is for recorders.
      */
     _disabled: boolean;
-
-    /**
-     * Whether or not the distress button is enabled.
-     */
-    _distressButton: boolean;
 
     /**
      * Whether the end conference feature is supported.
@@ -187,8 +182,7 @@ const Toolbox = ({
     _visible,
     dispatch,
     t,
-    toolbarButtons,
-    _distressButton
+    toolbarButtons
 }: IProps) => {
     const { classes, cx } = useStyles();
     const _toolboxRef = useRef<HTMLDivElement>(null);
@@ -368,13 +362,6 @@ const Toolbox = ({
 
         const { mainMenuButtons, overflowMenuButtons } = getVisibleButtons();
 
-        if (!_distressButton) {
-            mainMenuButtons.splice(
-                mainMenuButtons.findIndex(({ key }) => key === 'distress'),
-                1
-            );
-        }
-
         const raiseHandInOverflowMenu = overflowMenuButtons.some(({ key }) => key === 'raisehand');
         const showReactionsInOverflowMenu
             = (_reactionsEnabled
@@ -517,6 +504,19 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
         toolbarButtons = VISITORS_MODE_BUTTONS.filter(e => toolbarButtons.indexOf(e) > -1);
     }
 
+
+    // add / remove distress button
+    const distressButton = state['features/inklusiva/userdata'].distressbutton?.active ?? false;
+
+    if (!distressButton) {
+        // remove distress button from toolbar
+        customToolbarButtons?.splice(customToolbarButtons?.findIndex(({ key }) => key === 'distress'), 1);
+    }
+
+    // const localParticipant = getLocalParticipant(getState());
+
+    console.log(customToolbarButtons);
+
     return {
         _buttonsWithNotifyClick: getButtonsWithNotifyClick(state),
         _chatOpen: state['features/chat'].isOpen,
@@ -535,8 +535,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
         _reactionsEnabled,
         _shiftUp: state['features/toolbox'].shiftUp,
         _toolbarButtons: toolbarButtons,
-        _visible: isToolboxVisible(state),
-        _distressButton: state['features/inklusiva/userdata'].distressbutton?.active ?? false
+        _visible: isToolboxVisible(state)
     };
 }
 

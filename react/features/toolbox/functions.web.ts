@@ -36,7 +36,7 @@ import DistressButton from './components/web/DistressButton';
 import FullscreenButton from './components/web/FullscreenButton';
 import LinkToSalesforceButton from './components/web/LinkToSalesforceButton';
 import ProfileButton from './components/web/ProfileButton';
-import RoleMatchingMenuButton from './components/web/RoleMatchingMenuButton';
+import RoleMatchingButton from './components/web/RoleMatchingButton';
 import ShareDesktopButton from './components/web/ShareDesktopButton';
 import ToggleCameraButton from './components/web/ToggleCameraButton';
 import VideoSettingsButton from './components/web/VideoSettingsButton';
@@ -243,7 +243,7 @@ export function getAllToolboxButtons(_customToolbarButtons?: {
 
     const rolematching = {
         key: 'rolematching',
-        Content: RoleMatchingMenuButton,
+        Content: RoleMatchingButton,
         group: 2
     };
 
@@ -420,7 +420,7 @@ export function getAllToolboxButtons(_customToolbarButtons?: {
             },
             'rolematching': {
                 key: 'rolematching',
-                Content: RoleMatchingMenuButton,
+                Content: RoleMatchingButton,
                 group: 1,
                 icon,
                 text
