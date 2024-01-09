@@ -848,6 +848,12 @@
         "desc2": "Betreuer von Teilnehmern können über einen einzelnen Button-Klick einen Breakout Raum, oder einen Chat öffnen oder bekommen beispielsweise eine automatische Nachricht, wenn der Teilnehmer den Notfallbutton aktiviert hat.",
         "buttonAssist": "Teilnehmer unterstützen"
     },
+    "assistancePanel": {
+        "headline": "Anfrage von Unterstützung",
+        "desc1": "Hier können Sie Unterstützung durch eine Betreuungsperson anfordern. Dadurch können sie sehr einfach einen Breakout-Raum oder einen privaten Chat mit Ihrer Betreuungsperson öffnen.",
+        "desc2": "Sollten Sie einen Notfallbutton nutzen, kann im Falle eines Notfalles eine automatische Nachricht an Ihre Betreuungsperson versendet werden.",
+        "buttonAssist": "Unterstützung anfragen"
+    },
     "prejoin": {
         "audioAndVideoError": "Audio- und Videofehler:",
         "audioDeviceProblem": "Es gibt ein Problem mit Ihrem Audiogerät.",

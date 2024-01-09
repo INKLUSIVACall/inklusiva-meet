@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { IReduxState } from '../../../app/types';
 import { isIosMobileBrowser } from '../../../base/environment/utils';
 import { translate } from '../../../base/i18n/functions';
-import { IconUser } from '../../../base/icons/svg';
+import { IconHandHoldingHand } from '../../../base/icons/svg';
 import AbstractButton, { IProps as AbstractButtonProps } from '../../../base/toolbox/components/AbstractButton';
-import { toggleRoleMatchingMenuVisibility } from '../../../inklusiva/rolematching/actions';
+import { toggleAssistancePanel } from '../../../inklusiva/rolematching/functions';
 
 interface IProps extends AbstractButtonProps {
 
@@ -25,8 +25,8 @@ class RoleMatchingButton extends AbstractButton<IProps> {
     toggledLabel = 'toolbar.assistance';
     tooltip = 'toolbar.assistance';
     toggledTooltip = 'toolbar.assistance';
-    toggledIcon = IconUser;
-    icon = IconUser;
+    toggledIcon = IconHandHoldingHand;
+    icon = IconHandHoldingHand;
 
     /**
      * Indicates whether this button is in toggled state or not.
@@ -48,7 +48,7 @@ class RoleMatchingButton extends AbstractButton<IProps> {
     _handleClick() {
         const { dispatch } = this.props;
 
-        dispatch(toggleRoleMatchingMenuVisibility());
+        dispatch(toggleAssistancePanel());
     }
 }
 

@@ -1,11 +1,11 @@
 /**
- * The type of the (redux) action which shows/hides the reactions menu.
+ * The type of the (redux) action which shows/hides the assistance panel.
  *
  * {
- *     type: TOGGLE_ROLEMATCHIN_VISIBLE
+ *     type: TOGGLE_ASSISTANCE_PANEL
  *     visible: boolean
  * }.
  */
-export const TOGGLE_ROLEMATCHIN_VISIBLE = 'TOGGLE_ROLEMATCHIN_VISIBLE';
-export const SHOW_ROLEMATCHING = 'SHOW_ROLEMATCHIN';
-export const HIDE_ROLEMATCHING = 'HIDE_ROLEMATCHIN';
+export const TOGGLE_ASSISTANCE_PANEL = 'TOGGLE_ASSISTANCE_PANEL';
+export const SHOW_ASSISTANCE_PANEL = 'SHOW_ASSISTANCE_PANEL';
+export const HIDE_ASSISTANCE_PANEL = 'HIDE_ASSISTANCE_PANEL';

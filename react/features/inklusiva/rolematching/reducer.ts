@@ -1,8 +1,13 @@
 import ReducerRegistry from '../../base/redux/ReducerRegistry';
 
-import { HIDE_ROLEMATCHING, SHOW_ROLEMATCHING, TOGGLE_ROLEMATCHIN_VISIBLE } from './actionTypes';
+import { HIDE_ASSISTANCE_PANEL, HIDE_ROLEMATCHING, SHOW_ASSISTANCE_PANEL, SHOW_ROLEMATCHING, TOGGLE_ASSISTANCE_PANEL, TOGGLE_ROLEMATCHIN_VISIBLE } from './actionTypes';
 
 export interface IRoleMatchingState {
+
+    /**
+     * The indicator that determines whether the assistance panel is visible.
+     */
+    assistancePanelVisible: boolean;
 
     /**
      * The indicator that determines whether the rolematching menu is visible.
@@ -25,7 +30,8 @@ export interface IRoleMatchingAction extends Partial<IRoleMatchingState> {
  */
 function _getInitialState(): IRoleMatchingState {
     return {
-        visible: false
+        visible: false,
+        assistancePanelVisible: false
     };
 }
 
@@ -33,20 +39,20 @@ ReducerRegistry.register<IRoleMatchingState>(
     'features/inklusiva/rolematching',
     (state = _getInitialState(), action: IRoleMatchingAction): IRoleMatchingState => {
         switch (action.type) {
-        case TOGGLE_ROLEMATCHIN_VISIBLE:
+        case TOGGLE_ASSISTANCE_PANEL:
             return {
                 ...state,
-                visible: !state.visible
+                assistancePanelVisible: !state.assistancePanelVisible
             };
-        case SHOW_ROLEMATCHING:
+        case SHOW_ASSISTANCE_PANEL:
             return {
                 ...state,
-                visible: true
+                assistancePanelVisible: true
             };
-        case HIDE_ROLEMATCHING:
+        case HIDE_ASSISTANCE_PANEL:
             return {
                 ...state,
-                visible: false
+                assistancePanelVisible: false
             };
         }
 
