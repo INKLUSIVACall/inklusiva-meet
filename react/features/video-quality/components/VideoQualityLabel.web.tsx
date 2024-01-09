@@ -1,3 +1,4 @@
+import { Theme } from '@mui/material';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,6 +12,16 @@ import Tooltip from '../../base/tooltip/components/Tooltip';
 import { shouldDisplayTileView } from '../../video-layout/functions.web';
 
 import VideoQualityDialog from './VideoQualityDialog.web';
+import { makeStyles } from 'tss-react/mui';
+
+const useStyles = makeStyles()(theme => {
+    return {
+        videoQualityLabel: {
+            backgroundColor: 'transparent',
+            borderColor: 'transparent'
+        }
+    };
+});
 
 /**
  * React {@code Component} responsible for displaying a label that indicates
@@ -27,6 +38,7 @@ const VideoQualityLabel = () => {
         || interfaceConfig.VIDEO_QUALITY_LABEL_DISABLED));
     const dispatch = useDispatch();
     const { t } = useTranslation();
+    const { classes } = useStyles();
 
     if (!_visible) {
         return null;
@@ -44,6 +56,8 @@ const VideoQualityLabel = () => {
         tooltipKey = 'videoStatus.performanceSettings';
     }
 
+    className = `${className} ${classes?.videoQualityLabel}`;
+
     const onClick = () => dispatch(openDialog(VideoQualityDialog));
 
     return (
@@ -53,7 +67,6 @@ const VideoQualityLabel = () => {
             <Label
                 accessibilityText = { t(tooltipKey) }
                 className = { className }
-                color = { COLORS.white }
                 icon = { icon }
                 iconColor = '#fff'
                 iconSize = { '24' }
