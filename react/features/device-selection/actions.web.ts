@@ -3,7 +3,9 @@ import { sendAnalytics } from '../analytics/functions';
 import { IStore } from '../app/types';
 import { setAudioInputDevice, setVideoInputDevice } from '../base/devices/actions';
 import { getDeviceLabelById, setAudioOutputDeviceId } from '../base/devices/functions';
+import { IParticipant } from '../base/participants/types';
 import { updateSettings } from '../base/settings/actions';
+import { setFrequencyFilterSetting, setVolume } from '../filmstrip/actions.web';
 import { setAmplify, setBalance, setHighFreq, setOthersVolume } from '../inklusiva/audiosettings/actions';
 import { setAcousticCuesEnabledState } from '../inklusiva/uisettings/actions.web';
 import { toggleOthersAudioInput } from '../inklusiva/userdata/actions';
@@ -72,6 +74,12 @@ export function submitAudioDeviceSelectionTab(newState: any, isDisplayedOnWelcom
         }
 
         if (newState.othersVolume !== currentState.othersVolume) {
+            const participants: Map<string, IParticipant> = getState()['features/base/participants'].remote;
+
+            participants.forEach(participant => {
+                dispatch(setVolume(participant.id, Math.floor(newState.othersVolume)));
+            });
+
             dispatch(setOthersVolume(newState.othersVolume));
         }
 
@@ -84,6 +92,12 @@ export function submitAudioDeviceSelectionTab(newState: any, isDisplayedOnWelcom
         }
 
         if (newState.highFrequencies !== currentState.highFrequencies) {
+            const participants: Map<string, IParticipant> = getState()['features/base/participants'].remote;
+
+            participants.forEach(participant => {
+                dispatch(setFrequencyFilterSetting(participant.id, Math.floor(newState.highFrequencies)));
+            });
+
             dispatch(setHighFreq(newState.highFrequencies));
         }
     };
