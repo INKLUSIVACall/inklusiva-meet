@@ -415,6 +415,13 @@ const Toolbox = ({
 
         const { mainMenuButtons, overflowMenuButtons } = getVisibleButtons();
 
+        if (!_distressButton) {
+            mainMenuButtons.splice(
+                mainMenuButtons.findIndex(({ key }) => key === 'distress'),
+                1
+            );
+        }
+
         const raiseHandInOverflowMenu = overflowMenuButtons.some(({ key }) => key === 'raisehand');
         const showReactionsInOverflowMenu
             = (_reactionsEnabled
