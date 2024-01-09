@@ -17,6 +17,7 @@ import { createBreakoutRoom, moveToRoom, sendParticipantToRoom } from '../../../
 import { getBreakoutRooms } from '../../../breakout-rooms/functions';
 import { IRoom } from '../../../breakout-rooms/types';
 import { openChat } from '../../../chat/actions.web';
+import { isBreakOutRoomHandled, setBreakOutRoomHandled, setBreakOutRoomUnhandled } from '../../../inklusiva/rolematching/functions';
 
 /**
  * The type of the React {@code Component} props of {@link AssistantRelationLabel}.
@@ -28,6 +29,7 @@ interface IProps {
      */
     _breakoutRooms: IRoom[];
 
+
     /**
      * The function to get the participant with a specific IC role and partner.
      *
@@ -36,6 +38,11 @@ interface IProps {
      * @returns {IParticipant | undefined}
      */
     _getParticipantWithICRoleAndPartner: Function;
+
+    /**
+     * Flag if breakout room is handled. (both local and remote participant are in the breakout room).
+     */
+    _isBreakoutRoomHandled: boolean;
 
     /**
      * The local participant.
@@ -67,6 +74,7 @@ const AssistantRelationLabel = ({
     _breakoutRooms,
     _localParticipant,
     _remoteParticipants,
+    _isBreakoutRoomHandled,
     _participantHasRole,
     _getParticipantWithICRoleAndPartner
 }: IProps): ReactElement => {
@@ -125,7 +133,7 @@ const AssistantRelationLabel = ({
         const breakoutRoom = Object.values(_breakoutRooms).find(room => room.name === breakoutRoomName);
 
         // check if there is a participant with the localId in the breakout room
-        if (breakoutRoom && otherParticipant && _localParticipant) {
+        if (!_isBreakoutRoomHandled && breakoutRoom && otherParticipant && _localParticipant) {
             const localParticipantInRoom = Object.values(breakoutRoom.participants).find(
                 participant => participant.jid === localId
             );
@@ -140,10 +148,14 @@ const AssistantRelationLabel = ({
             if (!localParticipantInRoom && _localParticipant) {
                 dispatch(moveToRoom(breakoutRoom.jid));
             }
+
+            // set handled flag if local and remote participant are in the breakout room
+            localParticipantInRoom && otherParticipantInRoom && dispatch(setBreakOutRoomHandled());
         }
     }, [ _breakoutRooms ]);
 
     const openBreakoutRoom = () => {
+        dispatch(setBreakOutRoomUnhandled());
         dispatch(createBreakoutRoom(breakoutRoomName));
     };
 
@@ -196,6 +208,7 @@ const mapStateToProps = (state: IReduxState) => {
         _breakoutRooms: Object.values(getBreakoutRooms(state)),
         _remoteParticipants: getRemoteParticipants(state),
         _localParticipant: getLocalParticipant(state),
+        _isBreakoutRoomHandled: isBreakOutRoomHandled(state),
         _participantHasRole: (participantId: string, role: string) => participantHasRole(state, participantId, role),
         _getParticipantWithICRoleAndPartner: (role: string, partnerId: string) =>
             getParticipantWithICRoleAndPartner(state, role, partnerId)

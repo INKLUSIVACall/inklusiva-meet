@@ -1,6 +1,12 @@
 import ReducerRegistry from '../../base/redux/ReducerRegistry';
 
-import { HIDE_ASSISTANCE_PANEL, SHOW_ASSISTANCE_PANEL, TOGGLE_ASSISTANCE_PANEL } from './actionTypes';
+import {
+    ASSISTANCE_BREAKOUT_ROOM_HANDLED,
+    ASSISTANCE_BREAKOUT_ROOM_UNHANDLED,
+    HIDE_ASSISTANCE_PANEL,
+    SHOW_ASSISTANCE_PANEL,
+    TOGGLE_ASSISTANCE_PANEL
+} from './actionTypes';
 
 export interface IRoleMatchingState {
 
@@ -10,10 +16,17 @@ export interface IRoleMatchingState {
     assistancePanelVisible: boolean;
 
     /**
+     * The indicator that determines whether the local participant was sent to
+     * the breakout room.
+     */
+    breakOutRoomHandled: boolean;
+
+    /**
      * The indicator that determines whether the rolematching menu is visible.
      */
     visible: boolean;
 }
+
 export interface IRoleMatchingAction extends Partial<IRoleMatchingState> {
 
     /**
@@ -31,7 +44,10 @@ export interface IRoleMatchingAction extends Partial<IRoleMatchingState> {
 function _getInitialState(): IRoleMatchingState {
     return {
         visible: false,
-        assistancePanelVisible: false
+
+        assistancePanelVisible: false,
+
+        breakOutRoomHandled: false
     };
 }
 
@@ -53,6 +69,16 @@ ReducerRegistry.register<IRoleMatchingState>(
             return {
                 ...state,
                 assistancePanelVisible: false
+            };
+        case ASSISTANCE_BREAKOUT_ROOM_HANDLED:
+            return {
+                ...state,
+                breakOutRoomHandled: true
+            };
+        case ASSISTANCE_BREAKOUT_ROOM_UNHANDLED:
+            return {
+                ...state,
+                breakOutRoomHandled: false
             };
         }
 

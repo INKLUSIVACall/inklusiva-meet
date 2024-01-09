@@ -29,3 +29,19 @@ export function hideAssistancePanel() {
         type: HIDE_ASSISTANCE_PANEL
     };
 }
+
+export function isBreakOutRoomHandled(state: IReduxState) {
+    return state['features/inklusiva/rolematching']?.breakOutRoomHandled || false;
+}
+
+export function setBreakOutRoomHandled() {
+    return {
+        type: 'SET_BREAK_OUT_ROOM_HANDLED'
+    };
+}
+
+export function setBreakOutRoomUnhandled() {
+    return {
+        type: 'SET_BREAK_OUT_ROOM_UNHANDLED'
+    };
+}
