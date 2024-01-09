@@ -13,11 +13,17 @@ import {
 } from '../../../base/participants/functions';
 import { IParticipant } from '../../../base/participants/types';
 import Tooltip from '../../../base/tooltip/components/Tooltip';
+import Button from '../../../base/ui/components/web/Button';
+import { BUTTON_TYPES } from '../../../base/ui/constants.any';
 import { createBreakoutRoom, moveToRoom, sendParticipantToRoom } from '../../../breakout-rooms/actions';
 import { getBreakoutRooms } from '../../../breakout-rooms/functions';
 import { IRoom } from '../../../breakout-rooms/types';
 import { openChat } from '../../../chat/actions.web';
-import { isBreakOutRoomHandled, setBreakOutRoomHandled, setBreakOutRoomUnhandled } from '../../../inklusiva/rolematching/functions';
+import {
+    isBreakOutRoomHandled,
+    setBreakOutRoomHandled,
+    setBreakOutRoomUnhandled
+} from '../../../inklusiva/rolematching/functions';
 
 /**
  * The type of the React {@code Component} props of {@link AssistantRelationLabel}.
@@ -28,7 +34,6 @@ interface IProps {
      * List of breakout rooms.
      */
     _breakoutRooms: IRoom[];
-
 
     /**
      * The function to get the participant with a specific IC role and partner.
@@ -161,26 +166,24 @@ const AssistantRelationLabel = ({
 
     const buttons = otherParticipant ? (
         <>
-            <Label
-                accessibilityText = { tooltipText }
-                className = { 'icLabelTransparent' }
+            <Button
+                className = { 'mr-05' }
                 icon = { IconChatUnread }
-                iconColor = '#fff'
-                id = 'assistantRelationLabel'
+                label = { 'Private Nachricht' }
                 // eslint-disable-next-line react/jsx-no-bind
-                onClick = { openPrivateChat } />
-            <Label
-                accessibilityText = { tooltipText }
-                className = { 'icLabelTransparent' }
+                onClick = { openPrivateChat }
+                size = 'small'
+                type = { BUTTON_TYPES.SECONDARY } />
+            <Button
+                className = { 'mr-05' }
                 icon = { IconShare }
-                iconColor = '#fff'
-                id = 'assistantRelationLabel'
+                label = { 'Breakoutraum öffnen' }
                 // eslint-disable-next-line react/jsx-no-bind
-                onClick = { openBreakoutRoom } />
+                onClick = { openBreakoutRoom }
+                size = 'small'
+                type = { BUTTON_TYPES.SECONDARY } />
         </>
-    )
-        : <></>
-    ;
+    ) : <></>;
 
     return visible ? (
         <>
@@ -193,7 +196,7 @@ const AssistantRelationLabel = ({
                     icon = { IconHandHoldingHand }
                     iconColor = '#fff'
                     id = 'assistantRelationLabel'
-                    text = { labelText } />
+                    text = { tooltipText } />
             </Tooltip>
             {buttons}
         </>
