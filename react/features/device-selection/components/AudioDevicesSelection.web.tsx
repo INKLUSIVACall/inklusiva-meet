@@ -371,7 +371,7 @@ class AudioDevicesSelection extends AbstractDialogTab<IProps, IState> {
                                 min = { 0 }
                                 onChange = { event => {
                                     super._onChange({
-                                        othersVolume: event.target.value / 100
+                                        othersVolume: Number(event.target.value) / 100
                                     });
                                 } }
                                 step = { 1 } />
