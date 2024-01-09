@@ -55,6 +55,128 @@ export const THRESHOLDS = [
     }
 ];
 
+export const THRESHOLDS_MODERATOR = [
+    {
+        width: 565,
+        order: [
+            'distress',
+            'microphone',
+            'camera',
+            'desktop',
+            'chat',
+            'raisehand',
+            'reactions',
+            'participants',
+            'cc'
+
+            // 'tileview'
+        ]
+    },
+    {
+        width: 520,
+        order: [
+            'distress',
+            'microphone',
+            'camera',
+            'desktop',
+            'chat',
+            'raisehand',
+            'participants',
+            'cc'
+
+            // 'tileview'
+        ]
+    },
+    {
+        width: 470,
+        order: [ 'distress', 'microphone', 'camera', 'desktop', 'chat', 'raisehand', 'participants' ]
+    },
+    {
+        width: 420,
+        order: [ 'distress', 'microphone', 'camera', 'desktop', 'chat', 'participants' ]
+    },
+    {
+        width: 370,
+        order: [ 'distress', 'microphone', 'camera', 'chat', 'participants' ]
+    },
+    {
+        width: 225,
+        order: [ 'distress', 'microphone', 'camera', 'chat' ]
+    },
+    {
+        width: 200,
+        order: [ 'rolematching', 'distress', 'microphone', 'camera' ]
+    }
+];
+
+export const THRESHOLDS_USER = [
+    {
+        width: 565,
+        order: [
+            'rolematching',
+            'distress',
+            'microphone',
+            'camera',
+            'desktop',
+            'chat',
+            'raisehand',
+            'reactions',
+            'participants',
+            'cc',
+            'settings'
+
+            // 'tileview'
+        ]
+    },
+    {
+        width: 520,
+        order: [
+            'rolematching',
+            'distress',
+            'microphone',
+            'camera',
+            'desktop',
+            'chat',
+            'raisehand',
+            'participants',
+            'cc',
+            'settings'
+
+            // 'tileview'
+        ]
+    },
+    {
+        width: 470,
+        order: [
+            'rolematching',
+            'distress',
+            'microphone',
+            'camera',
+            'desktop',
+            'chat',
+            'raisehand',
+            'participants',
+            'cc'
+        ]
+    },
+    {
+        width: 420,
+        order: [ 'rolematching', 'distress', 'microphone', 'camera', 'desktop', 'chat', 'participants' ]
+    },
+    {
+        width: 370,
+        order: [ 'rolematching', 'distress', 'microphone', 'camera', 'chat', 'participants' ]
+    },
+    {
+        width: 225,
+        order: [ 'rolematching', 'distress', 'microphone', 'camera', 'chat' ]
+    },
+    {
+        width: 200,
+        order: [ 'rolematching', 'distress', 'microphone', 'camera' ]
+    }
+];
+
 export const NOT_APPLICABLE = 'N/A';
 
 export const TOOLBAR_TIMEOUT = 4000;
@@ -73,3 +195,76 @@ export const ZINDEX_DIALOG_PORTAL = 302;
  * Color for spinner displayed in the toolbar.
  */
 export const SPINNER_COLOR = '#929292';
+
+
+export const BUTTONS_MODERATOR = [
+    // 'rolematching',
+    'distress',
+    'microphone',
+    'camera',
+    'desktop',
+    'chat',
+    'raisehand',
+    'reactions',
+    'participants-pane',
+    'closedcaptions',
+    'settings',
+    'profile',
+    'invite',
+    'tileview',
+    'toggle-camera',
+    'videoquality',
+    'fullscreen',
+    'security',
+    'recording',
+    'livestreaming',
+    'linktosalesforce',
+    'sharedvideo',
+    'shareaudio',
+    'noisesuppression',
+    'whiteboard',
+    'etherpad',
+    'select-background',
+    'stats',
+    'shortcuts',
+    'embedmeeting',
+    'feedback',
+    'download',
+    'help'
+];
+
+export const BUTTONS_USER = [
+    'rolematching',
+    'distress',
+    'microphone',
+    'camera',
+    'desktop',
+    'chat',
+    'raisehand',
+    'reactions',
+    'participants-pane',
+    'closedcaptions',
+    'settings',
+    'profile',
+    //'invite',
+    'tileview',
+    'toggle-camera',
+    //'videoquality',
+    //'fullscreen',
+    //'security',
+    'recording',
+    //'livestreaming',
+    'linktosalesforce',
+    //'sharedvideo',
+    //'shareaudio',
+    'noisesuppression',
+    //'whiteboard',
+    'etherpad',
+    'select-background',
+    'stats',
+    'shortcuts',
+    //'embedmeeting',
+    'feedback',
+    'download',
+    'help'
+];
