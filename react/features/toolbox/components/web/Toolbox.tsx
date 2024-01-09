@@ -14,12 +14,20 @@ import {
 } from '../../../base/config/functions.web';
 import { isMobileBrowser } from '../../../base/environment/utils';
 import { translate } from '../../../base/i18n/functions';
-import { getLocalParticipant, isLocalParticipantModerator } from '../../../base/participants/functions';
+import { isLocalParticipantModerator } from '../../../base/participants/functions';
+import { IParticipant } from '../../../base/participants/types';
 import ContextMenu from '../../../base/ui/components/web/ContextMenu';
 import { isReactionsButtonEnabled, isReactionsEnabled } from '../../../reactions/functions.web';
 import { iAmVisitor } from '../../../visitors/functions';
 import { setHangupMenuVisible, setOverflowMenuVisible, setToolbarHovered, showToolbox } from '../../actions.web';
-import { NOT_APPLICABLE, THRESHOLDS } from '../../constants';
+import {
+    BUTTONS_MODERATOR,
+    BUTTONS_USER,
+    NOT_APPLICABLE,
+    THRESHOLDS,
+    THRESHOLDS_MODERATOR,
+    THRESHOLDS_USER
+} from '../../constants';
 import { getAllToolboxButtons, getJwtDisabledButtons, isToolboxVisible } from '../../functions.web';
 import { useKeyboardShortcuts } from '../../hooks.web';
 import { IToolboxButton } from '../../types';
@@ -95,6 +103,11 @@ interface IProps extends WithTranslation {
      * The array of toolbar buttons disabled through jwt features.
      */
     _jwtDisabledButtons: string[];
+
+    /**
+     * The local participant.
+     */
+    _localUser: IParticipant;
 
     /**
      * Whether or not the overflow menu is displayed in a drawer drawer.
@@ -178,6 +191,7 @@ const Toolbox = ({
     _isMobile,
     _isNarrowLayout,
     _jwtDisabledButtons,
+    _localUser,
     _overflowDrawer,
     _overflowMenuVisible,
     _reactionsButtonEnabled,
@@ -288,21 +302,54 @@ const Toolbox = ({
      * @returns {Object} The visible buttons arrays .
      */
     function getVisibleButtons() {
+        // buttons contains all ToolboxButtons, either from the toolbar or from the overflow-menu
         const buttons = getAllToolboxButtons(_customToolbarButtons);
 
         setButtonsNotifyClickMode(buttons);
         const isHangupVisible = isToolbarButtonEnabled('hangup', _toolbarButtons);
-        let { order } = THRESHOLDS.find(({ width }) => _clientWidth > width) || THRESHOLDS[THRESHOLDS.length - 1];
+
+        // set thresholds to default values.
+        let thresholds = THRESHOLDS;
+        let allowedButtons = BUTTONS_USER;
+
+        // override thresholds based on localUser.role
+        switch (_localUser?.role) {
+        // case for moderators
+        case 'moderator': {
+            thresholds = THRESHOLDS_MODERATOR;
+            allowedButtons = BUTTONS_MODERATOR;
+            break;
+        }
+
+        // case for normal users
+        case 'none': {
+            thresholds = THRESHOLDS_USER;
+            allowedButtons = BUTTONS_USER;
+            break;
+        }
+        }
+
+        // order contains all buttons, that should be rendered right in the toolbar, based on clientWidth.
+        let { order } = thresholds.find(({ width }) => _clientWidth > width) || thresholds[thresholds.length - 1];
 
         const keys = Object.keys(buttons);
+
+        // create an array containing all buttons in order
+        // (mapped by key !!THIS IS NOT THE KEY-VALUE, BUT THE ARRAY KEY!!)
+        // and the remaining buttons contained in buttons.
 
         const filtered = [
             ...order.map(key => buttons[key as keyof typeof buttons]),
             ...Object.values(buttons).filter((button, index) => !order.includes(keys[index]))
         ].filter(
+
+            // then extract the buttons that are disabled through the JWT or wont fit isToolbarButtonEnabled.
             ({ key, alias = NOT_APPLICABLE }) =>
                 !_jwtDisabledButtons.includes(key)
                 && (isToolbarButtonEnabled(key, _toolbarButtons) || isToolbarButtonEnabled(alias, _toolbarButtons))
+
+                // only include buttons that are allowed for the current user role.
+                && (allowedButtons.includes(key) || allowedButtons.includes(alias))
         );
 
         const filteredKeys = filtered.map(button => button.key);
@@ -529,7 +576,8 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
         _shiftUp: state['features/toolbox'].shiftUp,
         _toolbarButtons: toolbarButtons,
         _visible: isToolboxVisible(state),
-        _distressButton: state['features/inklusiva/userdata'].distressbutton?.active ?? false
+        _distressButton: state['features/inklusiva/userdata'].distressbutton?.active ?? false,
+        _localUser: state['features/base/participants'].local
     };
 }
 
