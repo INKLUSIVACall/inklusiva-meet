@@ -1,6 +1,6 @@
 import ReducerRegistry from '../../base/redux/ReducerRegistry';
 
-import { HIDE_ASSISTANCE_PANEL, HIDE_ROLEMATCHING, SHOW_ASSISTANCE_PANEL, SHOW_ROLEMATCHING, TOGGLE_ASSISTANCE_PANEL, TOGGLE_ROLEMATCHIN_VISIBLE } from './actionTypes';
+import { HIDE_ASSISTANCE_PANEL, SHOW_ASSISTANCE_PANEL, TOGGLE_ASSISTANCE_PANEL } from './actionTypes';
 
 export interface IRoleMatchingState {
 

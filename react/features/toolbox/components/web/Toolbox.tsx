@@ -67,6 +67,11 @@ interface IProps extends WithTranslation {
     _disabled: boolean;
 
     /**
+     * Whether or not the distress button is enabled.
+     */
+    _distressButton: boolean;
+
+    /**
      * Whether the end conference feature is supported.
      */
     _endConferenceSupported: boolean;
@@ -182,7 +187,8 @@ const Toolbox = ({
     _visible,
     dispatch,
     t,
-    toolbarButtons
+    toolbarButtons,
+    _distressButton
 }: IProps) => {
     const { classes, cx } = useStyles();
     const _toolboxRef = useRef<HTMLDivElement>(null);
@@ -504,19 +510,6 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
         toolbarButtons = VISITORS_MODE_BUTTONS.filter(e => toolbarButtons.indexOf(e) > -1);
     }
 
-
-    // add / remove distress button
-    const distressButton = state['features/inklusiva/userdata'].distressbutton?.active ?? false;
-
-    if (!distressButton) {
-        // remove distress button from toolbar
-        customToolbarButtons?.splice(customToolbarButtons?.findIndex(({ key }) => key === 'distress'), 1);
-    }
-
-    // const localParticipant = getLocalParticipant(getState());
-
-    console.log(customToolbarButtons);
-
     return {
         _buttonsWithNotifyClick: getButtonsWithNotifyClick(state),
         _chatOpen: state['features/chat'].isOpen,
@@ -535,7 +528,8 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
         _reactionsEnabled,
         _shiftUp: state['features/toolbox'].shiftUp,
         _toolbarButtons: toolbarButtons,
-        _visible: isToolboxVisible(state)
+        _visible: isToolboxVisible(state),
+        _distressButton: state['features/inklusiva/userdata'].distressbutton?.active ?? false
     };
 }
 
