@@ -13,6 +13,7 @@ import PinnedIndicator from './PinnedIndicator';
 import RaisedHandIndicator from './RaisedHandIndicator';
 import StatusIndicators from './StatusIndicators';
 import VideoMenuTriggerButton from './VideoMenuTriggerButton';
+import PinUserButton from '../../../video-menu/components/web/PinUserButton';
 
 interface IProps {
 
@@ -143,6 +144,8 @@ const ThumbnailTopIndicators = ({
             )}
         </div>
         <div className = { styles.container }>
+            <PinUserButton
+            visible = { isHovered } />
             <VideoMenuTriggerButton
                 hidePopover = { hidePopover }
                 local = { local }
