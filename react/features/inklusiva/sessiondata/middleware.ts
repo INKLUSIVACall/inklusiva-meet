@@ -24,6 +24,7 @@ MiddlewareRegistry.register(store => next => action => {
     const userData = state['features/inklusiva/userdata'];
     const dimmingValue = userData?.distressbutton?.dimming ?? 50;
     const defaultOpacity = userData?.video?.dimming ?? 1;
+    const defaultVolume = userData?.audio?.volume ?? 1;
     const localParticipant = getLocalParticipant(state);
     const conference = state['features/base/conference'].conference;
 
@@ -73,7 +74,7 @@ MiddlewareRegistry.register(store => next => action => {
         // reset dimming for all remote participants
         state['features/filmstrip'].remoteParticipants.forEach((participantId: string) => {
             store.dispatch(setParticipantOpacitySetting(participantId, defaultOpacity));
-            store.dispatch(setVolume(participantId, 100));
+            store.dispatch(setVolume(participantId, defaultVolume));
         });
 
         // reset dimming to local participant
