@@ -123,6 +123,7 @@ export const THRESHOLDS_USER = [
             'reactions',
             'participants',
             'cc',
+            'shortcuts',
             'settings'
 
             // 'tileview'
@@ -140,6 +141,7 @@ export const THRESHOLDS_USER = [
             'raisehand',
             'participants',
             'cc',
+            'shortcuts',
             'settings'
 
             // 'tileview'
@@ -156,7 +158,9 @@ export const THRESHOLDS_USER = [
             'chat',
             'raisehand',
             'participants',
-            'cc'
+            'cc',
+            'shortcuts',
+            'settings'
         ]
     },
     {
@@ -245,26 +249,26 @@ export const BUTTONS_USER = [
     'participants-pane',
     'closedcaptions',
     'settings',
-    'profile',
+    //'profile',
     //'invite',
-    'tileview',
-    'toggle-camera',
+    //'tileview',
+    //'toggle-camera',
     //'videoquality',
     //'fullscreen',
     //'security',
-    'recording',
+    //'recording',
     //'livestreaming',
-    'linktosalesforce',
+    //'linktosalesforce',
     //'sharedvideo',
     //'shareaudio',
-    'noisesuppression',
+    //'noisesuppression',
     //'whiteboard',
-    'etherpad',
-    'select-background',
-    'stats',
+    //'etherpad',
+    //'select-background',
+    //'stats',
     'shortcuts',
     //'embedmeeting',
-    'feedback',
-    'download',
-    'help'
+    //'feedback',
+    //'download',
+    //'help'
 ];
