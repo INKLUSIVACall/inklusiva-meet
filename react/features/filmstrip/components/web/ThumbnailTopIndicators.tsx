@@ -6,6 +6,7 @@ import { IReduxState } from '../../../app/types';
 import { isMobileBrowser } from '../../../base/environment/utils';
 import { isScreenShareParticipantById } from '../../../base/participants/functions';
 import ConnectionIndicator from '../../../connection-indicator/components/web/ConnectionIndicator';
+import PinUserButton from '../../../video-menu/components/web/PinUserButton';
 import { STATS_POPOVER_POSITION, THUMBNAIL_TYPE } from '../../constants';
 import { getIndicatorsTooltipPosition } from '../../functions.web';
 
@@ -143,6 +144,9 @@ const ThumbnailTopIndicators = ({
             )}
         </div>
         <div className = { styles.container }>
+            <PinUserButton
+                participantId = { participantId }
+                visible = { isHovered } />
             <VideoMenuTriggerButton
                 hidePopover = { hidePopover }
                 local = { local }

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { shouldComponentUpdate } from 'react-window';
 
 import { IReduxState } from '../../../app/types';
+import { IC_ROLES } from '../../../base/conference/icRoles';
 import { getLocalParticipant } from '../../../base/participants/functions';
 import { getHideSelfView } from '../../../base/settings/functions.any';
 import { LAYOUTS } from '../../../video-layout/constants';
@@ -11,7 +12,6 @@ import { FILMSTRIP_TYPE, TILE_ASPECT_RATIO, TILE_HORIZONTAL_MARGIN } from '../..
 import { getActiveParticipantsIds, showGridInVerticalView } from '../../functions.web';
 
 import Thumbnail from './Thumbnail';
-import { IC_ROLES } from '../../../base/conference/icRoles';
 
 /**
  * The type of the React {@code Component} props of {@link ThumbnailWrapper}.
@@ -156,11 +156,13 @@ function _mapStateToProps(state: IReduxState, ownProps: { columnIndex: number;
     const { remoteParticipants: remoteParticipantsOriginal } = state['features/filmstrip'];
 
     const { assistant } = state['features/inklusiva/userdata'];
-    let remote:string[] = [];
-    if (assistant.signLang.display === "window") {
+    let remote: string[] = [];
+
+    if (assistant.signLang.display === 'window') {
         const { conference } = state['features/base/conference'];
+
         remoteParticipantsOriginal?.forEach((participantId: string) => {
-            if ( !(conference?.checkMemberHasRole(participantId, IC_ROLES.SIGN_LANG_TRANSLATOR))) {
+            if (!conference?.checkMemberHasRole(participantId, IC_ROLES.SIGN_LANG_TRANSLATOR)) {
                 remote.push(participantId);
             }
         });

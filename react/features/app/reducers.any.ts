@@ -58,3 +58,4 @@ import '../visitors/reducer';
 import '../inklusiva/userdata/reducer';
 import '../inklusiva/sessiondata/reducer';
 import '../inklusiva/rolematching/reducer';
+import '../inklusiva/pinuser/reducer';
