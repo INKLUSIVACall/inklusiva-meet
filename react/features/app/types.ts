@@ -42,6 +42,7 @@ import { IFilmstripState } from '../filmstrip/reducer';
 import { IFollowMeState } from '../follow-me/reducer';
 import { IGifsState } from '../gifs/reducer';
 import { IGoogleApiState } from '../google-api/reducer';
+import { IPinnedUser } from '../inklusiva/pinuser/reducer';
 import { IRoleMatchingState } from '../inklusiva/rolematching/reducer';
 import { ISessionData } from '../inklusiva/sessiondata/reducer';
 import { IUserData } from '../inklusiva/userdata/reducer';
@@ -137,6 +138,7 @@ export interface IReduxState {
     'features/full-screen': IFullScreenState;
     'features/gifs': IGifsState;
     'features/google-api': IGoogleApiState;
+    'features/inklusiva/pinneduser': IPinnedUser;
     'features/inklusiva/rolematching': IRoleMatchingState;
     'features/inklusiva/sessiondata': ISessionData;
     'features/inklusiva/userdata': IUserData;
