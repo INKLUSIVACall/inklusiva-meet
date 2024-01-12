@@ -3,6 +3,7 @@ import { connect, useDispatch } from 'react-redux';
 
 import { IReduxState, IStore } from '../../../app/types';
 import { IC_ROLES } from '../../../base/conference/icRoles';
+import { IConnectionState } from '../../../base/connection/reducer';
 import { IconChatUnread, IconHandHoldingHand, IconShare } from '../../../base/icons/svg';
 import Label from '../../../base/label/components/web/Label';
 import {
@@ -34,6 +35,11 @@ interface IProps {
      * List of breakout rooms.
      */
     _breakoutRooms: IRoom[];
+
+    /**
+     * The conference state.
+     */
+    _connectionState: IConnectionState;
 
     /**
      * The function to get the participant with a specific IC role and partner.
@@ -81,6 +87,7 @@ const AssistantRelationLabel = ({
     _remoteParticipants,
     _isBreakoutRoomHandled,
     _participantHasRole,
+    _connectionState,
     _getParticipantWithICRoleAndPartner
 }: IProps): ReactElement => {
     const dispatch: IStore['dispatch'] = useDispatch();
@@ -90,6 +97,7 @@ const AssistantRelationLabel = ({
     let otherParticipant: IParticipant | undefined;
 
     const localId = _localParticipant?.id;
+    const localJid = _connectionState?.connection?.getJid();
 
     if (_participantHasRole(localId, IC_ROLES.ASSISTED)) {
         const rolePartner = _getParticipantWithICRoleAndPartner(IC_ROLES.ASSISTANT, _localParticipant ? localId : '');
@@ -125,12 +133,12 @@ const AssistantRelationLabel = ({
      *
      * @returns {void}
      */
-    const openPrivateChat = () => {
+    const openPrivateChat = (): void => {
         dispatch(openChat(otherParticipant));
     };
 
     const breakoutRoomName = otherParticipant
-        ? `_${otherParticipant.id}_${_localParticipant?.id}_${otherParticipant.name}-${_localParticipant?.name}`
+        ? `${otherParticipant.name} - ${_localParticipant?.name}`
         : '';
 
     useEffect(() => {
@@ -140,10 +148,10 @@ const AssistantRelationLabel = ({
         // check if there is a participant with the localId in the breakout room
         if (!_isBreakoutRoomHandled && breakoutRoom && otherParticipant && _localParticipant) {
             const localParticipantInRoom = Object.values(breakoutRoom.participants).find(
-                participant => participant.jid === localId
+                participant => participant.jid === localJid
             );
             const otherParticipantInRoom = Object.values(breakoutRoom.participants).find(
-                participant => otherParticipant && participant.jid !== otherParticipant.id
+                participant => otherParticipant && participant.jid.startsWith(otherParticipant.id)
             );
 
             if (!otherParticipantInRoom && otherParticipant) {
@@ -207,8 +215,8 @@ const AssistantRelationLabel = ({
 
 const mapStateToProps = (state: IReduxState) => {
     return {
-        // _breakoutRooms: Object.values(getBreakoutRooms(state)).filter(room => !room.isMainRoom),
         _breakoutRooms: Object.values(getBreakoutRooms(state)),
+        _connectionState: state['features/base/connection'],
         _remoteParticipants: getRemoteParticipants(state),
         _localParticipant: getLocalParticipant(state),
         _isBreakoutRoomHandled: isBreakOutRoomHandled(state),
