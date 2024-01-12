@@ -15,7 +15,7 @@ import {
 import { isMobileBrowser } from '../../../base/environment/utils';
 import { translate } from '../../../base/i18n/functions';
 import { isLocalParticipantModerator } from '../../../base/participants/functions';
-import { IParticipant } from '../../../base/participants/types';
+import { ILocalParticipant } from '../../../base/participants/types';
 import ContextMenu from '../../../base/ui/components/web/ContextMenu';
 import { isReactionsButtonEnabled, isReactionsEnabled } from '../../../reactions/functions.web';
 import { iAmVisitor } from '../../../visitors/functions';
@@ -107,7 +107,7 @@ interface IProps extends WithTranslation {
     /**
      * The local participant.
      */
-    _localUser: IParticipant;
+    _localUser?: ILocalParticipant;
 
     /**
      * Whether or not the overflow menu is displayed in a drawer drawer.
