@@ -2,10 +2,10 @@ import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { connect, useDispatch } from 'react-redux';
 
-import { IReduxState } from '../../app/types';
-import { getParticipantById } from '../../base/participants/functions';
-import { IParticipant } from '../../base/participants/types';
-import ContextMenuItemGroup from '../../base/ui/components/web/ContextMenuItemGroup';
+import { IReduxState } from '../../../app/types';
+import { getParticipantById } from '../../../base/participants/functions';
+import { IParticipant } from '../../../base/participants/types';
+import ContextMenuItemGroup from '../../../base/ui/components/web/ContextMenuItemGroup';
 import {
     setFrequencyFilterSetting,
     setParticipantBrightness,
@@ -14,7 +14,7 @@ import {
     setParticipantSaturation,
     setParticipantZoomLevel,
     setVolume
-} from '../../filmstrip/actions.web';
+} from '../../../filmstrip/actions.web';
 import {
     getParticipantsBrightnessByParticipantId,
     getParticipantsContrastByParticipantId,
@@ -23,14 +23,15 @@ import {
     getParticipantsSaturationByParticipantId,
     getParticipantsVolumeByParticipantId,
     getParticipantsZoomByParticipantId
-} from '../../filmstrip/functions.web';
-import BrightnessSlider from '../../video-menu/components/web/BrightnessSlider';
-import ContrastSlider from '../../video-menu/components/web/ContrastSlider';
-import FrequencyFilterSlider from '../../video-menu/components/web/FrequencyFilterSlider';
-import OpacityAdjustSlider from '../../video-menu/components/web/OpacityAdjustSlider';
-import SaturationSlider from '../../video-menu/components/web/SaturationSlider';
-import VolumeSlider from '../../video-menu/components/web/VolumeSlider';
-import ZoomSlider from '../../video-menu/components/web/ZoomSlider';
+} from '../../../filmstrip/functions.web';
+
+import BrightnessSlider from './BrightnessSlider';
+import ContrastSlider from './ContrastSlider';
+import FrequencyFilterSlider from './FrequencyFilterSlider';
+import OpacityAdjustSlider from './OpacityAdjustSlider';
+import SaturationSlider from './SaturationSlider';
+import VolumeSlider from './VolumeSlider';
+import ZoomSlider from './ZoomSlider';
 
 interface IProps {
 
@@ -96,7 +97,6 @@ const VideoSettingsContextMenu = ({
     contrast,
     frequency
 }: IProps) => {
-
     const { t } = useTranslation();
     const dispatch = useDispatch();
 

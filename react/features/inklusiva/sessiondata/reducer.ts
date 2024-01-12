@@ -2,7 +2,6 @@ import ReducerRegistry from '../../base/redux/ReducerRegistry';
 
 import { SET_INDISTRESS_DISABLED, SET_INDISTRESS_ENABLED } from './actionTypes';
 
-
 export interface ISessionData {
     inDistress: boolean;
 }
@@ -18,12 +17,7 @@ export interface ISessionData {
  */
 ReducerRegistry.register<ISessionData>(
     'features/inklusiva/sessiondata',
-    (
-            state = {
-                inDistress: false
-            },
-            action
-    ): ISessionData => {
+    (state = { inDistress: false }, action): ISessionData => {
         const nextState = state;
 
         switch (action.type) {
