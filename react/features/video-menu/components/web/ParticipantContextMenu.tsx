@@ -20,7 +20,6 @@ import { getBreakoutRooms, getCurrentRoomId, isInBreakoutRoom } from '../../../b
 import { IRoom } from '../../../breakout-rooms/types';
 import { displayVerification } from '../../../e2ee/functions';
 import { isStageFilmstripAvailable } from '../../../filmstrip/functions.web';
-import VideoSettingsContextMenu from '../../../inklusiva/sessiondata/VideoSettingsContextMenu';
 import { QUICK_ACTION_BUTTON } from '../../../participants-pane/constants';
 import { getQuickActionButtonType, isForceMuted } from '../../../participants-pane/functions';
 import { requestRemoteControl, stopController } from '../../../remote-control/actions';
@@ -44,6 +43,7 @@ import RemoteControlButton, { REMOTE_CONTROL_MENU_STATES } from './RemoteControl
 import SendToRoomButton from './SendToRoomButton';
 import TogglePinToStageButton from './TogglePinToStageButton';
 import VerifyParticipantButton from './VerifyParticipantButton';
+import VideoSettingsContextMenu from './VideoSettingsContextMenu';
 
 interface IProps {
 

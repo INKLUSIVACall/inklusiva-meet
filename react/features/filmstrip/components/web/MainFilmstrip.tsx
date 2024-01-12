@@ -2,22 +2,23 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { IReduxState } from '../../../app/types';
+import { IC_ROLES } from '../../../base/conference/icRoles';
 import { getToolbarButtons } from '../../../base/config/functions.web';
 import { isMobileBrowser } from '../../../base/environment/utils';
+import { IJitsiParticipant } from '../../../base/participants/types';
 import { LAYOUTS } from '../../../video-layout/constants';
 import { getCurrentLayout } from '../../../video-layout/functions.web';
-import { IC_ROLES } from '../../../base/conference/icRoles';
 import {
     ASPECT_RATIO_BREAKPOINT,
     FILMSTRIP_BREAKPOINT,
     FILMSTRIP_BREAKPOINT_OFFSET,
     FILMSTRIP_TYPE,
     TOOLBAR_HEIGHT,
-    TOOLBAR_HEIGHT_MOBILE } from '../../constants';
+    TOOLBAR_HEIGHT_MOBILE
+} from '../../constants';
 import { isFilmstripResizable, showGridInVerticalView } from '../../functions.web';
 
 import Filmstrip from './Filmstrip';
-import { IJitsiParticipant } from '../../../base/participants/types';
 
 interface IProps {
 
@@ -110,20 +111,38 @@ const MainFilmstrip = (props: IProps) => (
  */
 function _mapStateToProps(state: IReduxState, _ownProps: any) {
     const toolbarButtons = getToolbarButtons(state);
-    const { remoteParticipants: remoteParticipantsOriginal, width: verticalFilmstripWidth } = state['features/filmstrip'];
-    
+    const { remoteParticipants: remoteParticipantsOriginal, width: verticalFilmstripWidth }
+        = state['features/filmstrip'];
+
     const { assistant } = state['features/inklusiva/userdata'];
-    let remoteParticipants:string[] = [];
-    if (assistant.signLang.display === "window") {
+    let remoteParticipants: string[] = [];
+
+    if (assistant.signLang.display === 'window') {
         const { conference } = state['features/base/conference'];
+
         remoteParticipantsOriginal?.forEach((participantId: string) => {
-            if ( !(conference?.checkMemberHasRole(participantId, IC_ROLES.SIGN_LANG_TRANSLATOR))) {
+            if (!conference?.checkMemberHasRole(participantId, IC_ROLES.SIGN_LANG_TRANSLATOR)) {
                 remoteParticipants.push(participantId);
             }
         });
     } else {
         remoteParticipants = remoteParticipantsOriginal;
     }
+
+    // getting the pinned users
+    const pinnedUsers = state['features/inklusiva/pinneduser'].pinnedParticipants;
+
+    // sort pinned users to the top
+    remoteParticipants = remoteParticipants.sort((a: string, b: string) => {
+        if (pinnedUsers.includes(a) && !pinnedUsers.includes(b)) {
+            return -1;
+        }
+        if (!pinnedUsers.includes(a) && pinnedUsers.includes(b)) {
+            return 1;
+        }
+
+        return 0;
+    });
 
     const reduceHeight = state['features/toolbox'].visible && toolbarButtons.length;
     const {
@@ -154,13 +173,12 @@ function _mapStateToProps(state: IReduxState, _ownProps: any) {
         filmstripPadding = TOOLBAR_HEIGHT_MOBILE;
     }
 
-    const collapseTileView = reduceHeight
-        && isMobileBrowser()
-        && clientWidth <= ASPECT_RATIO_BREAKPOINT;
+    const collapseTileView = reduceHeight && isMobileBrowser() && clientWidth <= ASPECT_RATIO_BREAKPOINT;
 
-    const shouldReduceHeight = reduceHeight && (
-        isMobileBrowser() || (_currentLayout !== LAYOUTS.VERTICAL_FILMSTRIP_VIEW
-            && _currentLayout !== LAYOUTS.STAGE_FILMSTRIP_VIEW));
+    const shouldReduceHeight
+        = reduceHeight
+        && (isMobileBrowser()
+            || (_currentLayout !== LAYOUTS.VERTICAL_FILMSTRIP_VIEW && _currentLayout !== LAYOUTS.STAGE_FILMSTRIP_VIEW));
 
     let _thumbnailSize, remoteFilmstripHeight, remoteFilmstripWidth;
 
@@ -168,22 +186,18 @@ function _mapStateToProps(state: IReduxState, _ownProps: any) {
     case LAYOUTS.TILE_VIEW:
         _hasScroll = Boolean(tileViewHasScroll);
         _thumbnailSize = tileViewThumbnailSize;
-        remoteFilmstripHeight = Number(filmstripHeight) - (
-            collapseTileView && filmstripPadding > 0 ? filmstripPadding : 0);
+        remoteFilmstripHeight
+                = Number(filmstripHeight) - (collapseTileView && filmstripPadding > 0 ? filmstripPadding : 0);
         remoteFilmstripWidth = filmstripWidth;
         break;
     case LAYOUTS.VERTICAL_FILMSTRIP_VIEW:
     case LAYOUTS.STAGE_FILMSTRIP_VIEW: {
-        const {
-            remote,
-            remoteVideosContainer,
-            gridView,
-            hasScroll
-        } = state['features/filmstrip'].verticalViewDimensions;
+        const { remote, remoteVideosContainer, gridView, hasScroll }
+                = state['features/filmstrip'].verticalViewDimensions;
 
         _hasScroll = Boolean(hasScroll);
-        remoteFilmstripHeight = Number(remoteVideosContainer?.height) - (!_verticalViewGrid && shouldReduceHeight
-            ? TOOLBAR_HEIGHT : 0);
+        remoteFilmstripHeight
+                = Number(remoteVideosContainer?.height) - (!_verticalViewGrid && shouldReduceHeight ? TOOLBAR_HEIGHT : 0);
         remoteFilmstripWidth = remoteVideosContainer?.width;
 
         if (_verticalViewGrid) {
@@ -218,8 +232,8 @@ function _mapStateToProps(state: IReduxState, _ownProps: any) {
         _thumbnailWidth: _thumbnailSize?.width,
         _thumbnailHeight: _thumbnailSize?.height,
         _verticalViewGrid,
-        _verticalViewBackground: Number(verticalFilmstripWidth.current)
-            + FILMSTRIP_BREAKPOINT_OFFSET >= FILMSTRIP_BREAKPOINT
+        _verticalViewBackground:
+            Number(verticalFilmstripWidth.current) + FILMSTRIP_BREAKPOINT_OFFSET >= FILMSTRIP_BREAKPOINT
     };
 }
 
