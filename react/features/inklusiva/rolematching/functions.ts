@@ -1,6 +1,6 @@
 import { IReduxState } from '../../app/types';
 
-import { HIDE_ASSISTANCE_PANEL, SHOW_ASSISTANCE_PANEL, TOGGLE_ASSISTANCE_PANEL } from './actionTypes';
+import { ASSISTANCE_BREAKOUT_ROOM_HANDLED, ASSISTANCE_BREAKOUT_ROOM_UNHANDLED, HIDE_ASSISTANCE_PANEL, SHOW_ASSISTANCE_PANEL, TOGGLE_ASSISTANCE_PANEL } from './actionTypes';
 
 /**
  * Returns the visibility state of the assistance panel.
@@ -36,12 +36,12 @@ export function isBreakOutRoomHandled(state: IReduxState) {
 
 export function setBreakOutRoomHandled() {
     return {
-        type: 'SET_BREAK_OUT_ROOM_HANDLED'
+        type: ASSISTANCE_BREAKOUT_ROOM_HANDLED
     };
 }
 
 export function setBreakOutRoomUnhandled() {
     return {
-        type: 'SET_BREAK_OUT_ROOM_UNHANDLED'
+        type: ASSISTANCE_BREAKOUT_ROOM_UNHANDLED
     };
 }
