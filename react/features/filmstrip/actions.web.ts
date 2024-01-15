@@ -27,6 +27,7 @@ import {
     SET_PARTICIPANT_OPACITY,
     SET_PARTICIPANT_SATURATION,
     SET_PARTICIPANT_ZOOM_LEVEL,
+    SET_MOVING_SIGN_LANGUAGE_PARTICIPANT,
     SET_SCREENSHARE_FILMSTRIP_PARTICIPANT,
     SET_SCREENSHARING_TILE_DIMENSIONS,
     SET_STAGE_FILMSTRIP_DIMENSIONS,
@@ -769,6 +770,22 @@ export function setTopPanelVisible(visible: boolean) {
 export function setScreenshareFilmstripParticipant(participantId?: string) {
     return {
         type: SET_SCREENSHARE_FILMSTRIP_PARTICIPANT,
+        participantId
+    };
+}
+
+/**
+ * Sends a signal to all sign language tiles to reset the other zIndices to 10.
+ *
+ * @param {string|undefined} participantId - The id of the participant who's moving.
+ * @returns {{
+ *      type: SET_MOVING_SIGN_LANGUAGE_PARTICIPANT,
+ *      participantId?: string|null
+ * }}
+ */
+export function setMovingSignlanguageParticipant(participantId?: string) {
+    return {
+        type: SET_MOVING_SIGN_LANGUAGE_PARTICIPANT,
         participantId
     };
 }

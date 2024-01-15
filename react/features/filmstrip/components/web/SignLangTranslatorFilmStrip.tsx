@@ -3,11 +3,6 @@ import { connect } from 'react-redux';
 
 import { IReduxState } from '../../../app/types';
 import { IC_ROLES } from '../../../base/conference/icRoles';
-import { getToolbarButtons } from '../../../base/config/functions.web';
-import { isMobileBrowser } from '../../../base/environment/utils';
-import {
-    TOOLBAR_HEIGHT,
-    TOOLBAR_HEIGHT_MOBILE } from '../../constants';
 
 import SignLangThumbnailWrapper from './SignLangThumbnailWrapper';
 
