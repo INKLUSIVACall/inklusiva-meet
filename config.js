@@ -352,7 +352,7 @@ var config = {
     // Customize the Live Streaming dialog. Can be modified for a non-YouTube provider.
     liveStreaming: {
     //    // Whether to enable live streaming or not.
-        enabled: true,
+        enabled: false,
     //    // Terms link
     //    termsLink: 'https://www.youtube.com/t/terms',
     //    // Data privacy link
