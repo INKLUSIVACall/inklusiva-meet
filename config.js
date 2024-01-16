@@ -51,7 +51,7 @@ var config = {
     // Keep URL query parameters (such as JWT query parameter) intact, don't remove from address bar
     keepUrlParameters: true,
 
-    hiddenDomain: "recorder.inklusiva-meet.4morgen.de",
+    hiddenDomain: "transcriber.inklusiva-meet.4morgen.de",
 
     // Websocket URL (XMPP)
     // websocket: 'wss://jitsi-meet.example.com/' + subdir + 'xmpp-websocket',
@@ -352,7 +352,7 @@ var config = {
     // Customize the Live Streaming dialog. Can be modified for a non-YouTube provider.
     liveStreaming: {
     //    // Whether to enable live streaming or not.
-        enabled: true,
+        enabled: false,
     //    // Terms link
     //    termsLink: 'https://www.youtube.com/t/terms',
     //    // Data privacy link
