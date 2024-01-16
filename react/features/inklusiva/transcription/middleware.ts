@@ -10,15 +10,15 @@ import { UPDATE_TRANSCRIPT_LINK } from './actionTypes';
  * @returns {Function}
  */
 MiddlewareRegistry.register(store => next => action => {
-    const { dispatch, getState } = store;
+    const { getState } = store;
 
     // const localParticipant = getLocalParticipant(getState());
 
     switch (action.type) {
     case UPDATE_TRANSCRIPT_LINK: {
-        const state = store.getState();
+        const state = getState();
         const conference = getCurrentConference(state);
-        console.log('123456', conference);
+
         if (conference) {
             conference.updateTranscriptLink(action.link);
         }

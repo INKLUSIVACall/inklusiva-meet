@@ -1,5 +1,5 @@
 import * as jwtDecode from 'jwt-decode';
-import _ from 'lodash';
+import _, { update } from 'lodash';
 import { AnyAction } from 'redux';
 
 import { IStore } from '../../app/types';
@@ -10,6 +10,7 @@ import logger from './logger';
 import { IUserData } from './reducer';
 import { font } from '../../base/ui/Tokens';
 import { setNotificationsEnabled } from '../../notifications/actions';
+import { updateTranscriptLink } from '../transcription/actions.web';
 
 const toBoolean = function(value: any) {
     if (typeof value === 'boolean') {
@@ -64,6 +65,11 @@ function _setUserdata(store: IStore, next: Function, action: AnyAction) {
                 if (context) {
                     action.userData = _parseUserData(context.userData);
 
+                    // eslint-disable-next-line max-depth
+                    if (context.userData.readlink) {
+                        store.dispatch(updateTranscriptLink(context.userData.readlink));
+                    }
+
                     // Add event listener to set the font size on DOMContentLoaded.
                     window.addEventListener('DOMContentLoaded', () => {
                         const root = document.querySelector(':root') as HTMLElement;
@@ -92,7 +98,8 @@ function _parseUserData(ud: IUserData) {
         audio: {},
         distressbutton: {},
         assistant: { signLang: {},
-            transcription: {} }
+            transcription: {} },
+        transcriptionLink: ''
     };
 
     userData.support.eyesight = _.toString(ud.support.eyesight);
@@ -129,6 +136,7 @@ function _parseUserData(ud: IUserData) {
     userData.assistant.transcription.active = toBoolean(ud.assistant.transcription.active);
     userData.assistant.transcription.fontSize = _.toNumber(ud.assistant.transcription.fontSize);
     userData.assistant.transcription.history = _.toNumber(ud.assistant.transcription.history);
+    userData.transcriptionLink = _.toString(ud.transcriptionLink ?? '');
 
     return Object.keys(userData).length ? userData : undefined;
 }
