@@ -53,11 +53,14 @@ const TranscriptLinkEdit = ({
                 type = { BUTTON_TYPES.SECONDARY } />
         );
     }
+
+    return null;
+
 };
 
 const mapStateToProps = (state: IReduxState) => {
     return {
-        _isCaptioner: state['features/base/conference'].conference?.checkLocalHasRole(IC_ROLES.CAPTIONER),
+        _isCaptioner: state['features/base/conference'].conference?.checkLocalHasRole(IC_ROLES.CAPTIONER)
     };
 };
 
