@@ -168,6 +168,7 @@ import { setTileView } from './react/features/video-layout/actions.any';
 import { muteLocal } from './react/features/video-menu/actions.any';
 import { iAmVisitor } from './react/features/visitors/functions';
 import UIEvents from './service/UI/UIEvents';
+import { updateTranscriptLink } from './react/features/inklusiva/transcription/actions.web';
 
 
 const logger = Logger.getLogger(__filename);
@@ -364,6 +365,11 @@ class ConferenceConnector {
      *
      */
     _handleConferenceJoined() {
+        const transcriptionLink = APP.store.getState()['features/inklusiva/userdata'].transcriptionLink;
+
+        if (transcriptionLink) {
+            APP.store.dispatch(updateTranscriptLink(transcriptionLink));
+        }
         APP.store.dispatch(setTileView(true));
         if (!config.iAmRecorder && !isMobileBrowser()) {
             APP.store.dispatch(openParticipantsPane());
