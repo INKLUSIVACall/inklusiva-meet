@@ -1174,7 +1174,7 @@ var config = {
     // For information about the properties of
     // deeplinking.[ios/android].dynamicLink check:
     // https://firebase.google.com/docs/dynamic-links/create-manually
-    // deeplinking: {
+    deeplinking: {
     //
     //     // The desktop deeplinking config.
     //     desktop: {
@@ -1182,7 +1182,7 @@ var config = {
     //     },
     //     // If true, any checks to handoff to another application will be prevented
     //     // and instead the app will continue to display in the current browser.
-    //     disabled: false,
+        disabled: true
 
     //     // whether to hide the logo on the deep linking pages.
     //     hideLogo: false,
@@ -1221,7 +1221,7 @@ var config = {
     //             isi: '1165103905'
     //         }
     //     }
-    // },
+    },
 
     // // The terms, privacy and help centre URL's.
     // legalUrls: {
