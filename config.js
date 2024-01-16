@@ -1650,7 +1650,7 @@ var config = {
     // },
 
     // Application logo url
-    // defaultLogoUrl: 'images/watermark.svg',
+    defaultLogoUrl: 'images/logo-inklusiva-call-weiß.svg',
 
     // Settings for the Excalidraw whiteboard integration.
     // whiteboard: {

@@ -345,3 +345,14 @@ export const SET_SCREENSHARING_TILE_DIMENSIONS = 'SET_SCREENSHARING_TILE_DIMENSI
  * }.
  */
 export const SET_TOP_PANEL_VISIBILITY = 'SET_TOP_PANEL_VISIBILITY';
+
+/**
+ * The type of (redux) action which identifies the sign language translator who's
+ * currently being moved, thus who's having the highest z-order.
+ *
+ * {
+ *     type: SET_MOVING_SIGN_LANGUAGE_PARTICIPANT,
+ *     participantId: string
+ * }.
+ */
+export const SET_MOVING_SIGN_LANGUAGE_PARTICIPANT = 'SET_MOVING_SIGN_LANGUAGE_PARTICIPANT,';

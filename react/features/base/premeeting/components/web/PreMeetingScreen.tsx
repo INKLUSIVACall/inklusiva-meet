@@ -102,6 +102,11 @@ const useStyles = makeStyles()(theme => {
                 flexDirection: 'column-reverse'
             }
         },
+        logo: {
+            // borderBottom: '3px solid white',
+            paddingBottom: '3rem',
+            marginBottom: '1rem'
+        },
         content: {
             display: 'flex',
             flexDirection: 'column',
@@ -187,6 +192,9 @@ const PreMeetingScreen = ({
                     <ConnectionStatus />
 
                     <div className = { classes.contentControls }>
+                        <img
+                            className = { classes.logo }
+                            src = 'images/logo-inklusiva-call-weiß.svg' />
                         <h1 className = { classes.title }>
                             {title}
                         </h1>

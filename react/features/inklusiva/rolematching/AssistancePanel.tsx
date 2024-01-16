@@ -18,7 +18,7 @@ const styles = (theme: Theme) => {
             height: 'auto',
             backgroundColor: theme.palette.ui01,
             position: 'absolute' as const,
-            bottom: '120px',
+            bottom: 'calc(50% - 140px)',
             left: 'calc(50% - 300px)',
             padding: theme.spacing(3),
             borderRadius: '10px'

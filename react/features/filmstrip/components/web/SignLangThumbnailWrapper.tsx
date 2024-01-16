@@ -4,7 +4,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { shouldComponentUpdate } from 'react-window';
 
-import { IReduxState } from '../../../app/types';
+import { IReduxState, IStore } from '../../../app/types';
+import { setMovingSignlanguageParticipant } from '../../actions.web';
 import { FILMSTRIP_TYPE } from '../../constants';
 
 import Thumbnail from './Thumbnail';
@@ -15,7 +16,6 @@ const defaulStyles = (theme: Theme) => {
             position: 'absolute' as const,
             height: '50%',
             width: '35%',
-            zIndex: 10,
             borderRadius: '10px',
             boxShadow: 'rgba(0, 0, 0, 0.75) 1px 0px 18px 2px;',
             resize: 'both' as const,
@@ -23,16 +23,16 @@ const defaulStyles = (theme: Theme) => {
         },
         topBar: {
             position: 'absolute' as const,
-            height: '5%',
+            height: '1.2em',
             width: '100%',
             backgroundColor: theme.palette.action01,
             cursor: 'grab'
         },
         video: {
             position: 'absolute' as const,
-            height: '95%',
+            height: 'calc(100% - 1.2em)',
             width: '100%',
-            top: '5% '
+            top: '1.2em'
         }
     };
 };
@@ -53,6 +53,11 @@ interface IProps {
     _initialPosition: { x: number; y: number; };
 
     /**
+     * Is this thumbnail being moved.
+     */
+    _isMoving: boolean;
+
+    /**
      * The ID of the participant associated with the Thumbnail.
      */
     _participantID?: string;
@@ -68,6 +73,10 @@ interface IProps {
      */
     classes?: any;
 
+    /**
+     * The redux {@code dispatch} function.
+     */
+    dispatch: IStore['dispatch'];
 }
 
 /**
@@ -75,10 +84,11 @@ interface IProps {
  * to the Thumbnail Component's props.
  */
 class SignLangThumbnailWrapper extends Component<IProps> {
-
-
     shouldComponentUpdate: (p: any, s: any) => boolean;
 
+    /**
+     * The position of the translator overlay.
+     */
     _position: { x: number; y: number; };
 
     /**
@@ -90,6 +100,7 @@ class SignLangThumbnailWrapper extends Component<IProps> {
         super(props);
 
         this._dragging = false;
+
         this._position = { x: props._initialPosition.x,
             y: props._initialPosition.y };
 
@@ -106,7 +117,7 @@ class SignLangThumbnailWrapper extends Component<IProps> {
      * @returns {ReactElement}
      */
     render() {
-        const { _horizontalOffset = 0, _participantID, _thumbnailWidth, classes } = this.props;
+        const { _horizontalOffset = 0, _participantID, _thumbnailWidth, _isMoving, classes } = this.props;
 
         if (typeof _participantID !== 'string') {
             return null;
@@ -115,12 +126,15 @@ class SignLangThumbnailWrapper extends Component<IProps> {
         return (
             <div
                 className = { classes.outer }
+                // eslint-disable-next-line react-native/no-inline-styles
                 style = {{
                     left: this._position.x,
-                    top: this._position.y
+                    top: this._position.y,
+                    zIndex: _isMoving ? 11 : 10
                 }}>
                 <div
                     className = { classes.topBar }
+                    // eslint-disable-next-line react/jsx-no-bind
                     onMouseDown = { ev => this._mouseDown(ev) }>
                     &nbsp;
                 </div>
@@ -151,6 +165,8 @@ class SignLangThumbnailWrapper extends Component<IProps> {
             this._dragPositionStart = { x: this._position.x,
                 y: this._position.y };
         }
+
+        this.props.dispatch(setMovingSignlanguageParticipant(this.props._participantID));
 
         this._dragging = true;
 
@@ -188,10 +204,15 @@ class SignLangThumbnailWrapper extends Component<IProps> {
 function _mapStateToProps(state: IReduxState, ownProps: { participantId: string; }) {
     const { participantId } = ownProps;
 
+    const {
+        movingSignlanguageParticipant
+    } = state['features/filmstrip'];
+
     return {
         _initialPosition: { x: 100,
             y: 100 },
-        _participantID: participantId
+        _participantID: participantId,
+        _isMoving: movingSignlanguageParticipant === participantId
     };
 }
 
