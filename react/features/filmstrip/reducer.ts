@@ -15,6 +15,7 @@ import {
     SET_FILMSTRIP_WIDTH,
     SET_FREQUENCY_FILTER_SETTING,
     SET_HORIZONTAL_VIEW_DIMENSIONS,
+    SET_MOVING_SIGN_LANGUAGE_PARTICIPANT,
     SET_PARTICIPANT_BRIGHTNESS,
     SET_PARTICIPANT_CONTRAST,
     SET_PARTICIPANT_OPACITY,
@@ -109,6 +110,11 @@ const DEFAULT_STATE = {
      */
     localOpacity: 0,
 
+    /**
+     * The id of the participant whose video will have the highest zIndex in the filmstrip.
+     */
+    movingSignlanguageParticipant: null,
+        
     /**
      * The saturation of each participant.
      *
@@ -270,6 +276,7 @@ export interface IFilmstripState {
     };
     isResizing: boolean;
     localOpacity: number | null;
+    movingSignlanguageParticipant: string | null;
     participantZoomLevel: {
         [participantId: string]: number;
     };
@@ -587,7 +594,12 @@ ReducerRegistry.register<IFilmstripState>(
                 screenshareFilmstripParticipantId: action.participantId
             };
         }
-        }
+        case SET_MOVING_SIGN_LANGUAGE_PARTICIPANT: {
+            return {
+                ...state,
+                movingSignlanguageParticipant: action.participantId
+            };
+        }}
 
         return state;
     });

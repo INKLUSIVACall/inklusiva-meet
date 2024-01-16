@@ -5,7 +5,9 @@ import { setAudioInputDevice, setVideoInputDevice } from '../base/devices/action
 import { getDeviceLabelById, setAudioOutputDeviceId } from '../base/devices/functions';
 import { IParticipant } from '../base/participants/types';
 import { updateSettings } from '../base/settings/actions';
-import { setFrequencyFilterSetting, setVolume } from '../filmstrip/actions.web';
+import { setFrequencyFilterSetting, setTileViewDimensions,
+    setVolume
+} from '../filmstrip/actions.web';
 import { setAmplify, setBalance, setHighFreq, setOthersVolume } from '../inklusiva/audiosettings/actions';
 import { setAcousticCuesEnabledState } from '../inklusiva/uisettings/actions.web';
 import { toggleOthersAudioInput } from '../inklusiva/userdata/actions';
@@ -15,8 +17,8 @@ import { setScreenshareFramerate } from '../screen-share/actions';
 import { getAudioDeviceSelectionDialogProps, getVideoDeviceSelectionDialogProps } from './functions';
 import logger from './logger';
 
-/**
- * Submits the settings related to audio device selection.
+
+/* Submits the settings related to audio device selection.
  *
  * @param {Object} newState - The new settings.
  * @param {boolean} isDisplayedOnWelcomePage - Indicates whether the device selection dialog is displayed on the
@@ -114,6 +116,8 @@ export function submitAudioDeviceSelectionTab(newState: any, isDisplayedOnWelcom
 export function submitVideoDeviceSelectionTab(newState: any, isDisplayedOnWelcomePage: boolean) {
     return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
         const currentState = getVideoDeviceSelectionDialogProps(getState(), isDisplayedOnWelcomePage);
+
+        dispatch(setTileViewDimensions());
 
         if (newState.selectedVideoInputId && newState.selectedVideoInputId !== currentState.selectedVideoInputId) {
             dispatch(
