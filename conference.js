@@ -362,7 +362,9 @@ class ConferenceConnector {
      */
     _handleConferenceJoined() {
         APP.store.dispatch(setTileView(true));
-        APP.store.dispatch(openParticipantsPane());
+        if (!config.iAmRecorder) {
+            APP.store.dispatch(openParticipantsPane());
+        }
         this._unsubscribe();
         this._resolve();
     }
