@@ -69,7 +69,7 @@ import {
     setAudioOutputDeviceId
 } from './react/features/base/devices/functions.web';
 import {
-    isMobileBrowser 
+    isMobileBrowser
 } from './react/features/base/environment/utils';
 import {
     JitsiConferenceErrors,
@@ -365,7 +365,7 @@ class ConferenceConnector {
      */
     _handleConferenceJoined() {
         APP.store.dispatch(setTileView(true));
-        if (!config.iAmRecorder && !isMobileBrowser) {
+        if (!config.iAmRecorder && !isMobileBrowser()) {
             APP.store.dispatch(openParticipantsPane());
         }
         this._unsubscribe();
