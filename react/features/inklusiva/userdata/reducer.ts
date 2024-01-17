@@ -105,6 +105,7 @@ export interface IUserData {
     audio: IAudio;
     distressbutton: IDistressButton;
     support: ISupport;
+    transcriptionLink?: string;
     ui: IUI;
     video: IVideo;
 }
@@ -128,7 +129,8 @@ ReducerRegistry.register<IUserData>(
                 audio: {},
                 distressbutton: {},
                 assistant: { signLang: {},
-                    transcription: {} }
+                    transcription: {} },
+                transcriptionLink: ''
             },
             action
     ): IUserData => {

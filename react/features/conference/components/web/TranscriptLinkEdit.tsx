@@ -1,14 +1,13 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
 
 import { IReduxState } from '../../../app/types';
 import { IC_ROLES } from '../../../base/conference/icRoles';
 import { openDialog } from '../../../base/dialog/actions';
 import { IconGear } from '../../../base/icons/svg';
-import Label from '../../../base/label/components/web/Label';
-import { COLORS } from '../../../base/label/constants';
-import Tooltip from '../../../base/tooltip/components/Tooltip';
+import Button from '../../../base/ui/components/web/Button';
+import { BUTTON_TYPES } from '../../../base/ui/constants.any';
 import TranscriptLinkDialog from '../../../inklusiva/transcription/components/TranscriptLinkDialog';
 
 const useStyles = makeStyles()(() => {
@@ -18,44 +17,51 @@ const useStyles = makeStyles()(() => {
     };
 });
 
+interface IProps {
+
+    _isCaptioner: boolean;
+}
+
 /**
  * Label for the conference name.
  *
  * @returns {ReactElement}
  */
-const TranscriptLinkEdit = () => {
+const TranscriptLinkEdit = ({
+    _isCaptioner
+}: IProps
+) => {
     const { classes } = useStyles();
 
     const conference = useSelector((state: IReduxState) => state['features/base/conference'].conference);
     const dispatch = useDispatch();
 
-    const isCaptioner = conference?.checkLocalHasRole(IC_ROLES.CAPTIONER);
-
     const onClick = () => {
         dispatch(openDialog(TranscriptLinkDialog, { conference }));
     };
 
-
-    if (isCaptioner) {
+    if (_isCaptioner) {
         return (
-            <Tooltip
-                content = { 'Transcript-Link bearbeiten' }
-                position = 'bottom'>
-                <Label
-                    accessibilityText = { 'Transcript-Link bearbeiten' }
-                    className = { classes.transcriptionLinkLabelForCaptioner }
-                    color = { COLORS.white }
-                    icon = { IconGear }
-                    iconColor = '#fff'
-                    iconSize = { '24' }
-                    id = 'transcriptLinkEditLabel'
-                    // eslint-disable-next-line react/jsx-no-bind
-                    onClick = { onClick } />
-            </Tooltip>
+            <Button
+                accessibilityLabel = { 'Nur-Lese-Link bearbeiten' }
+                className = { 'mr-05' }
+                icon = { IconGear }
+                label = { 'Nur-Lese-Link bearbeiten' }
+                // eslint-disable-next-line react/jsx-no-bind
+                onClick = { onClick }
+                size = 'small'
+                type = { BUTTON_TYPES.SECONDARY } />
         );
     }
 
     return null;
+
 };
 
-export default TranscriptLinkEdit;
+const mapStateToProps = (state: IReduxState) => {
+    return {
+        _isCaptioner: state['features/base/conference'].conference?.checkLocalHasRole(IC_ROLES.CAPTIONER)
+    };
+};
+
+export default connect(mapStateToProps)(TranscriptLinkEdit);
