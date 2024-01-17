@@ -1,54 +1,40 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { makeStyles } from 'tss-react/mui';
+import { connect } from 'react-redux';
 
-import { IconLink } from '../../../base/icons/svg';
-import Label from '../../../base/label/components/web/Label';
-import { COLORS } from '../../../base/label/constants';
-import Tooltip from '../../../base/tooltip/components/Tooltip';
+import { IReduxState } from '../../../app/types';
+import { IconChatUnread } from '../../../base/icons/svg';
+import Button from '../../../base/ui/components/web/Button';
+import { BUTTON_TYPES } from '../../../base/ui/constants.any';
 import { getTranscriptionLink } from '../../../inklusiva/transcription/functions.web';
 
-const useStyles = makeStyles()(() => {
-    return {
-        transcriptionLinkLabelForUser: {
-            backgroundColor: 'transparent',
-            borderColor: 'transparent',
-            color: '#fff'
-        }
-    };
-});
+interface IProps {
+    _transcriptionLink?: string;
+}
 
 /**
  * Label for the conference name.
  *
  * @returns {ReactElement}
  */
-const TranscriptLink = () => {
-    const { classes } = useStyles();
-
-    const transcriptionLink = useSelector(getTranscriptionLink);
+const TranscriptLink = ({
+    _transcriptionLink
+}: IProps) => {
 
     const onClick = () => {
-        window.open(transcriptionLink, '_blank');
+        window.open(_transcriptionLink, '_blank');
     };
 
-    if (transcriptionLink !== '') {
+    if (_transcriptionLink && _transcriptionLink !== '') {
         return (
-            <Tooltip
-                content = { 'Zum Transcript' }
-                position = 'bottom'>
-                <Label
-                    accessibilityText = { 'Link zum Transcript' }
-                    className = { classes.transcriptionLinkLabelForUser }
-                    color = { COLORS.white }
-                    icon = { IconLink }
-                    iconColor = '#fff'
-                    iconSize = { '24' }
-                    onClick = { onClick }
-                    id = 'transcriptLinkLabel'
-                    // eslint-disable-next-line react/jsx-no-bind
-                    text = { transcriptionLink } />
-            </Tooltip>
+            <Button
+                accessibilityLabel = { 'Nur-Lese-Link öffnen' }
+                className = { 'ml-05' }
+                icon = { IconChatUnread }
+                label = { 'Nur-Lese-Link öffnen' }
+                // eslint-disable-next-line react/jsx-no-bind
+                onClick = { onClick }
+                size = 'small'
+                type = { BUTTON_TYPES.SECONDARY } />
         );
     }
 
@@ -56,4 +42,10 @@ const TranscriptLink = () => {
 
 };
 
-export default TranscriptLink;
+const mapStateToProps = (state: IReduxState) => {
+    return {
+        _transcriptionLink: getTranscriptionLink(state)
+    };
+};
+
+export default connect(mapStateToProps)(TranscriptLink);

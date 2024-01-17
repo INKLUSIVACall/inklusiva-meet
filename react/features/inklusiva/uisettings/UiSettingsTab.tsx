@@ -142,8 +142,6 @@ class UiSettingsTab extends AbstractDialogTab<IProps, any> {
             t
         } = this.props;
 
-        console.log(interpreter, screensharing, otherParticipants);
-
         const getSizeDescription = (size: number) => t(`settings.uiSettings.fontSizes.size${size}`);
 
         return (
