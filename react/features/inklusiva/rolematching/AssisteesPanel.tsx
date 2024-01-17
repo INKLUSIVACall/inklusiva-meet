@@ -1,6 +1,6 @@
 import { Theme } from '@mui/material';
 import { withStyles } from '@mui/styles';
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 
@@ -22,6 +22,13 @@ const styles = (theme: Theme) => {
             left: 'calc(50% - 300px)',
             padding: theme.spacing(3),
             borderRadius: '10px'
+        },
+        closeButton: {
+            position: 'absolute' as const,
+            top: '5px',
+            right: '15px',
+            fontSize: '1.5rem',
+            cursor: 'pointer'
         },
         headline: {
             fontSize: '1.5rem',
@@ -82,6 +89,8 @@ interface IProps {
 const AssisteesPanel = ({ classes, _assistees, _conference, _visible }: IProps) => {
     const { t } = useTranslation();
 
+    const [ localClose, setLocalClose ] = useState(false);
+
     const _renderAssistees = (data: any, i: number) => {
         const _onClickOfferAssistance = () => {
             _conference?.addLocalICRole(IC_ROLES.ASSISTANT, data.participantId);
@@ -104,9 +113,19 @@ const AssisteesPanel = ({ classes, _assistees, _conference, _visible }: IProps) 
         );
     };
 
+    const _onClickClose = () => {
+        setLocalClose(true);
+    };
+
     return (
-        _visible ? (
+        _visible && !localClose ? (
             <div className = { classes.assisteesPanel }>
+                <div
+                    className = { classes.closeButton }
+                    // eslint-disable-next-line react/jsx-no-bind
+                    onClick = { _onClickClose }>
+                    x
+                </div>
                 <h1 className = { classes.headline }>{t('assisteesPanel.headline')}</h1>
                 <p className = { classes.description }>{t('assisteesPanel.desc1')}</p>
                 <p className = { classes.description }>{t('assisteesPanel.desc2')}</p>
