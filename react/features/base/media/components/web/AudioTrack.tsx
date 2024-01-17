@@ -135,7 +135,7 @@ class AudioTrack extends Component<IProps> {
         if (this.props.audioTrack) {
             let setting = Math.floor(frequencySetting);
 
-            if (setting < 0 || setting > this.FREQUENCY_CUT_OFFS.length) {
+            if (setting < 0 || setting >= this.FREQUENCY_CUT_OFFS.length) {
                 setting = 0;
             }
 
@@ -143,7 +143,7 @@ class AudioTrack extends Component<IProps> {
 
             const oldSetting = this.props.audioTrack.jitsiTrack.audioFilter.frequency.value;
 
-            if (oldSetting != cutOffFrequency) {
+            if (oldSetting !== cutOffFrequency) {
                 this.props.audioTrack.jitsiTrack.audioFilter.frequency.value = cutOffFrequency;
             }
         }
