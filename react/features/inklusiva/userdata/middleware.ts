@@ -90,7 +90,7 @@ function _setUserdata(store: IStore, next: Function, action: AnyAction) {
  */
 function _parseUserData(ud: IUserData) {
     const userData: IUserData = {
-        meeting_id: null,
+        meeting_id: '',
         support: {},
         ui: {},
         video: {},
