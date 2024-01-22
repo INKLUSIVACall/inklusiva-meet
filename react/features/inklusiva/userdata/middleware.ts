@@ -1,16 +1,14 @@
 import * as jwtDecode from 'jwt-decode';
-import _, { update } from 'lodash';
+import _ from 'lodash';
 import { AnyAction } from 'redux';
 
 import { IStore } from '../../app/types';
 import MiddlewareRegistry from '../../base/redux/MiddlewareRegistry';
+import { updateTranscriptLink } from '../transcription/actions.web';
 
 import { SET_USERDATA } from './actionTypes';
 import logger from './logger';
 import { IUserData } from './reducer';
-import { font } from '../../base/ui/Tokens';
-import { setNotificationsEnabled } from '../../notifications/actions';
-import { updateTranscriptLink } from '../transcription/actions.web';
 
 const toBoolean = function(value: any) {
     if (typeof value === 'boolean') {
@@ -92,6 +90,7 @@ function _setUserdata(store: IStore, next: Function, action: AnyAction) {
  */
 function _parseUserData(ud: IUserData) {
     const userData: IUserData = {
+        meeting_id: null,
         support: {},
         ui: {},
         video: {},
@@ -137,6 +136,11 @@ function _parseUserData(ud: IUserData) {
     userData.assistant.transcription.fontSize = _.toNumber(ud.assistant.transcription.fontSize);
     userData.assistant.transcription.history = _.toNumber(ud.assistant.transcription.history);
     userData.transcriptionLink = _.toString(ud.transcriptionLink ?? '');
+    userData.meeting_id = _.toString(ud.meeting_id ?? '');
+
+    if (userData.meeting_id !== '') {
+        localStorage.setItem('inklusiva_meeting_id', userData.meeting_id);
+    }
 
     return Object.keys(userData).length ? userData : undefined;
 }

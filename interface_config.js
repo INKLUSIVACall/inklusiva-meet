@@ -9,7 +9,9 @@
  */
 
 var interfaceConfig = {
-    APP_NAME: 'Inklusiva Call',
+
+
+    APP_NAME: 'INKLUSIVA Call',
     AUDIO_LEVEL_PRIMARY_COLOR: 'rgba(255,255,255,0.4)',
     AUDIO_LEVEL_SECONDARY_COLOR: 'rgba(255,255,255,0.2)',
 
@@ -25,6 +27,8 @@ var interfaceConfig = {
     BRAND_WATERMARK_LINK: '',
 
     CLOSE_PAGE_GUEST_HINT: false, // A html text to be shown to guests on the close page, false disables it
+    // CLOSE_PAGE_ROOT_URL: 'http://127.0.0.1/endscreen/',
+    CLOSE_PAGE_ROOT_URL: 'https://conference.inklusiva-call.de/endscreen',
 
     DEFAULT_BACKGROUND: '#040404',
     DEFAULT_WELCOME_PAGE_LOGO_URL: 'images/watermark.svg',
