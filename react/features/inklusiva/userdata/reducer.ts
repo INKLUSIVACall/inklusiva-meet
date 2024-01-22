@@ -104,6 +104,7 @@ export interface IUserData {
     assistant: IAssistant;
     audio: IAudio;
     distressbutton: IDistressButton;
+    meeting_id?: string;
     support: ISupport;
     transcriptionLink?: string;
     ui: IUI;
