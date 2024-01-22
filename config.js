@@ -30,7 +30,7 @@ var config = {
 
     hosts: {
         // XMPP domain.
-        domain: 'inklusiva-meet.4morgen.de',
+        domain: 'conference.inklusiva-call.de',
         muc: 'conference.inklusiva-meet.4morgen.de',
         bridge: 'jitsi-videobridge.inklusiva-meet.4morgen.de',
         focus: 'focus.inklusiva-meet.4morgen.de',
@@ -46,7 +46,7 @@ var config = {
     },
 
     // BOSH URL. FIXME: use XEP-0156 to discover it.
-    bosh: 'https://inklusiva-meet.4morgen.de/' + subdir + 'http-bind',
+    bosh: 'https://conference.inklusiva-call.de/' + subdir + 'http-bind',
 
     // Keep URL query parameters (such as JWT query parameter) intact, don't remove from address bar
     keepUrlParameters: true,
@@ -116,7 +116,7 @@ var config = {
     // disableReactionsModeration: false,
 
     // Disables polls feature.
-    // disablePolls: false,
+    disablePolls: true,
 
     // Disables self-view tile. (hides it from tile view and from filmstrip)
     // disableSelfView: false,
@@ -590,7 +590,7 @@ var config = {
         disabled: true,
 
         // If set,landing page will redirect to this URL.
-        customUrl: 'https://inklusiva-meet.4morgen.de'
+        customUrl: 'https://conference.inklusiva-call.de'
     },
 
     // Configs for the lobby screen.
@@ -976,7 +976,7 @@ var config = {
         // through the JVB and use the peer to peer connection instead. When a
         // 3rd participant joins the conference will be moved back to the JVB
         // connection.
-        enabled: true,
+        enabled: false, //TODO: true,
 
         // Sets the ICE transport policy for the p2p connection. At the time
         // of this writing the list of possible values are 'all' and 'relay',
@@ -1000,8 +1000,10 @@ var config = {
         // The STUN servers that will be used in the peer to peer connections
         stunServers: [
 
-            // { urls: 'stun:jitsi-meet.example.com:3478' },
-            { urls: 'stun:meet-jit-si-turnrelay.jitsi.net:443' },
+            // TODO: Enable
+            //{ urls: 'stun:conference-turn.inclusiva-call.de:5349' },
+            //{ url: 'stun:conference-turn.inclusiva-call.de:3478' },
+            //{ urls: 'stun:conference-turn.inclusiva-call.de:443' },
         ],
 
         // DEPRECATED! Use `codecPreferenceOrder/mobileCodecPreferenceOrder` instead.
@@ -1653,13 +1655,13 @@ var config = {
     defaultLogoUrl: 'images/logo-inklusiva-call-weiß.svg',
 
     // Settings for the Excalidraw whiteboard integration.
-    // whiteboard: {
+    whiteboard: {
     //     // Whether the feature is enabled or not.
-    //     enabled: true,
+        enabled: false
     //     // The server used to support whiteboard collaboration.
     //     // https://github.com/jitsi/excalidraw-backend
     //     collabServerBaseUrl: 'https://excalidraw-backend.example.com',
-    // },
+    },
 
     // The watchRTC initialize config params as described :
     // https://testrtc.com/docs/installing-the-watchrtc-javascript-sdk/#h-set-up-the-sdk
