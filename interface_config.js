@@ -84,7 +84,7 @@ var interfaceConfig = {
 
     JITSI_WATERMARK_LINK: 'https://inklusiva-call.de',
 
-    LANG_DETECTION: true, // Allow i18n to detect the system language
+    LANG_DETECTION: false, // Allow i18n to detect the system language
     LOCAL_THUMBNAIL_RATIO: 16 / 9, // 16:9
 
     /**
