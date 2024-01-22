@@ -2027,6 +2027,11 @@ export default {
             }
         );
 
+        room.on('conference.icTranscriptLinksChanged', link => {
+            console.log('LINK!!!!', link);
+        });
+
+
         // call hangup
         APP.UI.addListener(UIEvents.HANGUP, () => {
             this.hangup(true);
