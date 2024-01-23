@@ -165,7 +165,7 @@ class UiSettingsTab extends AbstractDialogTab<IProps, any> {
                 </div>
 
                 <div className = { classes.inputblockContainer }>
-                    <h3>{t('settings.uiSettings.fontSize')}</h3>
+                    <h3>{t('settings.uiSettings.sizeHeadline')}</h3>
                     <div className = { classes.controlContainer }>
                         <div className = { classes.controlColumn }>
                             <Slider
