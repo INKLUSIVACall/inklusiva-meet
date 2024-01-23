@@ -2,12 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { IReduxState } from '../../../app/types';
+import { IJitsiConference } from '../../../base/conference/reducer';
 import { IconChatUnread } from '../../../base/icons/svg';
 import Button from '../../../base/ui/components/web/Button';
 import { BUTTON_TYPES } from '../../../base/ui/constants.any';
-import { getTranscriptionLink } from '../../../inklusiva/transcription/functions.web';
 
 interface IProps {
+    _conference: IJitsiConference;
+
     _transcriptionLink?: string;
 }
 
@@ -17,7 +19,8 @@ interface IProps {
  * @returns {ReactElement}
  */
 const TranscriptLink = ({
-    _transcriptionLink
+    _transcriptionLink,
+    _conference
 }: IProps) => {
 
     const onClick = () => {
@@ -44,7 +47,8 @@ const TranscriptLink = ({
 
 const mapStateToProps = (state: IReduxState) => {
     return {
-        _transcriptionLink: getTranscriptionLink(state)
+        _transcriptionLink: state['features/base/conference'].conference?.transcriptionLink,
+        _conference: state['features/base/conference'].conference
     };
 };
 

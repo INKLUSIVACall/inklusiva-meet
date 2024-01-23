@@ -2027,10 +2027,12 @@ export default {
             }
         );
 
-        room.on('conference.icTranscriptLinksChanged', link => {
-            console.log('LINK!!!!', link);
-        });
-
+        room.on(
+            JitsiConferenceEvents.ROOM_IC_TRANSCRIPT_LINKS_CHANGED, link => {
+                console.log('ROOM_IC_TRANSCRIPT_LINKS_CHANGED', link);
+                APP.store.dispatch(updateTranscriptLink(link));
+            }
+        );
 
         // call hangup
         APP.UI.addListener(UIEvents.HANGUP, () => {
