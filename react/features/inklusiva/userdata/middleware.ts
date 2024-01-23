@@ -73,6 +73,7 @@ function _setUserdata(store: IStore, next: Function, action: AnyAction) {
                         const root = document.querySelector(':root') as HTMLElement;
 
                         root.style.fontSize = _parseFontSize(context.userData.ui.fontSize);
+                        root.style.setProperty('--icon-size-factor', _parseIconSize(context.userData.ui.iconSize));
                     });
                 }
             }
@@ -169,6 +170,28 @@ function _parseFontSize(fontSizeValue: string | number) {
     default:
         return '100%';
         break;
+    }
+}
+
+/**
+ * Parses the icon size value that is supplied via userData to a valid CSS-value.
+ *
+ * @param {number} iconSizeValue - The icon size value to parse.
+ * @returns {number}
+ */
+function _parseIconSize(iconSizeValue: number | string) {
+    switch (iconSizeValue) {
+    case 0:
+    case '0':
+        return '0.75';
+    case 1:
+    case '1':
+        return '1';
+    case 2:
+    case '2':
+        return '1.5';
+    default:
+        return '1';
     }
 }
 
