@@ -147,6 +147,10 @@ function _addConferenceListeners(conference: IJitsiConference, dispatch: IStore[
         (id: string, roles: []) => {
             console.log('USER_IC_ROLES_CHANGED', id, roles);
         });
+    conference.on(JitsiConferenceEvents.ROOM_IC_TRANSCRIPT_LINKS_CHANGED,
+        (link: string) => {
+            console.log('ROOM_IC_TRANSCRIPT_LINKS_CHANGED', link);
+        });
 
     // Dispatches into features/base/media follow:
 
