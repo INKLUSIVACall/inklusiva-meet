@@ -194,8 +194,11 @@ class ConferenceInfo extends Component<IProps> {
                 {
                     COMPONENTS
                         .filter(comp => autoHide.includes(comp.id))
-                        .map(c =>
-                            <c.Component key = { c.id } />
+                        .map(c => (
+                            <c.Component
+                                className = { 'infobar-interactable' }
+                                key = { c.id } />
+                        )
                         )
                 }
             </ConferenceInfoContainer>
@@ -221,8 +224,11 @@ class ConferenceInfo extends Component<IProps> {
                 {
                     COMPONENTS
                         .filter(comp => alwaysVisible.includes(comp.id))
-                        .map(c =>
-                            <c.Component key = { c.id } />
+                        .map(c => (
+                            <c.Component
+                                className = 'infobar-interactable'
+                                key = { c.id } />
+                        )
                         )
                 }
             </ConferenceInfoContainer>
@@ -248,8 +254,11 @@ class ConferenceInfo extends Component<IProps> {
                 {
                     COMPONENTS
                         .filter(comp => detailIndicatorsLeft.includes(comp.id))
-                        .map(c =>
-                            <c.Component key = { c.id } />
+                        .map(c => (
+                            <c.Component
+                                className = 'infobar-interactable'
+                                key = { c.id } />
+                        )
                         )
                 }
             </ConferenceInfoContainer>

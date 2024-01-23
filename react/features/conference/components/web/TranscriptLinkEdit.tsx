@@ -13,6 +13,7 @@ import TranscriptLinkDialog from '../../../inklusiva/transcription/components/Tr
 const useStyles = makeStyles()(() => {
     return {
         transcriptionLinkLabelForCaptioner: {
+            pointerEvents: 'auto'
         }
     };
 });
