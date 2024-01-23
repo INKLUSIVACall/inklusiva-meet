@@ -37,7 +37,7 @@ const initGlobalKeyboardShortcuts = () =>
 
             // register SPACE shortcut in two steps to insure visibility of help message
             dispatch(registerShortcut({
-                character: ' ',
+                character: ':SPACE', // :SPACE maps to alt+space, only space is ' '.
                 helpCharacter: 'SPACE',
                 helpDescription: 'keyboardShortcuts.pushToTalk',
                 handler: () => {
@@ -109,7 +109,7 @@ export const initKeyboardShortcuts = () =>
             const focusedElement = getPriorityFocusedElement();
             const key = getKeyboardKey(e).toUpperCase();
 
-            if (key === ' ' && !focusedElement) {
+            if (key === ':SPACE' && !focusedElement) {
                 sendAnalytics(createShortcutEvent('push.to.talk', ACTION_SHORTCUT_PRESSED));
                 logger.log('Talk shortcut pressed');
                 APP.conference.muteAudio(false);
