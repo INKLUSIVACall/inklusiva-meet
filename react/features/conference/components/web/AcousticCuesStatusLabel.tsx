@@ -12,7 +12,8 @@ const useStyles = makeStyles()(theme => {
     return {
         acousticCuesStatusLabel: {
             backgroundColor: 'transparent',
-            borderColor: 'transparent'
+            borderColor: 'transparent',
+            pointerEvents: 'auto'
         }
     };
 });

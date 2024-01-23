@@ -13,7 +13,8 @@ const useStyles = makeStyles()(theme => {
     return {
         label: {
             backgroundColor: theme.palette.warning02,
-            color: theme.palette.uiBackground
+            color: theme.palette.uiBackground,
+            pointerEvents: 'auto'
         }
     };
 });

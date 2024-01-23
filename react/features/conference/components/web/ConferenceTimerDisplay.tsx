@@ -18,7 +18,8 @@ const useStyles = makeStyles()(theme => {
 
             '@media (max-width: 300px)': {
                 display: 'none'
-            }
+            },
+            pointerEvents: 'auto'
         }
     };
 });
