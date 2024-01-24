@@ -420,6 +420,28 @@ function on_occupant_left(event)
         broadcast_breakout_rooms(main_room_jid);
     end
 
+    -- Close breakout room after timeout
+    module:log('info', 'User has left %s', room_jid);
+    if room_jid ~= main_room_jid then
+        module:log('info', '%s is a breakout room', room_jid);
+        local breakout_room = get_room_from_jid(room_jid);
+        if not exist_occupants_in_room(breakout_room) then
+            module:log('info', 'No more users in %s', room_jid);
+            destroy_breakout_room(room_jid);
+            --module:add_timer(3, function()
+            --    local breakout_room = get_room_from_jid(room_jid);
+            --    module:log('info', 'Preparing to destroy %s', room_jid);
+            --    if not breakout_room then
+            --        module:log('info', 'Umm... that shouldnt happen.', room_jid);
+            --    end
+            --    if breakout_room and not exist_occupants_in_room(breakout_room) then
+            --        module:log('info', 'Closing breakout room %s as all left for good.', room_jid);
+            --        destroy_breakout_room(room_jid);
+            --    end
+            --end);
+        end
+    end
+
     -- Close the conference if all left for good.
     if main_room._data.breakout_rooms_active and not main_room.close_timer and not exist_occupants_in_rooms(main_room) then
         main_room.close_timer = module:add_timer(ROOMS_TTL_IF_ALL_LEFT, function()
