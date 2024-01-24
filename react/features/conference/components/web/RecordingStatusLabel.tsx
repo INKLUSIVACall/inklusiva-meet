@@ -14,12 +14,12 @@ const styles = () => {
         recordingStatusLabel: {
             backgroundColor: 'transparent',
             borderColor: 'transparent',
-            pointerEvents: 'auto'
+            pointerEvents: 'auto' as const
         },
         objectRecordingLabel: {
             backgroundColor: 'transparent',
             borderColor: 'transparent',
-            pointerEvents: 'auto'
+            pointerEvents: 'auto' as const
         }
     };
 };

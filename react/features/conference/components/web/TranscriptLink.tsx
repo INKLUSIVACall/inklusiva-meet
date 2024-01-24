@@ -8,7 +8,8 @@ import Button from '../../../base/ui/components/web/Button';
 import { BUTTON_TYPES } from '../../../base/ui/constants.any';
 
 interface IProps {
-    _conference: IJitsiConference;
+
+    _conference?: IJitsiConference;
 
     _transcriptionLink?: string;
 }
