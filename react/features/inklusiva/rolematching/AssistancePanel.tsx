@@ -1,6 +1,6 @@
 import { Theme } from '@mui/material';
 import { withStyles } from '@mui/styles';
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { connect, useDispatch } from 'react-redux';
 
@@ -22,6 +22,15 @@ const styles = (theme: Theme) => {
             left: 'calc(50% - 300px)',
             padding: theme.spacing(3),
             borderRadius: '10px'
+        },
+        closeButton: {
+            position: 'absolute' as const,
+            top: '5px',
+            right: '15px',
+            fontSize: '1.5rem',
+            cursor: 'pointer',
+            background: 'transparent',
+            border: 'none'
         },
         headline: {
             fontSize: '1.5rem',
@@ -78,13 +87,29 @@ const AssistancePanel = ({ classes, _conference, _visible }: IProps) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
+    const [ localClose, setLocalClose ] = useState(false);
+
     const _onClickRequestAssitance = () => {
         _conference?.addLocalICRole(IC_ROLES.ASSISTED);
         dispatch(hideAssistancePanel());
     };
 
-    return _visible ? (
-        <div className = { classes.assisteesPanel }>
+    const _onClickClose = () => {
+        setLocalClose(true);
+    };
+
+    return _visible && !localClose ? (
+        <div
+            aria-modal = 'true'
+            className = { classes.assisteesPanel }
+            role = 'dialog'>
+            <button
+                className = { classes.closeButton }
+                // eslint-disable-next-line react/jsx-no-bind
+                onClick = { _onClickClose }
+                role = 'button'>
+                x
+            </button>
             <h1 className = { classes.headline }>{t('assistancePanel.headline')}</h1>
             <p className = { classes.description }>{t('assistancePanel.desc1')}</p>
             <p className = { classes.description }>{t('assistancePanel.desc2')}</p>
