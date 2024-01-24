@@ -19,8 +19,8 @@ interface IProps extends AbstractButtonProps {
  * Implementation of a button for toggling fullscreen state.
  */
 class RoleMatchingButton extends AbstractButton<IProps> {
-    accessibilityLabel = 'toolbar.accessibilityLabel.enterFullScreen';
-    toggledAccessibilityLabel = 'toolbar.accessibilityLabel.exitFullScreen';
+    accessibilityLabel = 'toolbar.assistance';
+    toggledAccessibilityLabel = 'toolbar.assistance';
     label = 'toolbar.assistance';
     toggledLabel = 'toolbar.assistance';
     tooltip = 'toolbar.assistance';
