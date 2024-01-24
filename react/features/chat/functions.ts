@@ -181,19 +181,32 @@ export function getPrivateNoticeMessage(message: IMessage) {
  * @returns {string}
  */
 export function buildMessageTextFromNotification(action: { props: INotificationProps; timeout: number; uid: string; }) {
-    const { titleKey, title, descriptionKey, titleArguments } = action.props;
+    const { titleKey, title, descriptionKey, titleArguments, uid } = action.props;
 
-    // case for raised hand notifications.
-    if (title) {
-        return `${title ?? ''}${i18next.t(descriptionKey ?? '')}`;
-    }
-    if (titleArguments) {
-        // case for participant joined/ left notifications.
-        if (titleArguments.name) {
-            return `${titleArguments?.name ?? ''}${i18next.t(titleKey ?? '')} ${i18next.t(descriptionKey ?? '')}`;
+    console.log('123456', action.props);
+
+    switch (titleKey) {
+    case 'notify.moderator':
+        return i18next.t(titleKey ?? '');
+
+    case 'notify.leftOneMember':
+    case 'notify.connectedOneMember':
+    case 'notify.connectedTwoMembers':
+    case 'notify.leftTwoMembers':
+    case 'notify.leftThreePlusMembers':
+    case 'notify.connectedThreePlusMembers':
+        return `${i18next.t(titleKey ?? '', titleArguments)}.`;
+    case 'toolbar.noisyAudioInputTitle':
+        return `${titleKey}${i18next.t(descriptionKey ?? '')}.`;
+    default:
+        switch (uid) {
+        case 'LOBBY_NOTIFICATION':
+            return `${title} ${i18next.t(descriptionKey ?? '').charAt(0)
+.toLowerCase() + i18next.t(descriptionKey ?? '').slice(1)}.`;
+        case 'RAISE_HAND_NOTIFICATION':
+            return `${title ?? titleKey}${i18next.t(descriptionKey ?? '')}`;
+        default:
+            return `${i18next.t(titleKey ?? '')}. ${i18next.t(descriptionKey ?? '')}.`;
         }
     }
-
-    // case for other notifications.
-    return `${i18next.t(titleKey ?? '')}. ${i18next.t(descriptionKey ?? '')}.`;
 }

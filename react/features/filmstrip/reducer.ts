@@ -114,7 +114,7 @@ const DEFAULT_STATE = {
      * The id of the participant whose video will have the highest zIndex in the filmstrip.
      */
     movingSignlanguageParticipant: null,
-        
+
     /**
      * The saturation of each participant.
      *
@@ -341,15 +341,31 @@ ReducerRegistry.register<IFilmstripState>(
     (state = DEFAULT_STATE, action): IFilmstripState => {
         switch (action.type) {
         case SET_FILMSTRIP_ENABLED:
+            // In the InklusivaCall-Version of Jitsi, we never want to show the Filmstrip, so we always set it to false.
+            // original code:
+            /*
             return {
                 ...state,
                 enabled: action.enabled
             };
+            */
+            return {
+                ...state,
+                enabled: false
+            };
 
         case SET_FILMSTRIP_VISIBLE:
+            // In the InklusivaCall-Version of Jitsi, we never want to show the Filmstrip, so we always set it to false.
+            // original code:
+            /*
             return {
                 ...state,
                 visible: action.visible
+            };
+            */
+            return {
+                ...state,
+                visible: false
             };
 
         case SET_HORIZONTAL_VIEW_DIMENSIONS:
