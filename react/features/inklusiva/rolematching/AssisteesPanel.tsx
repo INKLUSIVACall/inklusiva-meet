@@ -28,7 +28,9 @@ const styles = (theme: Theme) => {
             top: '5px',
             right: '15px',
             fontSize: '1.5rem',
-            cursor: 'pointer'
+            cursor: 'pointer',
+            background: 'transparent',
+            border: 'none'
         },
         headline: {
             fontSize: '1.5rem',
@@ -117,24 +119,24 @@ const AssisteesPanel = ({ classes, _assistees, _conference, _visible }: IProps) 
         setLocalClose(true);
     };
 
-    return (
-        _visible && !localClose ? (
-            <div className = { classes.assisteesPanel }>
-                <div
-                    className = { classes.closeButton }
-                    // eslint-disable-next-line react/jsx-no-bind
-                    onClick = { _onClickClose }>
-                    x
-                </div>
-                <h1 className = { classes.headline }>{t('assisteesPanel.headline')}</h1>
-                <p className = { classes.description }>{t('assisteesPanel.desc1')}</p>
-                <p className = { classes.description }>{t('assisteesPanel.desc2')}</p>
-                <ul className = { classes.list }>
-                    {_assistees.map((data: any, i: number) => _renderAssistees(data, i))}
-                </ul>
-            </div>
-        ) : null
-    );
+    return _visible && !localClose ? (
+        <div
+            aria-modal = 'true'
+            className = { classes.assisteesPanel }
+            role = 'dialog'>
+            <button
+                className = { classes.closeButton }
+                // eslint-disable-next-line react/jsx-no-bind
+                onClick = { _onClickClose }
+                role = 'button'>
+                x
+            </button>
+            <h1 className = { classes.headline }>{t('assisteesPanel.headline')}</h1>
+            <p className = { classes.description }>{t('assisteesPanel.desc1')}</p>
+            <p className = { classes.description }>{t('assisteesPanel.desc2')}</p>
+            <ul className = { classes.list }>{_assistees.map((data: any, i: number) => _renderAssistees(data, i))}</ul>
+        </div>
+    ) : null;
 };
 
 const mapStateToProps = (state: IReduxState) => {

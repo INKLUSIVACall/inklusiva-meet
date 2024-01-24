@@ -39,7 +39,7 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    position: absolute;
+    position: relative;
     top: 30;
     height: 52px;
     max-width: calc(100% - 40px);
@@ -49,6 +49,10 @@
     margin-top: 1;
     z-index: 1;
     pointer-events: none;
+    width: fit-content;
+    margin: 0 auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 .infobar-interactable {
