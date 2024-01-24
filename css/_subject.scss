@@ -2,7 +2,7 @@
     color: #fff;
     transition: opacity .6s ease-in-out;
     z-index: $toolbarZ + 2;
-    margin-top: 20px;
+    margin-top: 10px;
     opacity: 0;
 
     &.visible {
@@ -41,7 +41,7 @@
     justify-content: center;
     position: absolute;
     top: 30;
-    height: 65px;
+    height: 52px;
     max-width: calc(100% - 40px);
     background: #00000059;
     margin: auto 20px;
