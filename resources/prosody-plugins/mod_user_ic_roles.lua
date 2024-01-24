@@ -118,7 +118,7 @@ local function fetch_partner_id_from_user_jid(room_jid, real_jid)
         return nil;
     end    
 
-    module:log("info", "Identified %s as %s.", real_jid, occupant.nick);
+    module:log("debug", "Identified %s as %s.", real_jid, occupant.nick);
 
     return occupant.nick:match("/(.+)$");
 end
@@ -150,7 +150,7 @@ local function log_roles(str)
             output = output .. role_str;
         end
     end
-    module:log("info", output);
+    module:log("debug", output);
 end
 
 --[=[------------------------------------------------------[=[---
@@ -214,7 +214,7 @@ end
 
 -- broadcast IC roles
 local function broadcast_user_ic_roles(room_jid)
-    module:log("info", "Room roles are being broadcast to room " .. tostring(room_jid));    
+    module:log("debug", "Room roles are being broadcast to room " .. tostring(room_jid));    
     -- Create the main ic and roles element
     local ic_stanza = st.stanza("roles");
 
@@ -251,7 +251,7 @@ end
 local function muc_hook_broadcast_presence(host_module, event)
     local room_jid = event.room.jid;
 
-    module:log("info", "Presence is broadcasting - we broadcast the roles as well!");    
+    module:log("debug", "Presence is broadcasting - we broadcast the roles as well!");    
     broadcast_user_ic_roles(room_jid);
     broadcast_transcript_link(room_jid);
 end
@@ -416,7 +416,7 @@ function set_role(room_jid, participant_jid, ic_role, partner_id)
         local partner_jid = room_jid .. "/" .. partner_id;
         local real_jid = fetch_real_user_jid(room_jid, partner_jid);
         
-        module:log("info", "Role " .. ic_role .. " with partner " .. partner_id .. " and real id " .. real_jid .. " assigned!");
+        module:log("debug", "Role " .. ic_role .. " with partner " .. partner_id .. " and real id " .. real_jid .. " assigned!");
         role["partner_real"] = real_jid;
     end
 
@@ -580,7 +580,7 @@ end
 --]=]------------------------------------------------------]=]---
 
 function broadcast_transcript_link(room_jid)
-    module:log("info", "The transcript link is being broadcast to room " .. tostring(room_jid));    
+    module:log("debug", "The transcript link is being broadcast to room " .. tostring(room_jid));    
     -- Create the main ic and transcript_links element
     local ic_stanza = st.stanza("transcript_links");
 
