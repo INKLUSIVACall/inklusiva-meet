@@ -393,7 +393,9 @@ class ConferenceConnector {
             APP.store.dispatch(openParticipantsPane());
         }
 
-        this._setPreferredVideoQuality(VIDEO_QUALITY_LEVELS.STANDARD);
+        setTimeout(() => {
+            this._setPreferredVideoQuality(VIDEO_QUALITY_LEVELS.STANDARD);
+        }, 2000);
 
         this._unsubscribe();
         this._resolve();
