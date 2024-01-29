@@ -370,8 +370,7 @@ class ConferenceConnector {
 
         const DEFAULT_LAST_N = 20;
 
-        // Determine the lastN value based on the quality setting.
-        let { _channelLastN = DEFAULT_LAST_N } = this.props;
+        let _channelLastN = APP.store.getState()['features/base/config'].channelLastN;
 
         _channelLastN = _channelLastN === -1 ? DEFAULT_LAST_N : _channelLastN;
         const lastN = getLastNForQualityLevel(qualityLevel, _channelLastN);
