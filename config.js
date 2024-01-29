@@ -425,33 +425,33 @@ var config = {
     // startLastN: 1,
 
     // Specify the settings for video quality optimizations on the client.
-    // videoQuality: {
+     videoQuality: {
     //
     //    // Provides a way to set the codec preference on desktop based endpoints.
-    //    codecPreferenceOrder: [ 'VP9', 'VP8', 'H264' ],
+        codecPreferenceOrder: [ 'VP9', 'VP8', 'H264' ],
     //
     //    // Provides a way to configure the maximum bitrates that will be enforced on the simulcast streams for
     //    // video tracks. The keys in the object represent the type of the stream (LD, SD or HD) and the values
     //    // are the max.bitrates to be set on that particular type of stream. The actual send may vary based on
     //    // the available bandwidth calculated by the browser, but it will be capped by the values specified here.
     //    // This is currently not implemented on app based clients on mobile.
-    //    maxBitratesVideo: {
-    //          H264: {
-    //              low: 200000,
-    //              standard: 500000,
-    //              high: 1500000,
-    //          },
-    //          VP8 : {
-    //              low: 200000,
-    //              standard: 500000,
-    //              high: 1500000,
-    //          },
-    //          VP9: {
-    //              low: 100000,
-    //              standard: 300000,
-    //              high: 1200000,
-    //          },
-    //    },
+        maxBitratesVideo: {
+              H264: {
+                  low: 200000,
+                  standard: 500000,
+                  high: 1500000,
+              },
+              VP8 : {
+                  low: 200000,
+                  standard: 500000,
+                  high: 1500000,
+              },
+              VP9: {
+                  low: 100000,
+                  standard: 300000,
+                  high: 1200000,
+              },
+        },
     //
     //    // The options can be used to override default thresholds of video thumbnail heights corresponding to
     //    // the video quality levels used in the application. At the time of this writing the allowed levels are:
@@ -463,13 +463,13 @@ var config = {
     //    // With the default config value below the application will use 'low' quality until the thumbnails are
     //    // at least 360 pixels tall. If the thumbnail height reaches 720 pixels then the application will switch to
     //    // the high quality.
-    //    minHeightForQualityLvl: {
-    //        360: 'standard',
-    //        720: 'high',
-    //    },
+        minHeightForQualityLvl: {
+            360: 'standard',
+            720: 'high',
+        },
     //
     //    // Provides a way to set the codec preference on mobile devices, both on RN and mobile browser based endpoint
-    //    mobileCodecPreferenceOrder: [ 'VP8', 'VP9', 'H264' ],
+        mobileCodecPreferenceOrder: [ 'VP8', 'VP9', 'H264' ],
     //
     //    // DEPRECATED! Use `codecPreferenceOrder/mobileCodecPreferenceOrder` instead.
     //    // Provides a way to prevent a video codec from being negotiated on the JVB connection. The codec specified
@@ -486,7 +486,7 @@ var config = {
     //    // to take effect.
     //    preferredCodec: 'VP8',
     //
-    // },
+    },
 
     // Notification timeouts
     // notificationTimeouts: {
@@ -969,7 +969,7 @@ var config = {
         // through the JVB and use the peer to peer connection instead. When a
         // 3rd participant joins the conference will be moved back to the JVB
         // connection.
-        enabled: false, //TODO: true,
+        enabled: false, //TODO
 
         // Sets the ICE transport policy for the p2p connection. At the time
         // of this writing the list of possible values are 'all' and 'relay',
@@ -992,10 +992,7 @@ var config = {
 
         // The STUN servers that will be used in the peer to peer connections
         stunServers: [
-            // TODO: Enable
-            //{ urls: 'stun:conference-turn.inclusiva-call.de:5349' },
-            //{ url: 'stun:conference-turn.inclusiva-call.de:3478' },
-            //{ urls: 'stun:conference-turn.inclusiva-call.de:443' },
+            { urls: 'stun:conference-turn.inclusiva-call.de:3478' }
         ]
 
         // DEPRECATED! Use `codecPreferenceOrder/mobileCodecPreferenceOrder` instead.
