@@ -72,7 +72,7 @@ var config = {
         // Prefer SCTP (WebRTC data channels over the media path) over a colibri websocket.
         // If SCTP is available in the backend it will be used instead of a WS. Defaults to
         // false (SCTP is used only if available and no WS are available).
-        // preferSctp: false
+        preferSctp: true
     },
 
     // Testing / experimental features.
@@ -268,8 +268,34 @@ var config = {
     //     },
     // },
 
+    constraints: {
+        video: {
+            height: {
+                ideal: 720,
+                max: 720,
+                min: 180
+            },
+            width: {
+                ideal: 1280,
+                max: 1280,
+                min: 320
+            },
+            frameRate: {
+                max: 30,
+                min: 15
+            }
+        }
+    },
+
+    flags: {
+        sourceNameSignaling: true,
+        sendMultipleVideoStreams: true,
+        receiveMultipleVideoStreams: true,
+        ssrcRewritingEnabled: true,
+    },
+
     // Enable / disable simulcast support.
-    // disableSimulcast: false,
+    disableSimulcast: false,
 
     // Every participant after the Nth will start video muted.
     // startVideoMuted: 10,
@@ -1617,18 +1643,18 @@ var config = {
     // },
 
     // Logging
-    // logging: {
+    logging: {
     //      // Default log level for the app and lib-jitsi-meet.
     //      defaultLogLevel: 'trace',
     //      // Option to disable LogCollector (which stores the logs on CallStats).
-    //      //disableLogCollector: true,
+          disableLogCollector: true
     //      // Individual loggers are customizable.
     //      loggers: {
     //      // The following are too verbose in their logging with the default level.
     //      'modules/RTC/TraceablePeerConnection.js': 'info',
     //      'modules/statistics/CallStats.js': 'info',
     //      'modules/xmpp/strophe.util.js': 'log',
-    // },
+    },
 
     // Application logo url
     defaultLogoUrl: 'images/logo-inklusiva-call-weiß.svg',
