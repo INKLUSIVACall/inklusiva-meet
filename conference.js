@@ -365,7 +365,7 @@ class ConferenceConnector {
         }
     }
 
-    _setPreferredVideoQuality(qualityLevel: number) {
+    _setPreferredVideoQuality(qualityLevel) {
         this.props.dispatch(setPreferredVideoQuality(qualityLevel));
 
         const DEFAULT_LAST_N = 20;
