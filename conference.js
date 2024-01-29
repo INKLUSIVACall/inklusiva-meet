@@ -366,7 +366,7 @@ class ConferenceConnector {
     }
 
     _setPreferredVideoQuality(qualityLevel) {
-        this.props.dispatch(setPreferredVideoQuality(qualityLevel));
+        APP.store.dispatch(setPreferredVideoQuality(qualityLevel));
 
         const DEFAULT_LAST_N = 20;
 
@@ -377,7 +377,7 @@ class ConferenceConnector {
         const lastN = getLastNForQualityLevel(qualityLevel, _channelLastN);
 
         // Set the lastN for the conference.
-        this.props.dispatch(setLastN(lastN));
+        APP.store.dispatch(setLastN(lastN));
     }
 
     /**
