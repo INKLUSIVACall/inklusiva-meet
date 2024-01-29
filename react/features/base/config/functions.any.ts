@@ -67,7 +67,7 @@ export function getMeetingRegion(state: IReduxState) {
  * @returns {boolean}
  */
 export function getMultipleVideoSendingSupportFeatureFlag(_state: IReduxState | IMediaState) {
-    return browser.supportsUnifiedPlan();
+    return true;
 }
 
 /**
