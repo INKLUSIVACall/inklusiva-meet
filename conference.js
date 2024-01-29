@@ -169,6 +169,10 @@ import { muteLocal } from './react/features/video-menu/actions.any';
 import { iAmVisitor } from './react/features/visitors/functions';
 import UIEvents from './service/UI/UIEvents';
 import { updateTranscriptLink } from './react/features/inklusiva/transcription/actions.web';
+import { setPreferredVideoQuality } from './react/features/video-quality/actions';
+import { getLastNForQualityLevel } from './react/features/base/lastn/functions';
+import { setLastN } from './react/features/base/lastn/actions';
+import { VIDEO_QUALITY_LEVELS } from './react/features/video-quality/constants';
 
 
 const logger = Logger.getLogger(__filename);
@@ -361,6 +365,21 @@ class ConferenceConnector {
         }
     }
 
+    _setPreferredVideoQuality(qualityLevel: number) {
+        this.props.dispatch(setPreferredVideoQuality(qualityLevel));
+
+        const DEFAULT_LAST_N = 20;
+
+        // Determine the lastN value based on the quality setting.
+        let { _channelLastN = DEFAULT_LAST_N } = this.props;
+
+        _channelLastN = _channelLastN === -1 ? DEFAULT_LAST_N : _channelLastN;
+        const lastN = getLastNForQualityLevel(qualityLevel, _channelLastN);
+
+        // Set the lastN for the conference.
+        this.props.dispatch(setLastN(lastN));
+    }
+
     /**
      *
      */
@@ -374,6 +393,9 @@ class ConferenceConnector {
         if (!config.iAmRecorder && !isMobileBrowser()) {
             APP.store.dispatch(openParticipantsPane());
         }
+
+        this._setPreferredVideoQuality(VIDEO_QUALITY_LEVELS.HIGH);
+
         this._unsubscribe();
         this._resolve();
     }
