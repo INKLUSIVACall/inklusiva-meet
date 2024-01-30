@@ -272,9 +272,9 @@ export function submitVirtualBackgroundTab(newState: any, isCancel = false) {
 
             if (!isCancel) {
                 // Set x scale to default value.
-                dispatch(updateSettings({
-                    localFlipX: true
-                }));
+                // dispatch(updateSettings({
+                //     localFlipX: true
+                // }));
 
                 virtualBackgroundLogger.info(`Virtual background type: '${
                     typeof newState.options.backgroundType === 'undefined'

@@ -1366,6 +1366,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any): Object {
     const { defaultLocalDisplayName, disableLocalVideoFlip, disableTileEnlargement, iAmRecorder, iAmSipGateway }
         = state['features/base/config'];
     const { localFlipX } = state['features/base/settings'];
+
     const _isMobile = isMobileBrowser();
     const activeParticipants = getActiveParticipantsIds(state);
     const tileType = getThumbnailTypeFromLayout(_currentLayout, filmstripType);

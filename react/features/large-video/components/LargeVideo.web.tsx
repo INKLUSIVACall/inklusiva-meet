@@ -12,13 +12,18 @@ import { getHideSelfView } from '../../base/settings/functions.any';
 import { getVideoTrackByParticipant } from '../../base/tracks/functions.web';
 import { setColorAlpha } from '../../base/util/helpers';
 import StageParticipantNameLabel from '../../display-name/components/web/StageParticipantNameLabel';
-import { addStageParticipant, clearStageParticipants, removeStageParticipant, togglePinStageParticipant } from '../../filmstrip/actions.web';
 import FadeOutOverlay from '../../filmstrip/components/web/FadeOutOverlay';
 import { FILMSTRIP_BREAKPOINT } from '../../filmstrip/constants';
-import { getParticipantsBrightnessByParticipantId, getParticipantsContrastByParticipantId, getParticipantsOpacityByParticipantId, getParticipantsSaturationByParticipantId, getParticipantsZoomByParticipantId, getVerticalViewMaxWidth, isFilmstripResizable } from '../../filmstrip/functions.web';
-import { getUserVideoTabProps } from '../../inklusiva/uservideo/functions';
+import {
+    getParticipantsBrightnessByParticipantId,
+    getParticipantsContrastByParticipantId,
+    getParticipantsOpacityByParticipantId,
+    getParticipantsSaturationByParticipantId,
+    getParticipantsZoomByParticipantId,
+    getVerticalViewMaxWidth,
+    isFilmstripResizable
+} from '../../filmstrip/functions.web';
 import SharedVideo from '../../shared-video/components/web/SharedVideo';
-import Captions from '../../subtitles/components/web/Captions';
 import { setTileView } from '../../video-layout/actions.web';
 import Whiteboard from '../../whiteboard/components/web/Whiteboard';
 import { isWhiteboardEnabled } from '../../whiteboard/functions';
@@ -62,6 +67,8 @@ interface IProps {
      */
     _dimming?: number;
 
+    _disableLocalVideoFlip: boolean;
+
     /**
      * Whether the screen-sharing placeholder should be displayed or not.
      */
@@ -86,6 +93,11 @@ interface IProps {
      * The large video participant id.
      */
     _largeVideoParticipantId: string;
+
+    /**
+     * The current local video flip setting.
+     */
+    _localFlipX: boolean;
 
     /**
      * Local Participant id.
@@ -190,7 +202,8 @@ class LargeVideo extends Component<IProps> {
             _seeWhatIsBeingShared,
             _largeVideoParticipantId,
             _hideSelfView,
-            _localParticipantId } = this.props;
+            _localParticipantId
+        } = this.props;
 
         if (prevProps._visibleFilmstrip !== _visibleFilmstrip) {
             this._updateLayout();
@@ -204,8 +217,7 @@ class LargeVideo extends Component<IProps> {
             VideoLayout.updateLargeVideo(_largeVideoParticipantId, true, true);
         }
 
-        if (_largeVideoParticipantId === _localParticipantId
-            && prevProps._hideSelfView !== _hideSelfView) {
+        if (_largeVideoParticipantId === _localParticipantId && prevProps._hideSelfView !== _hideSelfView) {
             VideoLayout.updateLargeVideo(_largeVideoParticipantId, true, false);
         }
     }
@@ -223,10 +235,15 @@ class LargeVideo extends Component<IProps> {
             _noAutoPlayVideo,
             _showDominantSpeakerBadge,
             _whiteboardEnabled,
+            _isScreenSharing,
+            _disableLocalVideoFlip,
+            _localFlipX,
             dispatch
         } = this.props;
         const style = this._getCustomStyles();
         const className = `videocontainer${_isChatOpen ? ' shift-right' : ''}`;
+
+        const videoTrackClassName = !_disableLocalVideoFlip && !_isScreenSharing && _localFlipX ? 'flipVideoX' : '';
 
         const unPin = () => {
             dispatch(pinParticipant(null));
@@ -243,8 +260,7 @@ class LargeVideo extends Component<IProps> {
                 {_whiteboardEnabled && <Whiteboard />}
                 <div id = 'etherpad' />
 
-                <FadeOutOverlay
-                    opacity = { this.props._dimming } />
+                <FadeOutOverlay opacity = { this.props._dimming } />
                 <Watermarks />
 
                 <div
@@ -258,23 +274,29 @@ class LargeVideo extends Component<IProps> {
                 <div id = 'largeVideoElementsContainer'>
                     <div id = 'largeVideoBackgroundContainer' />
                     {/*
-                      * FIXME: the architecture of elements related to the large
-                      * video and the naming. The background is not part of
-                      * largeVideoWrapper because we are controlling the size of
-                      * the video through largeVideoWrapper. That's why we need
-                      * another container for the background and the
-                      * largeVideoWrapper in order to hide/show them.
-                      */}
+                     * FIXME: the architecture of elements related to the large
+                     * video and the naming. The background is not part of
+                     * largeVideoWrapper because we are controlling the size of
+                     * the video through largeVideoWrapper. That's why we need
+                     * another container for the background and the
+                     * largeVideoWrapper in order to hide/show them.
+                     */}
                     <div
                         id = 'largeVideoWrapper'
                         onTouchEnd = { this._onDoubleTap }
                         ref = { this._wrapperRef }
-                        role = 'figure' >
-                        { _displayScreenSharingPlaceholder ? <ScreenSharePlaceholder /> : <video
-                            autoPlay = { !_noAutoPlayVideo }
-                            id = 'largeVideo'
-                            muted = { true }
-                            playsInline = { true } /* for Safari on iOS to work */ /> }
+                        role = 'figure'>
+                        {_displayScreenSharingPlaceholder
+                            ? <ScreenSharePlaceholder />
+                            : (
+                                <video
+                                    autoPlay = { !_noAutoPlayVideo }
+                                    className = { videoTrackClassName }
+                                    data-test = 'test'
+                                    id = 'largeVideo'
+                                    muted = { true }
+                                    playsInline = { true } />
+                            )}
                     </div>
                 </div>
                 {_showDominantSpeakerBadge && <StageParticipantNameLabel />}
@@ -380,7 +402,6 @@ class LargeVideo extends Component<IProps> {
     }
 }
 
-
 /**
  * Maps (parts of) the Redux state to the associated LargeVideo props.
  *
@@ -398,8 +419,8 @@ function _mapStateToProps(state: IReduxState) {
     const localParticipantId = getLocalParticipant(state)?.id;
     const largeVideoParticipant = getLargeVideoParticipant(state);
     const videoTrack = getVideoTrackByParticipant(state, largeVideoParticipant);
-    const isLocalScreenshareOnLargeVideo = largeVideoParticipant?.id?.includes(localParticipantId ?? '')
-        && videoTrack?.videoType === VIDEO_TYPE.DESKTOP;
+    const isLocalScreenshareOnLargeVideo
+        = largeVideoParticipant?.id?.includes(localParticipantId ?? '') && videoTrack?.videoType === VIDEO_TYPE.DESKTOP;
     const isOnSpot = defaultLocalDisplayName === SPOT_DISPLAY_NAME;
 
     // setting the defaults
@@ -416,6 +437,8 @@ function _mapStateToProps(state: IReduxState) {
         opacity = getParticipantsOpacityByParticipantId(state, largeVideoParticipant.id) / 100;
         zoomLevel = getParticipantsZoomByParticipantId(state, largeVideoParticipant.id) / 100;
     }
+    const { localFlipX } = state['features/base/settings'];
+    const { disableLocalVideoFlip } = state['features/base/config'];
 
     return {
         _backgroundAlpha: state['features/base/config'].backgroundAlpha,
@@ -424,6 +447,8 @@ function _mapStateToProps(state: IReduxState) {
         _customBackgroundColor: backgroundColor,
         _customBackgroundImageUrl: backgroundImageUrl,
         _dimming: opacity,
+        _disableLocalVideoFlip: Boolean(disableLocalVideoFlip),
+        _localFlipX: Boolean(localFlipX),
         _displayScreenSharingPlaceholder: Boolean(isLocalScreenshareOnLargeVideo && !seeWhatIsBeingShared && !isOnSpot),
         _hideSelfView: getHideSelfView(state),
         _isChatOpen: isChatOpen,
