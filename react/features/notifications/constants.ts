@@ -2,7 +2,7 @@
  * The standard time when auto-disappearing notifications should disappear.
  */
 export const NOTIFICATION_TIMEOUT = {
-    SHORT: 2500,
+    SHORT: 5000,
     MEDIUM: 5000,
     LONG: 10000,
     STICKY: false
