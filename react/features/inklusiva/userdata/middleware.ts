@@ -77,6 +77,9 @@ function _setUserdata(store: IStore, next: Function, action: AnyAction) {
                     });
                 }
             }
+        } else {
+            // Sets default userdata object if no jwt is provided.
+            action.userData = _getDefaultUserData();
         }
     }
 
@@ -138,6 +141,69 @@ function _parseUserData(ud: IUserData) {
     userData.assistant.transcription.history = _.toNumber(ud.assistant.transcription.history);
     userData.transcriptionLink = _.toString(ud.transcriptionLink ?? '');
     userData.meeting_id = _.toString(ud.meeting_id ?? '');
+
+    if (userData.meeting_id !== '') {
+        localStorage.setItem('inklusiva_meeting_id', userData.meeting_id);
+    }
+
+    return Object.keys(userData).length ? userData : undefined;
+}
+
+/**
+ * Returns the default user data.
+ *
+ * @returns {Object}
+ */
+function _getDefaultUserData() {
+    const userData: IUserData = {
+        meeting_id: '',
+        support: {},
+        ui: {},
+        video: {},
+        audio: {},
+        distressbutton: {},
+        assistant: { signLang: {},
+            transcription: {} },
+        transcriptionLink: ''
+    };
+
+    userData.support.eyesight = _.toString('normal');
+    userData.support.hearing = _.toString('normal');
+    userData.support.senses = toBoolean(false);
+    userData.support.learning_difficulties = toBoolean(false);
+    userData.ui.fontSize = _.toNumber(1);
+    userData.ui.iconSize = _.toNumber(1);
+    userData.ui.screenreader = toBoolean(false);
+    userData.ui.visualCues = toBoolean(true);
+    userData.ui.acousticCues = toBoolean(true);
+    userData.video.otherParticipants = toBoolean(true);
+    userData.video.contrast = _.toNumber(100);
+    userData.video.brightness = _.toNumber(100);
+    userData.video.dimming = _.toNumber(0);
+    userData.video.saturation = _.toNumber(100);
+    userData.video.zoom = _.toNumber(100);
+    userData.video.fps = _.toNumber(15);
+    userData.audio.otherParticipants = toBoolean(true);
+    userData.audio.volume = _.toNumber(1);
+    userData.audio.highFreq = _.toNumber(0);
+    userData.audio.amplify = _.toNumber(0);
+    userData.audio.balance = _.toNumber(2);
+    userData.audio.background = toBoolean(false);
+    userData.audio.output = _.toString('stereo');
+    userData.distressbutton.active = toBoolean(false);
+    userData.distressbutton.dimming = _.toNumber(0);
+    userData.distressbutton.volume = _.toNumber(0);
+    userData.distressbutton.message = toBoolean(false);
+    userData.distressbutton.message_text
+    = _.toString('Liebe Begleitperson, ich habe gerade den Notfall-Button geklickt. Ich möchte (…)');
+    userData.assistant.signLang.active = toBoolean(true);
+    userData.assistant.signLang.display = _.toString('tile');
+    userData.assistant.signLang.windowSize = _.toNumber(100);
+    userData.assistant.transcription.active = toBoolean(false);
+    userData.assistant.transcription.fontSize = _.toNumber(0);
+    userData.assistant.transcription.history = _.toNumber(0);
+    userData.transcriptionLink = _.toString('');
+    userData.meeting_id = _.toString('');
 
     if (userData.meeting_id !== '') {
         localStorage.setItem('inklusiva_meeting_id', userData.meeting_id);
