@@ -746,7 +746,9 @@ class Thumbnail extends Component<IProps, IState> {
             horizontalOffset,
             style,
             _videoZoomLevel,
-            _isSignLanguageTranslatorOverlay
+            _isSignLanguageTranslatorOverlay,
+            _disableLocalVideoFlip,
+            _localFlipX
         } = this.props;
 
         const isTileType = _thumbnailType === THUMBNAIL_TYPE.TILE;
@@ -788,7 +790,12 @@ class Thumbnail extends Component<IProps, IState> {
             videoStyles.objectPosition = _videoObjectPosition;
         }
 
-        videoStyles.transform = `scale(${String(_videoZoomLevel)})`;
+        if (!_disableLocalVideoFlip && _videoTrack && !_isScreenSharing
+                && _localFlipX && (_participant?.local ?? true)) {
+            videoStyles.transform = `scale(${String(-1 * _videoZoomLevel)},${String(_videoZoomLevel)})`;
+        } else {
+            videoStyles.transform = `scale(${String(_videoZoomLevel)},${String(_videoZoomLevel)})`;
+        }
 
         videoStyles.filter = `brightness(${_brightness}%) contrast(${_contrast}%) saturate(${_saturation}%)`;
 
@@ -1126,8 +1133,8 @@ class Thumbnail extends Component<IProps, IState> {
     _renderParticipant(local = false) {
         const {
             _audioTrack,
-            _disableLocalVideoFlip,
             _gifSrc,
+            _disableLocalVideoFlip,
             _interpreter,
             _isMobile,
             _isMobilePortrait,
