@@ -843,16 +843,19 @@
     },
     "poweredby": "Betrieben von",
     "assisteesPanel": {
-        "headline": "Die folgenden Benutzer benötigen Unterstützung.",
-        "desc1": "Sollten Sie eine Betreuungsperson für einen der aufgelisteten Teilnehmer sein, können Sie hier die Assistenz übernehmen.",
-        "desc2": "Betreuer von Teilnehmern können über einen einzelnen Button-Klick einen Breakout Raum, oder einen Chat öffnen oder bekommen beispielsweise eine automatische Nachricht, wenn der Teilnehmer den Notfallbutton aktiviert hat.",
-        "buttonAssist": "Teilnehmer unterstützen"
+        "headline": "Die folgenden Benutzer benötigen Assitenz.",
+        "desc1": "Sollten Sie ein Assitent für einen der aufgelisteten Teilnehmer sein, können Sie hier die Assistenz übernehmen.",
+        "desc2": "Assistenten von Teilnehmern können über einen einzelnen Button-Klick einen Breakout Raum, oder einen Chat öffnen oder bekommen beispielsweise eine automatische Nachricht, wenn der Teilnehmer den Notfallbutton aktiviert hat.",
+        "buttonAssist": "Teilnehmer assistieren"
     },
     "assistancePanel": {
-        "headline": "Anfrage von Unterstützung",
-        "desc1": "Hier können Sie Unterstützung durch eine Betreuungsperson anfordern. Dadurch können sie sehr einfach einen Breakout-Raum oder einen privaten Chat mit Ihrer Betreuungsperson öffnen.",
-        "desc2": "Sollten Sie einen Notfallbutton nutzen, kann im Falle eines Notfalles eine automatische Nachricht an Ihre Betreuungsperson versendet werden.",
-        "buttonAssist": "Unterstützung anfragen"
+        "headline": "Anfrage von Assistenz",
+        "desc1": "Hier können Sie Assistenz durch einen Assistenten anfordern. Dadurch können sie sehr einfach einen Breakout-Raum oder einen privaten Chat mit Ihrem Assistenten öffnen.",
+        "desc2": "Sollten Sie einen Notfallbutton nutzen, kann im Falle eines Notfalles eine automatische Nachricht an Ihren Assistenten versendet werden.",
+        "buttonAssist": "Assistenz anfragen",
+        "headlineRelease": "Assitenz aufheben",
+        "descRelease": "Um die Assistenz durch aufzuheben klicken sie auf den Button",
+        "buttonRelease": "Assistenz aufheben"
     },
     "prejoin": {
         "audioAndVideoError": "Audio- und Videofehler:",

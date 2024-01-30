@@ -107,7 +107,7 @@ const AssistantRelationLabel = ({
             labelText = 'Warte auf Assistenz';
         } else {
             labelText = rolePartner?.name ?? '';
-            tooltipText = `Ich werde von ${labelText} betreut`;
+            tooltipText = `${labelText} assistiert mir`;
         }
         visible = true;
         otherParticipant = rolePartner;
@@ -121,7 +121,7 @@ const AssistantRelationLabel = ({
         if (_participantHasRole(assistantRoleDefinition?.partner ?? undefined, IC_ROLES.ASSISTED)) {
             const assistedParticipant = _remoteParticipants?.get(assistantRoleDefinition?.partner ?? '');
 
-            tooltipText = `${assistedParticipant?.name} wird von mir betreut`;
+            tooltipText = `Ich assistiere ${assistedParticipant?.name}`;
             labelText = assistedParticipant?.name ?? '';
             visible = true;
             otherParticipant = assistedParticipant;
