@@ -26,7 +26,7 @@ const styles = () => {
 
 class RecordingStatusLabel extends AbstractRecordingLabel {
     _onObjectRecording = () => {
-        console.log('123456', 'Ich widerspreche der Aufnahme dieses Meetings.');
+        this.props._conference.rejectRecording();
     };
 
     _renderLabel(): React.ReactNode {

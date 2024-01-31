@@ -102,6 +102,7 @@ export interface IJitsiConference {
     off: Function;
     on: Function;
     options: any;
+    rejectRecording: Function;
     removeICRole: Function;
     removeLocalICRole: Function;
     removeTrack: Function;
