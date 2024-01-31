@@ -296,11 +296,11 @@ class Filmstrip extends PureComponent <IProps, IState> {
      * @inheritdoc
      */
     componentDidMount() {
-        this.props.dispatch(registerShortcut({
-            character: 'F',
-            helpDescription: 'keyboardShortcuts.toggleFilmstrip',
-            handler: this._onShortcutToggleFilmstrip
-        }));
+        // this.props.dispatch(registerShortcut({
+        //     character: 'F',
+        //     helpDescription: 'keyboardShortcuts.toggleFilmstrip',
+        //     handler: this._onShortcutToggleFilmstrip
+        // }));
 
         document.addEventListener('mouseup', this._onDragMouseUp);
 
@@ -314,7 +314,7 @@ class Filmstrip extends PureComponent <IProps, IState> {
      * @inheritdoc
      */
     componentWillUnmount() {
-        this.props.dispatch(unregisterShortcut('F'));
+        // this.props.dispatch(unregisterShortcut('F'));
 
         document.removeEventListener('mouseup', this._onDragMouseUp);
 

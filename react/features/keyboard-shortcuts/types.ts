@@ -14,6 +14,8 @@ export interface IKeyboardShortcut {
 
   // help description of the shortcut, to be displayed in the help dialog
   helpDescription?: string;
+
+  shift?: boolean;
 }
 
 export interface IKeyboardShortcutsState {

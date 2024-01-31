@@ -17,7 +17,6 @@ import {
     close as closeParticipantsPane,
     open as openParticipantsPane
 } from '../participants-pane/actions.web';
-import { getParticipantsPaneOpen } from '../participants-pane/functions';
 import { addReactionToBuffer } from '../reactions/actions.any';
 import { toggleReactionsMenuVisibility } from '../reactions/actions.web';
 import { REACTIONS } from '../reactions/constants';
@@ -35,6 +34,7 @@ import { isDesktopShareButtonDisabled } from './functions.web';
 
 export const useKeyboardShortcuts = (toolbarButtons: Array<string>) => {
     const dispatch = useDispatch();
+    const participantsPanelState = useSelector((state: IReduxState) => state['features/participants-pane']);
     const _isSpeakerStatsDisabled = useSelector(isSpeakerStatsDisabled);
     const _toolbarButtons = useSelector((state: IReduxState) => toolbarButtons || getToolbarButtons(state));
     const chatOpen = useSelector((state: IReduxState) => state['features/chat'].isOpen);
@@ -43,7 +43,7 @@ export const useKeyboardShortcuts = (toolbarButtons: Array<string>) => {
     const fullScreen = useSelector((state: IReduxState) => state['features/toolbox'].fullScreen);
     const gifsEnabled = useSelector(isGifEnabled);
     const localParticipant = useSelector(getLocalParticipant);
-    const participantsPaneOpen = useSelector(getParticipantsPaneOpen);
+    const participantsPaneOpen = useSelector((state: IReduxState) => state['features/participants-pane'].isOpen);
     const raisedHand = hasRaisedHand(localParticipant);
     const reactionsEnabled = useSelector(isReactionsEnabled);
     const screenSharing = useSelector(isScreenVideoShared);
@@ -204,41 +204,57 @@ export const useKeyboardShortcuts = (toolbarButtons: Array<string>) => {
         const KEYBOARD_SHORTCUTS = [
             isToolbarButtonEnabled('videoquality', _toolbarButtons) && {
                 character: 'A',
+                alt: true,
+                shift: true,
                 exec: onToggleVideoQuality,
                 helpDescription: 'toolbar.callQuality'
             },
             isToolbarButtonEnabled('chat', _toolbarButtons) && {
-                character: 'C',
+                character: 'P',
+                alt: true,
+                shift: true,
                 exec: onToggleChat,
                 helpDescription: 'keyboardShortcuts.toggleChat'
             },
             isToolbarButtonEnabled('desktop', _toolbarButtons) && {
                 character: 'D',
+                alt: true,
+                shift: true,
                 exec: onToggleScreenshare,
                 helpDescription: 'keyboardShortcuts.toggleScreensharing'
             },
             isToolbarButtonEnabled('participants-pane', _toolbarButtons) && {
-                character: 'P',
+                character: 'U',
+                shift: true,
+                alt: true,
                 exec: onToggleParticipantsPane,
                 helpDescription: 'keyboardShortcuts.toggleParticipantsPane'
             },
             isToolbarButtonEnabled('raisehand', _toolbarButtons) && {
                 character: 'R',
+                alt: true,
+                shift: true,
                 exec: onToggleRaiseHand,
                 helpDescription: 'keyboardShortcuts.raiseHand'
             },
             isToolbarButtonEnabled('fullscreen', _toolbarButtons) && {
                 character: 'S',
+                alt: true,
+                shift: true,
                 exec: onToggleFullScreen,
                 helpDescription: 'keyboardShortcuts.fullScreen'
             },
             isToolbarButtonEnabled('tileview', _toolbarButtons) && {
                 character: 'W',
+                alt: true,
+                shift: true,
                 exec: onToggleTileView,
                 helpDescription: 'toolbar.tileViewToggle'
             },
             !_isSpeakerStatsDisabled && isToolbarButtonEnabled('stats', _toolbarButtons) && {
                 character: 'T',
+                alt: true,
+                shift: true,
                 exec: onSpeakerStats,
                 helpDescription: 'keyboardShortcuts.showSpeakerStats'
             }
@@ -248,6 +264,8 @@ export const useKeyboardShortcuts = (toolbarButtons: Array<string>) => {
             if (typeof shortcut === 'object') {
                 dispatch(registerShortcut({
                     character: shortcut.character,
+                    shift: shortcut.shift,
+                    alt: shortcut.alt,
                     handler: shortcut.exec,
                     helpDescription: shortcut.helpDescription
                 }));
@@ -297,7 +315,7 @@ export const useKeyboardShortcuts = (toolbarButtons: Array<string>) => {
         }
 
         return () => {
-            [ 'A', 'C', 'D', 'P', 'R', 'S', 'W', 'T', 'G' ].forEach(letter =>
+            [ 'A', 'C', 'D', 'U', 'R', 'S', 'W', 'T', 'G', 'P' ].forEach(letter =>
                 dispatch(unregisterShortcut(letter)));
 
             if (reactionsEnabled) {

@@ -35,13 +35,14 @@ export const getKeyboardKey = (e: KeyboardEvent): string => {
     // @ts-ignore
     const { altKey, code, key, shiftKey, type, which, ctrlKey } = e;
 
+    const realKey = code.replace('Key', '');
+    let prefix = '';
+
     // If alt is pressed a different char can be returned so this takes
     // the char from the code. It also prefixes with a colon to differentiate
     // alt combo from simple keypress.
     if (altKey) {
-        const replacedKey = code.replace('Key', '');
-
-        return `:${replacedKey}`;
+        prefix = ':';
     }
 
     // If e.key is a string, then it is assumed it already plainly states
@@ -51,15 +52,20 @@ export const getKeyboardKey = (e: KeyboardEvent): string => {
     // further analyzed by jitsi to a key using e.which.
     if (typeof key === 'string' && key !== 'Unidentified') {
         if (ctrlKey) {
-            return `-${key}`;
+            prefix += '-';
         }
 
-        return key;
+        if (shiftKey) {
+            prefix += '^';
+        }
+
+        return `${prefix}${realKey}`;
     }
 
     if (type === 'keypress'
             && ((which >= 32 && which <= 126)
                 || (which >= 160 && which <= 255))) {
+
         return String.fromCharCode(which);
     }
 
