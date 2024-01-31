@@ -650,6 +650,51 @@ end
 
 
 --[=[------------------------------------------------------[=[---
+                   Recording rejection methods
+--]=]------------------------------------------------------]=]---
+
+function broadcast_reject_recording(room_jid)
+    module:log("debug", "Broadcasting room recording rejection " .. tostring(room_jid));    
+    
+    -- Create the main ic and transcript_links element
+    local ic_stanza = st.stanza("reject-recording");
+
+    local wrap_ic = st.stanza("ic"):add_child(ic_stanza);
+    local message = st.message({ from = room_jid, type = 'groupchat' }):add_child(wrap_ic);
+
+    local room = get_room_from_jid(room_jid);
+    if room then
+        room:broadcast_message(message);
+    end
+end
+
+-- Hook method to update the transcript-link
+local function shared_hook_reject_recording(host_module, event)
+    local origin, origStanza = event.origin, event.stanza;
+    
+    local stanza = origStanza:get_child("reject-recording", tagNamespace);
+
+    local has_room_jid, room_jid = try_fetch_child(stanza, "room");
+    
+    if not has_room_jid then
+        origin.send(st.error_reply(stanza, "cancel", "item-not-found", "Missing room"));
+        return;
+    end
+        
+    -- Get the room from the MUC component
+    local room = module:context(room_jid);
+    if (not room) then
+        origin.send(st.error_reply(stanza, "cancel", "item-not-found", "Room not found"));
+        return true;
+    end
+
+    broadcast_reject_recording(room_jid);
+
+    origin.send(st.reply(origStanza));
+end
+
+
+--[=[------------------------------------------------------[=[---
                 Host specific event handlers
 --]=]------------------------------------------------------]=]---
 
@@ -693,5 +738,10 @@ function module.add_host(module)
     -- Transcription link update hook
     module:hook("iq/bare/" .. tagNamespace .. ":update-transcription-link", function(event)
         shared_hook_update_transcription_link(host_module, event);
+    end);
+
+    -- Transcription link update hook
+    module:hook("iq/bare/" .. tagNamespace .. ":reject-recording", function(event)
+        shared_hook_reject_recording(host_module, event);
     end);
 end
