@@ -31,10 +31,10 @@ const TranscriptLink = ({
     if (_transcriptionLink && _transcriptionLink !== '') {
         return (
             <Button
-                accessibilityLabel = { 'Nur-Lese-Link öffnen' }
+                accessibilityLabel = { 'Lese-Link öffnen' }
                 className = { 'ml-05 infobar-interactable' }
                 icon = { IconChatUnread }
-                label = { 'Nur-Lese-Link öffnen' }
+                label = { 'Lese-Link öffnen' }
                 // eslint-disable-next-line react/jsx-no-bind
                 onClick = { onClick }
                 size = 'small'

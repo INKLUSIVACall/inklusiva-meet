@@ -44,7 +44,7 @@ const TranscriptLinkEdit = ({
     if (_isCaptioner) {
         return (
             <Button
-                accessibilityLabel = { 'Nur-Lese-Link bearbeiten' }
+                accessibilityLabel = { 'Lese-Link bearbeiten' }
                 className = { 'mr-05' }
                 icon = { IconGear }
                 label = { 'Nur-Lese-Link bearbeiten' }

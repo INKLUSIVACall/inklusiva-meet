@@ -185,7 +185,7 @@ const AssistantRelationLabel = ({
             <Button
                 className = { 'mr-05' }
                 icon = { IconShare }
-                label = { 'Breakoutraum öffnen' }
+                label = { 'Breakout-Raum öffnen' }
                 // eslint-disable-next-line react/jsx-no-bind
                 onClick = { openBreakoutRoom }
                 size = 'small'

@@ -174,7 +174,7 @@ class DistressBtnTab extends AbstractDialogTab<IProps, any> {
                                 messageText: event.target.value
                             })
                         }
-                        placeholder = { messageText }
+                        placeholder = { t('settings.distressbtn.message_placeholder') }
                         rows = { 3 } />
                 </div>
             </div>
