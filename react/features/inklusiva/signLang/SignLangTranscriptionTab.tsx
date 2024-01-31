@@ -173,60 +173,6 @@ class SignLangTranscriptionTab extends AbstractDialogTab<IProps, any> {
                     </div>
                     <div className = { classes.valueColumn }>{signLangWindowSize}%</div>
                 </div>
-                <div className = { [ classes.controlContainer, 'mt-2' ].join(' ') }>
-                    <div className = { classes.controlColumn }>
-                        <h3>{t('settings.transcription.headlineTranscription')} </h3>
-                        <Checkbox
-                            checked = { transcriptionActive }
-                            className = { classes.inputElement }
-                            label = { t('settings.transcription.btn_engage_label') }
-                            onChange = { () =>
-                                super._onChange({
-                                    transcriptionActive: !transcriptionActive
-                                })
-                            } />
-                        <p className = 'mt-05'>{t('settings.transcription.btn_engage_desc')}</p>
-                    </div>
-                </div>
-
-
-                <div className = { classes.controlContainer }>
-                    <div className = { classes.controlColumn }>
-                        <Slider
-                            className = { classes.inputElement }
-                            defaultValue = { transcriptionFontSize }
-                            label = { t('settings.transcription.fontsize_label') }
-                            max = { 2 }
-                            min = { 0 }
-                            onChange = { event =>
-                                super._onChange({
-                                    transcriptionFontSize: event.target.value
-                                })
-                            }
-                            step = { 1 } />
-                    </div>
-                    <div className = { classes.valueColumn }>{getSizeDescription(transcriptionFontSize)}</div>
-                </div>
-                <div className = { classes.controlContainer }>
-                    <div className = { classes.controlColumn }>
-                        <Slider
-                            className = { classes.inputElement }
-                            defaultValue = { transcriptionHistory }
-                            label = { t('settings.transcription.history_label') }
-                            max = { 2 }
-                            min = { 0 }
-                            onChange = { event => {
-                                super._onChange({
-                                    transcriptionHistory: event.target.value
-                                });
-                            } }
-                            step = { 1 } />
-                    </div>
-                    <div className = { classes.valueColumn }>{getLengthDescription(transcriptionHistory)}</div>
-                </div>
-                <p className = 'mt-05'>
-                    {t('settings.transcription.settings_desc')}
-                </p>
             </div>
         );
     }

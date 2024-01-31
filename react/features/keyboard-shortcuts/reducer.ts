@@ -38,7 +38,18 @@ ReducerRegistry.register<IKeyboardShortcutsState>(STORE_NAME,
             enabled: false
         };
     case REGISTER_KEYBOARD_SHORTCUT: {
-        const shortcutKey = action.shortcut.alt ? `:${action.shortcut.character}` : action.shortcut.character;
+
+        let shortcutKey = action.shortcut.character;
+        let prefix = '';
+
+        if (action.shortcut.alt) {
+            prefix = ':';
+        }
+
+        if (action.shortcut.shift) {
+            prefix += '^';
+        }
+        shortcutKey = `${prefix}${action.shortcut.character}`;
 
         return {
             ...state,

@@ -27,7 +27,9 @@ const initGlobalKeyboardShortcuts = () =>
     (dispatch: IStore['dispatch']) => {
         batch(() => {
             dispatch(registerShortcut({
-                character: '?',
+                character: 'O',
+                alt: true,
+                shift: true,
                 helpDescription: 'keyboardShortcuts.toggleShortcuts',
                 handler: () => {
                     sendAnalytics(createShortcutEvent('help'));

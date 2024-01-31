@@ -72,6 +72,8 @@ class VideoMuteButton extends AbstractVideoMuteButton<IProps> {
     componentDidMount() {
         this.props.dispatch(registerShortcut({
             character: 'V',
+            alt: true,
+            shift: true,
             helpDescription: 'keyboardShortcuts.videoMute',
             handler: this._onKeyboardShortcut
         }));
