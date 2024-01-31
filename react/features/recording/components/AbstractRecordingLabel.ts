@@ -19,7 +19,7 @@ interface IProps extends WithTranslation {
     /**
      * The conference for which the recording is being displayed.
      */
-    _conference: IJitsiConference;
+    _conference?: IJitsiConference;
 
     /**
      * Whether this is the Jibri recorder participant.

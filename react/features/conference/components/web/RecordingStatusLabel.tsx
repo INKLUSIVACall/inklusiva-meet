@@ -26,7 +26,9 @@ const styles = () => {
 
 class RecordingStatusLabel extends AbstractRecordingLabel {
     _onObjectRecording = () => {
-        this.props._conference.rejectRecording();
+        if (this.props._conference) {
+            this.props._conference.rejectRecording();
+        }
     };
 
     _renderLabel(): React.ReactNode {
