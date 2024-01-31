@@ -260,10 +260,15 @@ export default class AbstractButton<P extends IProps, S=any> extends Component<P
      * @returns {string}
      */
     _getAccessibilityLabel() {
+        /*
         return (this._isToggled()
             ? this.toggledAccessibilityLabel
             : this.accessibilityLabel
         ) || this.accessibilityLabel;
+        */
+
+        // For Inklusiva-Call, we never want to toogle the accessibility label.
+        return this.accessibilityLabel;
     }
 
     /**
@@ -358,8 +363,9 @@ export default class AbstractButton<P extends IProps, S=any> extends Component<P
         afterClick?.(e);
 
         // blur after click to release focus from button to allow PTT.
+        // Inklusiva-Call: We don't want to blur the button, because we want to keep the focus on the button. PTT is also on another shortcut than space for us.
         // @ts-ignore
-        e?.currentTarget?.blur && e.currentTarget.blur();
+        //e?.currentTarget?.blur && e.currentTarget.blur();
     }
 
     /**
