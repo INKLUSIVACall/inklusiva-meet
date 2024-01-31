@@ -76,6 +76,7 @@ import {
     JitsiConferenceEvents,
     JitsiE2ePingEvents,
     JitsiMediaDevicesEvents,
+    JitsiRecordingConstants,
     JitsiTrackErrors,
     JitsiTrackEvents,
     browser
@@ -156,6 +157,7 @@ import { open as openParticipantsPane } from './react/features/participants-pane
 import { suspendDetected } from './react/features/power-monitor/actions';
 import { initPrejoin, makePrecallTest } from './react/features/prejoin/actions';
 import { isPrejoinPageVisible } from './react/features/prejoin/functions';
+import { getActiveSession } from './react/features/recording/functions';
 import { disableReceiver, stopReceiver } from './react/features/remote-control/actions';
 import { setScreenAudioShareState } from './react/features/screen-share/actions.web';
 import { isScreenAudioShared } from './react/features/screen-share/functions';
@@ -173,6 +175,7 @@ import { setPreferredVideoQuality } from './react/features/video-quality/actions
 import { getLastNForQualityLevel } from './react/features/base/lastn/functions';
 import { setLastN } from './react/features/base/lastn/actions';
 import { VIDEO_QUALITY_LEVELS } from './react/features/video-quality/constants';
+import { PARTICIPANT_ROLE } from './react/features/base/participants/constants';
 
 
 const logger = Logger.getLogger(__filename);
@@ -2054,6 +2057,26 @@ export default {
             JitsiConferenceEvents.ROOM_IC_TRANSCRIPT_LINKS_CHANGED, link => {
                 console.log('ROOM_IC_TRANSCRIPT_LINKS_CHANGED', link);
                 APP.store.dispatch(updateTranscriptLink(link));
+            }
+        );
+
+        room.on(
+            JitsiConferenceEvents.ROOM_IC_REJECT_RECORDING, () => {
+                const localParticipant = getLocalParticipant(APP.store.getState());
+
+                if (localParticipant.role === PARTICIPANT_ROLE.MODERATOR) {
+                    const activeSession = getActiveSession(APP.store.getState(), JitsiRecordingConstants.mode.FILE);
+
+                    logger.info('Member rejected recording');
+
+                    if (activeSession && activeSession.id) {
+                        APP.store.getState()['features/base/conference'].conference.stopRecording(activeSession.id);
+                    } else {
+                        logger.error('No recording or streaming session found');
+                    }
+                } else {
+                    logger.error('Moderator check for ', localParticipant.id, ' failed');
+                }
             }
         );
 

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { WithTranslation } from 'react-i18next';
 
 import { IReduxState } from '../../app/types';
+import { IJitsiConference } from '../../base/conference/reducer';
 import { JitsiRecordingConstants } from '../../base/lib-jitsi-meet';
 import { getSessionStatusToShow } from '../functions';
 
@@ -14,6 +15,11 @@ import { getSessionStatusToShow } from '../functions';
  * easier to align web's behaviour to mobile's later if necessary.
  */
 interface IProps extends WithTranslation {
+
+    /**
+     * The conference for which the recording is being displayed.
+     */
+    _conference: IJitsiConference;
 
     /**
      * Whether this is the Jibri recorder participant.
@@ -197,6 +203,7 @@ export function _mapStateToProps(state: IReduxState, ownProps: any) {
 
     return {
         _iAmRecorder: Boolean(state['features/base/config'].iAmRecorder),
-        _status: getSessionStatusToShow(state, mode)
+        _status: getSessionStatusToShow(state, mode),
+        _conference: state['features/base/conference'].conference
     };
 }
