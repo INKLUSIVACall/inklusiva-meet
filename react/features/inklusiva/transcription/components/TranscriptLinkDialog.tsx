@@ -51,16 +51,16 @@ const TranscriptLinkDialog = (props: IProps) => {
                 // eslint-disable-next-line react/jsx-no-bind
                 onSubmit = { _onSubmit }
                 size = { 'medium' }
-                titleKey = 'Nur-Lese-Link ändern' >
+                titleKey = 'Lese-Link ändern' >
                 <div>
                     <p
                         className = { classes.transcriptionLinkDialogText } >
-                        Hier können Sie den Nur-Lese-Link anpassen.
+                        Hier können Sie den Lese-Link anpassen.
                     </p>
                     <label
                         htmlFor = 'transcriptionLink'
                         id = 'transcriptionLinkLabel'>
-                        Nur-Lese-Link
+                        Lese-Link
                     </label>
                     <input
                         className = { classes.transcriptionLinkDialogInput }
@@ -79,7 +79,7 @@ const TranscriptLinkDialog = (props: IProps) => {
             cancel = {{ hidden: true }}
             ok = {{ hidden: true }}
             size = { 'medium' }
-            titleKey = 'Nur-Lese-Link' >
+            titleKey = 'Lese-Link' >
             <div>
                 <p>
                     Unter folgendem Link können Sie das Transkript einsehen:
