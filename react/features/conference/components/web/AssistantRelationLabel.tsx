@@ -175,7 +175,7 @@ const AssistantRelationLabel = ({
     const buttons = otherParticipant ? (
         <>
             <Button
-                className = { 'mr-05' }
+                className = { 'infobarButton mr-05' }
                 icon = { IconChatUnread }
                 label = { 'Private Nachricht' }
                 // eslint-disable-next-line react/jsx-no-bind
@@ -183,7 +183,7 @@ const AssistantRelationLabel = ({
                 size = 'small'
                 type = { BUTTON_TYPES.SECONDARY } />
             <Button
-                className = { 'mr-05' }
+                className = { 'infobarButton mr-05' }
                 icon = { IconShare }
                 label = { 'Breakout-Raum öffnen' }
                 // eslint-disable-next-line react/jsx-no-bind

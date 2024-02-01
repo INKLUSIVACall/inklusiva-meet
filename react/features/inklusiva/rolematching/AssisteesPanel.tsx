@@ -35,7 +35,8 @@ const styles = (theme: Theme) => {
         headline: {
             fontSize: '1.5rem',
             color: theme.palette.text01,
-            marginBottom: theme.spacing(3)
+            marginBottom: theme.spacing(3),
+            marginTop: 0
         },
         description: {
             fontSize: '1rem',
@@ -60,7 +61,14 @@ const styles = (theme: Theme) => {
         participantButton: {
             fontSize: '1.2rem',
             cursor: 'pointer',
-            alignSelf: 'center'
+            alignSelf: 'center',
+            borderRadius: '30px',
+            padding: '0.5rem 1rem !important'
+        },
+        divider: {
+            borderStyle: 'dashed',
+            marginBottom: '1.2rem',
+            marginTop: '1.2rem'
         }
     };
 };
@@ -134,6 +142,7 @@ const AssisteesPanel = ({ classes, _assistees, _conference, _visible }: IProps) 
             <h1 className = { classes.headline }>{t('assisteesPanel.headline')}</h1>
             <p className = { classes.description }>{t('assisteesPanel.desc1')}</p>
             <p className = { classes.description }>{t('assisteesPanel.desc2')}</p>
+            <hr className = { classes.divider } />
             <ul className = { classes.list }>{_assistees.map((data: any, i: number) => _renderAssistees(data, i))}</ul>
         </div>
     ) : null;

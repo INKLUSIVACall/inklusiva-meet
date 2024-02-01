@@ -63,7 +63,9 @@ const styles = (theme: Theme) => {
         participantButton: {
             fontSize: '1.2rem',
             cursor: 'pointer',
-            alignSelf: 'center'
+            alignSelf: 'center',
+            borderRadius: '30px',
+            padding: '0.5rem 1rem !important'
         }
     };
 };
@@ -187,7 +189,6 @@ const mapStateToProps = (state: IReduxState) => {
     const assistants = remoteParticipants.filter((participant: IParticipant) =>
         conference?.checkMemberHasRole(participant.id, IC_ROLES.ASSISTANT)
     );
-
 
     const getAssistant = () => {
         let result: IParticipant | undefined;

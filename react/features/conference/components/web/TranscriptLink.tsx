@@ -32,7 +32,7 @@ const TranscriptLink = ({
         return (
             <Button
                 accessibilityLabel = { 'Lese-Link öffnen' }
-                className = { 'ml-05 infobar-interactable' }
+                className = { 'ml-05 infobar-interactable infobarButton' }
                 icon = { IconChatUnread }
                 label = { 'Lese-Link öffnen' }
                 // eslint-disable-next-line react/jsx-no-bind
