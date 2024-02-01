@@ -17,6 +17,7 @@ import { SETTINGS_UPDATED } from '../base/settings/actionTypes';
 import { updateSettings } from '../base/settings/actions';
 import { playSound, registerSound, unregisterSound } from '../base/sounds/actions';
 import { getDisabledSounds } from '../base/sounds/functions.any';
+import { isAcousticCuesEnabled } from '../inklusiva/uisettings/functions';
 import { showNotification } from '../notifications/actions';
 import { NOTIFICATION_TIMEOUT_TYPE } from '../notifications/constants';
 
@@ -217,11 +218,15 @@ MiddlewareRegistry.register((store: IStore) => (next: Function) => (action: AnyA
             }));
         }
 
-        dispatch(showNotification({
-            titleKey: 'toolbar.disableReactionSounds',
-            customActionNameKey: customActions,
-            customActionHandler: customFunctions
-        }, NOTIFICATION_TIMEOUT_TYPE.MEDIUM));
+        const acousticCuesEnabled = isAcousticCuesEnabled(state);
+
+        if (acousticCuesEnabled) {
+            dispatch(showNotification({
+                titleKey: 'toolbar.disableReactionSounds',
+                customActionNameKey: customActions,
+                customActionHandler: customFunctions
+            }, NOTIFICATION_TIMEOUT_TYPE.MEDIUM));
+        }
         break;
     }
 
