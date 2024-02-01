@@ -95,6 +95,24 @@ button.primary {
     }
 }
 
+.infobarButton {
+    background-color: #e1e1e1;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border-radius: 30px;
+
+    &:hover {
+        background-color: #f4f4f4 !important;
+        outline-width: 0.5rem;
+        outline-color: rgb(46 94 116 / 77%);
+        outline-style: solid;
+        outline-offset: 0px;
+        border-width: 0px;
+        box-shadow: none;
+        border-color: #5aaed1;
+    }
+}
+
 .icLabelTransparent {
     background: none;
     font-size: 0.875rem;

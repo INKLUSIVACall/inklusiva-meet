@@ -45,9 +45,9 @@ const TranscriptLinkEdit = ({
         return (
             <Button
                 accessibilityLabel = { 'Lese-Link bearbeiten' }
-                className = { 'mr-05' }
+                className = { 'infobarButton ml-05 mr-05' }
                 icon = { IconGear }
-                label = { 'Nur-Lese-Link bearbeiten' }
+                label = { 'Lese-Link bearbeiten' }
                 // eslint-disable-next-line react/jsx-no-bind
                 onClick = { onClick }
                 size = 'small'
