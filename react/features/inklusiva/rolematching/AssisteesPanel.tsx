@@ -2,14 +2,16 @@ import { Theme } from '@mui/material';
 import { withStyles } from '@mui/styles';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 
 import { IReduxState } from '../../app/types';
 import { getCurrentConference } from '../../base/conference/functions';
 import { ICRole, IC_ROLES } from '../../base/conference/icRoles';
 import { IJitsiConference } from '../../base/conference/reducer';
-import { getLocalParticipant, getRemoteParticipants } from '../../base/participants/functions';
-import { IParticipant } from '../../base/participants/types';
+import { getLocalParticipant, getParticipantById, getParticipantWithICRoleAndPartner, getRemoteParticipants, isParticipantModerator } from '../../base/participants/functions';
+import { ILocalParticipant, IParticipant } from '../../base/participants/types';
+
+import { IStateful } from '../../base/app/types';
 
 const styles = (theme: Theme) => {
     return {
@@ -86,6 +88,11 @@ interface IProps {
     _conference?: IJitsiConference;
 
     /**
+     * The remote Participants.
+     */
+    _remoteParticipants: Map<string, IParticipant>;
+
+    /**
      * Should the panel be visible or not.
      */
     _visible: boolean;
@@ -96,10 +103,12 @@ interface IProps {
     classes: any;
 }
 
-const AssisteesPanel = ({ classes, _assistees, _conference, _visible }: IProps) => {
+const AssisteesPanel = ({ classes, _assistees, _conference, _remoteParticipants, _visible }: IProps) => {
     const { t } = useTranslation();
 
     const [ localClose, setLocalClose ] = useState(false);
+
+    // console.log('123456', useSelector((state: IStateful) => getParticipantById(state, id)));
 
     const _renderAssistees = (data: any, i: number) => {
         const _onClickOfferAssistance = () => {
@@ -187,6 +196,7 @@ const mapStateToProps = (state: IReduxState) => {
     return {
         _assistees: nonAssistet ?? [],
         _conference: conference,
+        _remoteParticipants: remoteParticipants,
         _visible: nonAssistet.length > 0
     };
 };

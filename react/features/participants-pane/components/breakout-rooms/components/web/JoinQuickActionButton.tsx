@@ -1,12 +1,15 @@
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
 
 import { createBreakoutRoomsEvent } from '../../../../../analytics/AnalyticsEvents';
 import { sendAnalytics } from '../../../../../analytics/functions';
 import Button from '../../../../../base/ui/components/web/Button';
 import { moveToRoom } from '../../../../../breakout-rooms/actions';
+import { getRemoteParticipantCountWithFake } from '../../../../../base/participants/functions';
+
+import { IStateful } from '../../../../../base/app/types';
 
 interface IProps {
 
@@ -38,15 +41,20 @@ const JoinActionButton = ({ room }: IProps) => {
         dispatch(moveToRoom(room.jid));
     }, [ dispatch, room ]);
 
-    return (
-        <Button
-            accessibilityLabel = { t('breakoutRooms.actions.join') }
-            className = { styles.button }
-            labelKey = { 'breakoutRooms.actions.join' }
-            onClick = { onJoinRoom }
-            size = 'small'
-            testId = { `join-room-${room.id}` } />
-    );
+    if (useSelector((state: IStateful) => getRemoteParticipantCountWithFake(state)) > 0) {
+        return (
+            <Button
+                accessibilityLabel = { t('breakoutRooms.actions.join') }
+                className = { styles.button }
+                labelKey = { 'breakoutRooms.actions.join' }
+                onClick = { onJoinRoom }
+                size = 'small'
+                testId = { `join-room-${room.id}` } />
+        );
+    }
+    
+    return;
+    
 };
 
 export default JoinActionButton;
