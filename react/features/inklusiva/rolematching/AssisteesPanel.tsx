@@ -8,8 +8,8 @@ import { IReduxState } from '../../app/types';
 import { getCurrentConference } from '../../base/conference/functions';
 import { ICRole, IC_ROLES } from '../../base/conference/icRoles';
 import { IJitsiConference } from '../../base/conference/reducer';
-import { getLocalParticipant, getParticipantById, getParticipantWithICRoleAndPartner, getRemoteParticipants, isParticipantModerator } from '../../base/participants/functions';
-import { ILocalParticipant, IParticipant } from '../../base/participants/types';
+import { getLocalParticipant, getRemoteParticipants, isParticipantModerator } from '../../base/participants/functions';
+import { IParticipant } from '../../base/participants/types';
 
 import { IStateful } from '../../base/app/types';
 
@@ -88,14 +88,14 @@ interface IProps {
     _conference?: IJitsiConference;
 
     /**
-     * The remote Participants.
-     */
-    _remoteParticipants: Map<string, IParticipant>;
-
-    /**
      * Should the panel be visible or not.
      */
     _visible: boolean;
+
+    /**
+     * Displayes if loal participant is moderator.
+     */
+    _isLocalParticipantModerator: boolean;
 
     /**
      * CSS classes object.
@@ -103,12 +103,10 @@ interface IProps {
     classes: any;
 }
 
-const AssisteesPanel = ({ classes, _assistees, _conference, _remoteParticipants, _visible }: IProps) => {
+const AssisteesPanel = ({ classes, _assistees, _conference, _visible, _isLocalParticipantModerator }: IProps) => {
     const { t } = useTranslation();
 
     const [ localClose, setLocalClose ] = useState(false);
-
-    // console.log('123456', useSelector((state: IStateful) => getParticipantById(state, id)));
 
     const _renderAssistees = (data: any, i: number) => {
         const _onClickOfferAssistance = () => {
@@ -136,7 +134,9 @@ const AssisteesPanel = ({ classes, _assistees, _conference, _remoteParticipants,
         setLocalClose(true);
     };
 
-    return _visible && !localClose ? (
+    let showDialog = _visible && !localClose && !_isLocalParticipantModerator;
+
+    return showDialog ? (
         <div
             aria-modal = 'true'
             className = { classes.assisteesPanel }
@@ -196,8 +196,9 @@ const mapStateToProps = (state: IReduxState) => {
     return {
         _assistees: nonAssistet ?? [],
         _conference: conference,
+        _isLocalParticipantModerator: isParticipantModerator(localParticipant),
         _remoteParticipants: remoteParticipants,
-        _visible: nonAssistet.length > 0
+        _visible: nonAssistet.length > 0,
     };
 };
 
