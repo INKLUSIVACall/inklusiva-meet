@@ -22,6 +22,7 @@ import { toggleAudioSettings } from '../../../actions';
 import { getAudioSettingsVisibility } from '../../../functions.web';
 
 import AudioSettingsContent from './AudioSettingsContent';
+import AccessiblePopover from '../../../../inklusiva/accessiblePopover/accessiblePopover';
 
 
 interface IProps {
@@ -114,7 +115,7 @@ function AudioSettingsPopup({
 
     return (
         <div className = { cx(classes.container, 'audio-preview') }>
-            <Popover
+            <AccessiblePopover
                 allowClick = { true }
                 content = { <AudioSettingsContent
                     currentMicDeviceId = { currentMicDeviceId }
@@ -130,7 +131,7 @@ function AudioSettingsPopup({
                 trigger = 'click'
                 visible = { isOpen }>
                 {children}
-            </Popover>
+            </AccessiblePopover>
         </div>
     );
 }

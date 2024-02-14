@@ -1,5 +1,6 @@
 import React from 'react';
 
+import AccessiblePopover from '../../../../inklusiva/accessiblePopover/accessiblePopover';
 import Icon from '../../../icons/components/Icon';
 import Popover from '../../../popover/components/Popover.web';
 
@@ -81,7 +82,7 @@ export default function ToolboxButtonWithPopup(props: IProps) {
             <div
                 className = 'settings-button-container'
                 style = { styles }>
-                <Popover
+                <AccessiblePopover
                     content = { popoverContent }
                     headingLabel = { ariaLabel }
                     onPopoverClose = { onPopoverClose }
@@ -90,7 +91,7 @@ export default function ToolboxButtonWithPopup(props: IProps) {
                     trigger = { trigger }
                     visible = { visible }>
                     {children}
-                </Popover>
+                </AccessiblePopover>
             </div>
         );
     }
@@ -101,7 +102,7 @@ export default function ToolboxButtonWithPopup(props: IProps) {
             style = { styles }>
             {children}
             <div className = 'settings-button-small-icon-container'>
-                <Popover
+                <AccessiblePopover
                     content = { popoverContent }
                     headingLabel = { ariaLabel }
                     onPopoverClose = { onPopoverClose }
@@ -115,7 +116,7 @@ export default function ToolboxButtonWithPopup(props: IProps) {
                             : ''}` }
                         size = { 16 }
                         src = { icon } />
-                </Popover>
+                </AccessiblePopover>
             </div>
         </div>
     );
