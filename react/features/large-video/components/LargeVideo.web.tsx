@@ -6,10 +6,10 @@ import VideoLayout from '../../../../modules/UI/videolayout/VideoLayout';
 import { IReduxState, IStore } from '../../app/types';
 import { VIDEO_TYPE } from '../../base/media/constants';
 import { pinParticipant } from '../../base/participants/actions';
-import { getLocalParticipant } from '../../base/participants/functions';
+import { getLocalParticipant, getVirtualScreenshareParticipantOwnerId } from '../../base/participants/functions';
 import Watermarks from '../../base/react/components/web/Watermarks';
 import { getHideSelfView } from '../../base/settings/functions.any';
-import { getVideoTrackByParticipant } from '../../base/tracks/functions.web';
+import { getVideoTrackByParticipant, getVirtualScreenshareParticipantTrack } from '../../base/tracks/functions.web';
 import { setColorAlpha } from '../../base/util/helpers';
 import StageParticipantNameLabel from '../../display-name/components/web/StageParticipantNameLabel';
 import FadeOutOverlay from '../../filmstrip/components/web/FadeOutOverlay';
@@ -131,6 +131,11 @@ interface IProps {
     _showDominantSpeakerBadge: boolean;
 
     /**
+     * Map of remote virtual screenshare participants.
+     */
+    _sortedRemoteVirtualScreenshareParticipants: Map<string, string>;
+
+    /**
      * The width of the vertical filmstrip (user resized).
      */
     _verticalFilmstripWidth?: number | null;
@@ -238,12 +243,15 @@ class LargeVideo extends Component<IProps> {
             _isScreenSharing,
             _disableLocalVideoFlip,
             _localFlipX,
+            _sortedRemoteVirtualScreenshareParticipants,
             dispatch
         } = this.props;
         const style = this._getCustomStyles();
         const className = `videocontainer${_isChatOpen ? ' shift-right' : ''}`;
 
-        const videoTrackClassName = !_disableLocalVideoFlip && !_isScreenSharing && _localFlipX ? 'flipVideoX' : '';
+        console.log('123456', _sortedRemoteVirtualScreenshareParticipants.size);
+
+        const videoTrackClassName = !_disableLocalVideoFlip && !_isScreenSharing && !(_sortedRemoteVirtualScreenshareParticipants.size > 0) && _localFlipX ? 'flipVideoX' : '';
 
         const unPin = () => {
             dispatch(pinParticipant(null));
@@ -439,6 +447,7 @@ function _mapStateToProps(state: IReduxState) {
     }
     const { localFlipX } = state['features/base/settings'];
     const { disableLocalVideoFlip } = state['features/base/config'];
+    const { sortedRemoteVirtualScreenshareParticipants } = state['features/base/participants']
 
     return {
         _backgroundAlpha: state['features/base/config'].backgroundAlpha,
@@ -460,6 +469,7 @@ function _mapStateToProps(state: IReduxState) {
         _saturation: saturation,
         _seeWhatIsBeingShared: Boolean(seeWhatIsBeingShared),
         _showDominantSpeakerBadge: !hideDominantSpeakerBadge,
+        _sortedRemoteVirtualScreenshareParticipants: sortedRemoteVirtualScreenshareParticipants,
         _verticalFilmstripWidth: verticalFilmstripWidth.current,
         _verticalViewMaxWidth: getVerticalViewMaxWidth(state),
         _visibleFilmstrip: visible,
