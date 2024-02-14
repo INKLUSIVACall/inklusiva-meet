@@ -7,6 +7,7 @@ import { translate } from '../../../base/i18n/functions';
 import Popover from '../../../base/popover/components/Popover.web';
 
 import HangupToggleButton from './HangupToggleButton';
+import AccessiblePopover from '../../../inklusiva/accessiblePopover/accessiblePopover';
 
 /**
  * The type of the React {@code Component} props of {@link HangupMenuButton}.
@@ -87,7 +88,7 @@ class HangupMenuButton extends Component<IProps> {
 
         return (
             <div className = 'toolbox-button-wth-dialog context-menu'>
-                <Popover
+                <AccessiblePopover
                     content = { children }
                     headingLabel = { t('toolbar.accessibilityLabel.hangup') }
                     onPopoverClose = { this._onCloseDialog }
@@ -101,7 +102,7 @@ class HangupMenuButton extends Component<IProps> {
                         isOpen = { isOpen }
                         notifyMode = { this.props.notifyMode }
                         onKeyDown = { this._onEscClick } />
-                </Popover>
+                </AccessiblePopover>
             </div>
         );
     }
