@@ -249,9 +249,13 @@ class LargeVideo extends Component<IProps> {
         const style = this._getCustomStyles();
         const className = `videocontainer${_isChatOpen ? ' shift-right' : ''}`;
 
-        console.log('123456', _sortedRemoteVirtualScreenshareParticipants.size);
-
-        const videoTrackClassName = !_disableLocalVideoFlip && !_isScreenSharing && !(_sortedRemoteVirtualScreenshareParticipants.size > 0) && _localFlipX ? 'flipVideoX' : '';
+        const videoTrackClassName
+            = !_disableLocalVideoFlip
+            && !_isScreenSharing
+            && !(_sortedRemoteVirtualScreenshareParticipants.size > 0)
+            && _localFlipX
+                ? 'flipVideoX'
+                : '';
 
         const unPin = () => {
             dispatch(pinParticipant(null));
@@ -447,7 +451,7 @@ function _mapStateToProps(state: IReduxState) {
     }
     const { localFlipX } = state['features/base/settings'];
     const { disableLocalVideoFlip } = state['features/base/config'];
-    const { sortedRemoteVirtualScreenshareParticipants } = state['features/base/participants']
+    const { sortedRemoteVirtualScreenshareParticipants } = state['features/base/participants'];
 
     return {
         _backgroundAlpha: state['features/base/config'].backgroundAlpha,
