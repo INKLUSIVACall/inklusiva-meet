@@ -174,7 +174,8 @@ const useStyles = makeStyles()(() => {
             rowGap: '8px',
             margin: 0,
             padding: '16px',
-            marginBottom: '4px'
+            marginBottom: '4px',
+            left: '-50%'
         }
     };
 });
