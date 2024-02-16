@@ -120,7 +120,7 @@ function AccessibleDialogPortal({ children, className, style, getRef, setSize, t
         portalTarget
     );
     */
-    return children;
+    return children as JSX.Element;
 }
 
 export default AccessibleDialogPortal;
