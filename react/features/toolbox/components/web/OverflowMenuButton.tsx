@@ -26,6 +26,8 @@ import { showOverflowDrawer } from '../../functions.web';
 import Drawer from './Drawer';
 import JitsiPortal from './JitsiPortal';
 import OverflowToggleButton from './OverflowToggleButton';
+import AccessibleDialogPortal from '../../../inklusiva/accessiblePopover/accessibleDialogPortal';
+import AccessiblePopover from '../../../inklusiva/accessiblePopover/accessiblePopover';
 
 /**
  * The type of the React {@code Component} props of {@link OverflowMenuButton}.
@@ -204,7 +206,7 @@ const OverflowMenuButton = ({
                         handleClick = { toggleDialogVisibility }
                         isOpen = { isOpen }
                         onKeyDown = { onEscClick } />
-                    <JitsiPortal>
+                    <AccessibleDialogPortal>
                         <Drawer
                             isOpen = { isOpen }
                             onClose = { onCloseDialog }>
@@ -221,7 +223,7 @@ const OverflowMenuButton = ({
                                 reaction = { reaction }
                                 uid = { uid } />))}
                         </div>}
-                    </JitsiPortal>
+                    </AccessibleDialogPortal>
                 </>
             </div>
         );
@@ -229,7 +231,7 @@ const OverflowMenuButton = ({
 
     return (
         <div className = 'toolbox-button-wth-dialog context-menu'>
-            <Popover
+            <AccessiblePopover
                 content = { overflowMenu }
                 headingId = 'overflow-context-menu'
                 onPopoverClose = { onCloseDialog }
@@ -240,7 +242,7 @@ const OverflowMenuButton = ({
                 <OverflowToggleButton
                     isOpen = { isOpen }
                     onKeyDown = { onEscClick } />
-            </Popover>
+            </AccessiblePopover>
             {showReactionsMenu && <div className = 'reactions-animations-container'>
                 {reactionsQueue.map(({ reaction, uid }, index) => (<ReactionEmoji
                     index = { index }
