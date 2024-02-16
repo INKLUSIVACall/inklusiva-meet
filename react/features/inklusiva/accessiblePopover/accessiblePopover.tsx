@@ -274,12 +274,12 @@ class accessiblePopover extends Component<IProps, IState> {
                 { children }
                 { visible && (
                     <AccessibleDialogPortal
+                        className = 'accessiblePopover'
                         getRef = { this._setContextMenuRef }
                         onVisible = { this._isInteractive() ? this._enableFocusLock : undefined }
                         setSize = { this._setContextMenuStyle }
                         style = { this.state.contextMenuStyle }
-                        targetSelector = '.popover-content'
-                        className = 'accessiblePopover'>
+                        targetSelector = '.popover-content'>
                         <FocusOn
                             className = 'focusOnPopover'
 
