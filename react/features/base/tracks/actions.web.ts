@@ -12,20 +12,17 @@ import { isAudioOnlySharing, isScreenVideoShared } from '../../screen-share/func
 import { toggleScreenshotCaptureSummary } from '../../screenshot-capture/actions';
 import { isScreenshotCaptureEnabled } from '../../screenshot-capture/functions';
 import { AudioMixerEffect } from '../../stream-effects/audio-mixer/AudioMixerEffect';
+import { setPreferredVideoQuality } from '../../video-quality/actions';
+import { VIDEO_QUALITY_LEVELS } from '../../video-quality/constants';
 import { getCurrentConference } from '../conference/functions';
+import { setLastN } from '../lastn/actions';
+import { getLastNForQualityLevel } from '../lastn/functions';
 import { JitsiTrackErrors, JitsiTrackEvents } from '../lib-jitsi-meet';
 import { setScreenshareMuted } from '../media/actions';
 import { MEDIA_TYPE, VIDEO_TYPE } from '../media/constants';
 
-import {
-    addLocalTrack,
-    replaceLocalTrack
-} from './actions.any';
-import {
-    createLocalTracksF,
-    getLocalDesktopTrack,
-    getLocalJitsiAudioTrack
-} from './functions';
+import { addLocalTrack, replaceLocalTrack } from './actions.any';
+import { createLocalTracksF, getLocalDesktopTrack, getLocalJitsiAudioTrack } from './functions';
 import { IShareOptions, IToggleScreenSharingOptions } from './types';
 
 export * from './actions.any';
@@ -38,10 +35,7 @@ export * from './actions.any';
  * @param {Object} shareOptions - The options to be passed for capturing screenshare.
  * @returns {Function}
  */
-export function toggleScreensharing(
-        enabled?: boolean,
-        audioOnly = false,
-        shareOptions: IShareOptions = {}) {
+export function toggleScreensharing(enabled?: boolean, audioOnly = false, shareOptions: IShareOptions = {}) {
     return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
         // check for A/V Moderation when trying to start screen sharing
         if ((enabled || enabled === undefined) && shouldShowModeratedNotification(MEDIA_TYPE.VIDEO, getState())) {
@@ -50,14 +44,17 @@ export function toggleScreensharing(
             return Promise.reject();
         }
 
-        return _toggleScreenSharing({
-            enabled,
-            audioOnly,
-            shareOptions
-        }, {
-            dispatch,
-            getState
-        });
+        return _toggleScreenSharing(
+            {
+                enabled,
+                audioOnly,
+                shareOptions
+            },
+            {
+                dispatch,
+                getState
+            }
+        );
     };
 }
 
@@ -69,9 +66,7 @@ export function toggleScreensharing(
  * @param {Object} store - The redux store.
  * @returns {void}
  */
-function _handleScreensharingError(
-        error: Error | AUDIO_ONLY_SCREEN_SHARE_NO_TRACK,
-        { dispatch }: IStore): void {
+function _handleScreensharingError(error: Error | AUDIO_ONLY_SCREEN_SHARE_NO_TRACK, { dispatch }: IStore): void {
     if (error.name === JitsiTrackErrors.SCREENSHARING_USER_CANCELED) {
         return;
     }
@@ -91,12 +86,16 @@ function _handleScreensharingError(
         titleKey = 'notify.screenShareNoAudioTitle';
     }
 
-    dispatch(showNotification({
-        titleKey,
-        descriptionKey
-    }, NOTIFICATION_TIMEOUT_TYPE.MEDIUM));
+    dispatch(
+        showNotification(
+            {
+                titleKey,
+                descriptionKey
+            },
+            NOTIFICATION_TIMEOUT_TYPE.MEDIUM
+        )
+    );
 }
-
 
 /**
  * Applies the AudioMixer effect on the local audio track if applicable. If there is no local audio track, the desktop
@@ -123,7 +122,6 @@ async function _maybeApplyAudioMixerEffect(desktopAudioTrack: any, state: IRedux
     }
 }
 
-
 /**
  * Toggles screen sharing.
  *
@@ -133,11 +131,7 @@ async function _maybeApplyAudioMixerEffect(desktopAudioTrack: any, state: IRedux
  * @returns {void}
  */
 async function _toggleScreenSharing(
-        {
-            enabled,
-            audioOnly = false,
-            shareOptions = {}
-        }: IToggleScreenSharingOptions,
+        { enabled, audioOnly = false, shareOptions = {} }: IToggleScreenSharingOptions,
         store: IStore
 ): Promise<void> {
     const { dispatch, getState } = store;
@@ -151,9 +145,7 @@ async function _toggleScreenSharing(
     // Toggle screenshare or audio-only share if the new state is not passed. Happens in the following two cases.
     // 1. ShareAudioDialog passes undefined when the user hits continue in the share audio demo modal.
     // 2. Toggle screenshare called from the external API.
-    const enable = audioOnly
-        ? enabled ?? !audioOnlySharing
-        : enabled ?? !screenSharing;
+    const enable = audioOnly ? enabled ?? !audioOnlySharing : enabled ?? !screenSharing;
     const screensharingDetails: { sourceType?: string; } = {};
 
     if (enable) {
@@ -175,7 +167,7 @@ async function _toggleScreenSharing(
             };
 
             try {
-                tracks = await createLocalTracksF(options) as any[];
+                tracks = (await createLocalTracksF(options)) as any[];
             } catch (error) {
                 _handleScreensharingError(error as any, store);
 
@@ -218,9 +210,9 @@ async function _toggleScreenSharing(
 
             // Handle the case where screen share was stopped from the browsers 'screen share in progress' window.
             if (audioOnly) {
-                desktopAudioTrack?.on(
-                    JitsiTrackEvents.LOCAL_TRACK_STOPPED,
-                    () => dispatch(toggleScreensharing(undefined, true)));
+                desktopAudioTrack?.on(JitsiTrackEvents.LOCAL_TRACK_STOPPED, () =>
+                    dispatch(toggleScreensharing(undefined, true))
+                );
             }
         }
 
@@ -229,10 +221,15 @@ async function _toggleScreenSharing(
         const { enabled: bestPerformanceMode } = state['features/base/audio-only'];
 
         if (bestPerformanceMode && !audioOnly) {
-            dispatch(showNotification({
-                titleKey: 'notify.screenSharingAudioOnlyTitle',
-                descriptionKey: 'notify.screenSharingAudioOnlyDescription'
-            }, NOTIFICATION_TIMEOUT_TYPE.LONG));
+            dispatch(
+                showNotification(
+                    {
+                        titleKey: 'notify.screenSharingAudioOnlyTitle',
+                        descriptionKey: 'notify.screenSharingAudioOnlyDescription'
+                    },
+                    NOTIFICATION_TIMEOUT_TYPE.LONG
+                )
+            );
         }
     } else {
         const { desktopAudioTrack } = state['features/screen-share'];
@@ -254,6 +251,19 @@ async function _toggleScreenSharing(
             desktopAudioTrack.dispose();
             dispatch(setScreenshareAudioTrack(null));
         }
+
+        setTimeout(() => {
+            const qualityLevel = VIDEO_QUALITY_LEVELS.HIGH;
+
+            dispatch(setPreferredVideoQuality(qualityLevel));
+
+            const DEFAULT_LAST_N = 20;
+            const _channelLastN = getState()['features/base/config'].channelLastN ?? DEFAULT_LAST_N;
+            const lastN = getLastNForQualityLevel(qualityLevel, _channelLastN);
+
+            // Set the lastN for the conference.
+            dispatch(setLastN(lastN));
+        }, 3000);
     }
 
     if (audioOnly) {
