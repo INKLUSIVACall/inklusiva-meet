@@ -84,7 +84,7 @@ MiddlewareRegistry.register(store => next => action => {
     case SET_AUDIO_ONLY:
     case SET_CAR_MODE:
     case SET_FILMSTRIP_ENABLED:
-    case VIRTUAL_SCREENSHARE_REMOTE_PARTICIPANTS_UPDATED:
+    // case VIRTUAL_SCREENSHARE_REMOTE_PARTICIPANTS_UPDATED:
         _updateLastN(store);
         break;
     }
