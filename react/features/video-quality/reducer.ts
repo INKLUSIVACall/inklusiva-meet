@@ -21,7 +21,7 @@ const DEFAULT_STATE = {
     maxReceiverVideoQualityForScreenSharingFilmstrip: VIDEO_QUALITY_LEVELS.HIGH,
     maxReceiverVideoQualityForStageFilmstrip: VIDEO_QUALITY_LEVELS.HIGH,
     maxReceiverVideoQualityForTileView: VIDEO_QUALITY_LEVELS.STANDARD,
-    maxReceiverVideoQualityForVerticalFilmstrip: VIDEO_QUALITY_LEVELS.LOW,
+    maxReceiverVideoQualityForVerticalFilmstrip: VIDEO_QUALITY_LEVELS.HIGH,
     minHeightForQualityLvl: new Map(),
     preferredVideoQuality: VIDEO_QUALITY_LEVELS.ULTRA
 };
