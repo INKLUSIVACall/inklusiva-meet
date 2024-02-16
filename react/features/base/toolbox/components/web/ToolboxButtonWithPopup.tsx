@@ -1,5 +1,6 @@
 import React from 'react';
 
+import AccessiblePopover from '../../../../inklusiva/accessiblePopover/accessiblePopover';
 import Icon from '../../../icons/components/Icon';
 import Popover from '../../../popover/components/Popover.web';
 
@@ -81,7 +82,7 @@ export default function ToolboxButtonWithPopup(props: IProps) {
             <div
                 className = 'settings-button-container'
                 style = { styles }>
-                <Popover
+                <AccessiblePopover
                     content = { popoverContent }
                     headingLabel = { ariaLabel }
                     onPopoverClose = { onPopoverClose }
@@ -90,7 +91,7 @@ export default function ToolboxButtonWithPopup(props: IProps) {
                     trigger = { trigger }
                     visible = { visible }>
                     {children}
-                </Popover>
+                </AccessiblePopover>
             </div>
         );
     }
@@ -100,23 +101,23 @@ export default function ToolboxButtonWithPopup(props: IProps) {
             className = 'settings-button-container'
             style = { styles }>
             {children}
-            <div className = 'settings-button-small-icon-container'>
-                <Popover
-                    content = { popoverContent }
-                    headingLabel = { ariaLabel }
-                    onPopoverClose = { onPopoverClose }
-                    onPopoverOpen = { onPopoverOpen }
-                    position = 'top'
-                    visible = { visible }>
-                    <Icon
-                        alt = { ariaLabel }
-                        className = { `settings-button-small-icon ${iconDisabled
-                            ? 'settings-button-small-icon--disabled'
-                            : ''}` }
-                        size = { 16 }
-                        src = { icon } />
-                </Popover>
-            </div>
+            {/* <div className = 'settings-button-small-icon-container'> */}
+            <AccessiblePopover
+                content = { popoverContent }
+                headingLabel = { ariaLabel }
+                onPopoverClose = { onPopoverClose }
+                onPopoverOpen = { onPopoverOpen }
+                position = 'top'
+                visible = { visible }>
+                <Icon
+                    alt = { ariaLabel }
+                    className = { `settings-button-small-icon ${iconDisabled
+                        ? 'settings-button-small-icon--disabled'
+                        : ''}` }
+                    size = { 16 }
+                    src = { icon } />
+            </AccessiblePopover>
+            {/* </div> */}
         </div>
     );
 }

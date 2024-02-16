@@ -203,3 +203,14 @@ div.hangup-menu-button {
         }
     }
 }
+
+.accessiblePopover {
+    position: absolute;
+    bottom: 50px;
+    left: 3rem;
+    width: max-content;
+}
+
+.focusOnPopover {
+    position: relative;
+}

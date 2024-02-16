@@ -9,9 +9,9 @@ import {
 import {
     getVideoDeviceIds
 } from '../../../../base/devices/functions.web';
-import Popover from '../../../../base/popover/components/Popover.web';
 import { SMALL_MOBILE_WIDTH } from '../../../../base/responsive-ui/constants';
 import { getCurrentCameraDeviceId } from '../../../../base/settings/functions.web';
+import AccessiblePopover from '../../../../inklusiva/accessiblePopover/accessiblePopover';
 import { toggleVideoSettings } from '../../../actions';
 import { getVideoSettingsVisibility } from '../../../functions.web';
 
@@ -83,7 +83,7 @@ function VideoSettingsPopup({
 
     return (
         <div className = { cx('video-preview', classes.container) }>
-            <Popover
+            <AccessiblePopover
                 allowClick = { true }
                 content = { <VideoSettingsContent
                     currentCameraDeviceId = { currentCameraDeviceId }
@@ -96,7 +96,7 @@ function VideoSettingsPopup({
                 trigger = 'click'
                 visible = { isOpen }>
                 { children }
-            </Popover>
+            </AccessiblePopover>
         </div>
     );
 }
