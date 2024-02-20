@@ -222,7 +222,7 @@ end
 -- destroys lobby room for the supplied main room
 function destroy_lobby_room(room, newjid, message)
     if not message then
-        message = 'Lobby room closed.';
+        message = 'Der Moderator hat die Konferenz beendet. Sie können das Fenster jetzt schließen.';
     end
     if lobby_muc_service and room and room._data.lobbyroom then
         local lobby_room_obj = lobby_muc_service.get_room_from_jid(room._data.lobbyroom);
