@@ -5,11 +5,10 @@ import { makeStyles } from 'tss-react/mui';
 
 import { createBreakoutRoomsEvent } from '../../../../../analytics/AnalyticsEvents';
 import { sendAnalytics } from '../../../../../analytics/functions';
+import { IStateful } from '../../../../../base/app/types';
+import { getRemoteParticipantCountWithFake } from '../../../../../base/participants/functions';
 import Button from '../../../../../base/ui/components/web/Button';
 import { moveToRoom } from '../../../../../breakout-rooms/actions';
-import { getRemoteParticipantCountWithFake } from '../../../../../base/participants/functions';
-
-import { IStateful } from '../../../../../base/app/types';
 
 interface IProps {
 
@@ -52,9 +51,8 @@ const JoinActionButton = ({ room }: IProps) => {
                 testId = { `join-room-${room.id}` } />
         );
     }
-    
-    return;
-    
+
+    return null;
 };
 
 export default JoinActionButton;
