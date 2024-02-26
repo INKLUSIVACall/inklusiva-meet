@@ -2,14 +2,16 @@ import { Theme } from '@mui/material';
 import { withStyles } from '@mui/styles';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 
 import { IReduxState } from '../../app/types';
 import { getCurrentConference } from '../../base/conference/functions';
 import { ICRole, IC_ROLES } from '../../base/conference/icRoles';
 import { IJitsiConference } from '../../base/conference/reducer';
-import { getLocalParticipant, getRemoteParticipants } from '../../base/participants/functions';
+import { getLocalParticipant, getRemoteParticipants, isParticipantModerator } from '../../base/participants/functions';
 import { IParticipant } from '../../base/participants/types';
+
+import { IStateful } from '../../base/app/types';
 
 const styles = (theme: Theme) => {
     return {
@@ -91,12 +93,17 @@ interface IProps {
     _visible: boolean;
 
     /**
+     * Displayes if loal participant is moderator.
+     */
+    _isLocalParticipantModerator: boolean;
+
+    /**
      * CSS classes object.
      */
     classes: any;
 }
 
-const AssisteesPanel = ({ classes, _assistees, _conference, _visible }: IProps) => {
+const AssisteesPanel = ({ classes, _assistees, _conference, _visible, _isLocalParticipantModerator }: IProps) => {
     const { t } = useTranslation();
 
     const [ localClose, setLocalClose ] = useState(false);
@@ -127,7 +134,9 @@ const AssisteesPanel = ({ classes, _assistees, _conference, _visible }: IProps) 
         setLocalClose(true);
     };
 
-    return _visible && !localClose ? (
+    let showDialog = _visible && !localClose && !_isLocalParticipantModerator;
+
+    return showDialog ? (
         <div
             aria-modal = 'true'
             className = { classes.assisteesPanel }
@@ -187,7 +196,9 @@ const mapStateToProps = (state: IReduxState) => {
     return {
         _assistees: nonAssistet ?? [],
         _conference: conference,
-        _visible: nonAssistet.length > 0
+        _isLocalParticipantModerator: isParticipantModerator(localParticipant),
+        _remoteParticipants: remoteParticipants,
+        _visible: nonAssistet.length > 0,
     };
 };
 
