@@ -18,6 +18,7 @@ import { isIosMobileBrowser } from '../base/environment/utils';
 import JitsiMeetJS from '../base/lib-jitsi-meet';
 import { toState } from '../base/redux/functions';
 import {
+    getHideSelfView,
     getUserSelectedCameraDeviceId,
     getUserSelectedMicDeviceId,
     getUserSelectedOutputDeviceId
@@ -135,6 +136,12 @@ export function getVideoDeviceSelectionDialogProps(stateful: IStateful, isDispla
     const inputDeviceChangeSupported = JitsiMeetJS.mediaDevices.isDeviceChangeAvailable('input');
     const userSelectedCamera = getUserSelectedCameraDeviceId(state);
     const { localFlipX } = state['features/base/settings'];
+
+    // when self view is controlled by the config we hide the settings
+    const { disableSelfView, disableSelfViewSettings } = state['features/base/config'];
+    const hideSelfView = state['features/base/settings'].hideSelfView;
+    console.log('123456', hideSelfView);
+    console.log('123456', disableSelfView);
     const hideAdditionalSettings = isPrejoinPageVisible(state) || isDisplayedOnWelcomePage;
     const framerate = state['features/screen-share'].captureFrameRate ?? SS_DEFAULT_FRAME_RATE;
 
@@ -156,9 +163,11 @@ export function getVideoDeviceSelectionDialogProps(stateful: IStateful, isDispla
         currentFramerate: framerate,
         desktopShareFramerates: SS_SUPPORTED_FRAMERATES,
         disableDeviceChange: !JitsiMeetJS.mediaDevices.isDeviceChangeAvailable(),
+        disableHideSelfView: disableSelfViewSettings || disableSelfView,
         disableVideoInputSelect,
         hasVideoPermission: permissions.video,
         hideAdditionalSettings,
+        hideSelfView,
         hideVideoInputPreview: !inputDeviceChangeSupported || disablePreviews,
         localFlipX: Boolean(localFlipX),
         selectedVideoInputId

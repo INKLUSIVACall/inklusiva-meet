@@ -121,6 +121,6 @@ export function shouldHideShareAudioHelper(state: IReduxState): boolean | undefi
  * @returns {boolean}
  */
 export function getHideSelfView(state: IReduxState) {
-    return state['features/base/config'].disableSelfView || state['features/base/settings'].disableSelfView
-        || iAmVisitor(state);
+    return Boolean(state['features/base/config'].disableSelfView || state['features/base/settings'].disableSelfView
+        || iAmVisitor(state));
 }
