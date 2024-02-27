@@ -29,11 +29,6 @@ export interface IProps extends AbstractDialogTabProps, WithTranslation {
     currentLanguage: string;
 
     /**
-     * Whether to show hide self view setting.
-     */
-    disableHideSelfView: boolean;
-
-    /**
      * Whether or not follow me is currently active (enabled by some other participant).
      */
     followMeActive: boolean;
@@ -125,7 +120,6 @@ class MoreTab extends AbstractDialogTab<IProps, any> {
         this._onShowPrejoinPageChanged = this._onShowPrejoinPageChanged.bind(this);
         this._renderMaxStageParticipantsSelect = this._renderMaxStageParticipantsSelect.bind(this);
         this._onMaxStageParticipantsSelect = this._onMaxStageParticipantsSelect.bind(this);
-        this._onHideSelfViewChanged = this._onHideSelfViewChanged.bind(this);
         this._onLanguageItemSelect = this._onLanguageItemSelect.bind(this);
     }
 
@@ -139,9 +133,6 @@ class MoreTab extends AbstractDialogTab<IProps, any> {
         const {
             showPrejoinSettings,
             classes,
-            disableHideSelfView,
-            iAmVisitor,
-            hideSelfView,
             showLanguageSettings,
             t } = this.props;
 
@@ -154,14 +145,6 @@ class MoreTab extends AbstractDialogTab<IProps, any> {
                     <hr className = { classes.divider } />
                 </>}
                 {this._renderMaxStageParticipantsSelect()}
-                {!disableHideSelfView && !iAmVisitor && (
-                    <Checkbox
-                        checked = { hideSelfView }
-                        className = { classes.checkbox }
-                        label = { t('videothumbnail.hideSelfView') }
-                        name = 'hide-self-view'
-                        onChange = { this._onHideSelfViewChanged } />
-                )}
                 {showLanguageSettings && this._renderLanguageSelect()}
             </div>
         );
@@ -190,17 +173,6 @@ class MoreTab extends AbstractDialogTab<IProps, any> {
         const maxParticipants = Number(e.target.value);
 
         super._onChange({ maxStageParticipants: maxParticipants });
-    }
-
-    /**
-     * Callback invoked to select if hide self view should be enabled.
-     *
-     * @param {Object} e - The key event to handle.
-     *
-     * @returns {void}
-     */
-    _onHideSelfViewChanged({ target: { checked } }: React.ChangeEvent<HTMLInputElement>) {
-        super._onChange({ hideSelfView: checked });
     }
 
     /**
