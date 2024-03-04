@@ -135,11 +135,10 @@ export function submitVideoDeviceSelectionTab(newState: any, isDisplayedOnWelcom
         }
 
         if (newState.hideSelfView !== currentState.hideSelfView) {
-            dispatch(
-                updateSettings({
-                    hideSelfView: newState.hideSelfView 
-                })
-            );
+            dispatch(updateSettings({
+                disableSelfView: newState.hideSelfView,
+                hideSelfView: newState.hideSelfView
+            }));
         }
 
         if (newState.localFlipX !== currentState.localFlipX) {

@@ -9,7 +9,6 @@ import {
     isLocalParticipantModerator
 } from '../base/participants/functions';
 import { toState } from '../base/redux/functions';
-import { getHideSelfView } from '../base/settings/functions';
 import { parseStandardURIString } from '../base/util/uri';
 import { isStageFilmstripEnabled } from '../filmstrip/functions';
 import { isFollowMeActive } from '../follow-me/functions';
