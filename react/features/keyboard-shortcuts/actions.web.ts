@@ -39,7 +39,7 @@ const initGlobalKeyboardShortcuts = () =>
 
             // register SPACE shortcut in two steps to insure visibility of help message
             dispatch(registerShortcut({
-                character: ':SPACE', // :SPACE maps to alt+space, only space is ' '.
+                character: 'SPACE', // :SPACE maps to alt+space, only space is ' '.
                 alt: true,
                 helpCharacter: ':SPACE',
                 helpDescription: 'keyboardShortcuts.pushToTalk',
