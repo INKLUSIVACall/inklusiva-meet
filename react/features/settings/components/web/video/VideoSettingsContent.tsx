@@ -29,9 +29,24 @@ export interface IProps {
     changeFlip: (flip: boolean) => void;
 
     /**
+     * Callback to change the self view state.
+     */
+    changeSelfView: (selfView: boolean) => void;
+
+    /**
      * The deviceId of the camera device currently being used.
      */
     currentCameraDeviceId: string;
+
+    /**
+     * Whether to show hide self view setting.
+     */
+    disableHideSelfView: boolean;
+
+    /**
+     * Whether the own video is hidden or not.
+     */
+    hideSelfView: boolean;
 
     /**
      * Whether or not the local video is flipped.
@@ -140,7 +155,10 @@ const stopPropagation = (e: React.MouseEvent) => {
 
 const VideoSettingsContent = ({
     changeFlip,
+    changeSelfView,
     currentCameraDeviceId,
+    disableHideSelfView,
+    hideSelfView,
     localFlipX,
     selectBackground,
     setVideoInputDevice,
@@ -164,6 +182,10 @@ const VideoSettingsContent = ({
     const _onToggleFlip = useCallback(() => {
         changeFlip(!localFlipX);
     }, [ localFlipX, changeFlip ]);
+
+    const _onToggleSelfView = useCallback(() => {
+        changeSelfView(!hideSelfView);
+    }, [ hideSelfView, changeSelfView ]);
 
     /**
      * Destroys all the tracks from trackData object.
@@ -313,6 +335,10 @@ const VideoSettingsContent = ({
                         checked = { localFlipX }
                         label = { t('videothumbnail.mirrorVideo') }
                         onChange = { _onToggleFlip } />
+                    <Checkbox
+                        checked = { hideSelfView }
+                        label = { t('videothumbnail.hideSelfView') }
+                        onChange = { _onToggleSelfView } />
                 </div>
             </ContextMenuItemGroup>
         </ContextMenu>
@@ -321,9 +347,12 @@ const VideoSettingsContent = ({
 
 const mapStateToProps = (state: IReduxState) => {
     const { localFlipX } = state['features/base/settings'];
+    const { disableSelfView, hideSelfView } = state['features/base/settings'];
 
     return {
-        localFlipX: Boolean(localFlipX)
+        localFlipX: Boolean(localFlipX),
+        disableSelfView: Boolean(disableSelfView),
+        hideSelfView: Boolean(hideSelfView)
     };
 };
 
@@ -334,6 +363,12 @@ const mapDispatchToProps = (dispatch: IStore['dispatch']) => {
             dispatch(updateSettings({
                 localFlipX: flip
             }));
+        },
+        changeSelfView: (selfView: boolean) => {
+            dispatch(updateSettings({
+                hideSelfView: selfView,
+                disableSelfView: selfView
+            }))
         }
     };
 };

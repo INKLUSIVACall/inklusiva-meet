@@ -245,17 +245,13 @@ class VideoDeviceSelection extends AbstractDialogTab<IProps, IState> {
                                 onChange = { () => super._onChange({ localFlipX: !localFlipX }) } />
                             
                         </div>
-                        {!disableHideSelfView && (
-                            <div className = { classes.checkboxContainer }>
-                                <Checkbox
-                                    checked = { hideSelfView }
-                                    className = { classes.checkbox }
-                                    label = { t('videothumbnail.hideSelfView') }
-                                    name = 'hide-self-view'
-                                    // eslint-disable-next-line react/jsx-no-bind
-                                    onChange = { () => super._onChange({ hideSelfView: !hideSelfView }) } />
-                            </div>
-                        )}
+                        <div className = { classes.checkboxContainer }>
+                            <Checkbox
+                                checked = { hideSelfView }
+                                label = { t('videothumbnail.hideSelfView') }
+                                // eslint-disable-next-line react/jsx-no-bind
+                                onChange = { () => super._onChange({ hideSelfView: !hideSelfView }) } />
+                        </div>
                         {this._renderFramerateSelect()}
                     </>
                 )}
