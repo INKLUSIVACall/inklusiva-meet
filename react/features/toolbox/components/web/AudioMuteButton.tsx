@@ -15,6 +15,43 @@ import AbstractAudioMuteButton, {
     IProps as AbstractAudioMuteButtonProps,
     mapStateToProps as abstractMapStateToProps
 } from '../AbstractAudioMuteButton';
+import { IKeyboardShortcut } from '../../../keyboard-shortcuts/types';
+/**
+* Sets the string of the accessibility label including shortcut.
+*
+* @param {boolean} alt - Whether alt key has to be pressed for shortcut.
+* @param {boolean} shift - Whether shift key has to be pressed for shortcut.
+* @param {string} shortcut - The shortcut of the button.
+* @returns {string}
+*/
+function _getShortcut(shortcut?: IKeyboardShortcut) {
+    if (!shortcut) {
+        return '';
+    }
+
+    let accessibilityLabel: string = '';
+
+    if (shortcut?.alt) {
+        let modifierKey = 'Alt';
+
+        if (window.navigator?.platform) {
+            if (window.navigator.platform.indexOf('Mac') !== -1) {
+                modifierKey = '⌥';
+            }
+        }
+
+        accessibilityLabel += modifierKey + ' +';
+    }
+    if (shortcut?.shift) {
+        let shiftKey = 'Shift';
+
+        accessibilityLabel = `${accessibilityLabel} ${shiftKey} +`;
+    }
+
+    accessibilityLabel = `${accessibilityLabel} ${shortcut?.character}`;
+
+    return (accessibilityLabel);
+}
 
 const styles = () => {
     return {
@@ -71,13 +108,15 @@ class AudioMuteButton extends AbstractAudioMuteButton<IProps> {
      * @returns {void}
      */
     componentDidMount() {
-        this.props.dispatch(registerShortcut({
+        const shortcut = {
             character: 'M',
             alt: true,
             shift: true,
             helpDescription: 'keyboardShortcuts.mute',
             handler: this._onKeyboardShortcut
-        }));
+        };
+        this.props.dispatch(registerShortcut(shortcut));
+        this.accessibilityLabelInterpolation = {shortcut: _getShortcut(shortcut)};
     }
 
     /**
