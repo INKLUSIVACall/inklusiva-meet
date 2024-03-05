@@ -36,6 +36,8 @@ export interface IProps extends WithTranslation {
      */
     accessibilityLabel: string;
 
+    accessibilityLabelInterpolation?: any;
+
     /**
      * An extra class name to be added at the end of the element's class name
      * in order to enable custom styling.
@@ -168,7 +170,7 @@ export default class AbstractToolboxItem<P extends IProps> extends Component<P> 
      * @returns {?string}
      */
     get accessibilityLabel(): string {
-        return this._maybeTranslateAttribute(this.props.accessibilityLabel);
+        return this._maybeTranslateAttribute(this.props.accessibilityLabel, this.props.accessibilityLabelInterpolation);
     }
 
     /**

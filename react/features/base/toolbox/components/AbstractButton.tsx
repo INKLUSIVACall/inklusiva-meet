@@ -8,6 +8,7 @@ import { combineStyles } from '../../styles/functions.any';
 
 import { Styles } from './AbstractToolboxItem';
 import ToolboxItem from './ToolboxItem';
+import { getKeyboardShortcuts } from '../../../keyboard-shortcuts/functions';
 
 export interface IProps extends WithTranslation {
 
@@ -118,6 +119,8 @@ export default class AbstractButton<P extends IProps, S=any> extends Component<P
      * @abstract
      */
     accessibilityLabel: string;
+
+    accessibilityLabelInterpolation: any;
 
     /**
      * This is the same as `accessibilityLabel`, replacing it when the button
@@ -271,6 +274,10 @@ export default class AbstractButton<P extends IProps, S=any> extends Component<P
         return this.accessibilityLabel;
     }
 
+    _getAccessibilityLabelInterpolation() {
+        return this.accessibilityLabelInterpolation;
+    }
+
     /**
      * Gets the current styles, taking the toggled state into account. If no
      * toggled styles are provided, the regular styles will also be used in the
@@ -378,6 +385,7 @@ export default class AbstractButton<P extends IProps, S=any> extends Component<P
         const props: any = {
             ...this.props,
             accessibilityLabel: this._getAccessibilityLabel(),
+            accessibilityLabelInterpolation: this._getAccessibilityLabelInterpolation(),
             elementAfter: this._getElementAfter(),
             icon: this._getIcon(),
             label: this._getLabel(),

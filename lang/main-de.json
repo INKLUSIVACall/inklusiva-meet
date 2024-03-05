@@ -1290,7 +1290,7 @@
             "moreActions": "Weitere Einstellungen öffnen",
             "moreActionsMenu": "Menü „Weitere Einstellungen“",
             "moreOptions": "Menü „Weitere Optionen“",
-            "mute": "Stumm schalten",
+            "mute": "Stumm schalten Shortcut {{shortcut}}",
             "muteEveryone": "Alle stummschalten",
             "muteEveryoneElse": "Alle anderen stummschalten",
             "muteEveryoneElsesVideoStream": "Alle anderen Kameras ausschalten",
