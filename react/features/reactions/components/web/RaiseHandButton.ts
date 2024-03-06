@@ -26,6 +26,7 @@ interface IProps extends AbstractButtonProps {
  */
 class RaiseHandButton extends AbstractButton<IProps> {
     accessibilityLabel = 'toolbar.accessibilityLabel.raiseHand';
+    accessibilityLabelShortcut = 'keyboardShortcuts.raiseHand';
     toggledAccessibilityLabel = 'toolbar.accessibilityLabel.lowerHand';
     icon = IconRaiseHand;
     label = 'toolbar.raiseHand';
