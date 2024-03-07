@@ -56,7 +56,7 @@
     },
     "breakoutRooms": {
         "actions": {
-            "add": "Breakout-Raum hinzufügen",
+            "add": "Einen Breakout-Raum hinzufügen",
             "autoAssign": "Automatisch auf Breakout-Räume verteilen",
             "close": "Schließen",
             "join": "Teilnehmen",
@@ -66,6 +66,7 @@
             "sendToBreakoutRoom": "Anwesende in Breakout-Raum verschieben:"
         },
         "defaultName": "Breakout-Raum #{{index}}",
+        "label": "Breakout-Raum hinzufügen",
         "mainRoom": "Hauptraum",
         "notifications": {
             "joined": "Breakout-Raum \"{{name}}\" betreten",

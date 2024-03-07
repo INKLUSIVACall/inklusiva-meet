@@ -61,7 +61,7 @@ const SaturationSlider = ({
         <div
             aria-label = { t('saturationSlider') }
             className = { classes.contextMenuSlider }>
-            <label className = { classes.contextMenuSliderLabel }>{ label }</label>
+            <label className = { classes.contextMenuSliderLabel } for = { label }>{ label }</label>
             <div
                 className = { cx('popupmenu__contents', classes.contextMenuSliderInner) }
                 onClick = { _onClick }>
@@ -72,6 +72,7 @@ const SaturationSlider = ({
                 </span>
                 <input
                     aria-label = { label }
+                    id = { label }
                     aria-valuemax = { SATURATION_SLIDER_MAXIMUM }
                     aria-valuemin = { SATURATION_SLIDER_MINIMUM }
                     aria-valuenow = { saturation }
