@@ -32,7 +32,7 @@ export const colors = {
     surface10: '#E0E0E0',
     surface11: '#FFF',
 
-    success04: '#189B55',
+    success04: '#147340',
     success05: '#1EC26A',
 
     warning05: '#F8AE1A',
