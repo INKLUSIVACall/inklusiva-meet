@@ -100,7 +100,7 @@ export default class MessageContainer extends AbstractMessageContainer<IProps, I
         return (
             <div id = 'chat-conversation-container'>
                 <div
-                    aria-labelledby = 'chat-header'
+                    aria-labelledby = 'chatconversation'
                     id = 'chatconversation'
                     onScroll = { this._onChatScroll }
                     ref = { this._messageListRef }
