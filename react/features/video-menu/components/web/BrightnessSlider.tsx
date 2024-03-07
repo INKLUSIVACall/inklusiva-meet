@@ -62,7 +62,7 @@ const BrightnessSlider = ({
         <div
             aria-label = { t('brightnessSlider') }
             className = { classes.contextMenuSlider }>
-            <label className = { classes.contextMenuSliderLabel }>{ label }</label>
+            <label className = { classes.contextMenuSliderLabel } for = { label }>{ label }</label>
             <div
                 className = { cx('popupmenu__contents', classes.contextMenuSliderInner) }
                 onClick = { _onClick }>
@@ -73,6 +73,7 @@ const BrightnessSlider = ({
                 </span>
                 <input
                     aria-label = { label }
+                    id = { label }
                     aria-valuemax = { BRIGHTNESS_SLIDER_MAXIMUM }
                     aria-valuemin = { BRIGHTNESS_SLIDER_MINIMUM }
                     aria-valuenow = { brightness }
