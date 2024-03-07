@@ -240,7 +240,8 @@
         "noPermission": "Berechtigungen nicht erteilt",
         "previewUnavailable": "Keine Vorschau verfügbar",
         "selectADevice": "Ein Gerät wählen",
-        "testAudio": "Prüfton abspielen"
+        "testAudio": "Abspielen des Prüftons",
+        "testAudioLabel": "Prüfton abspielen"
     },
     "dialIn": {
         "screenTitle": "Einwahldaten"

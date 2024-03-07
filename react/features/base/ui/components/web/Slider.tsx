@@ -22,6 +22,11 @@ interface ISliderProps {
     disabled?: boolean;
 
     /**
+     * The id of the slider.
+     */
+    id: string;
+
+    /**
      * The label of the input.
      */
     label: string;
@@ -82,6 +87,7 @@ const useStyles = makeStyles()(theme => {
 const Slider = ({
     className,
     disabled,
+    id,
     label,
     name,
     defaultValue,
@@ -96,10 +102,11 @@ const Slider = ({
     return (
         <div className = { cx(styles.formControl, isMobile && 'is-mobile', className) }>
             <div className = { styles.labelColumn }>
-                <label className = { cx(styles.labelFormat, isMobile && 'is-mobile', className) }>{label}</label>
+                <label className = { cx(styles.labelFormat, isMobile && 'is-mobile', className) } htmlFor = { id }>{ label }</label>
             </div>
             <div className = { styles.controlColumn }>
                 <input
+                    id = { id }
                     defaultValue = { defaultValue }
                     disabled = { disabled }
                     max = { max }

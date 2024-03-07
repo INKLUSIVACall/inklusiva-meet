@@ -115,6 +115,7 @@ class DistressBtnTab extends AbstractDialogTab<IProps, any> {
                 <div className = { classes.controlContainer }>
                     <div className = { classes.controlColumn }>
                         <Slider
+                            id = 'dimming-slider'
                             className = { classes.inputElement }
                             defaultValue = { dimming }
                             label = { t('settings.distressbtn.dimlights_label') }
@@ -133,6 +134,7 @@ class DistressBtnTab extends AbstractDialogTab<IProps, any> {
                 <div className = { classes.controlContainer }>
                     <div className = { classes.controlColumn }>
                         <Slider
+                            id = 'volume-slider'
                             className = { classes.inputElement }
                             defaultValue = { volume }
                             label = { t('settings.distressbtn.setvolume_label') }
@@ -164,7 +166,6 @@ class DistressBtnTab extends AbstractDialogTab<IProps, any> {
 
                     <p className = 'mt-05'>{t('settings.distressbtn.messagebtn_enable_desc')}</p>
                     <textarea
-                        aria-describedby = 'textarea_desc'
                         aria-label = 'Notfallnachricht'
                         className = { classes.textareaElement }
                         defaultValue = { messageText }
