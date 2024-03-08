@@ -101,6 +101,7 @@ export const colorMap = {
     link01: 'primary07',
     link01Hover: 'primary08',
     link01Active: 'primary06',
+    link02: '#91AEDB',
 
     // ----- Text -----
 

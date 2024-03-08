@@ -23,7 +23,7 @@ export const LeaveButton = ({ className }: IProps) => {
 
     return (
         <Button
-            accessibilityLabel = { t('breakoutRooms.actions.leaveBreakoutRoom') }
+            accessibilityLabel = { t('breakoutRooms.accessibilityLabel.leaveBreakoutRoom') }
             className = { className }
             fullWidth = { true }
             labelKey = { 'breakoutRooms.actions.leaveBreakoutRoom' }
