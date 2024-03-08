@@ -1244,6 +1244,7 @@
         "Settings": "Einstellungen",
         "accessibilityLabel": {
             "Settings": "Einstellungen ein-/ausschalten",
+            "assistanceMessage": "Dem Teilnehmer eine Anfrage auf Assistenz senden",
             "audioOnly": "„Nur Audio“ ein-/ausschalten",
             "audioRoute": "Audiogerät auswählen",
             "boo": "Buhen",
@@ -1341,6 +1342,7 @@
             "value2": "mittel",
             "value3": "laut"
         },
+        "assistanceMessage": "Anfrage auf Assistenz senden",
         "balanceTexts": {
             "value0": "links",
             "value1": "links-mitte",
