@@ -55,6 +55,9 @@
         "zeroEffect": "schaltet Video aus"
     },
     "breakoutRooms": {
+        "accessibilityLabel":{
+            "leaveBreakoutRoom": "Den Breakout-Raum verlassen"
+        },
         "actions": {
             "add": "Einen Breakout-Raum hinzufügen",
             "autoAssign": "Automatisch auf Breakout-Räume verteilen",
@@ -261,6 +264,7 @@
         "WaitingForHostTitle": "Warten auf den Beginn der Konferenz …",
         "Yes": "Ja",
         "accessibilityLabel": {
+            "Back": "Zurück",
             "Cancel": "Abbrechen (Popup schließen)",
             "Ok": "OK (Speichern und Popup schließen)",
             "close": "Popup schließen",

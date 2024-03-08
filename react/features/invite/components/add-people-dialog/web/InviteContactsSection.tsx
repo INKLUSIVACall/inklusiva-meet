@@ -13,7 +13,6 @@ function InviteContactsSection() {
 
     return (
         <>
-            <span>{t('addPeople.addContacts')}</span>
             <InviteContactsForm />
             <div className = 'invite-more-dialog separator' />
         </>
