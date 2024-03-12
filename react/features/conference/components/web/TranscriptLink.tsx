@@ -4,10 +4,12 @@ import { connect } from 'react-redux';
 import { IReduxState } from '../../../app/types';
 import { IJitsiConference } from '../../../base/conference/reducer';
 import { IconChatUnread } from '../../../base/icons/svg';
+import { translate } from '../../../base/i18n/functions';
 import Button from '../../../base/ui/components/web/Button';
 import { BUTTON_TYPES } from '../../../base/ui/constants.any';
+import { WithTranslation } from 'react-i18next';
 
-interface IProps {
+interface IProps extends WithTranslation {
 
     _conference?: IJitsiConference;
 
@@ -21,7 +23,8 @@ interface IProps {
  */
 const TranscriptLink = ({
     _transcriptionLink,
-    _conference
+    _conference,
+    t
 }: IProps) => {
 
     const onClick = () => {
@@ -31,10 +34,10 @@ const TranscriptLink = ({
     if (_transcriptionLink && _transcriptionLink !== '') {
         return (
             <Button
-                accessibilityLabel = { 'Lese-Link öffnen' }
+                accessibilityLabel = { t('transcribing.accessibility.openTranscriptLink') }
                 className = { 'ml-05 infobar-interactable infobarButton' }
                 icon = { IconChatUnread }
-                label = { 'Lese-Link öffnen' }
+                label = { t('transcribing.accessibility.openTranscriptLink') }
                 // eslint-disable-next-line react/jsx-no-bind
                 onClick = { onClick }
                 size = 'small'
@@ -53,4 +56,4 @@ const mapStateToProps = (state: IReduxState) => {
     };
 };
 
-export default connect(mapStateToProps)(TranscriptLink);
+export default translate(connect(mapStateToProps)(TranscriptLink));

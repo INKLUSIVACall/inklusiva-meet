@@ -1453,12 +1453,18 @@
         "videounmute": "Kamera ein"
     },
     "transcribing": {
+        "accessibility": {
+            "editTranscriptLink": "Den Lese-Link bearbeiten",
+            "openTranscriptLink": "Den Lese-Link öffnen"
+        },
         "ccButtonTooltip": "Untertitel ein-/ausschalten",
         "error": "Die Aufzeichnung ist fehlgeschlagen. Bitte versuchen Sie es erneut.",
         "expandedLabel": "Transkribieren ist derzeit eingeschaltet",
+        "editTranscriptLink": "Lese-Link bearbeiten",
         "failedToStart": "Transkribieren konnte nicht gestartet werden",
         "labelToolTip": "Das Meeting wird transkribiert",
         "off": "Transkribieren gestoppt",
+        "openTranscriptLink": "Lese-Link öffnen",
         "pending": "Transkribieren des Meetings wird vorbereitet…",
         "sourceLanguageDesc": "Aktuell ist die Sprache der Konferenz auf <b>{{sourceLanguage}}</b> eingestellt. <br/> Sie könne dies hier ",
         "sourceLanguageHere": "ändern",
