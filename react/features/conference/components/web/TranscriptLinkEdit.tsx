@@ -10,6 +10,9 @@ import Button from '../../../base/ui/components/web/Button';
 import { BUTTON_TYPES } from '../../../base/ui/constants.any';
 import TranscriptLinkDialog from '../../../inklusiva/transcription/components/TranscriptLinkDialog';
 
+import { translate } from '../../../base/i18n/functions';
+import { WithTranslation } from 'react-i18next';
+
 const useStyles = makeStyles()(() => {
     return {
         transcriptionLinkLabelForCaptioner: {
@@ -18,7 +21,7 @@ const useStyles = makeStyles()(() => {
     };
 });
 
-interface IProps {
+interface IProps extends WithTranslation {
 
     _isCaptioner: boolean;
 }
@@ -29,7 +32,8 @@ interface IProps {
  * @returns {ReactElement}
  */
 const TranscriptLinkEdit = ({
-    _isCaptioner
+    _isCaptioner,
+    t
 }: IProps
 ) => {
     const { classes } = useStyles();
@@ -44,10 +48,10 @@ const TranscriptLinkEdit = ({
     if (_isCaptioner) {
         return (
             <Button
-                accessibilityLabel = { 'Lese-Link bearbeiten' }
+                accessibilityLabel = { t('transcribing.accessibility.editTranscriptLink') }
                 className = { 'infobarButton ml-05 mr-05' }
                 icon = { IconGear }
-                label = { 'Lese-Link bearbeiten' }
+                label = { t('transcribing.editTranscriptLink') }
                 // eslint-disable-next-line react/jsx-no-bind
                 onClick = { onClick }
                 size = 'small'
@@ -65,4 +69,4 @@ const mapStateToProps = (state: IReduxState) => {
     };
 };
 
-export default connect(mapStateToProps)(TranscriptLinkEdit);
+export default translate(connect(mapStateToProps)(TranscriptLinkEdit));
