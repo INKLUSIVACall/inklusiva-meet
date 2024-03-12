@@ -183,8 +183,6 @@ export function getPrivateNoticeMessage(message: IMessage) {
 export function buildMessageTextFromNotification(action: { props: INotificationProps; timeout: number; uid: string; }) {
     const { titleKey, title, descriptionKey, titleArguments, uid } = action.props;
 
-    console.log('123456', action.props);
-
     switch (titleKey) {
     case 'notify.moderator':
         return i18next.t(titleKey ?? '');
@@ -197,7 +195,7 @@ export function buildMessageTextFromNotification(action: { props: INotificationP
     case 'notify.connectedThreePlusMembers':
         return `${i18next.t(titleKey ?? '', titleArguments)}.`;
     case 'toolbar.noisyAudioInputTitle':
-        return `${titleKey}${i18next.t(descriptionKey ?? '')}.`;
+        return `${i18next.t(titleKey)} ${i18next.t(descriptionKey ?? '')}.`;
     default:
         switch (uid) {
         case 'LOBBY_NOTIFICATION':
