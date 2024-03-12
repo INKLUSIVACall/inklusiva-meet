@@ -12,7 +12,8 @@ import { NOTIFY_CLICK_MODE } from '../../../toolbox/constants';
 import { isButtonEnabled } from '../../../toolbox/functions.web';
 import { IButtonProps } from '../../types';
 
-import { IconUsers } from '../../../base/icons/svg';
+import { IconHandHoldingHand } from '../../../base/icons/svg';
+import { toggleAssistancePanel } from '../../../inklusiva/rolematching/functions';
 
 interface IProps extends IButtonProps, WithTranslation {
 
@@ -57,7 +58,7 @@ class AssistanceMessageButton extends Component<IProps> {
         return (
             <ContextMenuItem
                 accessibilityLabel = { t('toolbar.accesibilityLabel.assistanceMessage') }
-                icon = { IconUsers }
+                icon = { IconHandHoldingHand }
                 onClick = { this._onClick }
                 text = { t('toolbar.assistanceMessage') } />
         );
@@ -76,7 +77,7 @@ class AssistanceMessageButton extends Component<IProps> {
         if (notifyMode === NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY) {
             return;
         }
-        //dispatch();
+        dispatch(toggleAssistancePanel(_participant));
     }
 }
 

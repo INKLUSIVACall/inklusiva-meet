@@ -1244,6 +1244,7 @@
         "Settings": "Einstellungen",
         "accessibilityLabel": {
             "Settings": "Einstellungen ein-/ausschalten",
+            "assistance": "Assistenz-Anfrage stellen",
             "assistanceMessage": "Dem Teilnehmer eine Anfrage auf Assistenz senden",
             "audioOnly": "„Nur Audio“ ein-/ausschalten",
             "audioRoute": "Audiogerät auswählen",
