@@ -149,11 +149,20 @@ const AssisteesPanel = ({ classes, _assistancePartner, _assistees, _conference, 
 
     const _onClickClose = () => {
         setLocalClose(true);
-        // _conference?.removeICRole(_assistancePartner?., IC_ROLES.ASSISTED, _localParticipant?.id);
+        _assistancePartner?.forEach(partner => {
+            _conference?.removeICRole(partner.id, IC_ROLES.ASSISTED, _localParticipant?.id); 
+        });
     };
 
-    let showDialog = _visible  && !localClose && _assistancePartner?.length > 0;
+    let isAssistancePartner = false;
+    _assistancePartner.forEach(partner => {
+        if (_conference?.checkMemberHasRole(partner.id, IC_ROLES.ASSISTED, _localParticipant?.id)) {
+            isAssistancePartner = true;
+        }
+    });
 
+    let showDialog = _visible  && !localClose && isAssistancePartner;
+    
     return showDialog ? (
         <div
             aria-modal = 'true'
@@ -212,14 +221,8 @@ const mapStateToProps = (state: IReduxState) => {
             };
         });
 
-    //let assistancePartner: IParticipant | undefined;
-
-    const assistancePartner = participants.filter((participant: IParticipant) => {
-        conference?.checkMemberHasRole(participant.icRoles, IC_ROLES.ASSISTED, localParticipant?.id);
-    });
-
-    // console.log('12345678', remoteParticipants);
-    console.log('1234567', assistancePartner);
+    const assistancePartner = participants
+        .filter((participant: IParticipant) => conference?.checkMemberHasRole(participant.id, IC_ROLES.ASSISTED, localParticipant?.id));
 
     return {
         _assistancePartner: assistancePartner,

@@ -113,11 +113,6 @@ const AssistancePanel = ({ classes, _conference, _participant, _visible, _iAmAss
         _conference?.addLocalICRole(IC_ROLES.ASSISTED, _participant?.id);
         dispatch(hideAssistancePanel());
     };
-    
-    console.log('123456 assistance', {
-        local: useSelector((state: IReduxState) => getLocalParticipant(state)),
-        participant: _participant
-    });
 
     const _onClickReleaseAssistance = () => {
         _conference?.removeLocalICRole(IC_ROLES.ASSISTED, _participant?.id);
