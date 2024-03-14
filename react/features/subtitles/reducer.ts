@@ -2,7 +2,11 @@ import ReducerRegistry from '../base/redux/ReducerRegistry';
 
 import {
     REMOVE_TRANSCRIPT_MESSAGE,
-    SET_REQUESTING_SUBTITLES, UPDATE_TRANSCRIPT_MESSAGE, UPDATE_TRANSLATION_LANGUAGE
+    SET_OLD_TRANSCRIPT_MESSAGE,
+    SET_REQUESTING_SUBTITLES,
+    UPDATE_TRANSCRIPTION_HISTORY,
+    UPDATE_TRANSCRIPT_MESSAGE,
+    UPDATE_TRANSLATION_LANGUAGE
 } from './actionTypes';
 
 /**
@@ -11,7 +15,11 @@ import {
 const defaultState = {
     _transcriptMessages: new Map(),
     _requestingSubtitles: false,
-    _language: 'transcribing.subtitlesOff'
+    _language: 'transcribing.subtitlesOff',
+    _oldTranscriptMessage: null,
+    _popupVisibility: true,
+    _transcriptionHistory: [],
+    _visibility: false
 };
 
 interface ITranscriptMessage {
@@ -25,29 +33,39 @@ export interface ISubtitlesState {
     _language: string;
     _requestingSubtitles: boolean;
     _transcriptMessages: Map<string, ITranscriptMessage> | any;
+    _oldTranscriptMessage: any;
+    _transcriptionHistory: any[];
+    _popupVisibility: boolean;
 }
 
 /**
  * Listen for actions for the transcription feature to be used by the actions
  * to update the rendered transcription subtitles.
  */
-ReducerRegistry.register<ISubtitlesState>('features/subtitles', (
-        state = defaultState, action): ISubtitlesState => {
+ReducerRegistry.register<ISubtitlesState>('features/subtitles', (state = defaultState, action): ISubtitlesState => {     
+    
     switch (action.type) {
-    case REMOVE_TRANSCRIPT_MESSAGE:
-        return _removeTranscriptMessage(state, action);
-    case UPDATE_TRANSCRIPT_MESSAGE:
-        return _updateTranscriptMessage(state, action);
-    case UPDATE_TRANSLATION_LANGUAGE:
-        return {
-            ...state,
-            _language: action.value
-        };
-    case SET_REQUESTING_SUBTITLES:
-        return {
-            ...state,
-            _requestingSubtitles: action.enabled
-        };
+        case REMOVE_TRANSCRIPT_MESSAGE:
+            return _removeTranscriptMessage(state, action);
+        case UPDATE_TRANSCRIPT_MESSAGE:
+            return _updateTranscriptMessage(state, action);
+        case UPDATE_TRANSLATION_LANGUAGE:
+            return {
+                ...state,
+                _language: action.value
+            };
+        case SET_REQUESTING_SUBTITLES:
+            return {
+                ...state,
+                _requestingSubtitles: action.enabled
+            };
+        case UPDATE_TRANSCRIPTION_HISTORY:
+            return _updateTranscriptionHistory(state, action);
+        case SET_OLD_TRANSCRIPT_MESSAGE:
+            return {
+                ...state,
+                _oldTranscriptMessage: action.oldTranscriptMessage
+            };
     }
 
     return state;
@@ -94,4 +112,16 @@ function _updateTranscriptMessage(state: ISubtitlesState, { transcriptMessageID,
         ...state,
         _transcriptMessages: newTranscriptMessages
     };
+}
+
+function _updateTranscriptionHistory(state: ISubtitlesState, transcriptionHistory: any) {
+    let newTranscriptionHistory = state._transcriptionHistory;
+    const length = newTranscriptionHistory.length; 
+
+    newTranscriptionHistory[length] = transcriptionHistory;
+
+    return {
+        ...state,
+        _transcriptionHistory: newTranscriptionHistory
+    }
 }
