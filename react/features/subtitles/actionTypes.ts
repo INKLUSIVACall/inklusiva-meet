@@ -69,3 +69,26 @@ export const TOGGLE_REQUESTING_SUBTITLES
  */
 export const SET_REQUESTING_SUBTITLES
     = 'SET_REQUESTING_SUBTITLES';
+
+/**
+ * The type of (redux) action which indicates that a transciption message
+ * needs to be set to compare two transcript messages with each other.
+ *
+ * {
+ *      type: SET_OLD_TRANSCRIPT_MESSAGE,
+        oldTranscriptMessageKey,
+        oldTranscriptMessageValue
+ * }
+ */
+export const SET_OLD_TRANSCRIPT_MESSAGE = 'SET_OLD_TRANSCRIPT_MESSAGE';
+
+/**
+ * The type of (redux) action which indicates that te transcription history needs to be updated
+ * so that the whole transcript of the meeting is saved.
+ *
+ * {
+ *      type: UPDATE_TRANSCRIPTION_HISTORY,
+        transcriptionHistory
+ * }
+ */
+export const UPDATE_TRANSCRIPTION_HISTORY = 'UPDATE_TRANSCRIPTION_HISTORY';
