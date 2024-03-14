@@ -1,8 +1,10 @@
 import {
     ENDPOINT_MESSAGE_RECEIVED,
     REMOVE_TRANSCRIPT_MESSAGE,
+    SET_OLD_TRANSCRIPT_MESSAGE,
     SET_REQUESTING_SUBTITLES,
     TOGGLE_REQUESTING_SUBTITLES,
+    UPDATE_TRANSCRIPTION_HISTORY,
     UPDATE_TRANSCRIPT_MESSAGE,
     UPDATE_TRANSLATION_LANGUAGE
 } from './actionTypes';
@@ -105,4 +107,35 @@ export function updateTranslationLanguage(value: string) {
         type: UPDATE_TRANSLATION_LANGUAGE,
         value
     };
+}
+
+/**
+ * Signals that the old transcript message has to be set to compare it with the new transcript message.
+ *
+ * @param {any} oldTranscriptMessage - The old transcript's message.
+ * @returns {{
+ *      type: SET_OLD_TRANSCRIPT_MESSAGE,
+ *      oldTranscriptMessage
+ * }}
+*/
+export function setOldTranscriptMessage(oldTranscriptMessage: any) {
+    return {
+        type: SET_OLD_TRANSCRIPT_MESSAGE,
+        oldTranscriptMessage
+    }
+}
+
+/**
+ * 
+ * @param {any[]} transcriptionHistory - The whole history of the meeting's transcript.
+ * @returns {{
+ *      type: UPDATE_TRANSCRIPTION_HISTORY,
+ *      transcriptionHistory
+ * }}
+ */
+export function updateTranscriptionHistory(transcriptionHistory: any[]) {
+    return {
+        type: UPDATE_TRANSCRIPTION_HISTORY,
+        transcriptionHistory
+    }
 }
