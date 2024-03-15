@@ -312,6 +312,7 @@ const Toolbox = ({
     function getVisibleButtons() {
         // buttons contains all ToolboxButtons, either from the toolbar or from the overflow-menu
         const buttons = getAllToolboxButtons(_customToolbarButtons);
+        // console.log('123456', buttons);
 
         setButtonsNotifyClickMode(buttons);
         const isHangupVisible = isToolbarButtonEnabled('hangup', _toolbarButtons);
