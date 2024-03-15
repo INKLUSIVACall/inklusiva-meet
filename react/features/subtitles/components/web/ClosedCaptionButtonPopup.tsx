@@ -7,10 +7,13 @@ import Button from '../../../base/ui/components/web/Button';
 import { toggleClosedCaptionPopup } from '../../actions.web';
 import AccessiblePopover from '../../../inklusiva/accessiblePopover/accessiblePopover';
 import { getClosedCaptionVisibility } from '../../functions';
-import { IconBubble } from '../../../base/icons/svg';
+import { IconArrowUp, IconBubble } from '../../../base/icons/svg';
+import ContextMenu from '../../../base/ui/components/web/ContextMenu';
+import { WithTranslation } from 'react-i18next';
+import { translate } from '../../../base/i18n/functions';
 
 
-interface IProps {
+interface IProps extends WithTranslation{
     /**
     * Component's children (the audio button).
     */
@@ -32,7 +35,7 @@ interface IProps {
     popupPlacement: string;
 }
 
-const useStyles = makeStyles()(() => {
+const useStyles = makeStyles()(theme => {
     return {
         container: {
             display: 'inline-block'
@@ -47,8 +50,8 @@ const useStyles = makeStyles()(() => {
     };
 });
 
-function _onClick() {
-    //
+function onClick() {
+    // To be implemented...
 }
 
 /**
@@ -60,17 +63,26 @@ function ClosedCaptionButtonPopover({
     children,
     isOpen,
     onClose,
-    popupPlacement
+    popupPlacement,
+    t
 }: IProps) {
     const { classes, cx } = useStyles();
 
     let content: ReactElement | null = null;
     content = (
-        <Button
-            accessibilityLabel = 'toolbar.accessibilityLabel.ccHistory'
-            className = { classes.button }
-            icon = { IconBubble }
-            onClick = { _onClick } />
+        <ContextMenu
+            aria-labelledby = 'video-settings-button'
+            className = { classes.container }
+            hidden = { false }
+            id = 'closed-caption-dialog'
+            role = 'radiogroup'
+            tabIndex = { -1 }>
+                <Button
+                    accessibilityLabel = { t('toolbar.accessibilityLabel.ccHistory') }
+                    className = { classes.button }
+                    onClick = { onClick } />
+            </ContextMenu>
+        
     )
 
     return (
@@ -105,7 +117,7 @@ function mapStateToProps(state: IReduxState) {
 }
 
 const mapDispatchToProps = {
-    onClose: toggleClosedCaptionPopup()
+    onClose: toggleClosedCaptionPopup
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ClosedCaptionButtonPopover);
+export default translate(connect(mapStateToProps, mapDispatchToProps)(ClosedCaptionButtonPopover));
