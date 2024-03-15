@@ -145,6 +145,8 @@ function _endpointMessageReceived({ dispatch, getState }: IStore, next: Function
                 
                 if (_oldTranscriptMessage != null) {
                     if (newTranscriptMessage.clearTimeOut - _oldTranscriptMessage.clearTimeOut > 10) {
+                        // If the timeout is smaller than 10ms the transcript message hasn't change.
+                        
                         // console.log('123456 history', _transcriptionHistory);
                         dispatch(updateTranscriptionHistory(newTranscriptMessage));
                     }
