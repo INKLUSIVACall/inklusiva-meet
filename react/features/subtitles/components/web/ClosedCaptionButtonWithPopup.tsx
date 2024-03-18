@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import { WithTranslation } from 'react-i18next';
-import { connect, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 
 import ClosedCaptionButton from './ClosedCaptionButton';
 import ClosedCaptionButtonPopup from './ClosedCaptionButtonPopup';
 import { IReduxState, IStore } from '../../../app/types';
 import { isMobileBrowser } from '../../../base/environment/utils';
 import { translate } from '../../../base/i18n/functions';
-import { IconArrowUp, IconBubble } from '../../../base/icons/svg';
-import JitsiMeetJS from '../../../base/lib-jitsi-meet';
-import { IGUMPendingState } from '../../../base/media/types';
+import { IconArrowUp } from '../../../base/icons/svg';
 import ToolboxButtonWithIcon from '../../../base/toolbox/components/web/ToolboxButtonWithIcon';
 import { toggleClosedCaptionPopup } from '../../actions.web';
 import { getClosedCaptionVisibility } from '../../functions';
@@ -21,11 +19,6 @@ interface IProps extends WithTranslation {
      * The button's key.
      */
     buttonKey: string;
-
-    /**
-     * The gumPending state from redux.
-     */
-    gumPending: IGUMPendingState;
 
     /**
      * External handler for click action.
@@ -43,9 +36,9 @@ interface IProps extends WithTranslation {
     language: string;
 
     /**
-     * Click handler for the small icon. Opens audio options.
+     * Click handler for the small icon.
      */
-    onCCOptionsClick: Function;
+    onPopupClick: Function;
 
     /**
      * Whether subtitles are enabled.
@@ -53,7 +46,7 @@ interface IProps extends WithTranslation {
     requestingSubtitles: boolean;
 
     /**
-     * Flag controlling the visibility of the button.
+     * Flag controlling the visibility of the popup.
      */
     visible: boolean;
 }
@@ -97,12 +90,12 @@ class ClosedCaptionButtonWithPopup extends Component<IProps> {
      * @returns {void}
      */
     _onClick(e?: React.MouseEvent) {
-        const { onCCOptionsClick, isOpen } = this.props;
+        const { onPopupClick, isOpen } = this.props;
 
         if (isOpen) {
             e?.stopPropagation();
         }
-        onCCOptionsClick();
+        onPopupClick();
     }
 
     /**
@@ -111,15 +104,15 @@ class ClosedCaptionButtonWithPopup extends Component<IProps> {
      * @inheritdoc
      */
     render() {
-        const { buttonKey, gumPending, isOpen, language, requestingSubtitles, visible, t } = this.props;
+        const { buttonKey, isOpen, language, requestingSubtitles, visible, t } = this.props;
 
         return visible ? (
             <ClosedCaptionButtonPopup>
                 <ToolboxButtonWithIcon
-                    ariaControls = 'toolbar.accessibilityLabel.ccHistory'
+                    ariaControls = { t('toolbar.accessibilityLabel.ccHistory') }
                     ariaExpanded = { isOpen }
                     ariaHasPopup = { true }
-                    ariaLabel = { t('toolbar.accessibility.ccHistory') }
+                    ariaLabel = { t('toolbar.accessibilityLabel.ccHistory') }
                     buttonKey = { buttonKey }
                     icon = { IconArrowUp }
                     iconDisabled = { false }
@@ -147,17 +140,15 @@ class ClosedCaptionButtonWithPopup extends Component<IProps> {
  */
 function mapStateToProps(state: IReduxState) {
     const { isNarrowLayout } = state['features/base/responsive-ui'];
-    const { gumPending } = state['features/base/media'].audio;
 
     return {
-        gumPending,
         isOpen: Boolean(getClosedCaptionVisibility(state)),
         visible: !isMobileBrowser() && !isNarrowLayout
     };
 }
 
 const mapDispatchToProps = {
-    onCCOptionsClick: toggleClosedCaptionPopup
-};
+    onPopupClick: toggleClosedCaptionPopup
+}
 
 export default translate(connect(mapStateToProps, mapDispatchToProps)(ClosedCaptionButtonWithPopup));

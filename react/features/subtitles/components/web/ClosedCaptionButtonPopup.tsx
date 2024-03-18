@@ -7,13 +7,13 @@ import Button from '../../../base/ui/components/web/Button';
 import { toggleClosedCaptionPopup } from '../../actions.web';
 import AccessiblePopover from '../../../inklusiva/accessiblePopover/accessiblePopover';
 import { getClosedCaptionVisibility } from '../../functions';
-import { IconArrowUp, IconBubble } from '../../../base/icons/svg';
+import { IconBubble, IconDownload } from '../../../base/icons/svg';
 import ContextMenu from '../../../base/ui/components/web/ContextMenu';
 import { WithTranslation } from 'react-i18next';
 import { translate } from '../../../base/i18n/functions';
 
 
-interface IProps extends WithTranslation{
+interface IProps extends WithTranslation {
     /**
     * Component's children (the audio button).
     */
@@ -38,28 +38,36 @@ interface IProps extends WithTranslation{
 const useStyles = makeStyles()(theme => {
     return {
         container: {
+            background: 'none',
             display: 'inline-block'
+        },
+        buttonContainer: {
+            position: 'relative',
+            right: 'auto',
+            margin: 0,
+            marginBottom: theme.spacing(1),
+            maxHeight: 'calc(100vh - 100px)',
+            overflow: 'auto',
+            width: '300px'
         },
         button: {
             padding: '2px',
+            width: '300px',
+            background: 'none',
 
             '&:hover': {
-                backgroundColor: theme.palette.action03
+                backgroundColor: theme.palette.action03Hover
             }
         }
     };
 });
-
-function onClick() {
-    // To be implemented...
-}
 
 /**
  * Popup with audio settings.
  *
  * @returns {ReactElement}
  */
-function ClosedCaptionButtonPopover({
+function ClosedCaptionButtonPopup({
     children,
     isOpen,
     onClose,
@@ -68,11 +76,21 @@ function ClosedCaptionButtonPopover({
 }: IProps) {
     const { classes, cx } = useStyles();
 
+
+    const _onClickHistory = () => {
+        // TODO
+    }
+
+    const _onClickDownload = () => {
+        // TODO
+    }
+
+    
     let content: ReactElement | null = null;
     content = (
         <ContextMenu
-            aria-labelledby = 'video-settings-button'
-            className = { classes.container }
+            aria-labelledby = 'cc-settings-button'
+            className = { classes.buttonContainer }
             hidden = { false }
             id = 'closed-caption-dialog'
             role = 'radiogroup'
@@ -80,13 +98,21 @@ function ClosedCaptionButtonPopover({
                 <Button
                     accessibilityLabel = { t('toolbar.accessibilityLabel.ccHistory') }
                     className = { classes.button }
-                    onClick = { onClick } />
+                    label = { t('toolbar.ccHistory') }
+                    icon = { IconBubble }
+                    onClick = { _onClickHistory } />
+                <Button
+                    accessibilityLabel = { t('toolbar.accessibilityLabel.ccDownload') }
+                    className = { classes.button }
+                    label = { t('toolbar.ccDownload') }
+                    icon = { IconDownload }
+                    onClick = { _onClickDownload } />
             </ContextMenu>
         
     )
 
     return (
-        <div className = { cx(classes.container, 'audio-preview') }>
+        <div className = { classes.container }>
             <AccessiblePopover
                 allowClick = { true }
                 content = { content }
@@ -118,6 +144,6 @@ function mapStateToProps(state: IReduxState) {
 
 const mapDispatchToProps = {
     onClose: toggleClosedCaptionPopup
-};
+}
 
-export default translate(connect(mapStateToProps, mapDispatchToProps)(ClosedCaptionButtonPopover));
+export default translate(connect(mapStateToProps, mapDispatchToProps)(ClosedCaptionButtonPopup));
