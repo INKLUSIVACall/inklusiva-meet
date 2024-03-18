@@ -3,6 +3,7 @@ import ReducerRegistry from '../base/redux/ReducerRegistry';
 import {
     REMOVE_TRANSCRIPT_MESSAGE,
     SET_OLD_TRANSCRIPT_MESSAGE,
+    SET_POPUP_VISIBILITY,
     SET_REQUESTING_SUBTITLES,
     UPDATE_TRANSCRIPTION_HISTORY,
     UPDATE_TRANSCRIPT_MESSAGE,
@@ -17,7 +18,7 @@ const defaultState = {
     _requestingSubtitles: false,
     _language: 'transcribing.subtitlesOff',
     _oldTranscriptMessage: null,
-    _popupVisibility: true,
+    _popupVisibility: false,
     _transcriptionHistory: [],
     _visibility: false
 };
@@ -66,6 +67,11 @@ ReducerRegistry.register<ISubtitlesState>('features/subtitles', (state = default
                 ...state,
                 _oldTranscriptMessage: action.oldTranscriptMessage
             };
+        case SET_POPUP_VISIBILITY:
+            return {
+                ...state,
+                _popupVisibility: action.visibility
+            }
     }
 
     return state;

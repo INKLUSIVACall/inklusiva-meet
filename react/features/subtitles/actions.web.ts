@@ -1,8 +1,8 @@
 import { IStore } from '../app/types';
 import { toggleDialog } from '../base/dialog/actions';
-import ClosedCaptionButtonPopup from './components/web/ClosedCaptionButtonPopup';
 
 import LanguageSelectorDialog from './components/web/LanguageSelectorDialog';
+import { setPopupVisibility } from './actions.any';
 
 export * from './actions.any';
 
@@ -25,7 +25,9 @@ export function toggleLanguageSelectorDialog() {
  * @returns {void}
  */
 export function toggleClosedCaptionPopup() {
-    return function(dispatch: IStore['dispatch']) {
-        dispatch(toggleDialog(ClosedCaptionButtonPopup));
-    };
+    return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
+        const value = getState()['features/subtitles']._popupVisibility;
+
+        dispatch(setPopupVisibility(!value));
+    };    
 }

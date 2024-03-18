@@ -92,3 +92,13 @@ export const SET_OLD_TRANSCRIPT_MESSAGE = 'SET_OLD_TRANSCRIPT_MESSAGE';
  * }
  */
 export const UPDATE_TRANSCRIPTION_HISTORY = 'UPDATE_TRANSCRIPTION_HISTORY';
+
+/**
+ * The type of (redux) action which sets the popup visibility,
+ *
+ * {
+ *      type: SET_POPUP_VISIBILITY,
+        visibility
+ * }
+ */
+export const SET_POPUP_VISIBILITY = 'SET_POPUP_VISIBILITY';

@@ -2,6 +2,7 @@ import {
     ENDPOINT_MESSAGE_RECEIVED,
     REMOVE_TRANSCRIPT_MESSAGE,
     SET_OLD_TRANSCRIPT_MESSAGE,
+    SET_POPUP_VISIBILITY,
     SET_REQUESTING_SUBTITLES,
     TOGGLE_REQUESTING_SUBTITLES,
     UPDATE_TRANSCRIPTION_HISTORY,
@@ -126,6 +127,7 @@ export function setOldTranscriptMessage(oldTranscriptMessage: any) {
 }
 
 /**
+ * The complete history of the meeting's transcription.
  * 
  * @param {any[]} transcriptionHistory - The whole history of the meeting's transcript.
  * @returns {{
@@ -137,5 +139,18 @@ export function updateTranscriptionHistory(transcriptionHistory: any[]) {
     return {
         type: UPDATE_TRANSCRIPTION_HISTORY,
         transcriptionHistory
+    }
+}
+
+/**
+ * Sets the visibility of the popup.
+ * 
+ * @param {boolean} visibility - The visibility of the popup.
+ * @returns 
+ */
+export function setPopupVisibility(visibility: boolean) {
+    return {
+        type: SET_POPUP_VISIBILITY,
+        visibility
     }
 }
