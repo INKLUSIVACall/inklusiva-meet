@@ -93,6 +93,7 @@ export const PARTICIPANT_MENU_BUTTONS = {
     MUTE_OTHERS_VIDEO: 'mute-others-video',
     MUTE_VIDEO: 'mute-video',
     PIN_TO_STAGE: 'pinToStage',
+    ASSISTANCE_MESSAGE: 'assistanceMessage',
     PRIVATE_MESSAGE: 'privateMessage',
     REMOTE_CONTROL: 'remote-control',
     SEND_PARTICIPANT_TO_ROOM: 'send-participant-to-room',

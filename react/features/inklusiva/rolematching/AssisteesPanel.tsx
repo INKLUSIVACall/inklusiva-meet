@@ -9,9 +9,11 @@ import { getCurrentConference } from '../../base/conference/functions';
 import { ICRole, IC_ROLES } from '../../base/conference/icRoles';
 import { IJitsiConference } from '../../base/conference/reducer';
 import { getLocalParticipant, getRemoteParticipants, isParticipantModerator } from '../../base/participants/functions';
-import { IParticipant } from '../../base/participants/types';
+import { IJitsiParticipant, IParticipant } from '../../base/participants/types';
 
 import { IStateful } from '../../base/app/types';
+import { toState } from '../../base/redux/functions';
+import { values } from 'lodash';
 
 const styles = (theme: Theme) => {
     return {
@@ -78,6 +80,11 @@ const styles = (theme: Theme) => {
 interface IProps {
 
     /**
+     * Participant who needs assistance from local participant.
+     */
+    _assistancePartner: IParticipant[];
+
+    /**
      * List of assistees.
      */
     _assistees: IParticipant[];
@@ -86,6 +93,16 @@ interface IProps {
      * JitsiConference instance.
      */
     _conference?: IJitsiConference;
+
+    /**
+     * The local participant.
+     */
+    _localParticipant?: IParticipant;
+
+    /**
+     * The participant to show the Assistees Panel.
+     */
+    _participant?: IParticipant;
 
     /**
      * Should the panel be visible or not.
@@ -103,7 +120,7 @@ interface IProps {
     classes: any;
 }
 
-const AssisteesPanel = ({ classes, _assistees, _conference, _visible, _isLocalParticipantModerator }: IProps) => {
+const AssisteesPanel = ({ classes, _assistancePartner, _assistees, _conference, _localParticipant, _participant, _visible, _isLocalParticipantModerator }: IProps) => {
     const { t } = useTranslation();
 
     const [ localClose, setLocalClose ] = useState(false);
@@ -132,10 +149,20 @@ const AssisteesPanel = ({ classes, _assistees, _conference, _visible, _isLocalPa
 
     const _onClickClose = () => {
         setLocalClose(true);
+        _assistancePartner?.forEach(partner => {
+            _conference?.removeICRole(partner.id, IC_ROLES.ASSISTED, _localParticipant?.id); 
+        });
     };
 
-    let showDialog = _visible && !localClose && !_isLocalParticipantModerator;
+    let isAssistancePartner = false;
+    _assistancePartner.forEach(partner => {
+        if (_conference?.checkMemberHasRole(partner.id, IC_ROLES.ASSISTED, _localParticipant?.id)) {
+            isAssistancePartner = true;
+        }
+    });
 
+    let showDialog = _visible  && !localClose && isAssistancePartner;
+    
     return showDialog ? (
         <div
             aria-modal = 'true'
@@ -162,6 +189,7 @@ const mapStateToProps = (state: IReduxState) => {
     const remoteParticipants = getRemoteParticipants(state);
     const localParticipant = getLocalParticipant(state);
     const participants = Array.from(remoteParticipants?.values() ?? []);
+    const participantToRequestFrom = state['features/inklusiva/rolematching'].participant;
 
     participants.push(localParticipant as IParticipant);
 
@@ -193,10 +221,16 @@ const mapStateToProps = (state: IReduxState) => {
             };
         });
 
+    const assistancePartner = participants
+        .filter((participant: IParticipant) => conference?.checkMemberHasRole(participant.id, IC_ROLES.ASSISTED, localParticipant?.id));
+
     return {
+        _assistancePartner: assistancePartner,
         _assistees: nonAssistet ?? [],
         _conference: conference,
         _isLocalParticipantModerator: isParticipantModerator(localParticipant),
+        _localParticipant: localParticipant,
+        _participant: participantToRequestFrom,
         _remoteParticipants: remoteParticipants,
         _visible: nonAssistet.length > 0,
     };
