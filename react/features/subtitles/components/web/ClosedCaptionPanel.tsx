@@ -27,16 +27,28 @@ interface IProps extends WithTranslation {
      */
     _isTranscriptionEnabled: boolean;
 
+    /**
+     * The transciption message.
+     */
     _message: string;
 
+    /**
+     * The participant's name to which belongs the transcription message.
+     */
     _participantsName: string;
 
     /**
      * The whole histroy of the transcription. The messages are saved in an array as 
-     * Objects with the timeout of the transcription message, the final transcription message and
-     * the name of the message's participant.
+     * Objects with the timeout of the transcription message, the final transcription message, and
+     * the name of the message's participant; as well as the stable and unstable state of the
+     * message.
      */
     _transcriptionHistory: any[];
+
+    /**
+     * The length of the ztanscription history. To update the cc panel.
+     */
+    _transcriptionHistoryLength: number;
 
     /**
      * The Redux dispatch function.
@@ -90,6 +102,7 @@ const useStyles = makeStyles()(theme => {
         panel: {
             display: 'flex',
             flexDirection: 'column',
+            overflow: 'auto',
 
             // extract header + tabs height
             height: 'calc(100% - 110px)'
@@ -98,6 +111,7 @@ const useStyles = makeStyles()(theme => {
             display: 'flex',
             fontSize: '15px',
             paddingLeft: '25px',
+            paddingRight: '20px',
             marginBottom: '1rem'
         }
     };
@@ -164,24 +178,15 @@ const ClosedCaptionHistory = ({
             <div
                 className = { classes.panel }
                 id = 'CCHistoryPanel'>
-                    <div
-                        className = { classes.content }>
-                            { _transcriptionHistory.map(renderPanelContent) }
-                    </div>
+                    { _transcriptionHistory.map(transcriptionHistory => (
+                        <div
+                            className = { classes.content }>
+                            {transcriptionHistory.participantName}: {transcriptionHistory.final}
+                        </div>
+                        )) }
             </div>
         )
         
-    }
-
-    /**
-     * Renders the content of the cc history panel out of _transcriptionHistory.
-     * 
-     * @returns 
-     */
-    function renderPanelContent(transcriptionHistory: any, index: number) {
-        return (
-            `${transcriptionHistory.participantName}: ${transcriptionHistory.final}`
-        )    
     }
 
 
@@ -206,7 +211,8 @@ function _mapStateToProps(state: IReduxState, _ownProps: any) {
     return {
         _isOpen: isOpen,
         _isTranscriptionEnabled: isTranscriptionEnabled,
-        _transcriptionHistory: transcriptionHistory
+        _transcriptionHistory: transcriptionHistory,
+        _transcriptionHistoryLength: transcriptionHistory.length
     }
 }
 
