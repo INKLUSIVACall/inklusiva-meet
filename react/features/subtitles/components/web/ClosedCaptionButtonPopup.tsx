@@ -1,10 +1,10 @@
 import React, { ReactElement, ReactNode } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
 import { IReduxState } from '../../../app/types';
 import { SMALL_MOBILE_WIDTH } from '../../../base/responsive-ui/constants';
 import Button from '../../../base/ui/components/web/Button';
-import { toggleClosedCaptionPopup } from '../../actions.web';
+import { setHistoryVisibility, toggleCCHistoryPanel, toggleClosedCaptionPopup } from '../../actions.web';
 import AccessiblePopover from '../../../inklusiva/accessiblePopover/accessiblePopover';
 import { getClosedCaptionVisibility } from '../../functions';
 import { IconBubble, IconDownload } from '../../../base/icons/svg';
@@ -28,6 +28,11 @@ interface IProps extends WithTranslation {
     * Callback executed when the popup closes.
     */
     onClose: Function;
+
+    /**
+     * Click handler for the history button.
+     */
+    onClickHistory: Function;
 
     /**
      * The popup placement enum value.
@@ -54,6 +59,8 @@ const useStyles = makeStyles()(theme => {
             padding: '2px',
             width: '300px',
             background: 'none',
+            marginBottom: '1rem',
+            textAlign: 'left',
 
             '&:hover': {
                 backgroundColor: theme.palette.action03Hover
@@ -70,15 +77,16 @@ const useStyles = makeStyles()(theme => {
 function ClosedCaptionButtonPopup({
     children,
     isOpen,
+    onClickHistory,
     onClose,
     popupPlacement,
     t
 }: IProps) {
     const { classes, cx } = useStyles();
-
+    const dispatch = useDispatch();
 
     const _onClickHistory = () => {
-        // TODO
+        onClickHistory();
     }
 
     const _onClickDownload = () => {
@@ -143,6 +151,7 @@ function mapStateToProps(state: IReduxState) {
 }
 
 const mapDispatchToProps = {
+    onClickHistory: toggleCCHistoryPanel,
     onClose: toggleClosedCaptionPopup
 }
 

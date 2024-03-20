@@ -2,6 +2,7 @@ import ReducerRegistry from '../base/redux/ReducerRegistry';
 
 import {
     REMOVE_TRANSCRIPT_MESSAGE,
+    SET_HISTORY_VISIBILITY,
     SET_OLD_TRANSCRIPT_MESSAGE,
     SET_POPUP_VISIBILITY,
     SET_REQUESTING_SUBTITLES,
@@ -20,6 +21,7 @@ const defaultState = {
     _oldTranscriptMessage: null,
     _popupVisibility: false,
     _transcriptionHistory: [],
+    _historyVisibility: false,
     _visibility: false
 };
 
@@ -36,6 +38,7 @@ export interface ISubtitlesState {
     _transcriptMessages: Map<string, ITranscriptMessage> | any;
     _oldTranscriptMessage: any;
     _transcriptionHistory: any[];
+    _historyVisibility: boolean;
     _popupVisibility: boolean;
 }
 
@@ -71,7 +74,12 @@ ReducerRegistry.register<ISubtitlesState>('features/subtitles', (state = default
             return {
                 ...state,
                 _popupVisibility: action.visibility
-            }
+            };
+        case SET_HISTORY_VISIBILITY:
+            return {
+                ...state,
+                _historyVisibility: action.historyVisibility
+            };
     }
 
     return state;
@@ -120,6 +128,15 @@ function _updateTranscriptMessage(state: ISubtitlesState, { transcriptMessageID,
     };
 }
 
+/**
+ * Reduces a specific Redux action UPDATE_TRANSCRIPTION_HISTORY of the feature
+ * transcription.
+ * 
+ * @param {Object} state 
+ * @param {any} transcriptionHistory 
+ * @returns {Object} The new state of the feature transcription after the
+ * reduction of the specified action.
+ */
 function _updateTranscriptionHistory(state: ISubtitlesState, transcriptionHistory: any) {
     let newTranscriptionHistory = state._transcriptionHistory;
     const length = newTranscriptionHistory.length; 
