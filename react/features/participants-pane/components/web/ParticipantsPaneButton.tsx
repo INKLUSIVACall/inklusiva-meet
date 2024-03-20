@@ -28,6 +28,7 @@ interface IProps extends AbstractButtonProps {
  */
 class ParticipantsPaneButton extends AbstractButton<IProps> {
     accessibilityLabel = 'toolbar.accessibilityLabel.participants';
+    accessibilityLabelShortcut = 'keyboardShortcuts.toggleParticipantsPane';
     toggledAccessibilityLabel = 'toolbar.accessibilityLabel.closeParticipantsPane';
     icon = IconUsers;
     label = 'toolbar.participants';

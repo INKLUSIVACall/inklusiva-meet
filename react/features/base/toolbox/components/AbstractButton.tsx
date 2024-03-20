@@ -2,12 +2,68 @@ import React, { Component, ReactElement, ReactNode } from 'react';
 import { WithTranslation } from 'react-i18next';
 import { GestureResponderEvent } from 'react-native';
 
-import { IStore } from '../../../app/types';
+import { IReduxState, IStore } from '../../../app/types';
 import { NOTIFY_CLICK_MODE } from '../../../toolbox/constants';
 import { combineStyles } from '../../styles/functions.any';
 
 import { Styles } from './AbstractToolboxItem';
 import ToolboxItem from './ToolboxItem';
+import { getKeyboardShortcuts } from '../../../keyboard-shortcuts/functions';
+import { IKeyboardShortcut } from '../../../keyboard-shortcuts/types';
+import { registerShortcut } from '../../../keyboard-shortcuts/actions.any';
+import { useSelector } from 'react-redux';
+
+
+/**
+* Sets the string of the accessibility label including shortcut.
+*
+* @param {boolean} alt - Whether alt key has to be pressed for shortcut.
+* @param {boolean} shift - Whether shift key has to be pressed for shortcut.
+* @param {string} shortcut - The shortcut of the button.
+* @returns {string}
+*/
+function _getShortcut(state: IReduxState, shortcutHelpDescription: string) {
+    const keyboardShortcuts = getKeyboardShortcuts(state);
+
+    if (!keyboardShortcuts) {
+        return null;
+    }
+
+    let shortcut: null|IKeyboardShortcut = null;
+    for (const value of keyboardShortcuts.values()) {
+        if (value.helpDescription === shortcutHelpDescription) {
+            shortcut = value;
+            break;
+        }
+    }
+
+    if (!shortcut) {
+        return null;
+    }
+    
+    let accessibilityLabel: string = '';
+
+    if (shortcut?.alt) {
+        let modifierKey = 'Alt';
+
+        if (window.navigator?.platform) {
+            if (window.navigator.platform.indexOf('Mac') !== -1) {
+                modifierKey = '⌥';
+            }
+        }
+
+        accessibilityLabel += modifierKey + ' +';
+    }
+    if (shortcut?.shift) {
+        let shiftKey = 'Shift';
+
+        accessibilityLabel = `${accessibilityLabel} ${shiftKey} +`;
+    }
+
+    accessibilityLabel = `${accessibilityLabel} ${shortcut?.character}`;
+
+    return (accessibilityLabel);
+}
 
 export interface IProps extends WithTranslation {
 
@@ -118,6 +174,11 @@ export default class AbstractButton<P extends IProps, S=any> extends Component<P
      * @abstract
      */
     accessibilityLabel: string;
+
+    /**
+     * Interpolation in language file for shortcuts.
+     */
+    accessibilityLabelShortcut: string;
 
     /**
      * This is the same as `accessibilityLabel`, replacing it when the button
@@ -272,6 +333,23 @@ export default class AbstractButton<P extends IProps, S=any> extends Component<P
     }
 
     /**
+     * Gets the current interpolation of the shortcut for every button in the toolbox.
+     * 
+     * @privat
+     * @returns {string}
+     */
+    _getAccessibilityLabelShortcut() {
+        if (this.accessibilityLabelShortcut) {
+            const shortcut = _getShortcut(APP.store.getState(), this.accessibilityLabelShortcut);
+            console.log('shortcut', [this.accessibilityLabelShortcut, shortcut]);
+            if (shortcut) {
+                return {shortcut: shortcut};
+            }
+        }
+        return null;
+    }
+
+    /**
      * Gets the current styles, taking the toggled state into account. If no
      * toggled styles are provided, the regular styles will also be used in the
      * toggled state.
@@ -378,6 +456,7 @@ export default class AbstractButton<P extends IProps, S=any> extends Component<P
         const props: any = {
             ...this.props,
             accessibilityLabel: this._getAccessibilityLabel(),
+            accessibilityLabelInterpolation: this._getAccessibilityLabelShortcut(),
             elementAfter: this._getElementAfter(),
             icon: this._getIcon(),
             label: this._getLabel(),
