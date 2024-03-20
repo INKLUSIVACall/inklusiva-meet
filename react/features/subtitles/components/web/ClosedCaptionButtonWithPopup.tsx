@@ -140,9 +140,14 @@ class ClosedCaptionButtonWithPopup extends Component<IProps> {
  */
 function mapStateToProps(state: IReduxState) {
     const { isNarrowLayout } = state['features/base/responsive-ui'];
+    const requesting = state['features/subtitles']._requestingSubtitles;
+    const lang = state['features/subtitles']._language;
 
     return {
         isOpen: Boolean(getClosedCaptionVisibility(state)),
+        language: lang,
+        requestingSubtitles: requesting,
+        subtitles: lang,
         visible: !isMobileBrowser() && !isNarrowLayout
     };
 }
