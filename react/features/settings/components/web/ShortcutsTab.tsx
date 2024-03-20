@@ -123,6 +123,8 @@ class ShortcutsTab extends AbstractDialogTab<IProps, any> {
             }
         }
 
+        const keyboardKeyForDisplay = keyboardKey.replace('^', 'Shift ');
+
         return (
             <li
                 className = { classes.listItem }
@@ -132,9 +134,9 @@ class ShortcutsTab extends AbstractDialogTab<IProps, any> {
                     {t(translationKey)}
                 </span>
                 <span className = { classes.listItemKey }>
-                    {keyboardKey.startsWith(':')
-                        ? `${modifierKey} + ${keyboardKey.slice(1)}`
-                        : keyboardKey}
+                    {keyboardKeyForDisplay.startsWith(':')
+                        ? `${modifierKey} + ${keyboardKeyForDisplay.slice(1)}`
+                        : keyboardKeyForDisplay}
                 </span>
             </li>
         );
