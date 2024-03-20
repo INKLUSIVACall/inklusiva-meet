@@ -111,54 +111,57 @@ class SignLangTranscriptionTab extends AbstractDialogTab<IProps, any> {
                 <p className = 'mt-05'>
                     {t('settings.transcription.intro')}
                 </p>
-                <h3>{t('settings.transcription.headlineDisplay')} </h3>
-
-                <div className = { classes.controlContainer }>
-                    <div className = { [ classes.controlColumn, classes.flexDirectionRow ].join(' ') }>
-                        <input
-                            checked = { signLangDisplay === 'window' }
-                            className = 'radio'
-                            id = 'opt1'
-                            name = 'display_radiogroup'
-                            onChange = { event =>
-                                super._onChange({
-                                    signLangDisplay: event.target.value
-                                })
-                            }
-                            type = 'radio'
-                            value = 'window' />
-                        <label
-                            className = { classes.controlColumnLabel }
-                            htmlFor = 'opt1'>
-                            {t('settings.transcription.display_option1')}
-                        </label>
+                <h3>{t('settings.transcription.headlineDisplay')}</h3>
+                <fieldset>
+                    <legend aria-hidden = 'true' ></legend>
+                    <div className = { classes.controlContainer }>
+                        <div className = { [ classes.controlColumn, classes.flexDirectionRow ].join(' ') }>
+                            <input
+                                checked = { signLangDisplay === 'window' }
+                                className = 'radio'
+                                id = 'opt1'
+                                name = 'display_radiogroup'
+                                onChange = { event =>
+                                    super._onChange({
+                                        signLangDisplay: event.target.value
+                                    })
+                                }
+                                type = 'radio'
+                                value = 'window' />
+                            <label
+                                className = { classes.controlColumnLabel }
+                                htmlFor = 'opt1'>
+                                {t('settings.transcription.display_option1')}
+                            </label>
+                        </div>
                     </div>
-                </div>
-                <div className = { classes.controlContainer }>
-                    <div className = { [ classes.controlColumn, classes.flexDirectionRow ].join(' ') }>
-                        <input
-                            checked = { signLangDisplay === 'tile' }
-                            className = 'radio'
-                            id = 'opt2'
-                            name = 'display_radiogroup'
-                            onChange = { event =>
-                                super._onChange({
-                                    signLangDisplay: event.target.value
-                                })
-                            }
-                            type = 'radio'
-                            value = 'tile' />
-                        <label
-                            className = { classes.controlColumnLabel }
-                            htmlFor = 'opt2'>
-                            {t('settings.transcription.display_option2')}
-                        </label>
+                    <div className = { classes.controlContainer }>
+                        <div className = { [ classes.controlColumn, classes.flexDirectionRow ].join(' ') }>
+                            <input
+                                checked = { signLangDisplay === 'tile' }
+                                className = 'radio'
+                                id = 'opt2'
+                                name = 'display_radiogroup'
+                                onChange = { event =>
+                                    super._onChange({
+                                        signLangDisplay: event.target.value
+                                    })
+                                }
+                                type = 'radio'
+                                value = 'tile' />
+                            <label
+                                className = { classes.controlColumnLabel }
+                                htmlFor = 'opt2'>
+                                {t('settings.transcription.display_option2')}
+                            </label>
+                        </div>
                     </div>
-                </div>
-
+                </fieldset>
+                
                 <div className = { [ classes.controlContainer, 'mt-1' ].join(' ') }>
                     <div className = { classes.controlColumn }>
                         <Slider
+                            id = 'windowsize-slider'
                             className = { classes.inputElement }
                             defaultValue = { signLangWindowSize }
                             label = { t('settings.transcription.windowsize_label') }

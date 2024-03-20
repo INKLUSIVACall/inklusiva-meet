@@ -66,10 +66,12 @@ interface IDialogProps extends IBaseDialogProps {
     back?: {
         hidden?: boolean;
         onClick?: () => void;
+        accessibilityLabel?: string;
         translationKey?: string;
     };
     cancel?: {
         hidden?: boolean;
+        accessibilityLabel?: string;
         translationKey?: string;
     };
     children?: React.ReactNode;
@@ -78,6 +80,7 @@ interface IDialogProps extends IBaseDialogProps {
     ok?: {
         disabled?: boolean;
         hidden?: boolean;
+        accessibilityLabel?: string;
         translationKey?: string;
     };
     onCancel?: () => void;
@@ -85,8 +88,14 @@ interface IDialogProps extends IBaseDialogProps {
 }
 
 const Dialog = ({
-    back = { hidden: true },
-    cancel = { translationKey: 'dialog.Cancel' },
+    back = {
+        hidden: true,
+        accessibilityLabel: 'dialog.accessibilityLabel.Back'
+    },
+    cancel = {
+        accessibilityLabel: 'dialog.accessibilityLabel.Cancel',
+        translationKey: 'dialog.Cancel'
+    },
     children,
     className,
     description,
@@ -94,7 +103,10 @@ const Dialog = ({
     disableBackdropClose,
     hideCloseButton,
     disableEnter,
-    ok = { translationKey: 'dialog.Ok' },
+    ok = {
+        accessibilityLabel: 'dialog.accessibilityLabel.Ok',
+        translationKey: 'dialog.Ok'
+    },
     onCancel,
     onSubmit,
     size,
@@ -154,18 +166,18 @@ const Dialog = ({
                 className = { classes.footer }
                 data-autofocus-inside = 'true'>
                 {!back.hidden && <Button
-                    accessibilityLabel = { t(back.translationKey ?? '') }
+                    accessibilityLabel = { back.accessibilityLabel }
                     labelKey = { back.translationKey }
                     // eslint-disable-next-line react/jsx-handler-names
                     onClick = { back.onClick }
                     type = 'secondary' />}
                 {!cancel.hidden && <Button
-                    accessibilityLabel = { t(cancel.translationKey ?? '') }
+                    accessibilityLabel = { cancel.accessibilityLabel }
                     labelKey = { cancel.translationKey }
                     onClick = { onClose }
                     type = 'tertiary' />}
                 {!ok.hidden && <Button
-                    accessibilityLabel = { t(ok.translationKey ?? '') }
+                    accessibilityLabel = { ok.accessibilityLabel }
                     disabled = { ok.disabled }
                     id = 'modal-dialog-ok-button'
                     isSubmit = { true }

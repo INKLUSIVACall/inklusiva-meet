@@ -63,7 +63,7 @@ const ZoomSlider = ({
         <div
             aria-label = { t('zoomSlider') }
             className = { classes.contextMenuSlider }>
-            <label className = { classes.contextMenuSliderLabel }>{ label }</label>
+            <label className = { classes.contextMenuSliderLabel } htmlFor = 'zoom-slider-input'>{ label }</label>
             <div
                 className = { cx('popupmenu__contents', classes.contextMenuSliderInner) }
                 onClick = { _onClick }>
@@ -74,6 +74,7 @@ const ZoomSlider = ({
                 </span>
                 <input
                     aria-label = { label }
+                    id = 'zoom-slider-input'
                     aria-valuemax = { ZOOM_SLIDER_MAXIMUM }
                     aria-valuemin = { ZOOM_SLIDER_MINIMUM }
                     aria-valuenow = { zoomLevel }

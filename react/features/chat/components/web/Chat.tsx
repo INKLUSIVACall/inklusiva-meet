@@ -218,7 +218,7 @@ const Chat = ({
             <>
                 {_isPollsEnabled && renderTabs()}
                 <div
-                    aria-labelledby = { CHAT_TABS.CHAT }
+                    aria-labelledby = { `${CHAT_TABS.CHAT}-panel` }
                     className = { cx(
                         classes.chatPanel,
                         !_isPollsEnabled && classes.chatPanelNoTabs,

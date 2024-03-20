@@ -63,7 +63,7 @@ const OpacityAdjustSlider = ({
         <div
             aria-label = { t('opacityAdjustSlider') }
             className = { classes.contextMenuSlider }>
-            <label className = { classes.contextMenuSliderLabel }>{ label }</label>
+            <label className = { classes.contextMenuSliderLabel } htmlFor = 'opacity-slider-input'>{ label }</label>
             <div
                 className = { cx('popupmenu__contents', classes.contextMenuSliderInner) }
                 onClick = { _onClick }>
@@ -74,6 +74,7 @@ const OpacityAdjustSlider = ({
                 </span>
                 <input
                     aria-label = { label }
+                    id = 'opacity-slider-input'
                     aria-valuemax = { OPACITY_SLIDER_MAXIMUM }
                     aria-valuemin = { OPACITY_SLIDER_MINIMUM }
                     aria-valuenow = { opacity }

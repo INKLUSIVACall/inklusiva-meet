@@ -169,6 +169,7 @@ class UiSettingsTab extends AbstractDialogTab<IProps, any> {
                     <div className = { classes.controlContainer }>
                         <div className = { classes.controlColumn }>
                             <Slider
+                                id = 'UI-fontsize-slider'
                                 className = { classes.inputElement }
                                 defaultValue = { fontSize }
                                 label = { t('settings.uiSettings.fontSize') }
@@ -189,6 +190,7 @@ class UiSettingsTab extends AbstractDialogTab<IProps, any> {
                     <div className = { classes.controlContainer }>
                         <div className = { classes.controlColumn }>
                             <Slider
+                                id = 'UI-icon-size-slider'
                                 className = { classes.inputElement }
                                 defaultValue = { iconSize }
                                 label = { t('settings.uiSettings.iconSize') }
@@ -255,6 +257,7 @@ class UiSettingsTab extends AbstractDialogTab<IProps, any> {
                     <div className = { classes.controlContainer }>
                         <div className = { classes.controlColumn }>
                             <Slider
+                                id = 'UI-contrast-slider'
                                 className = { classes.inputElement }
                                 defaultValue = { contrast }
                                 label = { t('settings.userVideo.contrastSliderHeadline') }
@@ -274,6 +277,7 @@ class UiSettingsTab extends AbstractDialogTab<IProps, any> {
                     <div className = { classes.controlContainer }>
                         <div className = { classes.controlColumn }>
                             <Slider
+                                id = 'UI-brightness-slider'
                                 className = { classes.inputElement }
                                 defaultValue = { brightness }
                                 label = { t('settings.userVideo.brightnessSliderHeadline') }
@@ -293,6 +297,7 @@ class UiSettingsTab extends AbstractDialogTab<IProps, any> {
                     <div className = { classes.controlContainer }>
                         <div className = { classes.controlColumn }>
                             <Slider
+                                id = 'UI-dimming-slider'
                                 className = { classes.inputElement }
                                 defaultValue = { dimming }
                                 label = { t('settings.userVideo.dimSliderHeadline') }
@@ -312,6 +317,7 @@ class UiSettingsTab extends AbstractDialogTab<IProps, any> {
                     <div className = { classes.controlContainer }>
                         <div className = { classes.controlColumn }>
                             <Slider
+                                id = 'UI-saturation-slider'
                                 className = { classes.inputElement }
                                 defaultValue = { saturation }
                                 label = { t('settings.userVideo.saturationSliderHeadline') }
@@ -331,6 +337,7 @@ class UiSettingsTab extends AbstractDialogTab<IProps, any> {
                     <div className = { classes.controlContainer }>
                         <div className = { classes.controlColumn }>
                             <Slider
+                                id = 'UI-zoom-slider'
                                 className = { classes.inputElement }
                                 defaultValue = { zoom }
                                 label = { t('settings.userVideo.zoomSliderHeadline') }

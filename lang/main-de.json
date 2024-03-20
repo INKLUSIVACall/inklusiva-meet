@@ -55,8 +55,11 @@
         "zeroEffect": "schaltet Video aus"
     },
     "breakoutRooms": {
+        "accessibilityLabel":{
+            "leaveBreakoutRoom": "Den Breakout-Raum verlassen"
+        },
         "actions": {
-            "add": "Breakout-Raum hinzufügen",
+            "add": "Einen Breakout-Raum hinzufügen",
             "autoAssign": "Automatisch auf Breakout-Räume verteilen",
             "close": "Schließen",
             "join": "Teilnehmen",
@@ -66,6 +69,7 @@
             "sendToBreakoutRoom": "Anwesende in Breakout-Raum verschieben:"
         },
         "defaultName": "Breakout-Raum #{{index}}",
+        "label": "Breakout-Raum hinzufügen",
         "mainRoom": "Hauptraum",
         "notifications": {
             "joined": "Breakout-Raum \"{{name}}\" betreten",
@@ -239,7 +243,8 @@
         "noPermission": "Berechtigungen nicht erteilt",
         "previewUnavailable": "Keine Vorschau verfügbar",
         "selectADevice": "Ein Gerät wählen",
-        "testAudio": "Prüfton abspielen"
+        "testAudio": "Abspielen des Prüftons",
+        "testAudioLabel": "Prüfton abspielen"
     },
     "dialIn": {
         "screenTitle": "Einwahldaten"
@@ -259,6 +264,7 @@
         "WaitingForHostTitle": "Warten auf den Beginn der Konferenz …",
         "Yes": "Ja",
         "accessibilityLabel": {
+            "Back": "Zurück",
             "Cancel": "Abbrechen (Popup schließen)",
             "Ok": "OK (Speichern und Popup schließen)",
             "close": "Popup schließen",
@@ -1447,12 +1453,18 @@
         "videounmute": "Kamera ein"
     },
     "transcribing": {
+        "accessibility": {
+            "editTranscriptLink": "Den Lese-Link bearbeiten",
+            "openTranscriptLink": "Den Lese-Link öffnen"
+        },
         "ccButtonTooltip": "Untertitel ein-/ausschalten",
         "error": "Die Aufzeichnung ist fehlgeschlagen. Bitte versuchen Sie es erneut.",
         "expandedLabel": "Transkribieren ist derzeit eingeschaltet",
+        "editTranscriptLink": "Lese-Link bearbeiten",
         "failedToStart": "Transkribieren konnte nicht gestartet werden",
         "labelToolTip": "Das Meeting wird transkribiert",
         "off": "Transkribieren gestoppt",
+        "openTranscriptLink": "Lese-Link öffnen",
         "pending": "Transkribieren des Meetings wird vorbereitet…",
         "sourceLanguageDesc": "Aktuell ist die Sprache der Konferenz auf <b>{{sourceLanguage}}</b> eingestellt. <br/> Sie könne dies hier ",
         "sourceLanguageHere": "ändern",
