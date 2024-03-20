@@ -61,7 +61,7 @@ const ContrastSlider = ({
         <div
             aria-label = { t('contrastSlider') }
             className = { classes.contextMenuSlider }>
-            <label className = { classes.contextMenuSliderLabel }>{ label }</label>
+            <label className = { classes.contextMenuSliderLabel } htmlFor = 'contrast-slider-input'>{ label }</label>
             <div
                 className = { cx('popupmenu__contents', classes.contextMenuSliderInner) }
                 onClick = { _onClick }>
@@ -72,6 +72,7 @@ const ContrastSlider = ({
                 </span>
                 <input
                     aria-label = { label }
+                    id = 'contrast-slider-input'
                     aria-valuemax = { CONTRAST_SLIDER_MAXIMUM }
                     aria-valuemin = { CONTRAST_SLIDER_MINIMUM }
                     aria-valuenow = { contrast }

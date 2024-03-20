@@ -47,6 +47,7 @@ const SubjectText = () => {
             content = { subject }
             position = 'bottom'>
             <div className = { classes.container }>
+                <h1 hidden >{ subject }</h1>
                 <div className = { clsx('subject-text--content', classes.content) }>{subject}</div>
             </div>
         </Tooltip>

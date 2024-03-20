@@ -127,6 +127,7 @@ class TranscriptionTab extends AbstractDialogTab<IProps, any> {
 
                 <div className = { classes.inputblockContainer }>
                     <Slider
+                        id = 'fontsize-slider'
                         className = { classes.inputElement }
                         defaultValue = { fontSize }
                         label = { t('toolbar.transcription.fontsize_label') }
@@ -143,9 +144,9 @@ class TranscriptionTab extends AbstractDialogTab<IProps, any> {
 
                 <div className = { classes.inputblockContainer }>
                     <Slider
+                        id = 'history-slider'
                         className = { classes.inputElement }
                         defaultValue = { history }
-
                         label = { t('toolbar.transcription.history_label') }
                         max = { 100 }
                         min = { 0 }

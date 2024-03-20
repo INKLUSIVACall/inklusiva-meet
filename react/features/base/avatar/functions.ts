@@ -1,16 +1,18 @@
 import GraphemeSplitter from 'grapheme-splitter';
 import _ from 'lodash';
 
-const AVATAR_COLORS = [
-    '#6A50D3',
-    '#FF9B42',
-    '#DF486F',
-    '#73348C',
-    '#B23683',
-    '#F96E57',
-    '#4380E2',
-    '#2AA076',
-    '#00A8B3'
+const AVATAR_COLORS = [ 
+    
+    // All colors are tested for color blind people with: https://color.adobe.com/de/create/color-accessibility.
+    '#7054DE', // dark lilac
+    '#66400F', // brown
+    '#A66297', // dark pink
+    '#73348C', // purple
+    '#806658', // dark beige
+    '#A64902', // orange
+    '#209950', // green
+    '#8182FF', // light blue
+    '#3200E6' // dark blue
 ];
 const wordSplitRegex = (/\s+|\.+|_+|;+|-+|,+|\|+|\/+|\\+|"+|'+|\(+|\)+|#+|&+/);
 const splitter = new GraphemeSplitter();

@@ -71,7 +71,7 @@ class AudioOutputPreview extends Component<IProps> {
                 <Button
                     accessibilityLabel = { this.props.t('deviceSelection.testAudio') }
                     className = { this.props.className }
-                    labelKey = 'deviceSelection.testAudio'
+                    labelKey = 'deviceSelection.testAudioLabel'
                     onClick = { this._onClick }
                     onKeyPress = { this._onKeyPress }
                     type = { BUTTON_TYPES.SECONDARY } />

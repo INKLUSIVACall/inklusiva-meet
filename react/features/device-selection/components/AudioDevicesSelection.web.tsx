@@ -365,6 +365,7 @@ class AudioDevicesSelection extends AbstractDialogTab<IProps, IState> {
                     <div className = { classes.controlContainer }>
                         <div className = { classes.controlColumn }>
                             <Slider
+                                id = 'volume-slider'
                                 defaultValue = { othersVolume * 100 }
                                 label = { t('settings.audioSettings.othersVolume') }
                                 max = { 100 }
@@ -381,6 +382,7 @@ class AudioDevicesSelection extends AbstractDialogTab<IProps, IState> {
                     <div className = { classes.controlContainer }>
                         <div className = { classes.controlColumn }>
                             <Slider
+                                id = 'frequency-slider'
                                 defaultValue = { highFrequencies }
                                 label = { t('settings.audioSettings.highFrequencies') }
                                 max = { 100 }
@@ -397,6 +399,7 @@ class AudioDevicesSelection extends AbstractDialogTab<IProps, IState> {
                     <div className = { classes.controlContainer }>
                         <div className = { classes.controlColumn }>
                             <Slider
+                                id = 'amplify-slider'
                                 defaultValue = { amplify }
                                 label = { t('settings.audioSettings.amplify') }
                                 max = { 3 }
@@ -413,6 +416,7 @@ class AudioDevicesSelection extends AbstractDialogTab<IProps, IState> {
                     <div className = { classes.controlContainer }>
                         <div className = { classes.controlColumn }>
                             <Slider
+                                id = 'balance-slider'
                                 defaultValue = { balance }
                                 label = { t('settings.audioSettings.balance') }
                                 max = { 4 }

@@ -65,7 +65,7 @@ function HangupMenu() {
                     style = { _styles.hangupButton }
                     type = { SECONDARY } />
                 { inBreakoutRoom && <Button
-                    accessibilityLabel = 'breakoutRooms.actions.leaveBreakoutRoom'
+                    accessibilityLabel = 'breakoutRooms.accessibilityLabel.leaveBreakoutRoom'
                     labelKey = 'breakoutRooms.actions.leaveBreakoutRoom'
                     onClick = { handleLeaveBreakoutRoom }
                     style = { _styles.hangupButton }

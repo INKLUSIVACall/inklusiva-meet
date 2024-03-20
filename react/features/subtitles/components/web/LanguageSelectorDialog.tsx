@@ -24,7 +24,7 @@ const useStyles = makeStyles()(theme => {
         spanWrapper: {
             fontWeight: 700,
             cursor: 'pointer',
-            color: theme.palette.link01,
+            color: theme.palette.link02,
             '&:hover': {
                 backgroundColor: theme.palette.ui04,
                 color: theme.palette.link01Hover
