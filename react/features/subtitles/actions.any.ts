@@ -1,6 +1,7 @@
 import {
     ENDPOINT_MESSAGE_RECEIVED,
     REMOVE_TRANSCRIPT_MESSAGE,
+    SET_HISTORY_VISIBILITY,
     SET_OLD_TRANSCRIPT_MESSAGE,
     SET_POPUP_VISIBILITY,
     SET_REQUESTING_SUBTITLES,
@@ -146,11 +147,30 @@ export function updateTranscriptionHistory(transcriptionHistory: any[]) {
  * Sets the visibility of the popup.
  * 
  * @param {boolean} visibility - The visibility of the popup.
- * @returns 
+ * @returns {{
+ *      type: SET_POPUP_VISIBILITY,
+ *      visibility
+ * }}
  */
 export function setPopupVisibility(visibility: boolean) {
     return {
         type: SET_POPUP_VISIBILITY,
         visibility
+    }
+}
+
+/**
+ * Sets the visibility of the history panel.
+ * 
+ * @param {boolean} historyVisibility 
+ * @returns {{
+ *      type: SET_HISTORY_VISIBILITY,
+ *      historyVisibility
+ * }}
+ */
+export function setHistoryVisibility(historyVisibility: boolean) {
+    return {
+        type: SET_HISTORY_VISIBILITY,
+        historyVisibility
     }
 }
