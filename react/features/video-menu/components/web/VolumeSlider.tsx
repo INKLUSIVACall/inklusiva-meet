@@ -72,10 +72,10 @@ const VolumeSlider = ({
                 </span>
                 <input
                     aria-valuemax = { VOLUME_SLIDER_SCALE }
-                    aria-valuemin = { 0 }
+                    aria-valuemin = { 1 }
                     aria-valuenow = { volumeLevel }
                     max = { VOLUME_SLIDER_SCALE }
-                    min = { 0 }
+                    min = { 1 }
                     onChange = { _onVolumeChange }
                     tabIndex = { 0 }
                     type = 'range'
