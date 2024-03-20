@@ -2,14 +2,14 @@
 import { jitsiLocalStorage } from '@jitsi/js-utils';
 import _ from 'lodash';
 
+import { SET_AUDIO_CUES_ENABLED_STATE, SET_VISUAL_CUES_ENABLED_STATE } from '../../inklusiva/uisettings/actionTypes';
+import { SET_USERDATA } from '../../inklusiva/userdata/actionTypes';
 import { APP_WILL_MOUNT } from '../app/actionTypes';
 import PersistenceRegistry from '../redux/PersistenceRegistry';
 import ReducerRegistry from '../redux/ReducerRegistry';
 import { assignIfDefined } from '../util/helpers';
 
 import { SETTINGS_UPDATED } from './actionTypes';
-import { SET_AUDIO_CUES_ENABLED_STATE, SET_VISUAL_CUES_ENABLED_STATE } from '../../inklusiva/uisettings/actionTypes';
-import { SET_USERDATA } from '../../inklusiva/userdata/actionTypes';
 
 /**
  * The default/initial redux state of the feature {@code base/settings}.
@@ -65,7 +65,7 @@ export interface ISettingsState {
     disableSelfView?: boolean;
     displayName?: string;
     email?: string;
-    hideSelfView: boolean;
+    hideSelfView?: boolean;
     hideShareAudioHelper?: boolean;
     localFlipX?: boolean;
     maxStageParticipants?: number;

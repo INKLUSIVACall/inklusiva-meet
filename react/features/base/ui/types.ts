@@ -29,6 +29,7 @@ export interface IPalette {
     link01: string;
     link01Active: string;
     link01Hover: string;
+    link02: string;
     success01: string;
     success02: string;
     support01: string;

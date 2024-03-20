@@ -39,11 +39,6 @@ export interface IProps {
     currentCameraDeviceId: string;
 
     /**
-     * Whether to show hide self view setting.
-     */
-    disableHideSelfView: boolean;
-
-    /**
      * Whether the own video is hidden or not.
      */
     hideSelfView: boolean;
@@ -145,6 +140,11 @@ const useStyles = makeStyles()(theme => {
 
         checkboxContainer: {
             padding: '10px 14px'
+        },
+        videoCheckbox: {
+            marginBottom: theme.spacing(3),
+            textAlign: 'left',
+            width: '100%'
         }
     };
 });
@@ -157,7 +157,6 @@ const VideoSettingsContent = ({
     changeFlip,
     changeSelfView,
     currentCameraDeviceId,
-    disableHideSelfView,
     hideSelfView,
     localFlipX,
     selectBackground,
@@ -333,10 +332,12 @@ const VideoSettingsContent = ({
                     onClick = { stopPropagation }>
                     <Checkbox
                         checked = { localFlipX }
+                        className = { classes.videoCheckbox }
                         label = { t('videothumbnail.mirrorVideo') }
                         onChange = { _onToggleFlip } />
                     <Checkbox
                         checked = { hideSelfView }
+                        className = { classes.videoCheckbox }
                         label = { t('videothumbnail.hideSelfView') }
                         onChange = { _onToggleSelfView } />
                 </div>
@@ -368,7 +369,7 @@ const mapDispatchToProps = (dispatch: IStore['dispatch']) => {
             dispatch(updateSettings({
                 hideSelfView: selfView,
                 disableSelfView: selfView
-            }))
+            }));
         }
     };
 };
