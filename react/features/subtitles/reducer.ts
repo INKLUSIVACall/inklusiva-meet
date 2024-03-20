@@ -141,7 +141,7 @@ function _updateTranscriptionHistory(state: ISubtitlesState, transcriptionHistor
     let newTranscriptionHistory = state._transcriptionHistory;
     const length = newTranscriptionHistory.length; 
 
-    newTranscriptionHistory[length] = transcriptionHistory;
+    newTranscriptionHistory[length] = transcriptionHistory.transcriptionHistory;
 
     return {
         ...state,
