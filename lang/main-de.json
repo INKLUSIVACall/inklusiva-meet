@@ -102,6 +102,9 @@
             "videoStopped": "Ihre Kamera ist deaktiviert"
         }
     },
+    "cc": {
+        "title": "Transkriptions-Historie"
+    },
     "chat": {
         "enter": "Chat-Raum betreten",
         "error": "Fehler: Ihre Nachricht wurde nicht versendet. Grund: {{error}}",

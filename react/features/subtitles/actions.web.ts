@@ -2,7 +2,7 @@ import { IStore } from '../app/types';
 import { toggleDialog } from '../base/dialog/actions';
 
 import LanguageSelectorDialog from './components/web/LanguageSelectorDialog';
-import { setPopupVisibility } from './actions.any';
+import { setHistoryVisibility, setPopupVisibility } from './actions.any';
 
 export * from './actions.any';
 
@@ -22,7 +22,9 @@ export function toggleLanguageSelectorDialog() {
 /**
  * Toggles the visibility of the cc popup.
  *
- * @returns {void}
+ * @returns {{
+ *      type: SET_POPUP_VISIBILITY
+ * }}
  */
 export function toggleClosedCaptionPopup() {
     return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
@@ -30,4 +32,19 @@ export function toggleClosedCaptionPopup() {
 
         dispatch(setPopupVisibility(!value));
     };    
+}
+
+/**
+ * Toggles the visibility of the cc panel.
+ * 
+ * @returns {{
+ *      type: SET_HISTORY_VISIBILITY
+ * }}
+ */
+export function toggleCCHistoryPanel() {
+    return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
+        const value = getState()['features/subtitles']._historyVisibility;
+
+        dispatch(setHistoryVisibility(!value));
+    }
 }
