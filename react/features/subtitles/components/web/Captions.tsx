@@ -58,7 +58,9 @@ class Captions extends AbstractCaptions<IProps> {
             : 'transcription-subtitles';
 
         return (
-            <div className = { className } >
+            <div 
+                className = { className }
+                aria-hidden = { true }>
                 { paragraphs }
             </div>
         );

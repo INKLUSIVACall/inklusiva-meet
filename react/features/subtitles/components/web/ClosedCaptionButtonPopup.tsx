@@ -56,11 +56,11 @@ const useStyles = makeStyles()(theme => {
             width: '300px'
         },
         button: {
-            padding: '2px',
-            width: '300px',
+            width: 'fit-content',
             background: 'none',
-            marginBottom: '1rem',
+            marginBottom: '0.7rem',
             textAlign: 'left',
+            paddingLeft: '10px',
 
             '&:hover': {
                 backgroundColor: theme.palette.action03Hover
