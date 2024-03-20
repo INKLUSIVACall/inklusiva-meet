@@ -44,6 +44,7 @@ import SendToRoomButton from './SendToRoomButton';
 import TogglePinToStageButton from './TogglePinToStageButton';
 import VerifyParticipantButton from './VerifyParticipantButton';
 import VideoSettingsContextMenu from './VideoSettingsContextMenu';
+import AssistanceMessageButton from './AssistanceMessageButton';
 
 interface IProps {
 
@@ -135,6 +136,7 @@ const ParticipantContextMenu = ({
     const { conference } = useSelector((state: IReduxState) => state['features/base/conference']);
 
     const localParticipant = useSelector(getLocalParticipant);
+    const _isRemoteParticipantModerator = Boolean(participant?.role === PARTICIPANT_ROLE.MODERATOR);
     const _isModerator = Boolean(localParticipant?.role === PARTICIPANT_ROLE.MODERATOR);
 
     const _isCoHost
@@ -277,6 +279,10 @@ const ParticipantContextMenu = ({
 
     if (stageFilmstrip) {
         buttons2.push(<TogglePinToStageButton { ...getButtonProps(BUTTONS.PIN_TO_STAGE) } />);
+    }
+
+    if(!_isModerator && !_isRemoteParticipantModerator) {
+        buttons.push(<AssistanceMessageButton { ...getButtonProps(BUTTONS.ASSISTANCE_MESSAGE) } />);
     }
 
     if (!disablePrivateChat && !visitorsMode) {

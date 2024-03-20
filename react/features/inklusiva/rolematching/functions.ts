@@ -1,4 +1,5 @@
 import { IReduxState } from '../../app/types';
+import { IParticipant } from '../../base/participants/types';
 
 import { ASSISTANCE_BREAKOUT_ROOM_HANDLED, ASSISTANCE_BREAKOUT_ROOM_UNHANDLED, HIDE_ASSISTANCE_PANEL, SHOW_ASSISTANCE_PANEL, TOGGLE_ASSISTANCE_PANEL } from './actionTypes';
 
@@ -12,9 +13,10 @@ export function getAssistancePanelVisibility(state: IReduxState) {
     return state['features/inklusiva/rolematching']?.assistancePanelVisible || false;
 }
 
-export function toggleAssistancePanel() {
+export function toggleAssistancePanel(participant?: IParticipant) {
     return {
-        type: TOGGLE_ASSISTANCE_PANEL
+        type: TOGGLE_ASSISTANCE_PANEL,
+        participant: participant
     };
 }
 

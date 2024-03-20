@@ -2,7 +2,7 @@ import { Theme } from '@mui/material';
 import { withStyles } from '@mui/styles';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { connect, useDispatch } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 
 import { IReduxState } from '../../app/types';
 import { getCurrentConference } from '../../base/conference/functions';
@@ -86,6 +86,11 @@ interface IProps {
      * Wether I am assisted or not.
      */
     _iAmAssited: boolean;
+    
+    /**
+     * The participant to send the assistance message to.
+     */
+    _participant?: IParticipant;
 
     /**
      * Should the panel be visible or not.
@@ -98,22 +103,22 @@ interface IProps {
     classes: any;
 }
 
-const AssistancePanel = ({ classes, _conference, _visible, _iAmAssited, _assistant }: IProps) => {
+const AssistancePanel = ({ classes, _conference, _participant, _visible, _iAmAssited, _assistant }: IProps) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
     console.log(_assistant);
 
     const _onClickRequestAssitance = () => {
-        _conference?.addLocalICRole(IC_ROLES.ASSISTED);
+        _conference?.addLocalICRole(IC_ROLES.ASSISTED, _participant?.id);
         dispatch(hideAssistancePanel());
     };
 
     const _onClickReleaseAssistance = () => {
-        _conference?.removeLocalICRole(IC_ROLES.ASSISTED);
+        _conference?.removeLocalICRole(IC_ROLES.ASSISTED, _participant?.id);
         _conference?.removeICRole(_assistant?.id, IC_ROLES.ASSISTANT);
         dispatch(hideAssistancePanel());
-    };
+    };  
 
     const _onClickClose = () => {
         dispatch(hideAssistancePanel());
@@ -176,6 +181,7 @@ const AssistancePanel = ({ classes, _conference, _visible, _iAmAssited, _assista
 const mapStateToProps = (state: IReduxState) => {
     const conference = getCurrentConference(state);
     const assistancePanelVisible = state['features/inklusiva/rolematching'].assistancePanelVisible;
+    const participantToRequestFrom = state['features/inklusiva/rolematching'].participant;
     const localParticipant = getLocalParticipant(state);
     let amIAssisted = false;
 
@@ -208,6 +214,7 @@ const mapStateToProps = (state: IReduxState) => {
         _conference: conference,
         _visible: assistancePanelVisible,
         _iAmAssited: amIAssisted,
+        _participant: participantToRequestFrom,
         _assistant: getAssistant()
     };
 };

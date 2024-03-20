@@ -1,3 +1,4 @@
+import { IParticipant } from '../../base/participants/types';
 import ReducerRegistry from '../../base/redux/ReducerRegistry';
 
 import {
@@ -14,6 +15,11 @@ export interface IRoleMatchingState {
      * The indicator that determines whether the assistance panel is visible.
      */
     assistancePanelVisible: boolean;
+
+    /**
+     * Which participant do I request assistance from?
+     */
+    participant?: IParticipant;
 
     /**
      * The indicator that determines whether the local participant was sent to
@@ -47,7 +53,9 @@ function _getInitialState(): IRoleMatchingState {
 
         assistancePanelVisible: false,
 
-        breakOutRoomHandled: false
+        breakOutRoomHandled: false,
+
+        participant: undefined
     };
 }
 
@@ -58,7 +66,8 @@ ReducerRegistry.register<IRoleMatchingState>(
         case TOGGLE_ASSISTANCE_PANEL:
             return {
                 ...state,
-                assistancePanelVisible: !state.assistancePanelVisible
+                assistancePanelVisible: !state.assistancePanelVisible,
+                participant: action.participant,
             };
         case SHOW_ASSISTANCE_PANEL:
             return {
@@ -68,7 +77,7 @@ ReducerRegistry.register<IRoleMatchingState>(
         case HIDE_ASSISTANCE_PANEL:
             return {
                 ...state,
-                assistancePanelVisible: false
+                assistancePanelVisible: false,
             };
         case ASSISTANCE_BREAKOUT_ROOM_HANDLED:
             return {
