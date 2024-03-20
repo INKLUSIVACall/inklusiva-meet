@@ -16,6 +16,7 @@ import { areKeyboardShortcutsEnabled } from '../../functions';
  */
 class KeyboardShortcutsButton extends AbstractButton<AbstractButtonProps> {
     accessibilityLabel = 'toolbar.accessibilityLabel.shortcuts';
+    accessibilityLabelShortcut = 'keyboardShortcuts.toggleShortcuts';
     icon = IconShortcuts;
     label = 'toolbar.shortcuts';
     tooltip = 'toolbar.shortcuts';

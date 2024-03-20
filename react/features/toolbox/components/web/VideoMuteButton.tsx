@@ -48,6 +48,7 @@ export interface IProps extends AbstractVideoMuteButtonProps {
  * @augments AbstractVideoMuteButton
  */
 class VideoMuteButton extends AbstractVideoMuteButton<IProps> {
+    accessibilityLabelShortcut = 'keyboardShortcuts.videoMute';
 
     /**
      * Initializes a new {@code VideoMuteButton} instance.
@@ -74,7 +75,7 @@ class VideoMuteButton extends AbstractVideoMuteButton<IProps> {
             character: 'V',
             alt: true,
             shift: true,
-            helpDescription: 'keyboardShortcuts.videoMute',
+            helpDescription: this.accessibilityLabelShortcut,
             handler: this._onKeyboardShortcut
         }));
     }
