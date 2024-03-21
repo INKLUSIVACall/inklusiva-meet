@@ -15,27 +15,13 @@ import { IconCloseLarge } from '../../../base/icons/svg';
 import Icon from '../../../base/icons/components/Icon';
 import { isTranscriptionEnabled } from '../../../inklusiva/transcription/functions.web';
 import { forEach } from 'lodash';
+import { HISTORY_PANEL_SIZE } from '../../constants';
 
 interface IProps extends WithTranslation {
     /**
      * Indicates whether the CC history is open.
      */
     _isOpen: boolean;
-
-    /**
-     * Indicates whether transcription is enabled.
-     */
-    _isTranscriptionEnabled: boolean;
-
-    /**
-     * The transciption message.
-     */
-    _message: string;
-
-    /**
-     * The participant's name to which belongs the transcription message.
-     */
-    _participantsName: string;
 
     /**
      * The whole histroy of the transcription. The messages are saved in an array as 
@@ -64,7 +50,7 @@ const useStyles = makeStyles()(theme => {
             overflow: 'hidden',
             position: 'relative',
             transition: 'width .16s ease-in-out',
-            width: '315px',
+            width: `${HISTORY_PANEL_SIZE}px`,
             zIndex: 300,
 
             '@media (max-width: 580px)': {
@@ -102,17 +88,19 @@ const useStyles = makeStyles()(theme => {
         panel: {
             display: 'flex',
             flexDirection: 'column',
-            overflow: 'auto',
 
             // extract header + tabs height
-            height: 'calc(100% - 110px)'
+            height: 'calc(100% - 110px)',
+            overflowAnchor: 'auto',
+            overflowY: 'scroll'
         },
         content: {
             display: 'flex',
             fontSize: '15px',
             paddingLeft: '25px',
             paddingRight: '20px',
-            marginBottom: '1rem'
+            marginBottom: '1rem',
+            overflowAnchor: 'auto'
         }
     };
 });
@@ -120,9 +108,6 @@ const useStyles = makeStyles()(theme => {
 
 const ClosedCaptionHistory = ({
     _isOpen,
-    _isTranscriptionEnabled,
-    _message,
-    _participantsName,
     _transcriptionHistory,
     dispatch,
     t
@@ -183,7 +168,7 @@ const ClosedCaptionHistory = ({
                             className = { classes.content }>
                             {transcriptionHistory.participantName}: {transcriptionHistory.final}
                         </div>
-                        )) }
+                    )) }
             </div>
         )
         
@@ -205,12 +190,10 @@ const ClosedCaptionHistory = ({
 
 function _mapStateToProps(state: IReduxState, _ownProps: any) {
     const isOpen = state['features/subtitles']._historyVisibility;
-    const isTranscriptionEnabled = state['features/subtitles']._requestingSubtitles;
     const transcriptionHistory = state['features/subtitles']._transcriptionHistory;
 
     return {
         _isOpen: isOpen,
-        _isTranscriptionEnabled: isTranscriptionEnabled,
         _transcriptionHistory: transcriptionHistory,
         _transcriptionHistoryLength: transcriptionHistory.length
     }
