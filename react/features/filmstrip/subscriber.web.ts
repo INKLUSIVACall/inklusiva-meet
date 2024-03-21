@@ -115,6 +115,18 @@ StateListenerRegistry.register(
     });
 
 /**
+ * Listens for changes in the cc history pane state to calculate the
+ * dimensions of the tile view grid and the tiles.
+ */
+StateListenerRegistry.register(
+    /* selector */ state => state['features/subtitles']._historyVisibility,
+    /* listener */ (isCCHistoryOpen, store) => {
+        const { innerWidth, innerHeight } = window;
+
+        store.dispatch(clientResized(innerWidth, innerHeight));
+    });
+
+/**
  * Listens for changes in the participant pane state to calculate the
  * dimensions of the tile view grid and the tiles.
  */
