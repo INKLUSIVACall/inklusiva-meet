@@ -14,6 +14,7 @@ import {
     SET_REDUCED_UI
 } from './actionTypes';
 import { ASPECT_RATIO_NARROW, ASPECT_RATIO_WIDE } from './constants';
+import { HISTORY_PANEL_SIZE } from '../../subtitles/constants';
 
 /**
  * Size threshold for determining if we are in reduced UI mode or not.
@@ -40,10 +41,15 @@ export function clientResized(clientWidth: number, clientHeight: number) {
         if (navigator.product !== 'ReactNative') {
             const state = getState();
             const { isOpen: isChatOpen } = state['features/chat'];
+            const isCCHistoryOpen = state['features/subtitles']._historyVisibility;
             const isParticipantsPaneOpen = getParticipantsPaneOpen(state);
 
             if (isChatOpen) {
                 availableWidth -= CHAT_SIZE;
+            }
+
+            if (isCCHistoryOpen) {
+                availableWidth -= HISTORY_PANEL_SIZE;
             }
 
             if (isParticipantsPaneOpen) {
