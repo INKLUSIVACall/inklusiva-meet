@@ -43,6 +43,7 @@ import { createDeferred } from '../../util/helpers';
 import AudioLevels from '../audio_levels/AudioLevels';
 
 import { VIDEO_CONTAINER_TYPE, VideoContainer } from './VideoContainer';
+import { HISTORY_PANEL_SIZE } from '../../../react/features/subtitles/constants';
 
 const logger = Logger.getLogger(__filename);
 
@@ -458,11 +459,16 @@ export default class LargeVideoManager {
         const state = APP.store.getState();
         const { isOpen } = state['features/chat'];
         const { width: filmstripWidth, visible } = state['features/filmstrip'];
+        const isCCHistoryOpen = state['features/subtitles']._historyVisibility;
         const isParticipantsPaneOpen = getParticipantsPaneOpen(state);
         const resizableFilmstrip = isFilmstripResizable(state);
 
         if (isParticipantsPaneOpen) {
             widthToUse -= theme.participantsPaneWidth;
+        }
+
+        if (isCCHistoryOpen) {
+            widthToUse -= HISTORY_PANEL_SIZE;
         }
 
         if (isOpen && window.innerWidth > 580) {
