@@ -1,23 +1,25 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
 
 import { IReduxState, IStore } from '../../../app/types';
 import { translate } from '../../../base/i18n/functions';
-import { getLocalParticipant } from '../../../base/participants/functions';
 import { withPixelLineHeight } from '../../../base/styles/functions.web';
-import Tabs from '../../../base/ui/components/web/Tabs';
-import PollsPane from '../../../polls/components/web/PollsPane';
 import { WithTranslation } from 'react-i18next';
-import { setHistoryVisibility } from '../../actions.any';
 import { toggleCCHistoryPanel } from '../../actions.web';
 import { IconCloseLarge } from '../../../base/icons/svg';
 import Icon from '../../../base/icons/components/Icon';
-import { isTranscriptionEnabled } from '../../../inklusiva/transcription/functions.web';
-import { forEach } from 'lodash';
 import { HISTORY_PANEL_SIZE } from '../../constants';
+import { scrollIntoView } from 'seamless-scroll-polyfill';
+import { IState } from '../../../recording/components/LiveStream/AbstractStartLiveStreamDialog';
 
 interface IProps extends WithTranslation {
+
+    /**
+     * Intersection observer used to detect intersections of messages with the bottom of the message container.
+     */
+    _bottomListObserver: IntersectionObserver;
+
     /**
      * Indicates whether the CC history is open.
      */
@@ -40,6 +42,26 @@ interface IProps extends WithTranslation {
      * The Redux dispatch function.
      */
     dispatch: IStore['dispatch'];
+}
+
+interface IState {
+    /**
+     * Indicates whether new transcription messages arrived while scolling through
+     * the history. Triggers a message (Not implemented).
+     */
+    hasNewMessages: boolean;
+
+    /**
+     * Indicates whether the user scrolled to the bottom of the history. That is when
+     * automatic scrolling is enabled for displaying new transcription messages (Does
+     * not work).
+     */
+    isScrolledToBottom: boolean;
+
+    /**
+     * The last transcriptino message in the history (Not implemented).
+     */
+    lastTranscriptionMessageID: string;
 }
 
 const useStyles = makeStyles()(theme => {
@@ -105,14 +127,25 @@ const useStyles = makeStyles()(theme => {
     };
 });
 
-
 const ClosedCaptionHistory = ({
+    _bottomListObserver,
     _isOpen,
     _transcriptionHistory,
+    _transcriptionHistoryLength,
     dispatch,
     t
 }: IProps) => {
     const { classes, cx } = useStyles();
+    
+    // Variables to check whether to scroll while a new transcription is added
+    // to the history panel, or not (this is the case if scrolled up in the
+    // transcription history). Right now we just implemented isScrolledToBottom
+    // but it does not work.
+    let state: IState = {
+        hasNewMessages: false,
+        isScrolledToBottom: true,
+        lastTranscriptionMessageID: ''
+    };
 
     const onToggleHistory = useCallback(() => {
         dispatch(toggleCCHistoryPanel());
@@ -125,6 +158,66 @@ const ClosedCaptionHistory = ({
             onToggleHistory();
         }
     }, [ _isOpen ]);
+
+    const _transcriptionsListEndRef = React.createRef<HTMLDivElement>();
+
+    useEffect(() => {
+        createBottomListObserver();
+    });
+
+    useEffect(() => {
+        if (state.isScrolledToBottom == true) {
+            if (_transcriptionsListEndRef.current) {
+                scrollIntoView(_transcriptionsListEndRef.current as Element, {
+                    behavior: 'smooth',
+                    block: 'nearest'
+                });
+            }
+        }
+    }, [_transcriptionHistoryLength]);
+
+    /**
+    * Create observer to react when scroll position is at bottom or leave the bottom.
+    *
+    * @private
+    * @returns {void}
+    */
+    const createBottomListObserver = () => {
+        const options = {
+            root: document.querySelector('#CCHistoryPanel'),
+            rootMargin: '35px',
+            threshold: 0.5
+        };
+
+        const target = document.querySelector('#transcriptionsListEnd');
+
+        if (target) {
+            _bottomListObserver = new IntersectionObserver(handleIntersectBottomList, options);
+            _bottomListObserver.observe(target);
+        }
+    }
+
+    /** .
+    * _HandleIntersectBottomList.
+    * When entry is intersecting with bottom of container set last message as last read message.
+    * When entry is not intersecting update only isScrolledToBottom with false value.
+    *
+    * @param {Array} entries - List of entries.
+    * @private
+    * @returns {void}
+    */
+    const handleIntersectBottomList = (entries: IntersectionObserverEntry[]) => {
+        entries.forEach((entry: IntersectionObserverEntry) => {
+            if (entry.isIntersecting && _transcriptionHistoryLength) {
+
+                state.isScrolledToBottom = true;
+            }
+
+            if (!entry.isIntersecting) {
+                state.isScrolledToBottom = false;
+            }
+        });
+    }
 
 
     /**
@@ -166,12 +259,17 @@ const ClosedCaptionHistory = ({
                     { _transcriptionHistory.map(transcriptionHistory => (
                         <div
                             className = { classes.content }>
-                            {transcriptionHistory.participantName}: {transcriptionHistory.final}
+                            { transcriptionHistory.participantName.length > 15 
+                                ? transcriptionHistory.participantName.substr(0, 12) + '...'
+                                : transcriptionHistory.participantName }
+                            : { transcriptionHistory.final }
                         </div>
                     )) }
+                    <div
+                        id = 'transcriptionsListEnd'
+                        ref = { _transcriptionsListEndRef } />
             </div>
         )
-        
     }
 
 
@@ -179,7 +277,7 @@ const ClosedCaptionHistory = ({
         _isOpen ? <div
             className = { classes.container }
             id = 'sideToolbarContainerCC'
-            onKeyDown = { onEscClick } >
+            onKeyDown = { onEscClick }>
                 { renderPanelHeader() }
                 { renderPanel() }
             </div>
