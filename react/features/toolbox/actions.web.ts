@@ -296,6 +296,11 @@ export function closeOverflowMenuIfOpen() {
     };
 }
 
+/**
+ * Toggles the role matching panel visibility by getting the state out of the redux state.
+ *
+ * @returns {void}
+ */
 export function toggleRoleMatchingPanel() {
     return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
         const { panelVisibility } = getState()['features/toolbox'];
