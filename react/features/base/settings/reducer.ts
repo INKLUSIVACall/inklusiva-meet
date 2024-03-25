@@ -26,7 +26,7 @@ const DEFAULT_STATE: ISettingsState = {
     disableSelfView: false,
     displayName: undefined,
     email: undefined,
-    hideSelfView: true,
+    hideSelfView: false,
     localFlipX: true,
     maxStageParticipants: 1,
     micDeviceId: undefined,
