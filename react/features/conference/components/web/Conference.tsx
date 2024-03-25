@@ -44,6 +44,7 @@ import type { AbstractProps } from '../AbstractConference';
 
 import ConferenceInfo from './ConferenceInfo';
 import { default as Notice } from './Notice';
+import AssistanceParticipantsPanel from '../../../toolbox/components/web/AssistanceParticipantsPanel';
 
 /**
  * DOM events for when full screen mode has changed. Different browsers need
@@ -288,6 +289,7 @@ class Conference extends AbstractConference<IProps, any> {
                     }
 
                     <AssisteesPanel />
+                    <AssistanceParticipantsPanel/>
                     <AssistancePanel />
                     <CalleeInfoContainer />
 

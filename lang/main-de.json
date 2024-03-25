@@ -1252,6 +1252,8 @@
             "Settings": "Einstellungen ein-/ausschalten",
             "assistance": "Assistenz-Anfrage stellen",
             "assistanceMessage": "Dem Teilnehmer eine Anfrage auf Assistenz senden",
+            "assistanceParticipantsHeader": "Teilnehmerliste zum Senden einer Assistenzanfrage",
+            "assistanceRequest": "Anfrage senden",
             "audioOnly": "„Nur Audio“ ein-/ausschalten",
             "audioRoute": "Audiogerät auswählen",
             "boo": "Buhen",
@@ -1349,14 +1351,10 @@
             "value2": "mittel",
             "value3": "laut"
         },
+        "assistanceParticipantsHeader": "Teilnehmerliste zur Assistenzanfrage",
         "assistanceMessage": "Anfrage auf Assistenz senden",
-        "balanceTexts": {
-            "value0": "links",
-            "value1": "links-mitte",
-            "value2": "mitte",
-            "value3": "recht-mitte",
-            "value4": "rechts"
-        },
+        "assistanceParticipantsListEmpty" : "Keine Teilnehmer zur Assistenz verfügbar",
+        "assistanceRequest": "Anfrage",
         "audioOnlyOff": "Modus „Nur Audio“ deaktivieren",
         "audioOnlyOn": "Modus „Nur Audio“ aktivieren",
         "audioRoute": "Audiogerät auswählen",
@@ -1364,6 +1362,13 @@
         "assistance": "Assistenz",
         "authenticate": "Anmelden",
         "backgroundNoises": "Hintergrundgeräusche reduzieren",
+        "balanceTexts": {
+            "value0": "links",
+            "value1": "links-mitte",
+            "value2": "mitte",
+            "value3": "recht-mitte",
+            "value4": "rechts"
+        },
         "boo": "Buhen",
         "callQuality": "Qualitäts-Einstellungen",
         "chat": "Chat öffnen / schließen",

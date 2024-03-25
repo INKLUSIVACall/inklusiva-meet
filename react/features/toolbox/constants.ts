@@ -238,7 +238,7 @@ export const BUTTONS_MODERATOR = [
 ];
 
 export const BUTTONS_USER = [
-    // 'rolematching',
+    'rolematching',
     'distress',
     'microphone',
     'camera',

@@ -57,6 +57,15 @@ export function getToolboxHeight() {
 }
 
 /**
+ * Helper for getting the visibility of the role matching panel.
+ *
+ * @returns {boolan} The visibility of the role matching panel.
+ */
+export function getRoleMatchingPanelVisibility(state: IReduxState) {
+    return (state['features/toolbox'].panelVisibility);
+}
+
+/**
  * Indicates if a toolbar button is enabled.
  *
  * @param {string} name - The name of the setting section as defined in
