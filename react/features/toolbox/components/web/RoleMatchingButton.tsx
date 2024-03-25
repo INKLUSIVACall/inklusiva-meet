@@ -49,7 +49,7 @@ class RoleMatchingButton extends AbstractButton<IProps> {
     _handleClick() {
         const { dispatch } = this.props;
 
-        dispatch(toggleAssistancePanel());
+        dispatch(toggleRoleMatchingPanel());
     }
 }
 
