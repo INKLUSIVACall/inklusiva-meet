@@ -342,7 +342,6 @@ export default class AbstractButton<P extends IProps, S=any> extends Component<P
     _getAccessibilityLabelShortcut() {
         if (this.accessibilityLabelShortcut) {
             const shortcut = _getShortcut(APP.store.getState(), this.accessibilityLabelShortcut);
-
             if (shortcut) {
                 return { shortcut };
             }

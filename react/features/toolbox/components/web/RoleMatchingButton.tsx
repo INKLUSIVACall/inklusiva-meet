@@ -5,7 +5,7 @@ import { isIosMobileBrowser } from '../../../base/environment/utils';
 import { translate } from '../../../base/i18n/functions';
 import { IconHandHoldingHand } from '../../../base/icons/svg';
 import AbstractButton, { IProps as AbstractButtonProps } from '../../../base/toolbox/components/AbstractButton';
-import { toggleAssistancePanel } from '../../../inklusiva/rolematching/functions';
+import { toggleRoleMatchingPanel } from '../../actions.web';
 
 interface IProps extends AbstractButtonProps {
 
@@ -48,7 +48,7 @@ class RoleMatchingButton extends AbstractButton<IProps> {
     _handleClick() {
         const { dispatch } = this.props;
 
-        dispatch(toggleAssistancePanel());
+        dispatch(toggleRoleMatchingPanel());
     }
 }
 

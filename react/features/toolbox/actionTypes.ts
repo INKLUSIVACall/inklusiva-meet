@@ -55,6 +55,17 @@ export const SET_OVERFLOW_DRAWER = 'SET_OVERFLOW_DRAWER';
 export const SET_OVERFLOW_MENU_VISIBLE = 'SET_OVERFLOW_MENU_VISIBLE';
 
 /**
+ * The type of the (redux) action which sets the visibility of the role matching panel
+ * (AssistanceParticipantsPanel).
+ *
+ * {
+ *     type: ET_PANEL_VISIBILITY,
+ *     panelVisibility: boolean
+ * }
+ */
+export const SET_PANEL_VISIBILITY = 'SET_PANEL_VISIBILITY';
+
+/**
  * The type of the action which sets the indicator which determines whether a
  * fToolbar in the Toolbox is hovered.
  *

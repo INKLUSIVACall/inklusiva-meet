@@ -7,6 +7,7 @@ import {
     SET_HANGUP_MENU_VISIBLE,
     SET_OVERFLOW_DRAWER,
     SET_OVERFLOW_MENU_VISIBLE,
+    SET_PANEL_VISIBILITY,
     SET_TOOLBAR_HOVERED,
     SET_TOOLBOX_ENABLED,
     SET_TOOLBOX_SHIFT_UP,
@@ -57,6 +58,11 @@ const INITIAL_STATE = {
     overflowMenuVisible: false,
 
     /**
+     * Determines whether the role matching panel is visible.
+     */
+    panelVisibility: false,
+
+    /**
      * Whether to shift the toolbar up (in case it overlaps the tiles names).
      */
     shiftUp: false,
@@ -85,6 +91,7 @@ export interface IToolboxState {
     hovered: boolean;
     overflowDrawer: boolean;
     overflowMenuVisible: boolean;
+    panelVisibility: boolean;
     shiftUp: boolean;
     timeoutID?: number | null;
     visible: boolean;
@@ -122,6 +129,12 @@ ReducerRegistry.register<IToolboxState>(
             return {
                 ...state,
                 overflowMenuVisible: action.visible
+            };
+
+        case SET_PANEL_VISIBILITY:
+            return {
+                ...state,
+                panelVisibility: action.panelVisibility
             };
 
         case SET_TOOLBAR_HOVERED:
