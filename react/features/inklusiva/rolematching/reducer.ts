@@ -5,6 +5,7 @@ import {
     ASSISTANCE_BREAKOUT_ROOM_HANDLED,
     ASSISTANCE_BREAKOUT_ROOM_UNHANDLED,
     HIDE_ASSISTANCE_PANEL,
+    SET_PARTICIPANT,
     SHOW_ASSISTANCE_PANEL,
     TOGGLE_ASSISTANCE_PANEL
 } from './actionTypes';
@@ -89,6 +90,11 @@ ReducerRegistry.register<IRoleMatchingState>(
                 ...state,
                 breakOutRoomHandled: false
             };
+        case SET_PARTICIPANT:
+            return {
+                ...state,
+                participant: action.participant
+            }
         }
 
         return state;
