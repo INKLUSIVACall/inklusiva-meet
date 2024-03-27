@@ -860,7 +860,7 @@
         "desc2": "Sollten Sie einen Notfall-Button nutzen, kann im Notfall eine automatische Nachricht an Ihre*n Assistent*in versendet werden.",
         "buttonAssist": "Assistenz anfragen",
         "headlineRelease": "Assitenz aufheben",
-        "descRelease": "Um die Assistenz durch aufzuheben klicken sie auf den Button",
+        "descRelease": "Um die Assistenz aufzuheben, klicken Sie auf den Button",
         "buttonRelease": "Assistenz aufheben"
     },
     "prejoin": {

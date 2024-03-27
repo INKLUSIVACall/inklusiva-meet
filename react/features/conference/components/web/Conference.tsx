@@ -289,7 +289,6 @@ class Conference extends AbstractConference<IProps, any> {
                     }
 
                     <AssisteesPanel />
-                    <AssistanceParticipantsPanel/>
                     <AssistancePanel />
                     <CalleeInfoContainer />
 

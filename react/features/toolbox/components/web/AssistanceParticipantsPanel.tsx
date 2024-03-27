@@ -84,6 +84,8 @@ interface IProps extends WithTranslation {
      */
     _conference?: IJitsiConference;
 
+    _iAmAssistant: boolean;
+
     /**
      * Wether I am assisted or not.
      */
@@ -112,7 +114,7 @@ interface IProps extends WithTranslation {
     classes: any;
 }
 
-const AssistanceParticipantsPanel = ({ classes, _conference, _localParticipant, _participant, _participantsList, _visible, _iAmAssisted, t }: IProps) => {
+const AssistanceParticipantsPanel = ({ classes, _conference, _localParticipant, _participant, _participantsList, _visible, _iAmAssistant, _iAmAssisted, t }: IProps) => {
     const dispatch = useDispatch();
 
     const onClose = () => {
@@ -147,7 +149,7 @@ const AssistanceParticipantsPanel = ({ classes, _conference, _localParticipant, 
                         onClick = { onClose } />
                 </div>
                 <div className = { classes.inputblockContainer }>
-                    { !_iAmAssisted && _participantsList.length > 0 && (
+                    { !_iAmAssisted && _participantsList.length > 0 && !_iAmAssistant && (
                         _participantsList.map(participant => (
                             <div key = { participant.id } className = { classes.inputblock }>
                                 <div className = { classes.inputDescription }>{ participant.name }</div>
@@ -158,7 +160,7 @@ const AssistanceParticipantsPanel = ({ classes, _conference, _localParticipant, 
                                     onClick = { () => onClickRequest(participant) }/>
                             </div>
                         ))) }
-                    { !_iAmAssisted && _participantsList.length <= 0 && (
+                    { (!_iAmAssisted && (_participantsList.length <= 0 || _iAmAssistant)) && (
                         <div className = { classes.inputblock }>
                             <div className = { classes.inputDescription }>{ t('toolbar.assistanceParticipantsListEmpty') }</div>
                         </div>
@@ -187,20 +189,28 @@ const mapStateToProps = (state: IReduxState) => {
     const participantToRequestFrom = state['features/inklusiva/rolematching'].participant;
 
     let amIAssisted = false;
+    let amIAssistant = false;
 
     localParticipant?.icRoles?.forEach((role: ICRole) => {
         if (role.name === IC_ROLES.ASSISTED) {
             amIAssisted = true;
         }
     });
+    localParticipant?.icRoles?.forEach((role: ICRole) => {
+        if (role.name === IC_ROLES.ASSISTANT) {
+            amIAssistant = true;
+        }
+    });
 
-    const remoteParticipantsList = remoteParticipants                                                                // no local participants
-        .filter((participant: IParticipant) => !conference?.checkMemberHasRole(participant.id, IC_ROLES.ASSISTANT))  // no assistants
-        .filter((participant: IParticipant) => !conference?.checkMemberHasRole(participant.id, IC_ROLES.ASSISTED))   // no assistees
-        .filter((participant: IParticipant) => !isParticipantModerator(participant));                                // no moderators
+    console.log('123456', amIAssistant);
+    const remoteParticipantsList = remoteParticipants                                                                  // no local participants
+        .filter((participant: IParticipant) => !conference?.checkMemberHasRole(participant.id, IC_ROLES.ASSISTANT))    // no assistants
+        .filter((participant: IParticipant) => !conference?.checkMemberHasRole(participant.id, IC_ROLES.ASSISTED))     // no assistees
+        .filter((participant: IParticipant) => !isParticipantModerator(participant));                                  // no moderators
 
     return {
         _conference: conference,
+        _iAmAssistant: amIAssistant,
         _iAmAssisted: amIAssisted,
         _localParticipant: localParticipant,
         _participant: participantToRequestFrom,

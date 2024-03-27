@@ -11,9 +11,7 @@ import { IJitsiConference } from '../../base/conference/reducer';
 import { getLocalParticipant, getRemoteParticipants, isParticipantModerator } from '../../base/participants/functions';
 import { IJitsiParticipant, IParticipant } from '../../base/participants/types';
 
-import { IStateful } from '../../base/app/types';
-import { toState } from '../../base/redux/functions';
-import { values } from 'lodash';
+import { getParticipant } from './functions';
 
 const styles = (theme: Theme) => {
     return {
@@ -189,7 +187,6 @@ const mapStateToProps = (state: IReduxState) => {
     const remoteParticipants = getRemoteParticipants(state);
     const localParticipant = getLocalParticipant(state);
     const participants = Array.from(remoteParticipants?.values() ?? []);
-    const participantToRequestFrom = state['features/inklusiva/rolematching'].participant;
 
     participants.push(localParticipant as IParticipant);
 
@@ -230,7 +227,7 @@ const mapStateToProps = (state: IReduxState) => {
         _conference: conference,
         _isLocalParticipantModerator: isParticipantModerator(localParticipant),
         _localParticipant: localParticipant,
-        _participant: participantToRequestFrom,
+        _participant: getParticipant(state),
         _remoteParticipants: remoteParticipants,
         _visible: nonAssistet.length > 0,
     };
