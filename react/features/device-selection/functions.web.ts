@@ -140,8 +140,6 @@ export function getVideoDeviceSelectionDialogProps(stateful: IStateful, isDispla
     // when self view is controlled by the config we hide the settings
     const { disableSelfView, disableSelfViewSettings } = state['features/base/config'];
     const hideSelfView = state['features/base/settings'].hideSelfView;
-    console.log('123456', hideSelfView);
-    console.log('123456', disableSelfView);
     const hideAdditionalSettings = isPrejoinPageVisible(state) || isDisplayedOnWelcomePage;
     const framerate = state['features/screen-share'].captureFrameRate ?? SS_DEFAULT_FRAME_RATE;
 

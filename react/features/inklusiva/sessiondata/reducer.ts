@@ -1,9 +1,10 @@
 import ReducerRegistry from '../../base/redux/ReducerRegistry';
 
-import { SET_INDISTRESS_DISABLED, SET_INDISTRESS_ENABLED } from './actionTypes';
+import { SET_INDISTRESS_DISABLED, SET_INDISTRESS_ENABLED, SET_MEETING_NAME } from './actionTypes';
 
 export interface ISessionData {
     inDistress: boolean;
+    meetingName: string;
 }
 
 /**
@@ -17,7 +18,12 @@ export interface ISessionData {
  */
 ReducerRegistry.register<ISessionData>(
     'features/inklusiva/sessiondata',
-    (state = { inDistress: false }, action): ISessionData => {
+    (
+            state = {
+                inDistress: false,
+                meetingName: ''
+            }, action
+    ): ISessionData => {
         const nextState = state;
 
         switch (action.type) {
@@ -28,6 +34,11 @@ ReducerRegistry.register<ISessionData>(
         }
         case SET_INDISTRESS_DISABLED: {
             nextState.inDistress = false;
+
+            return { ...nextState };
+        }
+        case SET_MEETING_NAME: {
+            nextState.meetingName = action.meetingName;
 
             return { ...nextState };
         }

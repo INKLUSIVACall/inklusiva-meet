@@ -29,3 +29,4 @@ export function persistSentPrivateMessage({ dispatch, getState }: IStore, recipi
         timestamp: Date.now()
     }));
 }
+
