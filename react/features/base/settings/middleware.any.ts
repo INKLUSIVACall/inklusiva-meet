@@ -10,8 +10,6 @@ import { parseURLParams } from '../util/parseURLParams';
 
 import { SETTINGS_UPDATED } from './actionTypes';
 import { updateSettings } from './actions';
-import { SET_USERDATA } from '../../inklusiva/userdata/actionTypes';
-import { setAudioCuesEnabledState } from '../../inklusiva/userdata/actions';
 
 /**
  * The middleware of the feature base/settings. Distributes changes to the state

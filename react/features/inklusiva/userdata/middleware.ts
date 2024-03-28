@@ -4,6 +4,7 @@ import { AnyAction } from 'redux';
 
 import { IStore } from '../../app/types';
 import MiddlewareRegistry from '../../base/redux/MiddlewareRegistry';
+import { setMeetingName } from '../sessiondata/actions';
 import { updateTranscriptLink } from '../transcription/actions.web';
 
 import { SET_USERDATA } from './actionTypes';
@@ -62,6 +63,11 @@ function _setUserdata(store: IStore, next: Function, action: AnyAction) {
 
                 if (context) {
                     action.userData = _parseUserData(context.userData);
+
+                    // eslint-disable-next-line max-depth
+                    if (context.meetingName) {
+                        store.dispatch(setMeetingName(context.meetingName));
+                    }
 
                     // eslint-disable-next-line max-depth
                     if (context.userData.readlink) {

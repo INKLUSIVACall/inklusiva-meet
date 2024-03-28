@@ -186,6 +186,13 @@ export function forEachConference(
 export function getConferenceName(stateful: IStateful): string {
     const state = toState(stateful);
     const { callee } = state['features/base/jwt'];
+
+    const { meetingName } = state['features/inklusiva/sessiondata'];
+
+    if (meetingName !== '') {
+        return meetingName;
+    }
+
     const { callDisplayName } = state['features/base/config'];
     const { localSubject, pendingSubjectChange, room, subject } = getConferenceState(state);
 

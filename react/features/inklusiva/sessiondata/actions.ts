@@ -1,6 +1,6 @@
 import { IStore } from '../../app/types';
 
-import { SET_INDISTRESS_DISABLED, SET_INDISTRESS_ENABLED } from './actionTypes';
+import { SET_INDISTRESS_DISABLED, SET_INDISTRESS_ENABLED, SET_MEETING_NAME } from './actionTypes';
 import { userInDistress } from './functions';
 
 export function setInDistress() {
@@ -22,6 +22,13 @@ export function toggleInDistress() {
         } else {
             dispatch(setInDistress());
         }
+    };
+}
+
+export function setMeetingName(meetingName: string) {
+    return {
+        type: SET_MEETING_NAME,
+        meetingName
     };
 }
 
