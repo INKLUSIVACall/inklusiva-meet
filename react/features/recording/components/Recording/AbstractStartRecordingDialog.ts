@@ -50,6 +50,11 @@ export interface IProps extends WithTranslation {
     _isDropboxEnabled: boolean;
 
     /**
+     * Whether or not Jibri is ready.
+     */
+    _jibriReady: boolean;
+
+    /**
      * Whether or not local recording is enabled.
      */
     _localRecordingEnabled: boolean;

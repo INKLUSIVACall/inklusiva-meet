@@ -13,7 +13,6 @@ import AbstractStartRecordingDialog, {
 
 import StartRecordingDialogContent from './StartRecordingDialogContent';
 
-
 /**
  * React Component for getting confirmation to start a file recording session in
  * progress.
@@ -21,7 +20,6 @@ import StartRecordingDialogContent from './StartRecordingDialogContent';
  * @augments Component
  */
 class StartRecordingDialog extends AbstractStartRecordingDialog {
-
     /**
      * Disables start recording button.
      *
@@ -60,25 +58,48 @@ class StartRecordingDialog extends AbstractStartRecordingDialog {
             spaceLeft,
             userName
         } = this.state;
-        const {
-            _fileRecordingsServiceEnabled,
-            _fileRecordingsServiceSharingEnabled
-        } = this.props;
+        const { _fileRecordingsServiceEnabled, _fileRecordingsServiceSharingEnabled, _jibriReady } = this.props;
+
+        if (_jibriReady === true) {
+            return (
+                <Dialog
+                    ok = {{
+                        translationKey: 'dialog.startRecording',
+                        disabled: this.isStartRecordingDisabled()
+                    }}
+                    onSubmit = { this._onSubmit }
+                    titleKey = 'dialog.startRecording'>
+                    <StartRecordingDialogContent
+                        fileRecordingsServiceEnabled = { _fileRecordingsServiceEnabled }
+                        fileRecordingsServiceSharingEnabled = { _fileRecordingsServiceSharingEnabled }
+                        integrationsEnabled = { this._areIntegrationsEnabled() }
+                        isTokenValid = { isTokenValid }
+                        isValidating = { isValidating }
+                        jibriReady = { _jibriReady }
+                        localRecordingOnlySelf = { localRecordingOnlySelf }
+                        onChange = { this._onSelectedRecordingServiceChanged }
+                        onLocalRecordingSelfChange = { this._onLocalRecordingSelfChange }
+                        onSharingSettingChanged = { this._onSharingSettingChanged }
+                        selectedRecordingService = { selectedRecordingService }
+                        sharingSetting = { sharingEnabled }
+                        spaceLeft = { spaceLeft }
+                        userName = { userName } />
+                </Dialog>
+            );
+        }
 
         return (
             <Dialog
                 ok = {{
-                    translationKey: 'dialog.startRecording',
-                    disabled: this.isStartRecordingDisabled()
-                }}
-                onSubmit = { this._onSubmit }
-                titleKey = 'dialog.startRecording'>
+                    hidden: true
+                }}>
                 <StartRecordingDialogContent
                     fileRecordingsServiceEnabled = { _fileRecordingsServiceEnabled }
                     fileRecordingsServiceSharingEnabled = { _fileRecordingsServiceSharingEnabled }
                     integrationsEnabled = { this._areIntegrationsEnabled() }
                     isTokenValid = { isTokenValid }
                     isValidating = { isValidating }
+                    jibriReady = { _jibriReady }
                     localRecordingOnlySelf = { localRecordingOnlySelf }
                     onChange = { this._onSelectedRecordingServiceChanged }
                     onLocalRecordingSelfChange = { this._onLocalRecordingSelfChange }
@@ -115,6 +136,7 @@ class StartRecordingDialog extends AbstractStartRecordingDialog {
 function mapStateToProps(state: IReduxState, ownProps: any) {
     return {
         ...abstractMapStateToProps(state, ownProps),
+        _jibriReady: state['features/inklusiva/sessiondata'].jibriReady,
         _screenshotCaptureEnabled: isScreenshotCaptureEnabled(state, true, false)
     };
 }

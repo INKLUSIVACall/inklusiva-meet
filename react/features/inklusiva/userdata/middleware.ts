@@ -87,11 +87,7 @@ function _setUserdata(store: IStore, next: Function, action: AnyAction) {
                                         store.dispatch(setJibriReady(false));
                                     })
                                     .then(response => {
-                                        if (response.ready === true) {
-                                            store.dispatch(setJibriReady(true));
-                                        } else {
-                                            store.dispatch(setJibriReady(false));
-                                        }
+                                        store.dispatch(setJibriReady(response.ready));
                                     });
                             }, jibriInstanceCheck.interval);
                         }
