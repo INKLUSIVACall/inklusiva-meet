@@ -96,6 +96,11 @@ export interface IProps extends WithTranslation {
     isVpaas: boolean;
 
     /**
+     * Whether or not the Jibri is ready.
+     */
+    jibriReady: boolean;
+
+    /**
      * Whether or not we should only record the local streams.
      */
     localRecordingOnlySelf?: boolean;
