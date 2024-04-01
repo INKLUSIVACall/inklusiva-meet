@@ -448,6 +448,10 @@ export interface IConfig {
     jaasActuatorUrl?: string;
     jaasFeedbackMetadataURL?: string;
     jaasTokenUrl?: string;
+    jibriInstanceCheck?: {
+        interval: number;
+        url: string;
+    };
     legalUrls?: {
         helpCentre: string;
         privacy: string;

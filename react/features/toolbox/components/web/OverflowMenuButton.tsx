@@ -10,6 +10,8 @@ import ContextMenu from '../../../base/ui/components/web/ContextMenu';
 import ContextMenuItemGroup from '../../../base/ui/components/web/ContextMenuItemGroup';
 import { setGifMenuVisibility } from '../../../gifs/actions';
 import { isGifsMenuOpen } from '../../../gifs/functions.web';
+import AccessibleDialogPortal from '../../../inklusiva/accessiblePopover/accessibleDialogPortal';
+import AccessiblePopover from '../../../inklusiva/accessiblePopover/accessiblePopover';
 import ReactionEmoji from '../../../reactions/components/web/ReactionEmoji';
 import ReactionsMenu from '../../../reactions/components/web/ReactionsMenu';
 import {
@@ -26,8 +28,6 @@ import { showOverflowDrawer } from '../../functions.web';
 import Drawer from './Drawer';
 import JitsiPortal from './JitsiPortal';
 import OverflowToggleButton from './OverflowToggleButton';
-import AccessibleDialogPortal from '../../../inklusiva/accessiblePopover/accessibleDialogPortal';
-import AccessiblePopover from '../../../inklusiva/accessiblePopover/accessiblePopover';
 
 /**
  * The type of the React {@code Component} props of {@link OverflowMenuButton}.

@@ -1,10 +1,18 @@
 import ReducerRegistry from '../../base/redux/ReducerRegistry';
 
-import { SET_INDISTRESS_DISABLED, SET_INDISTRESS_ENABLED, SET_MEETING_NAME } from './actionTypes';
+import {
+    SET_INDISTRESS_DISABLED,
+    SET_INDISTRESS_ENABLED,
+    SET_JIBRI_READY,
+    SET_MEETING_NAME,
+    SET_RECORDING_ENABLED
+} from './actionTypes';
 
 export interface ISessionData {
     inDistress: boolean;
+    jibriReady: boolean;
     meetingName: string;
+    recordingEnabled: boolean;
 }
 
 /**
@@ -21,8 +29,11 @@ ReducerRegistry.register<ISessionData>(
     (
             state = {
                 inDistress: false,
-                meetingName: ''
-            }, action
+                meetingName: '',
+                recordingEnabled: false,
+                jibriReady: false
+            },
+            action
     ): ISessionData => {
         const nextState = state;
 
@@ -39,6 +50,16 @@ ReducerRegistry.register<ISessionData>(
         }
         case SET_MEETING_NAME: {
             nextState.meetingName = action.meetingName;
+
+            return { ...nextState };
+        }
+        case SET_RECORDING_ENABLED: {
+            nextState.recordingEnabled = action.enabled;
+
+            return { ...nextState };
+        }
+        case SET_JIBRI_READY: {
+            nextState.jibriReady = action.ready;
 
             return { ...nextState };
         }

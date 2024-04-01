@@ -1,17 +1,17 @@
 import React, { Component, ReactElement, ReactNode } from 'react';
 import { WithTranslation } from 'react-i18next';
 import { GestureResponderEvent } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import { IReduxState, IStore } from '../../../app/types';
+import { registerShortcut } from '../../../keyboard-shortcuts/actions.any';
+import { getKeyboardShortcuts } from '../../../keyboard-shortcuts/functions';
+import { IKeyboardShortcut } from '../../../keyboard-shortcuts/types';
 import { NOTIFY_CLICK_MODE } from '../../../toolbox/constants';
 import { combineStyles } from '../../styles/functions.any';
 
 import { Styles } from './AbstractToolboxItem';
 import ToolboxItem from './ToolboxItem';
-import { getKeyboardShortcuts } from '../../../keyboard-shortcuts/functions';
-import { IKeyboardShortcut } from '../../../keyboard-shortcuts/types';
-import { registerShortcut } from '../../../keyboard-shortcuts/actions.any';
-import { useSelector } from 'react-redux';
 
 
 /**
@@ -29,7 +29,8 @@ function _getShortcut(state: IReduxState, shortcutHelpDescription: string) {
         return null;
     }
 
-    let shortcut: null|IKeyboardShortcut = null;
+    let shortcut: null | IKeyboardShortcut = null;
+
     for (const value of keyboardShortcuts.values()) {
         if (value.helpDescription === shortcutHelpDescription) {
             shortcut = value;
@@ -40,8 +41,8 @@ function _getShortcut(state: IReduxState, shortcutHelpDescription: string) {
     if (!shortcut) {
         return null;
     }
-    
-    let accessibilityLabel: string = '';
+
+    let accessibilityLabel = '';
 
     if (shortcut?.alt) {
         let modifierKey = 'Alt';
@@ -52,17 +53,17 @@ function _getShortcut(state: IReduxState, shortcutHelpDescription: string) {
             }
         }
 
-        accessibilityLabel += modifierKey + ' +';
+        accessibilityLabel += `${modifierKey} +`;
     }
     if (shortcut?.shift) {
-        let shiftKey = 'Shift';
+        const shiftKey = 'Shift';
 
         accessibilityLabel = `${accessibilityLabel} ${shiftKey} +`;
     }
 
     accessibilityLabel = `${accessibilityLabel} ${shortcut?.character}`;
 
-    return (accessibilityLabel);
+    return accessibilityLabel;
 }
 
 export interface IProps extends WithTranslation {
@@ -334,18 +335,19 @@ export default class AbstractButton<P extends IProps, S=any> extends Component<P
 
     /**
      * Gets the current interpolation of the shortcut for every button in the toolbox.
-     * 
-     * @privat
+     *
+     * @private
      * @returns {string}
      */
     _getAccessibilityLabelShortcut() {
         if (this.accessibilityLabelShortcut) {
             const shortcut = _getShortcut(APP.store.getState(), this.accessibilityLabelShortcut);
-            console.log('shortcut', [this.accessibilityLabelShortcut, shortcut]);
+
             if (shortcut) {
-                return {shortcut: shortcut};
+                return { shortcut };
             }
         }
+
         return null;
     }
 
@@ -443,7 +445,7 @@ export default class AbstractButton<P extends IProps, S=any> extends Component<P
         // blur after click to release focus from button to allow PTT.
         // Inklusiva-Call: We don't want to blur the button, because we want to keep the focus on the button. PTT is also on another shortcut than space for us.
         // @ts-ignore
-        //e?.currentTarget?.blur && e.currentTarget.blur();
+        // e?.currentTarget?.blur && e.currentTarget.blur();
     }
 
     /**

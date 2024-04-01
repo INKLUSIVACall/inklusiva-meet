@@ -130,6 +130,11 @@ interface IProps extends WithTranslation {
     _reactionsEnabled: boolean;
 
     /**
+     * Whether the recording feature is enabled.
+     */
+    _recordingEnabled: boolean;
+
+    /**
      * Whether the toolbox should be shifted up or not.
      */
     _shiftUp: boolean;
@@ -148,6 +153,7 @@ interface IProps extends WithTranslation {
      * Invoked to active other features of the app.
      */
     dispatch: IStore['dispatch'];
+
 
     /**
      * Explicitly passed array with the buttons which this Toolbox should display.
@@ -200,6 +206,7 @@ const Toolbox = ({
     _shiftUp,
     _toolbarButtons,
     _visible,
+    _recordingEnabled,
     dispatch,
     t,
     toolbarButtons,
@@ -328,6 +335,10 @@ const Toolbox = ({
             allowedButtons = BUTTONS_USER;
             break;
         }
+        }
+
+        if (!_recordingEnabled) {
+            allowedButtons = allowedButtons.filter(button => button !== 'recording');
         }
 
         // order contains all buttons, that should be rendered right in the toolbar, based on clientWidth.
@@ -566,6 +577,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
     }
 
     return {
+        _recordingEnabled: state['features/inklusiva/sessiondata'].recordingEnabled,
         _buttonsWithNotifyClick: getButtonsWithNotifyClick(state),
         _chatOpen: state['features/chat'].isOpen,
         _clientWidth: clientWidth,
