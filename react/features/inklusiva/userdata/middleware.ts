@@ -4,7 +4,7 @@ import { AnyAction } from 'redux';
 
 import { IStore } from '../../app/types';
 import MiddlewareRegistry from '../../base/redux/MiddlewareRegistry';
-import { setMeetingName } from '../sessiondata/actions';
+import { setJibriReady, setMeetingName, setRecordingEnabled } from '../sessiondata/actions';
 import { updateTranscriptLink } from '../transcription/actions.web';
 
 import { SET_USERDATA } from './actionTypes';
@@ -67,6 +67,34 @@ function _setUserdata(store: IStore, next: Function, action: AnyAction) {
                     // eslint-disable-next-line max-depth
                     if (context.meetingName) {
                         store.dispatch(setMeetingName(context.meetingName));
+                    }
+
+                    // eslint-disable-next-line max-depth
+                    if (context.recordingEnabled && context.userData.role === 'moderator') {
+                        store.dispatch(setRecordingEnabled(context.recordingEnabled));
+
+                        const state = store.getState();
+                        const { jibriInstanceCheck } = state['features/base/config'];
+
+                        // eslint-disable-next-line max-depth
+                        if (jibriInstanceCheck) {
+                            setInterval(() => {
+                                fetch(jibriInstanceCheck.url)
+                                    .then(response => {
+                                        if (response.status === 200) {
+                                            return response.json();
+                                        }
+                                        store.dispatch(setJibriReady(false));
+                                    })
+                                    .then(response => {
+                                        if (response.ready === true) {
+                                            store.dispatch(setJibriReady(true));
+                                        } else {
+                                            store.dispatch(setJibriReady(false));
+                                        }
+                                    });
+                            }, jibriInstanceCheck.interval);
+                        }
                     }
 
                     // eslint-disable-next-line max-depth
@@ -200,8 +228,9 @@ function _getDefaultUserData() {
     userData.distressbutton.dimming = _.toNumber(0);
     userData.distressbutton.volume = _.toNumber(0);
     userData.distressbutton.message = toBoolean(false);
-    userData.distressbutton.message_text
-    = _.toString('Liebe Begleitperson, ich habe gerade den Notfall-Button geklickt. Ich möchte (…)');
+    userData.distressbutton.message_text = _.toString(
+        'Liebe Begleitperson, ich habe gerade den Notfall-Button geklickt. Ich möchte (…)'
+    );
     userData.assistant.signLang.active = toBoolean(true);
     userData.assistant.signLang.display = _.toString('tile');
     userData.assistant.signLang.windowSize = _.toNumber(100);
@@ -266,4 +295,3 @@ function _parseIconSize(iconSizeValue: number | string) {
         return '1';
     }
 }
-

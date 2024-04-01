@@ -46,6 +46,11 @@ var config = {
         // focus: 'focus.jitsi-meet.example.com',
     },
 
+    jibriInstanceCheck: {
+        url: 'https://conference.inklusiva-call.de/backend/jibri/instanceStatus',
+        interval: 30000
+    }
+
     // BOSH URL. FIXME: use XEP-0156 to discover it.
     bosh: 'https://conference.inklusiva-call.de/' + subdir + 'http-bind',
 
@@ -344,10 +349,10 @@ var config = {
         //     // Whether to show the possibility to share file recording with other people
         //     // (e.g. meeting participants), based on the actual implementation
         //     // on the backend.
-        sharingEnabled: true,
+        sharingEnabled: false,
 
         //     // Hide the warning that says we only store the recording for 24 hours.
-        hideStorageWarning: false
+        hideStorageWarning: true
     },
 
     // DEPRECATED. Use recordingService.enabled instead.
@@ -357,16 +362,16 @@ var config = {
     // fileRecordingsServiceSharingEnabled: false,
 
     // Local recording configuration.
-    // localRecording: {
-    //     // Whether to disable local recording or not.
-    //     disable: false,
+    localRecording: {
+        // Whether to disable local recording or not.
+        disable: true,
 
-    //     // Whether to notify all participants when a participant is recording locally.
-    //     notifyAllParticipants: false,
+        // Whether to notify all participants when a participant is recording locally.
+        notifyAllParticipants: false,
 
-    //     // Whether to disable the self recording feature (only local participant streams).
-    //     disableSelfRecording: false,
-    // },
+        // Whether to disable the self recording feature (only local participant streams).
+        disableSelfRecording: false,
+    },
 
     // Customize the Live Streaming dialog. Can be modified for a non-YouTube provider.
     liveStreaming: {
