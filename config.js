@@ -49,7 +49,7 @@ var config = {
     jibriInstanceCheck: {
         url: 'https://conference.inklusiva-call.de/backend/jibri/instanceStatus',
         interval: 30000
-    }
+    },
 
     // BOSH URL. FIXME: use XEP-0156 to discover it.
     bosh: 'https://conference.inklusiva-call.de/' + subdir + 'http-bind',
