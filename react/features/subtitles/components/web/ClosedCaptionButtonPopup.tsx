@@ -1,19 +1,21 @@
 import React, { ReactElement, ReactNode } from 'react';
+import { WithTranslation } from 'react-i18next';
 import { connect, useDispatch } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
+
 import { IReduxState } from '../../../app/types';
+import { translate } from '../../../base/i18n/functions';
+import { IconBubble, IconDownload } from '../../../base/icons/svg';
 import { SMALL_MOBILE_WIDTH } from '../../../base/responsive-ui/constants';
 import Button from '../../../base/ui/components/web/Button';
-import { setHistoryVisibility, toggleCCHistoryPanel, toggleClosedCaptionPopup } from '../../actions.web';
-import AccessiblePopover from '../../../inklusiva/accessiblePopover/accessiblePopover';
-import { getClosedCaptionVisibility } from '../../functions';
-import { IconBubble, IconDownload } from '../../../base/icons/svg';
 import ContextMenu from '../../../base/ui/components/web/ContextMenu';
-import { WithTranslation } from 'react-i18next';
-import { translate } from '../../../base/i18n/functions';
+import AccessiblePopover from '../../../inklusiva/accessiblePopover/accessiblePopover';
+import { toggleCCHistoryPanel, toggleClosedCaptionPopup } from '../../actions.web';
+import { getClosedCaptionVisibility } from '../../functions';
 
 
 interface IProps extends WithTranslation {
+
     /**
     * Component's children (the audio button).
     */
@@ -25,14 +27,14 @@ interface IProps extends WithTranslation {
     isOpen: boolean;
 
     /**
-    * Callback executed when the popup closes.
-    */
-    onClose: Function;
-
-    /**
      * Click handler for the history button.
      */
     onClickHistory: Function;
+
+    /**
+    * Callback executed when the popup closes.
+    */
+    onClose: Function;
 
     /**
      * The popup placement enum value.
@@ -82,19 +84,19 @@ function ClosedCaptionButtonPopup({
     popupPlacement,
     t
 }: IProps) {
-    const { classes, cx } = useStyles();
-    const dispatch = useDispatch();
+    const { classes } = useStyles();
 
     const _onClickHistory = () => {
         onClickHistory();
-    }
+    };
 
     const _onClickDownload = () => {
         // TODO
-    }
+    };
 
-    
+
     let content: ReactElement | null = null;
+
     content = (
         <ContextMenu
             aria-labelledby = 'cc-settings-button'
@@ -103,21 +105,25 @@ function ClosedCaptionButtonPopup({
             id = 'closed-caption-dialog'
             role = 'radiogroup'
             tabIndex = { -1 }>
-                <Button
-                    accessibilityLabel = { t('toolbar.accessibilityLabel.ccHistory') }
-                    className = { classes.button }
-                    label = { t('toolbar.ccHistory') }
-                    icon = { IconBubble }
-                    onClick = { _onClickHistory } />
-                <Button
-                    accessibilityLabel = { t('toolbar.accessibilityLabel.ccDownload') }
-                    className = { classes.button }
-                    label = { t('toolbar.ccDownload') }
-                    icon = { IconDownload }
-                    onClick = { _onClickDownload } />
-            </ContextMenu>
-        
-    )
+            <Button
+                accessibilityLabel = { t('toolbar.accessibilityLabel.ccHistory') }
+                className = { classes.button }
+                icon = { IconBubble }
+                label = { t('toolbar.ccHistory') }
+                // eslint-disable-next-line react/jsx-no-bind
+                onClick = { _onClickHistory } />
+        </ContextMenu>
+
+    );
+
+    // TODO: Implement download functionality
+    // <Button
+    //     accessibilityLabel = { t('toolbar.accessibilityLabel.ccDownload') }
+    //     className = { classes.button }
+    //     icon = { IconDownload }
+    //     label = { t('toolbar.ccDownload') }
+    //     // eslint-disable-next-line react/jsx-no-bind
+    //     onClick = { _onClickDownload } />
 
     return (
         <div className = { classes.container }>
@@ -153,6 +159,7 @@ function mapStateToProps(state: IReduxState) {
 const mapDispatchToProps = {
     onClickHistory: toggleCCHistoryPanel,
     onClose: toggleClosedCaptionPopup
-}
+};
 
 export default translate(connect(mapStateToProps, mapDispatchToProps)(ClosedCaptionButtonPopup));
+

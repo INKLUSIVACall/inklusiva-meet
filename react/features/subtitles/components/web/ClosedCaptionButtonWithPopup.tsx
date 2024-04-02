@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 
-import ClosedCaptionButton from './ClosedCaptionButton';
-import ClosedCaptionButtonPopup from './ClosedCaptionButtonPopup';
 import { IReduxState, IStore } from '../../../app/types';
 import { isMobileBrowser } from '../../../base/environment/utils';
 import { translate } from '../../../base/i18n/functions';
@@ -11,6 +9,9 @@ import { IconArrowUp } from '../../../base/icons/svg';
 import ToolboxButtonWithIcon from '../../../base/toolbox/components/web/ToolboxButtonWithIcon';
 import { toggleClosedCaptionPopup } from '../../actions.web';
 import { getClosedCaptionVisibility } from '../../functions';
+
+import ClosedCaptionButton from './ClosedCaptionButton';
+import ClosedCaptionButtonPopup from './ClosedCaptionButtonPopup';
 
 
 interface IProps extends WithTranslation {
@@ -20,11 +21,13 @@ interface IProps extends WithTranslation {
      */
     buttonKey: string;
 
+    dispatch: IStore['dispatch'];
+
     /**
      * External handler for click action.
      */
     handleClick: Function;
-    
+
     /**
      * Defines whether popup is open.
      */
@@ -104,7 +107,7 @@ class ClosedCaptionButtonWithPopup extends Component<IProps> {
      * @inheritdoc
      */
     render() {
-        const { buttonKey, isOpen, language, requestingSubtitles, visible, t } = this.props;
+        const { buttonKey, isOpen, language, requestingSubtitles, visible, t, dispatch } = this.props;
 
         return visible ? (
             <ClosedCaptionButtonPopup>
@@ -122,13 +125,15 @@ class ClosedCaptionButtonWithPopup extends Component<IProps> {
                     <ClosedCaptionButton
                         _language = { language }
                         _requestingSubtitles = { requestingSubtitles }
-                        _subtitles = { language }/>
+                        _subtitles = { language }
+                        dispatch = { dispatch } />
                 </ToolboxButtonWithIcon>
             </ClosedCaptionButtonPopup>
         ) : <ClosedCaptionButton
-                _language = { language }
-                _requestingSubtitles = { requestingSubtitles }
-                _subtitles = { language }/>
+            _language = { language }
+            _requestingSubtitles = { requestingSubtitles }
+            _subtitles = { language }
+            dispatch = { dispatch } />;
     }
 }
 
@@ -154,6 +159,6 @@ function mapStateToProps(state: IReduxState) {
 
 const mapDispatchToProps = {
     onPopupClick: toggleClosedCaptionPopup
-}
+};
 
 export default translate(connect(mapStateToProps, mapDispatchToProps)(ClosedCaptionButtonWithPopup));
