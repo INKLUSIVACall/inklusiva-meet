@@ -93,6 +93,11 @@ interface IProps {
     _conference?: IJitsiConference;
 
     /**
+     * Displayes if loal participant is moderator.
+     */
+    _isLocalParticipantModerator: boolean;
+
+    /**
      * The local participant.
      */
     _localParticipant?: IParticipant;
@@ -108,17 +113,21 @@ interface IProps {
     _visible: boolean;
 
     /**
-     * Displayes if loal participant is moderator.
-     */
-    _isLocalParticipantModerator: boolean;
-
-    /**
      * CSS classes object.
      */
     classes: any;
 }
 
-const AssisteesPanel = ({ classes, _assistancePartner, _assistees, _conference, _localParticipant, _participant, _visible, _isLocalParticipantModerator }: IProps) => {
+const AssisteesPanel = ({
+    classes,
+    _assistancePartner,
+    _assistees,
+    _conference,
+    _localParticipant,
+    _participant,
+    _visible,
+    _isLocalParticipantModerator
+}: IProps) => {
     const { t } = useTranslation();
 
     const [ localClose, setLocalClose ] = useState(false);
@@ -148,19 +157,20 @@ const AssisteesPanel = ({ classes, _assistancePartner, _assistees, _conference, 
     const _onClickClose = () => {
         setLocalClose(true);
         _assistancePartner?.forEach(partner => {
-            _conference?.removeICRole(partner.id, IC_ROLES.ASSISTED, _localParticipant?.id); 
+            _conference?.removeICRole(partner.id, IC_ROLES.ASSISTED, _localParticipant?.id);
         });
     };
 
     let isAssistancePartner = false;
+
     _assistancePartner.forEach(partner => {
         if (_conference?.checkMemberHasRole(partner.id, IC_ROLES.ASSISTED, _localParticipant?.id)) {
             isAssistancePartner = true;
         }
     });
 
-    let showDialog = _visible  && !localClose && isAssistancePartner;
-    
+    const showDialog = _visible && !localClose && isAssistancePartner;
+
     return showDialog ? (
         <div
             aria-modal = 'true'
@@ -218,8 +228,9 @@ const mapStateToProps = (state: IReduxState) => {
             };
         });
 
-    const assistancePartner = participants
-        .filter((participant: IParticipant) => conference?.checkMemberHasRole(participant.id, IC_ROLES.ASSISTED, localParticipant?.id));
+    const assistancePartner = participants.filter((participant: IParticipant) =>
+        conference?.checkMemberHasRole(participant.id, IC_ROLES.ASSISTED, localParticipant?.id)
+    );
 
     return {
         _assistancePartner: assistancePartner,
@@ -229,7 +240,7 @@ const mapStateToProps = (state: IReduxState) => {
         _localParticipant: localParticipant,
         _participant: getParticipant(state),
         _remoteParticipants: remoteParticipants,
-        _visible: nonAssistet.length > 0,
+        _visible: nonAssistet.length > 0
     };
 };
 
