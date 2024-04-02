@@ -1,8 +1,8 @@
 import { Theme } from '@mui/material';
 import { withStyles } from '@mui/styles';
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { connect, useDispatch, useSelector } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 
 import { IReduxState } from '../../app/types';
 import { getCurrentConference } from '../../base/conference/functions';
@@ -11,9 +11,8 @@ import { IJitsiConference } from '../../base/conference/reducer';
 import { getLocalParticipant, getRemoteParticipants, isParticipantModerator } from '../../base/participants/functions';
 import { IParticipant } from '../../base/participants/types';
 import Button from '../../base/ui/components/web/Button';
-import { toggleRoleMatchingPanel } from '../../toolbox/actions.web';
 
-import { getParticipant, hideAssistancePanel, setParticipant, toggleAssistancePanel } from './functions';
+import { getParticipant, hideAssistancePanel, setParticipant } from './functions';
 
 const styles = (theme: Theme) => {
     return {
@@ -29,7 +28,7 @@ const styles = (theme: Theme) => {
         },
         header: {
             width: '100%',
-            boxSizing: 'border-box',
+            boxSizing: 'border-box' as const,
             display: 'flex',
             alignItems: 'flex-start',
             justifyContent: 'space-between',
@@ -38,7 +37,7 @@ const styles = (theme: Theme) => {
         inputblockContainer: {
             margin: 0,
             display: 'flex',
-            flexDirection: 'column',
+            flexDirection: 'column' as const,
             gap: theme.spacing(3)
         },
         inputDescription: {
@@ -123,7 +122,7 @@ interface IProps {
     /**
      * The local participant.
      */
-    _localParticipant: IParticipant;
+    _localParticipant?: IParticipant;
 
     /**
      * The participant to send the assistance message to.
@@ -171,7 +170,9 @@ const AssistancePanel = ({
 
     const onClickRelease = () => {
         _conference?.removeLocalICRole(IC_ROLES.ASSISTED, _participant?.id);
-        _conference?.removeICRole(_participant?.id, IC_ROLES.ASSISTANT, _localParticipant.id);
+        if (_localParticipant) {
+            _conference?.removeICRole(_participant?.id, IC_ROLES.ASSISTANT, _localParticipant.id);
+        }
         dispatch(hideAssistancePanel());
     };
 
@@ -251,7 +252,6 @@ const mapStateToProps = (state: IReduxState) => {
     const conference = getCurrentConference(state);
     const localParticipant = getLocalParticipant(state);
     const remoteParticipants = Array.from(getRemoteParticipants(state).values());
-    const participantToRequestFrom = state['features/inklusiva/rolematching'].participant;
     const assistancePanelVisible = state['features/inklusiva/rolematching'].assistancePanelVisible;
 
     let amIAssisted = false;
@@ -269,8 +269,10 @@ const mapStateToProps = (state: IReduxState) => {
     });
 
     const remoteParticipantsList = remoteParticipants // no local participants
-        .filter((participant: IParticipant) => !conference?.checkMemberHasRole(participant.id, IC_ROLES.ASSISTANT)) // no assistants
-        .filter((participant: IParticipant) => !conference?.checkMemberHasRole(participant.id, IC_ROLES.ASSISTED)) // no assistees
+        .filter((participant: IParticipant) => !conference?.checkMemberHasRole(
+            participant.id, IC_ROLES.ASSISTANT)) // no assistants
+        .filter((participant: IParticipant) => !conference?.checkMemberHasRole(
+            participant.id, IC_ROLES.ASSISTED)) // no assistees
         .filter((participant: IParticipant) => !isParticipantModerator(participant)); // no moderators
 
     return {

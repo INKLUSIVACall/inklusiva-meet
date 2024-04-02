@@ -36,7 +36,7 @@ const styles = (theme: Theme) => {
         },
         header: {
             width: '100%',
-            boxSizing: 'border-box',
+            boxSizing: 'border-box' as const,
             display: 'flex',
             alignItems: 'flex-start',
             justifyContent: 'space-between',
@@ -52,7 +52,7 @@ const styles = (theme: Theme) => {
         inputblockContainer: {
             margin: 0,
             display: 'flex',
-            flexDirection: 'column',
+            flexDirection: 'column' as const,
             gap: theme.spacing(3)
         },
         inputDescription: {
@@ -94,7 +94,7 @@ interface IProps extends WithTranslation {
      */
     _iAmAssisted: boolean;
 
-    _localParticipant: IParticipant;
+    _localParticipant?: IParticipant;
 
     /**
      * The participant to send the assistance message to.
@@ -141,7 +141,9 @@ const AssistanceParticipantsPanel = ({
 
     const onClickRelease = () => {
         _conference?.removeLocalICRole(IC_ROLES.ASSISTED, _participant?.id);
-        _conference?.removeICRole(_participant?.id, IC_ROLES.ASSISTANT, _localParticipant.id);
+        if (_localParticipant) {
+            _conference?.removeICRole(_participant?.id, IC_ROLES.ASSISTANT, _localParticipant.id);
+        }
         dispatch(toggleRoleMatchingPanel());
     };
 
