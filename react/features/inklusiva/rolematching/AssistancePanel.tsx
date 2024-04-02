@@ -10,15 +10,13 @@ import { ICRole, IC_ROLES } from '../../base/conference/icRoles';
 import { IJitsiConference } from '../../base/conference/reducer';
 import { getLocalParticipant, getRemoteParticipants, isParticipantModerator } from '../../base/participants/functions';
 import { IParticipant } from '../../base/participants/types';
-
-import { getParticipant, hideAssistancePanel, setParticipant, toggleAssistancePanel } from './functions';
+import Button from '../../base/ui/components/web/Button';
 import { toggleRoleMatchingPanel } from '../../toolbox/actions.web';
 
-import Button from '../../base/ui/components/web/Button';
+import { getParticipant, hideAssistancePanel, setParticipant, toggleAssistancePanel } from './functions';
 
 const styles = (theme: Theme) => {
     return {
-
         assisteesPanel: {
             maxWidth: '600px',
             height: 'auto',
@@ -126,12 +124,12 @@ interface IProps {
      * The local participant.
      */
     _localParticipant: IParticipant;
-    
+
     /**
      * The participant to send the assistance message to.
      */
     _participant?: IParticipant;
-    
+
     /**
      * Available participants to send an assistance message to.
      */
@@ -148,7 +146,16 @@ interface IProps {
     classes: any;
 }
 
-const AssistancePanel = ({ classes, _conference, _localParticipant, _participant, _participantsList, _visible, _iAmAssisted, _iAmAssistant }: IProps) => {
+const AssistancePanel = ({
+    classes,
+    _conference,
+    _localParticipant,
+    _participant,
+    _participantsList,
+    _visible,
+    _iAmAssisted,
+    _iAmAssistant
+}: IProps) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
@@ -156,18 +163,17 @@ const AssistancePanel = ({ classes, _conference, _localParticipant, _participant
         dispatch(hideAssistancePanel());
     };
 
-    console.log('123456', _participant);
     const onClickRequest = (participant: IParticipant) => {
         dispatch(setParticipant(participant));
         _conference?.addLocalICRole(IC_ROLES.ASSISTED, participant?.id);
         dispatch(hideAssistancePanel());
-    }
+    };
 
     const onClickRelease = () => {
         _conference?.removeLocalICRole(IC_ROLES.ASSISTED, _participant?.id);
         _conference?.removeICRole(_participant?.id, IC_ROLES.ASSISTANT, _localParticipant.id);
         dispatch(hideAssistancePanel());
-    }
+    };
 
     if (_visible) {
         if (!_iAmAssisted) {
@@ -187,26 +193,32 @@ const AssistancePanel = ({ classes, _conference, _localParticipant, _participant
                     <p className = { classes.description }>{t('assistancePanel.desc1')}</p>
                     <p className = { classes.description }>{t('assistancePanel.desc2')}</p>
                     <div className = { classes.inputblockContainer }>
-                    { _participantsList.length > 0 && !_iAmAssistant && (
-                        _participantsList.map(participant => (
-                            <div key = { participant.id } className = { classes.inputblock }>
-                                <div className = { classes.inputDescription }>{ participant.name }</div>
-                                <Button
-                                    accessibilityLabel = { t('toolbar.accessibility.assistanceRequest')}
-                                    className = { classes.inputButton }
-                                    label = { t('toolbar.assistanceRequest') }
-                                    onClick = { () => onClickRequest(participant) }/>
+                        {_participantsList.length > 0
+                            && !_iAmAssistant
+                            && _participantsList.map(participant => (
+                                <div
+                                    className = { classes.inputblock }
+                                    key = { participant.id }>
+                                    <div className = { classes.inputDescription }>{participant.name}</div>
+                                    <Button
+                                        accessibilityLabel = { t('toolbar.accessibility.assistanceRequest') }
+                                        className = { classes.inputButton }
+                                        label = { t('toolbar.assistanceRequest') }
+                                        // eslint-disable-next-line react/jsx-no-bind
+                                        onClick = { () => onClickRequest(participant) } />
+                                </div>
+                            ))}
+                        {(_participantsList.length <= 0 || _iAmAssistant) && (
+                            <div className = { classes.inputblock }>
+                                <div className = { classes.inputDescription }>
+                                    {t('toolbar.assistanceParticipantsListEmpty')}
+                                </div>
                             </div>
-                        ))) }
-                    { (_participantsList.length <= 0 || _iAmAssistant) && (
-                        <div className = { classes.inputblock }>
-                            <div className = { classes.inputDescription }>{ t('toolbar.assistanceParticipantsListEmpty') }</div>
-                        </div>
-                    )}
-                </div>     
+                        )}
+                    </div>
                 </div>
             );
-        } 
+        }
 
         return (
             <div
@@ -236,7 +248,6 @@ const AssistancePanel = ({ classes, _conference, _localParticipant, _participant
 };
 
 const mapStateToProps = (state: IReduxState) => {
-
     const conference = getCurrentConference(state);
     const localParticipant = getLocalParticipant(state);
     const remoteParticipants = Array.from(getRemoteParticipants(state).values());
@@ -257,10 +268,10 @@ const mapStateToProps = (state: IReduxState) => {
         }
     });
 
-    const remoteParticipantsList = remoteParticipants                                                                  // no local participants
-        .filter((participant: IParticipant) => !conference?.checkMemberHasRole(participant.id, IC_ROLES.ASSISTANT))    // no assistants
-        .filter((participant: IParticipant) => !conference?.checkMemberHasRole(participant.id, IC_ROLES.ASSISTED))     // no assistees
-        .filter((participant: IParticipant) => !isParticipantModerator(participant));                                  // no moderators
+    const remoteParticipantsList = remoteParticipants // no local participants
+        .filter((participant: IParticipant) => !conference?.checkMemberHasRole(participant.id, IC_ROLES.ASSISTANT)) // no assistants
+        .filter((participant: IParticipant) => !conference?.checkMemberHasRole(participant.id, IC_ROLES.ASSISTED)) // no assistees
+        .filter((participant: IParticipant) => !isParticipantModerator(participant)); // no moderators
 
     return {
         _conference: conference,
@@ -270,7 +281,7 @@ const mapStateToProps = (state: IReduxState) => {
         _participant: getParticipant(state),
         _participantsList: remoteParticipantsList,
         _visible: assistancePanelVisible
-    }
+    };
 };
 
 export default withStyles(styles)(connect(mapStateToProps)(AssistancePanel));
