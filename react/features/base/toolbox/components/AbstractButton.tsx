@@ -1,10 +1,8 @@
 import React, { Component, ReactElement, ReactNode } from 'react';
 import { WithTranslation } from 'react-i18next';
 import { GestureResponderEvent } from 'react-native';
-import { useSelector } from 'react-redux';
 
 import { IReduxState, IStore } from '../../../app/types';
-import { registerShortcut } from '../../../keyboard-shortcuts/actions.any';
 import { getKeyboardShortcuts } from '../../../keyboard-shortcuts/functions';
 import { IKeyboardShortcut } from '../../../keyboard-shortcuts/types';
 import { NOTIFY_CLICK_MODE } from '../../../toolbox/constants';
@@ -13,15 +11,13 @@ import { combineStyles } from '../../styles/functions.any';
 import { Styles } from './AbstractToolboxItem';
 import ToolboxItem from './ToolboxItem';
 
-
 /**
-* Sets the string of the accessibility label including shortcut.
-*
-* @param {boolean} alt - Whether alt key has to be pressed for shortcut.
-* @param {boolean} shift - Whether shift key has to be pressed for shortcut.
-* @param {string} shortcut - The shortcut of the button.
-* @returns {string}
-*/
+ * Sets the string of the accessibility label including shortcut.
+ *
+ * @param {boolean} state - The redux state.
+ * @param {string} shortcutHelpDescription - The shortcut of the button.
+ * @returns {string}
+ */
 function _getShortcut(state: IReduxState, shortcutHelpDescription: string) {
     const keyboardShortcuts = getKeyboardShortcuts(state);
 
@@ -154,7 +150,7 @@ export const defaultDisabledButtonStyles = {
 /**
  * An abstract implementation of a button.
  */
-export default class AbstractButton<P extends IProps, S=any> extends Component<P, S> {
+export default class AbstractButton<P extends IProps, S = any> extends Component<P, S> {
     static defaultProps = {
         afterClick: undefined,
         disabledStyles: defaultDisabledButtonStyles,
@@ -292,9 +288,7 @@ export default class AbstractButton<P extends IProps, S=any> extends Component<P
      * @returns {string}
      */
     _getIcon() {
-        return (
-            this._isToggled() ? this.toggledIcon : this.icon
-        ) || this.icon;
+        return (this._isToggled() ? this.toggledIcon : this.icon) || this.icon;
     }
 
     /**
@@ -306,8 +300,7 @@ export default class AbstractButton<P extends IProps, S=any> extends Component<P
      * @returns {string}
      */
     _getLabel() {
-        return (this._isToggled() ? this.toggledLabel : this.label)
-            || this.label;
+        return (this._isToggled() ? this.toggledLabel : this.label) || this.label;
     }
 
     /**
@@ -342,6 +335,7 @@ export default class AbstractButton<P extends IProps, S=any> extends Component<P
     _getAccessibilityLabelShortcut() {
         if (this.accessibilityLabelShortcut) {
             const shortcut = _getShortcut(APP.store.getState(), this.accessibilityLabelShortcut);
+
             if (shortcut) {
                 return { shortcut };
             }
@@ -360,20 +354,14 @@ export default class AbstractButton<P extends IProps, S=any> extends Component<P
      */
     _getStyles(): Styles | undefined {
         const { disabledStyles, styles, toggledStyles } = this.props;
-        const buttonStyles
-            = (this._isToggled() ? toggledStyles : styles) || styles;
-
+        const buttonStyles = (this._isToggled() ? toggledStyles : styles) || styles;
 
         if (this._isDisabled() && buttonStyles && disabledStyles) {
             return {
-                iconStyle: combineStyles(
-                    buttonStyles.iconStyle ?? {}, disabledStyles.iconStyle ?? {}),
-                labelStyle: combineStyles(
-                    buttonStyles.labelStyle ?? {}, disabledStyles.labelStyle ?? {}),
-                style: combineStyles(
-                    buttonStyles.style ?? {}, disabledStyles.style ?? {}),
-                underlayColor:
-                    disabledStyles.underlayColor || buttonStyles.underlayColor
+                iconStyle: combineStyles(buttonStyles.iconStyle ?? {}, disabledStyles.iconStyle ?? {}),
+                labelStyle: combineStyles(buttonStyles.labelStyle ?? {}, disabledStyles.labelStyle ?? {}),
+                style: combineStyles(buttonStyles.style ?? {}, disabledStyles.style ?? {}),
+                underlayColor: disabledStyles.underlayColor || buttonStyles.underlayColor
             };
         }
 
@@ -387,9 +375,7 @@ export default class AbstractButton<P extends IProps, S=any> extends Component<P
      * @returns {string}
      */
     _getTooltip() {
-        return (this._isToggled() ? this.toggledTooltip : this.tooltip)
-            || this.tooltip
-            || '';
+        return (this._isToggled() ? this.toggledTooltip : this.tooltip) || this.tooltip || '';
     }
 
     /**
@@ -426,9 +412,7 @@ export default class AbstractButton<P extends IProps, S=any> extends Component<P
         const { afterClick, buttonKey, handleClick, notifyMode } = this.props;
 
         if (typeof APP !== 'undefined' && notifyMode) {
-            APP.API.notifyToolbarButtonClicked(
-                    buttonKey, notifyMode === NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY
-            );
+            APP.API.notifyToolbarButtonClicked(buttonKey, notifyMode === NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY);
         }
 
         if (notifyMode !== NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY) {
@@ -442,7 +426,8 @@ export default class AbstractButton<P extends IProps, S=any> extends Component<P
         afterClick?.(e);
 
         // blur after click to release focus from button to allow PTT.
-        // Inklusiva-Call: We don't want to blur the button, because we want to keep the focus on the button. PTT is also on another shortcut than space for us.
+        // Inklusiva-Call: We don't want to blur the button, because we want to keep the focus on the button.
+        // PTT is also on another shortcut than space for us.
         // @ts-ignore
         // e?.currentTarget?.blur && e.currentTarget.blur();
     }

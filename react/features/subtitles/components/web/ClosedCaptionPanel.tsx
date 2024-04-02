@@ -1,17 +1,16 @@
 import React, { useCallback, useEffect, useRef } from 'react';
+import { WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
+import { scrollIntoView } from 'seamless-scroll-polyfill';
 import { makeStyles } from 'tss-react/mui';
 
 import { IReduxState, IStore } from '../../../app/types';
 import { translate } from '../../../base/i18n/functions';
-import { withPixelLineHeight } from '../../../base/styles/functions.web';
-import { WithTranslation } from 'react-i18next';
-import { toggleCCHistoryPanel } from '../../actions.web';
-import { IconCloseLarge } from '../../../base/icons/svg';
 import Icon from '../../../base/icons/components/Icon';
+import { IconCloseLarge } from '../../../base/icons/svg';
+import { withPixelLineHeight } from '../../../base/styles/functions.web';
+import { toggleCCHistoryPanel } from '../../actions.web';
 import { HISTORY_PANEL_SIZE } from '../../constants';
-import { scrollIntoView } from 'seamless-scroll-polyfill';
-import { IState } from '../../../recording/components/LiveStream/AbstractStartLiveStreamDialog';
 
 interface IProps extends WithTranslation {
 
@@ -26,7 +25,7 @@ interface IProps extends WithTranslation {
     _isOpen: boolean;
 
     /**
-     * The whole histroy of the transcription. The messages are saved in an array as 
+     * The whole histroy of the transcription. The messages are saved in an array as
      * Objects with the timeout of the transcription message, the final transcription message, and
      * the name of the message's participant; as well as the stable and unstable state of the
      * message.
@@ -45,6 +44,7 @@ interface IProps extends WithTranslation {
 }
 
 interface IState {
+
     /**
      * Indicates whether new transcription messages arrived while scolling through
      * the history. Triggers a message (Not implemented).
@@ -118,7 +118,7 @@ const useStyles = makeStyles()(theme => {
         },
         content: {
             display: 'flex',
-            fontSize: '15px',
+            fontSize: '1rem',
             paddingLeft: '25px',
             paddingRight: '20px',
             marginBottom: '1rem',
@@ -135,13 +135,13 @@ const ClosedCaptionHistory = ({
     dispatch,
     t
 }: IProps) => {
-    const { classes, cx } = useStyles();
-    
+    const { classes } = useStyles();
+
     // Variables to check whether to scroll while a new transcription is added
     // to the history panel, or not (this is the case if scrolled up in the
     // transcription history). Right now we just implemented isScrolledToBottom
     // but it does not work.
-    let state: IState = {
+    const state: IState = {
         hasNewMessages: false,
         isScrolledToBottom: true,
         lastTranscriptionMessageID: ''
@@ -151,37 +151,46 @@ const ClosedCaptionHistory = ({
         dispatch(toggleCCHistoryPanel());
     }, []);
 
-    const onEscClick = useCallback((event: React.KeyboardEvent) => {
-        if (event.key === 'Escape' && _isOpen) {
-            event.preventDefault();
-            event.stopPropagation();
-            onToggleHistory();
-        }
-    }, [ _isOpen ]);
+    const onEscClick = useCallback(
+        (event: React.KeyboardEvent) => {
+            if (event.key === 'Escape' && _isOpen) {
+                event.preventDefault();
+                event.stopPropagation();
+                onToggleHistory();
+            }
+        },
+        [ _isOpen ]
+    );
 
     const _transcriptionsListEndRef = React.createRef<HTMLDivElement>();
 
-    useEffect(() => {
-        createBottomListObserver();
-    });
-
-    useEffect(() => {
-        if (state.isScrolledToBottom == true) {
-            if (_transcriptionsListEndRef.current) {
-                scrollIntoView(_transcriptionsListEndRef.current as Element, {
-                    behavior: 'smooth',
-                    block: 'nearest'
-                });
+    /**
+     * _HandleIntersectBottomList.
+     * When entry is intersecting with bottom of container set last message as last read message.
+     * When entry is not intersecting update only isScrolledToBottom with false value.
+     *
+     * @param {Array} entries - List of entries.
+     * @private
+     * @returns {void}
+     */
+    const handleIntersectBottomList = (entries: IntersectionObserverEntry[]) => {
+        entries.forEach((entry: IntersectionObserverEntry) => {
+            if (entry.isIntersecting && _transcriptionHistoryLength) {
+                state.isScrolledToBottom = true;
             }
-        }
-    }, [_transcriptionHistoryLength]);
+
+            if (!entry.isIntersecting) {
+                state.isScrolledToBottom = false;
+            }
+        });
+    };
 
     /**
-    * Create observer to react when scroll position is at bottom or leave the bottom.
-    *
-    * @private
-    * @returns {void}
-    */
+     * Create observer to react when scroll position is at bottom or leave the bottom.
+     *
+     * @private
+     * @returns {void}
+     */
     const createBottomListObserver = () => {
         const options = {
             root: document.querySelector('#CCHistoryPanel'),
@@ -195,35 +204,28 @@ const ClosedCaptionHistory = ({
             _bottomListObserver = new IntersectionObserver(handleIntersectBottomList, options);
             _bottomListObserver.observe(target);
         }
-    }
+    };
 
-    /** .
-    * _HandleIntersectBottomList.
-    * When entry is intersecting with bottom of container set last message as last read message.
-    * When entry is not intersecting update only isScrolledToBottom with false value.
-    *
-    * @param {Array} entries - List of entries.
-    * @private
-    * @returns {void}
-    */
-    const handleIntersectBottomList = (entries: IntersectionObserverEntry[]) => {
-        entries.forEach((entry: IntersectionObserverEntry) => {
-            if (entry.isIntersecting && _transcriptionHistoryLength) {
+    useEffect(() => {
+        createBottomListObserver();
+    });
 
-                state.isScrolledToBottom = true;
+    useEffect(() => {
+        if (state.isScrolledToBottom === true) {
+            if (_transcriptionsListEndRef.current) {
+                scrollIntoView(_transcriptionsListEndRef.current as Element, {
+                    behavior: 'smooth',
+                    block: 'nearest'
+                });
             }
-
-            if (!entry.isIntersecting) {
-                state.isScrolledToBottom = false;
-            }
-        });
-    }
+        }
+    }, [ _transcriptionHistoryLength ]);
 
 
     /**
      * Renders the panel header.
-     * 
-     * @returns 
+     *
+     * @returns {ReactElement}
      */
     function renderPanelHeader() {
         return (
@@ -233,58 +235,58 @@ const ClosedCaptionHistory = ({
                 <span
                     aria-level = { 1 }
                     role = 'heading'>
-                    { t('cc.title') }
+                    {t('cc.title')}
                 </span>
                 <Icon
                     ariaLabel = { t('toolbar.closeChat') }
+                    // eslint-disable-next-line react/jsx-no-bind
                     onClick = { onToggleHistory }
+                    // eslint-disable-next-line react/jsx-no-bind
                     onKeyPress = { onEscClick }
                     role = 'button'
                     src = { IconCloseLarge }
                     tabIndex = { 0 } />
             </div>
-        )
+        );
     }
 
     /**
      * Renders the cc history panel.
-     * 
-     * @returns
+     *
+     * @returns {ReactElement}
      */
     function renderPanel() {
         return (
             <div
                 className = { classes.panel }
                 id = 'CCHistoryPanel'>
-                    { _transcriptionHistory.map(transcriptionHistory => (
-                        <div
-                            className = { classes.content }>
-                            { transcriptionHistory.participantName.length > 15 
-                                ? transcriptionHistory.participantName.substr(0, 12) + '...'
-                                : transcriptionHistory.participantName }
-                            : { transcriptionHistory.final }
-                        </div>
-                    )) }
-                    <div
-                        id = 'transcriptionsListEnd'
-                        ref = { _transcriptionsListEndRef } />
+                {_transcriptionHistory.map(transcriptionHistory => (
+                    <div className = { classes.content }>
+                        {transcriptionHistory.participantName.length > 15
+                            ? `${transcriptionHistory.participantName.substr(0, 12)}...`
+                            : transcriptionHistory.participantName}
+                        : {transcriptionHistory.final}
+                    </div>
+                ))}
+                <div
+                    id = 'transcriptionsListEnd'
+                    ref = { _transcriptionsListEndRef } />
             </div>
-        )
+        );
     }
 
-
-    return (
-        _isOpen ? <div
+    return _isOpen ? (
+        <div
             className = { classes.container }
             id = 'sideToolbarContainerCC'
             onKeyDown = { onEscClick }>
-                { renderPanelHeader() }
-                { renderPanel() }
-            </div>
+            {renderPanelHeader()}
+            {renderPanel()}
+        </div>
+    )
         : <></>
-    );
+    ;
 };
-
 
 function _mapStateToProps(state: IReduxState, _ownProps: any) {
     const isOpen = state['features/subtitles']._historyVisibility;
@@ -294,7 +296,8 @@ function _mapStateToProps(state: IReduxState, _ownProps: any) {
         _isOpen: isOpen,
         _transcriptionHistory: transcriptionHistory,
         _transcriptionHistoryLength: transcriptionHistory.length
-    }
+    };
 }
 
 export default translate(connect(_mapStateToProps)(ClosedCaptionHistory));
+
