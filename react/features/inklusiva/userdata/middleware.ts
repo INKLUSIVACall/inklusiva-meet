@@ -225,7 +225,7 @@ function _getDefaultUserData() {
     userData.distressbutton.volume = _.toNumber(0);
     userData.distressbutton.message = toBoolean(false);
     userData.distressbutton.message_text = _.toString(
-        'Liebe Begleitperson, ich habe gerade den Notfall-Button geklickt. Ich möchte (…)'
+        'Liebe Begleitperson, ich habe gerade den Notfall-Knopf geklickt. Ich möchte (…)'
     );
     userData.assistant.signLang.active = toBoolean(true);
     userData.assistant.signLang.display = _.toString('tile');
