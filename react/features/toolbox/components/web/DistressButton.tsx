@@ -35,12 +35,12 @@ interface IProps extends AbstractButtonProps {
  */
 class DistressButton extends AbstractButton<IProps> {
     icon = IconSecurityOff;
-    label = 'Nofall';
+    label = 'Nofall-Knopf';
     tooltip = 'toolbar.enterFullScreen';
     accessibilityLabel = 'toolbar.accessibilityLabel.enterFullScreen';
 
     toggledIcon = IconSecurityOn;
-    toggledLabel = 'Notfall aktiv';
+    toggledLabel = 'Notfall-Knopf aktiv';
     toggledTooltip = 'toolbar.exitFullScreen';
     toggledAccessibilityLabel = 'toolbar.accessibilityLabel.exitFullScreen';
 

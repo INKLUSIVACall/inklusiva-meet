@@ -787,7 +787,7 @@
         "viewLobby": "Lobby ansehen",
         "waitingParticipants": "{{waitingParticipants}} Personen"
     },
-    "opacityAdjustSlider": "Kachel dimmen",
+    "opacityAdjustSlider": "Kacheln verdunkeln",
     "participantsPane": {
         "actions": {
             "allow": "Anwesenden erlauben:",
@@ -852,15 +852,15 @@
     },
     "poweredby": "Betrieben von",
     "assisteesPanel": {
-        "headline": "Die folgenden Nutzer*innen benötigen Assistenz",
+        "headline": "Die folgenden Teilnehmenden benötigen Assistenz:",
         "desc1": "Möchten Sie die Assistenz für eine*n der aufgelisteten Teilnehmenden übernehmen? Dann klicken Sie hinter dem jeweiligen Namen auf „Teilnehmer assistieren“.",
-        "desc2": "Assistent*innen können über einen einzelnen Button-Klick einen Breakout-Raum, oder einen Chat öffnen. Sie bekommen eventuell auch eine automatische Nachricht, wenn der*die Teilnehmer*in den Notfall-Button geklickt hat.",
+        "desc2": "Assistent*innen können über einen einzelnen Button-Klick einen Breakout-Raum, oder einen Chat mit der assistierten Person öffnen. Sie bekommen eventuell auch eine automatische Nachricht, wenn der*die Teilnehmer*in den Notfall-Knopf geklickt hat.",
         "buttonAssist": "Teilnehmer*in assistieren"
     },
     "assistancePanel": {
         "headline": "Anfrage von Assistenz",
-        "desc1": "Hier können Sie Assistenz durch eine Person im Meeting anfragen. Dadurch können Sie sehr einfach einen Breakout-Raum oder einen privaten Chat mit Ihrem*r Assistent*in öffnen.",
-        "desc2": "Sollten Sie einen Notfall-Button nutzen, kann im Notfall eine automatische Nachricht an Ihre*n Assistent*in versendet werden.",
+        "desc1": "Hier können Sie Assistenz durch eine Person im Meeting anfragen. So können Sie ganz einfach einen Breakout-Raum oder einen privaten Chat mit Ihrem*r Assistent*in öffnen.",
+        "desc2": "Wenn Sie einen Notfall-Knopf nutzen, kann im Notfall eine automatische Nachricht an Ihre*n Assistent*in versendet werden.",
         "buttonAssist": "Assistenz anfragen",
         "headlineRelease": "Assitenz aufheben",
         "descRelease": "Um die Assistenz aufzuheben, klicken Sie auf den Button",
@@ -944,7 +944,7 @@
     },
     "profile": {
         "avatar": "Benutzerbild",
-        "setDisplayNameLabel": "User-Namen festlegen",
+        "setDisplayNameLabel": "Namen im Meeting festlegen",
         "setEmailInput": "E-Mail eingeben",
         "setEmailLabel": "E-Mail-Adresse für Gravatar",
         "title": "Basis"
@@ -1018,7 +1018,7 @@
         "unavailableTitle": "Aufnahme nicht verfügbar",
         "uploadToCloud": "In die Cloud hochladen"
     },
-    "saturationSlider": "Sättigung ändern",
+    "saturationSlider": "Farb-Sättigung ändern",
     "screenshareDisplayName": "{{name}}s Bildschirmfreigabe",
     "sectionList": {
         "pullToRefresh": "Ziehen, um zu aktualisieren"
@@ -1085,14 +1085,14 @@
         "title": "Einstellungen",
         "transcriptionTab": "Schriftdolmetschen-Assistent",
         "userVideoTab": "Teilnehmer-Video",
-        "uiTab": "Sehen",
+        "uiTab": "Einstellungen zum Thema Sehen",
         "audioSettings": {
-            "headline": "Einstellungen im Bereich Hören",
+            "headline": "Einstellungen zum Thema Hören",
             "intro": "Auf dieser Seite können Sie hörbare Signale im Meeting einschalten, ausschalten und anpassen.",
             "acousticCues": {
                 "headline": "Hörbare Signale",
                 "label": "Hörbare Signale einschalten",
-                "description": "Schalten Sie diese Funktion an, um hörbare Signale für Hinweise und Meldungen im Meeting zu bekommen. "
+                "description": "Schalten Sie diese Funktion an, um im Meeting Töne zu hören, wenn es Hinweise und Nachrichten gibt."
             },
             "participantAudio": {
                 "headline": "Teilnehmenden-Ton",
@@ -1101,27 +1101,27 @@
             "amplify": "Leise Töne verstärken",
             "balance": "Balance (rechts/links)",
             "highFrequencies": "Viel/Wenig hohe Frequenzen",
-            "noiseSuppressionDescription": "Schalten Sie diese Funktion ein, um Hintergrund-Geräusche zu reduzieren. Die Stimme der Sprechenden wird dann deutlicher.",
-            "activateOthersAudio": "Ton der Teilnehmenden aktiv",
+            "noiseSuppressionDescription": "Schalten Sie diesen Schalter ein, um weniger Geräusche im Hintergrund zu hören. Dann wird auch die Stimme des Sprechenden deutlicher.",
+            "activateOthersAudio": "Ton der Teilnehmenden eingeschaltet",
             "othersVolume": "Lautstärke"
         },
         "distressbtn": {
-            "intro": "Auf dieser Seite kann ein Notfall-Button zum Meeting hinzugefügt werden. Sie können hier selbst anpassen, was beim Einschalten des Notfall-Buttons passieren soll. Zum Beispiel können Ton und Bild gedämpft oder abgeschaltet werden. Wenn Sie keinen Notfall-Button möchten, aktivieren Sie den Schalter nicht und machen Sie auf der nächsten Seite weiter. ",
-            "btn_engage_headline": "Notfall-Button",
-            "btn_engage_label": "Notfall-Button einschalten",
-            "btn_engage_desc": "Mit dem Notfall-Button können Sie die Ton- und Bild-Übertragung im Meeting beeinflussen. Schalten Sie diese Funktion an, um anzupassen, was passieren soll, wenn Sie auf den Notfall-Button klicken.",
-            "dimlights_label": "Videos dimmen",
+            "intro": "Hier können Sie einen Notfall-Knopf für das Meeting einschalten und einstellen, oder ausschalten. Sie könne bestimmen: Was soll passieren, wenn der Notfall-Knopf gedrückt wird. Zum Beispiel kann der Notfall-Knopf dann Töne und sichtbare Hinweise leiser machen oder ausschalten. Sie können auch eine private Nachricht schreiben, die im Notfall an eine Assistenz-Person im Meeting geschickt werden soll.",
+            "btn_engage_headline": "Notfall-Knopf",
+            "btn_engage_label": "Notfall-Knopf einschalten",
+            "btn_engage_desc": "Mit dem Notfall-Knopf können Sie steuern, wie Ton und Bild im Meeting sich im Notfall verändern sollen. Schalten Sie diese den Notfall-Knopf an: Dann können Sie einstellen, was passieren soll, wenn Sie auf den Notfall-Knopf klicken.",
+            "dimlights_label": "Videos verdunkeln",
             "setvolume_label": "Lautstärke anpassen",
             "messagebtn_enable_label": "Nachricht versenden",
-            "sliders_headline": "Einstellungen für den Notfall-Button",
-            "messagebtn_enable_desc": "Schalten Sie diese Funktion an, um eine private Nachricht zu schreiben. Die Nachricht wird im Meeting nach dem Klick auf den Notfall-Button an eine Person Ihrer Wahl gesendet. Die Person können Sie selbst festlegen. Wenn Sie niemanden festlegen, erhält der Moderator des Meetings die Nachricht.",
+            "sliders_headline": "Einstellungen für den Notfall-Knopf",
+            "messagebtn_enable_desc": "Schalten Sie diese Funktion an, um eine private Nachricht zu schreiben. Die Nachricht wird dann nach dem Klick auf den Notfall-Knopf an eine Assistenz-Person im Meeting geschickt. Wer die Assistenz-Person ist, können Sie im Meeting selbst bestimmen. Wenn Sie keine Person bestimmen, bekommt der Moderator im Meeting die Nachricht.',",
             "message_headline": "Private Nachricht",
             "message_desc": "In diesem Feld kann eine eigene Notfallnachricht verfasst werden.",
-            "message_placeholder": "Hier können Sie die Nachricht eintragen, die bei Klick auf den Notfall-Button an die Person Ihrer Wahl versendet werden soll."
+            "message_placeholder": "Hier können Sie die Nachricht schreiben. Sie wird bei Klick auf den Notfall-Knopf an die Begleitperson geschickt."
         },
         "uiSettings": {
             "headline": "Darstellung des Meetings",
-            "intro": "Hier können Sie Einstellungen für die Darstellung des Meetings und der Videos festlegen.",
+            "intro": "Hier können Sie einstellen, wie das Meeting und die Videos aussehen sollen.",
             "sizeHeadline": "Schrift- und Icongröße",
             "fontSize": "Schriftgröße",
             "iconSize": "Icon-Größe",
@@ -1148,7 +1148,7 @@
             "videoOutput": "Video-Darstellung"
         },
         "transcription": {
-            "headline": "DGS-Dolmetschung",
+            "headline": "Darstellung der Dolmetschenden",
             "intro": "Auf dieser Seite können Sie auswählen, ob Sie DGS- oder Schrift-Dolmetschung nutzen möchten.",
             "headlineDisplay": "Darstellung des*der DGS-Dolmetscher*in",
             "display_option1": "Als Fenster: Der*die Dolmetschende ist in einem Extra-Fenster frei verschiebbar.",
@@ -1168,7 +1168,7 @@
             "screensharingHeadline": "Geteilte Bildschirme trotzdem anzeigen",
             "screensharingDescription": "Während des Meetings sind geteilte Bildschirme zu sehen.",
             "videoVisibilityToggleHeadline": "Während des Meetings sind alle Teilnehmer-Videos in den Kacheln zu sehen.",
-            "videoVisibilityEngage": "Teilnehmer*innen-Videos einschalten",
+            "videoVisibilityEngage": "Videos der Teilnehmenden einschalten",
             "contrastSliderHeadline": "Kontrast",
             "brightnessSliderHeadline": "Helligkeit",
             "dimSliderHeadline": "Kacheln dimmen",
@@ -1177,8 +1177,8 @@
             "fpsSliderHeadline": "Bildübertragungsrate"
         },
         "basic": {
-            "languageHeadline": "Leicht lesbare Sprache",
-            "languageDescription": "Schalten Sie diese Funktion an, um leicht lesbare Sprache als Standard festzulegen. Die Funktion kann zum Beispiel für Menschen mit Dyslexie, Legasthenie und/oder Lernschwierigkeiten hilfreich sein."
+            "languageHeadline": "Einfache Sprache",
+            "languageDescription": "Schalten Sie diesen Schalter an, um alles in Einfacher Sprache zu lesen. In Einfacher Sprache gibt es kurze Wörter, kurze Sätze und direkte Sprache. Einfache Sprache kann Menschen mit Dyslexie, Legasthenie und/oder Lernschwierigkeiten helfen."
         },
         "video": "Kamera"
     },

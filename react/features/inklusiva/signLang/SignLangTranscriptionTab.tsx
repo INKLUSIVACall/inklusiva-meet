@@ -113,7 +113,7 @@ class SignLangTranscriptionTab extends AbstractDialogTab<IProps, any> {
                 </p>
                 <h3>{t('settings.transcription.headlineDisplay')}</h3>
                 <fieldset>
-                    <legend aria-hidden = 'true' ></legend>
+                    <legend aria-hidden = 'true' />
                     <div className = { classes.controlContainer }>
                         <div className = { [ classes.controlColumn, classes.flexDirectionRow ].join(' ') }>
                             <input
@@ -157,13 +157,13 @@ class SignLangTranscriptionTab extends AbstractDialogTab<IProps, any> {
                         </div>
                     </div>
                 </fieldset>
-                
+
                 <div className = { [ classes.controlContainer, 'mt-1' ].join(' ') }>
                     <div className = { classes.controlColumn }>
                         <Slider
-                            id = 'windowsize-slider'
                             className = { classes.inputElement }
                             defaultValue = { signLangWindowSize }
+                            id = 'windowsize-slider'
                             label = { t('settings.transcription.windowsize_label') }
                             max = { 100 }
                             min = { 0 }
