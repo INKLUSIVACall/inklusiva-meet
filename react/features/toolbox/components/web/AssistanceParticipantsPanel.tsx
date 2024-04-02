@@ -8,19 +8,16 @@ import { IReduxState } from '../../../app/types';
 import { getCurrentConference } from '../../../base/conference/functions';
 import { ICRole, IC_ROLES } from '../../../base/conference/icRoles';
 import { IJitsiConference } from '../../../base/conference/reducer';
-import { translate } from '../../../base/i18n/functions';
-import { IconCloseLarge } from '../../../base/icons/svg';
-import {
-    getLocalParticipant,
-    getRemoteParticipants,
-    isParticipantModerator
-} from '../../../base/participants/functions';
-import { IParticipant } from '../../../base/participants/types';
+import { getLocalParticipant, getRemoteParticipants, isParticipantModerator } from '../../../base/participants/functions'; 
+import { IParticipant } from '../../../base/participants/types'; 
+
+import { getRoleMatchingPanelVisibility } from '../../functions.web';
 import Button from '../../../base/ui/components/web/Button';
-import ClickableIcon from '../../../base/ui/components/web/ClickableIcon';
+import { translate } from '../../../base/i18n/functions';
 import { toggleAssistancePanel } from '../../../inklusiva/rolematching/functions';
 import { toggleRoleMatchingPanel } from '../../actions.web';
-import { getRoleMatchingPanelVisibility } from '../../functions.web';
+import ClickableIcon from '../../../base/ui/components/web/ClickableIcon';
+import { IconCloseLarge } from '../../../base/icons/svg';
 
 const styles = (theme: Theme) => {
     return {
@@ -36,7 +33,7 @@ const styles = (theme: Theme) => {
         },
         header: {
             width: '100%',
-            boxSizing: 'border-box' as const,
+            boxSizing: 'border-box',
             display: 'flex',
             alignItems: 'flex-start',
             justifyContent: 'space-between',
@@ -52,7 +49,7 @@ const styles = (theme: Theme) => {
         inputblockContainer: {
             margin: 0,
             display: 'flex',
-            flexDirection: 'column' as const,
+            flexDirection: 'column',
             gap: theme.spacing(3)
         },
         inputDescription: {
@@ -94,13 +91,13 @@ interface IProps extends WithTranslation {
      */
     _iAmAssisted: boolean;
 
-    _localParticipant?: IParticipant;
-
+    _localParticipant: IParticipant;
+    
     /**
      * The participant to send the assistance message to.
      */
     _participant?: IParticipant;
-
+    
     /**
      * Available participants to send an assistance message to.
      */
@@ -117,17 +114,7 @@ interface IProps extends WithTranslation {
     classes: any;
 }
 
-const AssistanceParticipantsPanel = ({
-    classes,
-    _conference,
-    _localParticipant,
-    _participant,
-    _participantsList,
-    _visible,
-    _iAmAssistant,
-    _iAmAssisted,
-    t
-}: IProps) => {
+const AssistanceParticipantsPanel = ({ classes, _conference, _localParticipant, _participant, _participantsList, _visible, _iAmAssistant, _iAmAssisted, t }: IProps) => {
     const dispatch = useDispatch();
 
     const onClose = () => {
@@ -136,16 +123,14 @@ const AssistanceParticipantsPanel = ({
 
     const onClickRequest = (participant: IParticipant) => {
         dispatch(toggleAssistancePanel(participant));
-        dispatch(toggleRoleMatchingPanel());
-    };
+        dispatch(toggleRoleMatchingPanel())
+    }
 
     const onClickRelease = () => {
         _conference?.removeLocalICRole(IC_ROLES.ASSISTED, _participant?.id);
-        if (_localParticipant) {
-            _conference?.removeICRole(_participant?.id, IC_ROLES.ASSISTANT, _localParticipant.id);
-        }
+        _conference?.removeICRole(_participant?.id, IC_ROLES.ASSISTANT, _localParticipant.id);
         dispatch(toggleRoleMatchingPanel());
-    };
+    }
 
     if (_visible) {
         return (
@@ -154,7 +139,9 @@ const AssistanceParticipantsPanel = ({
                 className = { classes.assisteesPanel }
                 role = 'dialog'>
                 <div className = { classes.header }>
-                    <h1 className = { classes.headline }>{t('toolbar.assistanceParticipantsHeader')}</h1>
+                    <h1 className = { classes.headline }>
+                        { t('toolbar.assistanceParticipantsHeader') }
+                    </h1>
                     <ClickableIcon
                         accessibilityLabel = { t('dialog.accessibilityLabel.close') }
                         icon = { IconCloseLarge }
@@ -162,38 +149,32 @@ const AssistanceParticipantsPanel = ({
                         onClick = { onClose } />
                 </div>
                 <div className = { classes.inputblockContainer }>
-                    {!_iAmAssisted
-                        && _participantsList.length > 0
-                        && !_iAmAssistant
-                        && _participantsList.map(participant => (
-                            <div
-                                className = { classes.inputblock }
-                                key = { participant.id }>
-                                <div className = { classes.inputDescription }>{participant.name}</div>
+                    { !_iAmAssisted && _participantsList.length > 0 && !_iAmAssistant && (
+                        _participantsList.map(participant => (
+                            <div key = { participant.id } className = { classes.inputblock }>
+                                <div className = { classes.inputDescription }>{ participant.name }</div>
                                 <Button
-                                    accessibilityLabel = { t('toolbar.accessibility.assistanceRequest') }
+                                    accessibilityLabel = { t('toolbar.accessibility.assistanceRequest')}
                                     className = { classes.inputButton }
                                     label = { t('toolbar.assistanceRequest') }
-                                    onClick = { () => onClickRequest(participant) } />
+                                    onClick = { () => onClickRequest(participant) }/>
                             </div>
-                        ))}
-                    {!_iAmAssisted && (_participantsList.length <= 0 || _iAmAssistant) && (
+                        ))) }
+                    { (!_iAmAssisted && (_participantsList.length <= 0 || _iAmAssistant)) && (
                         <div className = { classes.inputblock }>
-                            <div className = { classes.inputDescription }>
-                                {t('toolbar.assistanceParticipantsListEmpty')}
-                            </div>
+                            <div className = { classes.inputDescription }>{ t('toolbar.assistanceParticipantsListEmpty') }</div>
                         </div>
                     )}
-                    {_iAmAssisted && (
+                    { _iAmAssisted && (
                         <div className = { classes.inputblock }>
                             <Button
-                                accessibilityLabel = { t('toolbar.accessibilityLabel.releaseAssistance') }
+                                accessibilityLabel = { t('toolbar.accessibilityLabel.releaseAssistance')}
                                 className = { classes.inputButton }
                                 label = { t('toolbar.releaseAssistance') }
-                                onClick = { onClickRelease } />
+                                onClick = { onClickRelease }/>
                         </div>
                     )}
-                </div>
+                </div>                
             </div>
         );
     }
@@ -221,10 +202,11 @@ const mapStateToProps = (state: IReduxState) => {
         }
     });
 
-    const remoteParticipantsList = remoteParticipants // no local participants
-        .filter((participant: IParticipant) => !conference?.checkMemberHasRole(participant.id, IC_ROLES.ASSISTANT)) // no assistants
-        .filter((participant: IParticipant) => !conference?.checkMemberHasRole(participant.id, IC_ROLES.ASSISTED)) // no assistees
-        .filter((participant: IParticipant) => !isParticipantModerator(participant)); // no moderators
+    console.log('123456', amIAssistant);
+    const remoteParticipantsList = remoteParticipants                                                                  // no local participants
+        .filter((participant: IParticipant) => !conference?.checkMemberHasRole(participant.id, IC_ROLES.ASSISTANT))    // no assistants
+        .filter((participant: IParticipant) => !conference?.checkMemberHasRole(participant.id, IC_ROLES.ASSISTED))     // no assistees
+        .filter((participant: IParticipant) => !isParticipantModerator(participant));                                  // no moderators
 
     return {
         _conference: conference,
@@ -234,7 +216,7 @@ const mapStateToProps = (state: IReduxState) => {
         _participant: participantToRequestFrom,
         _participantsList: remoteParticipantsList,
         _visible: getRoleMatchingPanelVisibility(state)
-    };
+    }
 };
 
 export default withStyles(styles)(translate(connect(mapStateToProps)(AssistanceParticipantsPanel)));
