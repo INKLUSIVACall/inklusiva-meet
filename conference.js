@@ -71,6 +71,8 @@ import {
 import {
     isMobileBrowser
 } from './react/features/base/environment/utils';
+import { setLastN } from './react/features/base/lastn/actions';
+import { getLastNForQualityLevel } from './react/features/base/lastn/functions';
 import {
     JitsiConferenceErrors,
     JitsiConferenceEvents,
@@ -111,6 +113,7 @@ import {
     updateIcRoles,
     updateRemoteParticipantFeatures
 } from './react/features/base/participants/actions';
+import { PARTICIPANT_ROLE } from './react/features/base/participants/constants';
 import {
     getLocalParticipant,
     getNormalizedDisplayName,
@@ -138,6 +141,7 @@ import { downloadJSON } from './react/features/base/util/downloadJSON';
 import { showDesktopPicker } from './react/features/desktop-picker/actions';
 import { appendSuffix } from './react/features/display-name/functions';
 import { maybeOpenFeedbackDialog, submitFeedback } from './react/features/feedback/actions';
+import { updateTranscriptLink } from './react/features/inklusiva/transcription/actions.web';
 import { initKeyboardShortcuts } from './react/features/keyboard-shortcuts/actions';
 import { maybeSetLobbyChatMessageListener } from './react/features/lobby/actions.any';
 import { setNoiseSuppressionEnabled } from './react/features/noise-suppression/actions';
@@ -168,14 +172,10 @@ import { endpointMessageReceived } from './react/features/subtitles/actions.any'
 import { handleToggleVideoMuted } from './react/features/toolbox/actions.any';
 import { setTileView } from './react/features/video-layout/actions.any';
 import { muteLocal } from './react/features/video-menu/actions.any';
+import { setPreferredVideoQuality } from './react/features/video-quality/actions';
+import { VIDEO_QUALITY_LEVELS } from './react/features/video-quality/constants';
 import { iAmVisitor } from './react/features/visitors/functions';
 import UIEvents from './service/UI/UIEvents';
-import { updateTranscriptLink } from './react/features/inklusiva/transcription/actions.web';
-import { setPreferredVideoQuality } from './react/features/video-quality/actions';
-import { getLastNForQualityLevel } from './react/features/base/lastn/functions';
-import { setLastN } from './react/features/base/lastn/actions';
-import { VIDEO_QUALITY_LEVELS } from './react/features/video-quality/constants';
-import { PARTICIPANT_ROLE } from './react/features/base/participants/constants';
 
 
 const logger = Logger.getLogger(__filename);
