@@ -25,7 +25,7 @@ interface IProps extends WithTranslation {
     _isOpen: boolean;
 
     /**
-     * The whole histroy of the transcription. The messages are saved in an array as
+     * The whole history of the transcription. The messages are saved in an array as
      * Objects with the timeout of the transcription message, the final transcription message, and
      * the name of the message's participant; as well as the stable and unstable state of the
      * message.
@@ -260,8 +260,10 @@ const ClosedCaptionHistory = ({
             <div
                 className = { classes.panel }
                 id = 'CCHistoryPanel'>
-                {_transcriptionHistory.map(transcriptionHistory => (
-                    <div className = { classes.content }>
+                {_transcriptionHistory.map((transcriptionHistory, index) => (
+                    <div
+                        className = { classes.content }
+                        key = { index }>
                         {transcriptionHistory.participantName.length > 15
                             ? `${transcriptionHistory.participantName.substr(0, 12)}...`
                             : transcriptionHistory.participantName}

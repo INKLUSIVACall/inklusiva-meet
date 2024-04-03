@@ -142,13 +142,13 @@ function _endpointMessageReceived({ dispatch, getState }: IStore, next: Function
                 const { _oldTranscriptMessage, _transcriptionHistory } = state['features/subtitles'];
 
                 newTranscriptMessage.final = text;
-                
-                if (_oldTranscriptMessage != null) {
-                    if (newTranscriptMessage.clearTimeOut - _oldTranscriptMessage.clearTimeOut > 10) {
-                        // If the timeout is smaller than 10ms the transcript message hasn't change.
 
-                        dispatch(updateTranscriptionHistory(newTranscriptMessage));
-                    }
+                if (_oldTranscriptMessage === null) {
+                    // first message always needs to be added to the history.
+                    dispatch(updateTranscriptionHistory(newTranscriptMessage));
+                } else if (newTranscriptMessage.clearTimeOut - _oldTranscriptMessage.clearTimeOut > 10) {
+                    // If the timeout is smaller than 10ms the transcript message hasn't change.
+                    dispatch(updateTranscriptionHistory(newTranscriptMessage));
                 }
 
                 dispatch(setOldTranscriptMessage(newTranscriptMessage));

@@ -1,9 +1,10 @@
 import React, { ReactElement, ReactNode } from 'react';
 import { WithTranslation } from 'react-i18next';
-import { connect, useDispatch } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
 
 import { IReduxState } from '../../../app/types';
+import { getConferenceName } from '../../../base/conference/functions';
 import { translate } from '../../../base/i18n/functions';
 import { IconBubble, IconDownload } from '../../../base/icons/svg';
 import { SMALL_MOBILE_WIDTH } from '../../../base/responsive-ui/constants';
@@ -15,6 +16,19 @@ import { getClosedCaptionVisibility } from '../../functions';
 
 
 interface IProps extends WithTranslation {
+
+    /**
+     * The name of the conference.
+     */
+    _conferenceName: string;
+
+    /**
+     * The whole history of the transcription. The messages are saved in an array as
+     * Objects with the timeout of the transcription message, the final transcription message, and
+     * the name of the message's participant; as well as the stable and unstable state of the
+     * message.
+     */
+    _transcriptionHistory: any[];
 
     /**
     * Component's children (the audio button).
@@ -82,6 +96,8 @@ function ClosedCaptionButtonPopup({
     onClickHistory,
     onClose,
     popupPlacement,
+    _transcriptionHistory,
+    _conferenceName,
     t
 }: IProps) {
     const { classes } = useStyles();
@@ -91,7 +107,22 @@ function ClosedCaptionButtonPopup({
     };
 
     const _onClickDownload = () => {
-        // TODO
+        const formattedMessages = _transcriptionHistory.map(message => {
+            const { participantName, final } = message;
+            const messageText = final;
+
+            return `${participantName}: ${messageText}`;
+        });
+
+        const content = formattedMessages.join('\n');
+
+        const element = document.createElement('a');
+        const file = new Blob([ content ], { type: 'text/plain' });
+
+        element.href = URL.createObjectURL(file);
+        element.download = `${_conferenceName}_transkript.txt`;
+        document.body.appendChild(element); // Required for this to work in Firefox
+        element.click();
     };
 
 
@@ -112,18 +143,17 @@ function ClosedCaptionButtonPopup({
                 label = { t('toolbar.ccHistory') }
                 // eslint-disable-next-line react/jsx-no-bind
                 onClick = { _onClickHistory } />
+            <Button
+                accessibilityLabel = { t('toolbar.accessibilityLabel.ccDownload') }
+                className = { classes.button }
+                icon = { IconDownload }
+                label = { t('toolbar.ccDownload') }
+                // eslint-disable-next-line react/jsx-no-bind
+                onClick = { _onClickDownload } />
+
         </ContextMenu>
 
     );
-
-    // TODO: Implement download functionality
-    // <Button
-    //     accessibilityLabel = { t('toolbar.accessibilityLabel.ccDownload') }
-    //     className = { classes.button }
-    //     icon = { IconDownload }
-    //     label = { t('toolbar.ccDownload') }
-    //     // eslint-disable-next-line react/jsx-no-bind
-    //     onClick = { _onClickDownload } />
 
     return (
         <div className = { classes.container }>
@@ -152,7 +182,9 @@ function mapStateToProps(state: IReduxState) {
 
     return {
         popupPlacement: clientWidth <= Number(SMALL_MOBILE_WIDTH) ? 'auto' : 'top-end',
-        isOpen: Boolean(getClosedCaptionVisibility(state))
+        isOpen: Boolean(getClosedCaptionVisibility(state)),
+        _transcriptionHistory: state['features/subtitles']._transcriptionHistory,
+        _conferenceName: state['features/base/conference'].room ?? ''
     };
 }
 
