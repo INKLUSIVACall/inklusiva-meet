@@ -18,15 +18,15 @@ export interface IRoleMatchingState {
     assistancePanelVisible: boolean;
 
     /**
-     * Which participant do I request assistance from?
-     */
-    participant?: IParticipant;
-
-    /**
      * The indicator that determines whether the local participant was sent to
      * the breakout room.
      */
     breakOutRoomHandled: boolean;
+
+    /**
+     * Which participant do I request assistance from?
+     */
+    participant?: IParticipant;
 
     /**
      * The indicator that determines whether the rolematching menu is visible.
@@ -67,8 +67,7 @@ ReducerRegistry.register<IRoleMatchingState>(
         case TOGGLE_ASSISTANCE_PANEL:
             return {
                 ...state,
-                assistancePanelVisible: !state.assistancePanelVisible,
-                participant: action.participant,
+                assistancePanelVisible: !state.assistancePanelVisible
             };
         case SHOW_ASSISTANCE_PANEL:
             return {
@@ -78,7 +77,7 @@ ReducerRegistry.register<IRoleMatchingState>(
         case HIDE_ASSISTANCE_PANEL:
             return {
                 ...state,
-                assistancePanelVisible: false,
+                assistancePanelVisible: false
             };
         case ASSISTANCE_BREAKOUT_ROOM_HANDLED:
             return {
@@ -94,7 +93,7 @@ ReducerRegistry.register<IRoleMatchingState>(
             return {
                 ...state,
                 participant: action.participant
-            }
+            };
         }
 
         return state;

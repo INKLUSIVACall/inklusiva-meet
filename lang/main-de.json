@@ -107,7 +107,7 @@
         }
     },
     "cc": {
-        "title": "Transkriptions-Historie"
+        "title": "Untertitel-Verlauf"
     },
     "chat": {
         "enter": "Chat-Raum betreten",
@@ -1045,7 +1045,7 @@
             "signedIn": "Momentan wird auf Kalendertermine von {{email}} zugegriffen. Klicken Sie auf die folgende Schaltfläche „Trennen“, um den Zugriff auf die Kalendertermine zu stoppen.",
             "title": "Kalender"
         },
-        "distressBtnTab": "Notfall",
+        "distressBtnTab": "Notfall-Knopf",
         "desktopShareFramerate": "Frame-Rate für Bildschirm-Freigabe",
         "desktopShareHighFpsWarning": "Eine höhere Framerate könnte sich auf Ihre Datenrate auswirken. Sie müssen die Bildschirmfreigabe neustarten, damit die Einstellung übernommen wird.",
         "desktopShareWarning": "Sie müssen die Bildschirm-Freigabe neu starten, damit die Einstellung übernommen wird.",
@@ -1085,7 +1085,7 @@
         "title": "Einstellungen",
         "transcriptionTab": "Schriftdolmetschen-Assistent",
         "userVideoTab": "Teilnehmer-Video",
-        "uiTab": "Einstellungen zum Thema Sehen",
+        "uiTab": "Sehen",
         "audioSettings": {
             "headline": "Einstellungen zum Thema Hören",
             "intro": "Auf dieser Seite können Sie hörbare Signale im Meeting einschalten, ausschalten und anpassen.",
@@ -1101,7 +1101,7 @@
             "amplify": "Leise Töne verstärken",
             "balance": "Balance (rechts/links)",
             "highFrequencies": "Viel/Wenig hohe Frequenzen",
-            "noiseSuppressionDescription": "Schalten Sie diesen Schalter ein, um weniger Geräusche im Hintergrund zu hören. Dann wird auch die Stimme des Sprechenden deutlicher.",
+            "noiseSuppressionDescription": "Schalten Sie diesen Schalter ein, damit weniger Hintergrund-Geräusche von Ihnen übertragen werden. Dann wird Ihre Stimme für alle anderen deutlicher.",
             "activateOthersAudio": "Ton der Teilnehmenden eingeschaltet",
             "othersVolume": "Lautstärke"
         },
@@ -1120,7 +1120,7 @@
             "message_placeholder": "Hier können Sie die Nachricht schreiben. Sie wird bei Klick auf den Notfall-Knopf an die Begleitperson geschickt."
         },
         "uiSettings": {
-            "headline": "Darstellung des Meetings",
+            "headline": "Einstellungen zum Thema Sehen",
             "intro": "Hier können Sie einstellen, wie das Meeting und die Videos aussehen sollen.",
             "sizeHeadline": "Schrift- und Icongröße",
             "fontSize": "Schriftgröße",
@@ -1178,7 +1178,7 @@
         },
         "basic": {
             "languageHeadline": "Einfache Sprache",
-            "languageDescription": "Schalten Sie diesen Schalter an, um alles in Einfacher Sprache zu lesen. In Einfacher Sprache gibt es kurze Wörter, kurze Sätze und direkte Sprache. Einfache Sprache kann Menschen mit Dyslexie, Legasthenie und/oder Lernschwierigkeiten helfen."
+            "languageDescription": "Schalten Sie diesen Schalter an, um im Backend und im Assistenten für Barriere-Freiheit in Einfacher Sprache zu lesen. In Einfacher Sprache gibt es kurze Wörter, kurze Sätze und direkte Sprache. Einfache Sprache kann Menschen mit Dyslexie, Legasthenie und/oder Lernschwierigkeiten helfen."
         },
         "video": "Kamera"
     },

@@ -162,7 +162,6 @@ const AssistancePanel = ({
         dispatch(hideAssistancePanel());
     };
 
-    console.log('123456', _participant);
     const onClickRequest = (participant: IParticipant) => {
         dispatch(setParticipant(participant));
         _conference?.addLocalICRole(IC_ROLES.ASSISTED, participant?.id);

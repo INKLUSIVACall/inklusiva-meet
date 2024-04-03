@@ -5,7 +5,6 @@ import { isIosMobileBrowser } from '../../../base/environment/utils';
 import { translate } from '../../../base/i18n/functions';
 import { IconHandHoldingHand } from '../../../base/icons/svg';
 import AbstractButton, { IProps as AbstractButtonProps } from '../../../base/toolbox/components/AbstractButton';
-import { toggleRoleMatchingPanel } from '../../actions.web';
 import { toggleAssistancePanel } from '../../../inklusiva/rolematching/functions';
 
 interface IProps extends AbstractButtonProps {

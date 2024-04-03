@@ -3,7 +3,7 @@
  *
  * {
  *     type: CLEAR_TOOLBOX_TIMEOUT
- * }
+ * }.
  */
 export const CLEAR_TOOLBOX_TIMEOUT = 'CLEAR_TOOLBOX_TIMEOUT';
 
@@ -14,7 +14,7 @@ export const CLEAR_TOOLBOX_TIMEOUT = 'CLEAR_TOOLBOX_TIMEOUT';
  * {
  *     type: FULL_SCREEN_CHANGED,
  *     fullScreen: boolean
- * }
+ * }.
  */
 export const FULL_SCREEN_CHANGED = 'FULL_SCREEN_CHANGED';
 
@@ -25,7 +25,7 @@ export const FULL_SCREEN_CHANGED = 'FULL_SCREEN_CHANGED';
  * {
  *     type: SET_FULL_SCREEN,
  *     fullScreen: boolean
- * }
+ * }.
  */
 export const SET_FULL_SCREEN = 'SET_FULL_SCREEN';
 
@@ -35,7 +35,7 @@ export const SET_FULL_SCREEN = 'SET_FULL_SCREEN';
  * {
  *     type: SET_HANGUP_MENU_VISIBLE,
  *     visible: boolean
- * }
+ * }.
  */
 export const SET_HANGUP_MENU_VISIBLE = 'SET_HANGUP_MENU_VISIBLE';
 
@@ -50,20 +50,9 @@ export const SET_OVERFLOW_DRAWER = 'SET_OVERFLOW_DRAWER';
  * {
  *     type: SET_OVERFLOW_MENU_VISIBLE,
  *     visible: boolean
- * }
+ * }.
  */
 export const SET_OVERFLOW_MENU_VISIBLE = 'SET_OVERFLOW_MENU_VISIBLE';
-
-/**
- * The type of the (redux) action which sets the visibility of the role matching panel
- * (AssistanceParticipantsPanel).
- *
- * {
- *     type: ET_PANEL_VISIBILITY,
- *     panelVisibility: boolean
- * }
- */
-export const SET_PANEL_VISIBILITY = 'SET_PANEL_VISIBILITY';
 
 /**
  * The type of the action which sets the indicator which determines whether a
@@ -72,7 +61,7 @@ export const SET_PANEL_VISIBILITY = 'SET_PANEL_VISIBILITY';
  * {
  *     type: SET_TOOLBAR_HOVERED,
  *     hovered: boolean
- * }
+ * }.
  */
 export const SET_TOOLBAR_HOVERED = 'SET_TOOLBAR_HOVERED';
 
@@ -82,7 +71,7 @@ export const SET_TOOLBAR_HOVERED = 'SET_TOOLBAR_HOVERED';
  * {
  *     type: SET_TOOLBOX_ENABLED,
  *     enabled: boolean
- * }
+ * }.
  */
 export const SET_TOOLBOX_ENABLED = 'SET_TOOLBOX_ENABLED';
 
@@ -94,7 +83,7 @@ export const SET_TOOLBOX_ENABLED = 'SET_TOOLBOX_ENABLED';
  *     type: SET_TOOLBOX_TIMEOUT,
  *     handler: Function,
  *     timeoutMS: number
- * }
+ * }.
  */
 export const SET_TOOLBOX_TIMEOUT = 'SET_TOOLBOX_TIMEOUT';
 
@@ -104,7 +93,7 @@ export const SET_TOOLBOX_TIMEOUT = 'SET_TOOLBOX_TIMEOUT';
  * {
  *     type: SET_TOOLBOX_VISIBLE,
  *     visible: boolean
- * }
+ * }.
  */
 export const SET_TOOLBOX_VISIBLE = 'SET_TOOLBOX_VISIBLE';
 
@@ -113,7 +102,7 @@ export const SET_TOOLBOX_VISIBLE = 'SET_TOOLBOX_VISIBLE';
  *
  * {
  *     type: TOGGLE_TOOLBOX_VISIBLE
- * }
+ * }.
  */
 export const TOGGLE_TOOLBOX_VISIBLE = 'TOGGLE_TOOLBOX_VISIBLE';
 
@@ -122,6 +111,6 @@ export const TOGGLE_TOOLBOX_VISIBLE = 'TOGGLE_TOOLBOX_VISIBLE';
  *
  * {
  *     type: SET_TOOLBOX_SHIFT_UP
- * }
+ * }.
  */
 export const SET_TOOLBOX_SHIFT_UP = 'SET_TOOLBOX_SHIFT_UP';

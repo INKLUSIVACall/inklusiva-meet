@@ -117,7 +117,8 @@ import { PARTICIPANT_ROLE } from './react/features/base/participants/constants';
 import {
     getLocalParticipant,
     getNormalizedDisplayName,
-    getVirtualScreenshareParticipantByOwnerId
+    getVirtualScreenshareParticipantByOwnerId,
+    isParticipantModerator
 } from './react/features/base/participants/functions';
 import { updateSettings } from './react/features/base/settings/actions';
 import {

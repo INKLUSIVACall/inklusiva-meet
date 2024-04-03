@@ -3,19 +3,20 @@ import { WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 
 import { IReduxState, IStore } from '../../../app/types';
-import { getFeatureFlag } from '../../../base/flags/functions';
+import { getCurrentConference } from '../../../base/conference/functions';
+import { IC_ROLES } from '../../../base/conference/icRoles';
+import { IJitsiConference } from '../../../base/conference/reducer';
 import { translate } from '../../../base/i18n/functions';
+import { IconHandHoldingHand } from '../../../base/icons/svg';
 import { getParticipantById } from '../../../base/participants/functions';
 import { IParticipant } from '../../../base/participants/types';
 import ContextMenuItem from '../../../base/ui/components/web/ContextMenuItem';
+import { setParticipant } from '../../../inklusiva/rolematching/functions';
 import { NOTIFY_CLICK_MODE } from '../../../toolbox/constants';
-import { isButtonEnabled } from '../../../toolbox/functions.web';
 import { IButtonProps } from '../../types';
 
-import { IconHandHoldingHand } from '../../../base/icons/svg';
-import { toggleAssistancePanel } from '../../../inklusiva/rolematching/functions';
-
 interface IProps extends IButtonProps, WithTranslation {
+    _conference?: IJitsiConference;
 
     /**
      * The participant to send the assistance message to.
@@ -71,13 +72,17 @@ class AssistanceMessageButton extends Component<IProps> {
      * @returns {void}
      */
     _onClick() {
-        const { _participant, dispatch, notifyClick, notifyMode } = this.props;
+        const { _participant, dispatch, notifyClick, notifyMode, _conference } = this.props;
 
         notifyClick?.();
         if (notifyMode === NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY) {
             return;
         }
-        dispatch(toggleAssistancePanel(_participant));
+
+        if (_participant) {
+            dispatch(setParticipant(_participant));
+            _conference?.addLocalICRole(IC_ROLES.ASSISTED, _participant?.id);
+        }
     }
 }
 
@@ -90,10 +95,12 @@ class AssistanceMessageButton extends Component<IProps> {
  */
 function _mapStateToProps(state: IReduxState, ownProps: any) {
     const { visible } = ownProps;
+    const conference = getCurrentConference(state);
 
     return {
         _participant: getParticipantById(state, ownProps.participantID),
-        visible,
+        _conference: conference,
+        visible
     };
 }
 

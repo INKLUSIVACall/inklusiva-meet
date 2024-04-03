@@ -10,7 +10,6 @@ import {
     SET_HANGUP_MENU_VISIBLE,
     SET_OVERFLOW_DRAWER,
     SET_OVERFLOW_MENU_VISIBLE,
-    SET_PANEL_VISIBILITY,
     SET_TOOLBAR_HOVERED,
     SET_TOOLBOX_TIMEOUT
 } from './actionTypes';
@@ -267,22 +266,6 @@ export function setToolboxTimeout(handler: Function, timeoutMS: number) {
 }
 
 /**
- * Dispatches an action which sets the visibility of the role matching panel (AssistanceParticipantsPanel).
- *
- * @param {boolean} panelVisibility - the value of the visibility.
- * @returns {{
- *     type: SET_PANEL_VISIBILITY,
- *     panelVisibility: boolean
- * }}
- */
-export function setPanelVisibility(panelVisibility: boolean) {
-    return {
-        type: SET_PANEL_VISIBILITY,
-        panelVisibility
-    }
-}
-
-/**
  * Closes the overflow menu if opened.
  *
  * @private
@@ -294,17 +277,4 @@ export function closeOverflowMenuIfOpen() {
 
         overflowMenuVisible && dispatch(setOverflowMenuVisible(false));
     };
-}
-
-/**
- * Toggles the role matching panel visibility by getting the state out of the redux state.
- *
- * @returns {void}
- */
-export function toggleRoleMatchingPanel() {
-    return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
-        const { panelVisibility } = getState()['features/toolbox'];
-
-        dispatch(setPanelVisibility(!panelVisibility));
-    }
 }
