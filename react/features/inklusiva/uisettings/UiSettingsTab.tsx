@@ -169,19 +169,19 @@ class UiSettingsTab extends AbstractDialogTab<IProps, any> {
                     <div className = { classes.controlContainer }>
                         <div className = { classes.controlColumn }>
                             <Slider
-                                id = 'UI-fontsize-slider'
                                 className = { classes.inputElement }
                                 defaultValue = { fontSize }
+                                id = 'UI-fontsize-slider'
                                 label = { t('settings.uiSettings.fontSize') }
                                 max = { 2 }
+                                step = { 1 }
                                 min = { 0 }
                                 // eslint-disable-next-line react/jsx-no-bind
                                 onChange = { event =>
                                     super._onChange({
                                         fontSize: parseInt(event.target.value, 10)
                                     })
-                                }
-                                step = { 1 } />
+                                } />
                         </div>
                         <div className = { classes.valueColumn }>
                             {getSizeDescription(fontSize) }
@@ -190,19 +190,19 @@ class UiSettingsTab extends AbstractDialogTab<IProps, any> {
                     <div className = { classes.controlContainer }>
                         <div className = { classes.controlColumn }>
                             <Slider
-                                id = 'UI-icon-size-slider'
                                 className = { classes.inputElement }
                                 defaultValue = { iconSize }
+                                id = 'UI-icon-size-slider'
                                 label = { t('settings.uiSettings.iconSize') }
                                 max = { 2 }
+                                step = { 1 }
                                 min = { 0 }
                                 // eslint-disable-next-line react/jsx-no-bind
                                 onChange = { event =>
                                     super._onChange({
                                         iconSize: parseInt(event.target.value, 10)
                                     })
-                                }
-                                step = { 1 } />
+                                } />
                         </div>
                         <div className = { classes.valueColumn }>
                             {getSizeDescription(iconSize) }
@@ -224,133 +224,133 @@ class UiSettingsTab extends AbstractDialogTab<IProps, any> {
                         } />
                 </div>
 
-                <div className = { classes.inputblockContainer }>
-                    <Checkbox
-                        checked = { interpreter }
-                        className = { [ classes.inputElement, 'ml-2' ].join(' ') }
-                        disabled = { otherParticipants }
-                        label = { t('settings.userVideo.interpreterHeadline') }
-                        name = 'video-visibility-toggle'
-                        // eslint-disable-next-line react/jsx-no-bind
-                        onChange = { () =>
-                            super._onChange({
-                                interpreter: !interpreter
-                            })
-                        } />
-                </div>
-                <div className = { classes.inputblockContainer }>
-                    <Checkbox
-                        checked = { screensharing }
-                        className = { [ classes.inputElement, 'ml-2' ].join(' ') }
-                        disabled = { otherParticipants }
-                        label = { t('settings.userVideo.screensharingHeadline') }
-                        name = 'video-visibility-toggle'
-                        // eslint-disable-next-line react/jsx-no-bind
-                        onChange = { () =>
-                            super._onChange({
-                                screensharing: !screensharing
-                            })
-                        } />
-                </div>
+                {/* <div className = { classes.inputblockContainer }> */}
+                {/*     <Checkbox */}
+                {/*         checked = { interpreter } */}
+                {/*         className = { [ classes.inputElement, 'ml-2' ].join(' ') } */}
+                {/*         disabled = { otherParticipants } */}
+                {/*         label = { t('settings.userVideo.interpreterHeadline') } */}
+                {/*         name = 'video-visibility-toggle' */}
+                {/*         // eslint-disable-next-line react/jsx-no-bind */}
+                {/*         onChange = { () => */}
+                {/*             super._onChange({ */}
+                {/*                 interpreter: !interpreter */}
+                {/*             }) */}
+                {/*         } /> */}
+                {/* </div> */}
+                {/* <div className = { classes.inputblockContainer }> */}
+                {/*     <Checkbox */}
+                {/*         checked = { screensharing } */}
+                {/*         className = { [ classes.inputElement, 'ml-2' ].join(' ') } */}
+                {/*         disabled = { otherParticipants } */}
+                {/*         label = { t('settings.userVideo.screensharingHeadline') } */}
+                {/*         name = 'video-visibility-toggle' */}
+                {/*         // eslint-disable-next-line react/jsx-no-bind */}
+                {/*         onChange = { () => */}
+                {/*             super._onChange({ */}
+                {/*                 screensharing: !screensharing */}
+                {/*             }) */}
+                {/*         } /> */}
+                {/* </div> */}
 
                 <div className = { classes.inputblockContainer }>
                     <div className = { classes.controlContainer }>
                         <div className = { classes.controlColumn }>
                             <Slider
-                                id = 'UI-contrast-slider'
                                 className = { classes.inputElement }
                                 defaultValue = { contrast }
+                                id = 'UI-contrast-slider'
                                 label = { t('settings.userVideo.contrastSliderHeadline') }
                                 max = { CONTRAST_SLIDER_MAXIMUM }
                                 min = { CONTRAST_SLIDER_MINIMUM }
+                                step = { 1 }
                                 name = 'contrast-slider'
                                 // eslint-disable-next-line react/jsx-no-bind
                                 onChange = { event =>
                                     super._onChange({
                                         contrast: event.target.value
                                     })
-                                }
-                                step = { 1 } />
+                                } />
                         </div>
                         <div className = { classes.valueColumn }>{contrast}%</div>
                     </div>
                     <div className = { classes.controlContainer }>
                         <div className = { classes.controlColumn }>
                             <Slider
-                                id = 'UI-brightness-slider'
                                 className = { classes.inputElement }
                                 defaultValue = { brightness }
+                                id = 'UI-brightness-slider'
                                 label = { t('settings.userVideo.brightnessSliderHeadline') }
                                 max = { BRIGHTNESS_SLIDER_MAXIMUM }
                                 min = { BRIGHTNESS_SLIDER_MINIMUM }
+                                step = { 1 }
                                 name = 'brightness-slider'
                                 // eslint-disable-next-line react/jsx-no-bind
                                 onChange = { event =>
                                     super._onChange({
                                         brightness: event.target.value
                                     })
-                                }
-                                step = { 1 } />
+                                } />
                         </div>
                         <div className = { classes.valueColumn }>{brightness}%</div>
                     </div>
                     <div className = { classes.controlContainer }>
                         <div className = { classes.controlColumn }>
                             <Slider
-                                id = 'UI-dimming-slider'
                                 className = { classes.inputElement }
                                 defaultValue = { dimming }
+                                id = 'UI-dimming-slider'
                                 label = { t('settings.userVideo.dimSliderHeadline') }
                                 max = { OPACITY_SLIDER_MAXIMUM }
                                 min = { OPACITY_SLIDER_MINIMUM }
+                                step = { 1 }
                                 name = 'dimmer-slider'
                                 // eslint-disable-next-line react/jsx-no-bind
                                 onChange = { event =>
                                     super._onChange({
                                         dimming: event.target.value
                                     })
-                                }
-                                step = { 1 } />
+                                } />
                         </div>
                         <div className = { classes.valueColumn }>{dimming}%</div>
                     </div>
                     <div className = { classes.controlContainer }>
                         <div className = { classes.controlColumn }>
                             <Slider
-                                id = 'UI-saturation-slider'
                                 className = { classes.inputElement }
                                 defaultValue = { saturation }
+                                id = 'UI-saturation-slider'
                                 label = { t('settings.userVideo.saturationSliderHeadline') }
                                 max = { SATURATION_SLIDER_MAXIMUM }
                                 min = { SATURATION_SLIDER_MINIMUM }
+                                step = { 1 }
                                 name = 'saturation-slider'
                                 // eslint-disable-next-line react/jsx-no-bind
                                 onChange = { event =>
                                     super._onChange({
                                         saturation: event.target.value
                                     })
-                                }
-                                step = { 1 } />
+                                } />
                         </div>
                         <div className = { classes.valueColumn }>{saturation}%</div>
                     </div>
                     <div className = { classes.controlContainer }>
                         <div className = { classes.controlColumn }>
                             <Slider
-                                id = 'UI-zoom-slider'
                                 className = { classes.inputElement }
                                 defaultValue = { zoom }
+                                id = 'UI-zoom-slider'
                                 label = { t('settings.userVideo.zoomSliderHeadline') }
                                 max = { ZOOM_SLIDER_MAXIMUM }
                                 min = { ZOOM_SLIDER_MINIMUM }
+                                step = { 1 }
                                 name = 'zoom-slider'
                                 // eslint-disable-next-line react/jsx-no-bind
                                 onChange = { event =>
                                     super._onChange({
                                         zoom: event.target.value
                                     })
-                                }
-                                step = { 1 } />
+                                } />
                         </div>
                         <div className = { classes.valueColumn }>{zoom}%</div>
                     </div>

@@ -29,6 +29,7 @@ import { iAmVisitor } from '../../../visitors/functions';
 import { PARTICIPANT_MENU_BUTTONS as BUTTONS } from '../../constants';
 
 import AskToUnmuteButton from './AskToUnmuteButton';
+import AssistanceMessageButton from './AssistanceMessageButton';
 import ConnectionStatusButton from './ConnectionStatusButton';
 import CustomOptionButton from './CustomOptionButton';
 import GrantCoHostButton from './GrantCoHostButton';
@@ -44,7 +45,6 @@ import SendToRoomButton from './SendToRoomButton';
 import TogglePinToStageButton from './TogglePinToStageButton';
 import VerifyParticipantButton from './VerifyParticipantButton';
 import VideoSettingsContextMenu from './VideoSettingsContextMenu';
-import AssistanceMessageButton from './AssistanceMessageButton';
 
 interface IProps {
 
@@ -281,7 +281,7 @@ const ParticipantContextMenu = ({
         buttons2.push(<TogglePinToStageButton { ...getButtonProps(BUTTONS.PIN_TO_STAGE) } />);
     }
 
-    if(!_isModerator && !_isRemoteParticipantModerator) {
+    if (!_isModerator && !_isRemoteParticipantModerator) {
         buttons.push(<AssistanceMessageButton { ...getButtonProps(BUTTONS.ASSISTANCE_MESSAGE) } />);
     }
 
