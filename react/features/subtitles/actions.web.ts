@@ -1,8 +1,8 @@
 import { IStore } from '../app/types';
 import { toggleDialog } from '../base/dialog/actions';
 
-import LanguageSelectorDialog from './components/web/LanguageSelectorDialog';
 import { setHistoryVisibility, setPopupVisibility } from './actions.any';
+import LanguageSelectorDialog from './components/web/LanguageSelectorDialog';
 
 export * from './actions.any';
 
@@ -31,12 +31,12 @@ export function toggleClosedCaptionPopup() {
         const value = getState()['features/subtitles']._popupVisibility;
 
         dispatch(setPopupVisibility(!value));
-    };    
+    };
 }
 
 /**
  * Toggles the visibility of the cc panel.
- * 
+ *
  * @returns {{
  *      type: SET_HISTORY_VISIBILITY
  * }}
@@ -46,5 +46,5 @@ export function toggleCCHistoryPanel() {
         const value = getState()['features/subtitles']._historyVisibility;
 
         dispatch(setHistoryVisibility(!value));
-    }
+    };
 }
