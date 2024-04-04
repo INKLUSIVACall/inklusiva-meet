@@ -117,7 +117,7 @@ function ClosedCaptionButtonPopup({
         const content = formattedMessages.join('\n');
 
         const element = document.createElement('a');
-        const file = new Blob([ content ], { type: 'text/plain' });
+        const file = new Blob([ content ], { type: 'text/plain' } as BlobOptions);
 
         element.href = URL.createObjectURL(file);
         element.download = `${_conferenceName}_transkript.txt`;
