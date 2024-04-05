@@ -260,12 +260,16 @@ function _mapStateToProps(state: IReduxState, ownProps: Partial<IProps>) {
     const { overflowDrawer } = state['features/toolbox'];
     const { showConnectionInfo } = state['features/base/connection'];
     const showHideSelfViewButton = !disableSelfViewSettings && !getHideSelfView(state);
+    // const triggerButtonPositionLeft = this.current.getBoundingClientRect().left;
+    // const triggerButtonPositionRight = this.current.getBoundingClientRect().right;
 
     let _menuPosition;
 
     switch (thumbnailType) {
-    case THUMBNAIL_TYPE.TILE:
-        _menuPosition = 'left-start';
+    case THUMBNAIL_TYPE.TILE: 
+        // we need to ajust this case and check whether the trigger button is at the left side and the menu needs
+        // to be on the right side.
+        _menuPosition = 'right-start';
         break;
     case THUMBNAIL_TYPE.VERTICAL:
         _menuPosition = 'left-start';
