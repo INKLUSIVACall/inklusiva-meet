@@ -281,10 +281,6 @@ const ParticipantContextMenu = ({
         buttons2.push(<TogglePinToStageButton { ...getButtonProps(BUTTONS.PIN_TO_STAGE) } />);
     }
 
-    if (!_isModerator && !_isRemoteParticipantModerator) {
-        buttons.push(<AssistanceMessageButton { ...getButtonProps(BUTTONS.ASSISTANCE_MESSAGE) } />);
-    }
-
     if (!disablePrivateChat && !visitorsMode) {
         buttons2.push(<PrivateMessageMenuButton { ...getButtonProps(BUTTONS.PRIVATE_MESSAGE) } />);
     }
