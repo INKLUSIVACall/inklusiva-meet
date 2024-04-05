@@ -249,7 +249,7 @@ function _mapStateToProps(state: IReduxState, ownProps: Partial<IProps>) {
     case THUMBNAIL_TYPE.TILE:
         // we need to ajust this case and check whether the trigger button is at the left side and the menu needs
         // to be on the right side.
-        _menuPosition = 'right-start';
+        _menuPosition = 'left-start';
         break;
     case THUMBNAIL_TYPE.VERTICAL:
         _menuPosition = 'left-end';
