@@ -1051,7 +1051,7 @@ class Thumbnail extends Component<IProps, IState> {
         } else if (_interpreter && _conference?.checkMemberHasRole(_participant.id, IC_ROLES.SIGN_LANG_TRANSLATOR)) {
             className += ` ${DISPLAY_MODE_TO_CLASS_NAME[displayMode]}`;
         } else {
-            className += 'display-avatar-only';
+            className += ' display-avatar-only';
         }
 
         if (_raisedHand) {
