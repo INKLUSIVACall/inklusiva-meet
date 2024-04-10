@@ -6,7 +6,7 @@ import {
     setStartMutedPolicy,
     setStartReactionsMuted
 } from '../base/conference/actions';
-import { openDialog } from '../base/dialog/actions';
+import { hideDialog, openDialog } from '../base/dialog/actions';
 import i18next from '../base/i18n/i18next';
 import { updateSettings } from '../base/settings/actions';
 import { getLocalVideoTrack } from '../base/tracks/functions.any';
@@ -53,6 +53,34 @@ export function openSettingsDialog(defaultTab?: string, isDisplayedOnWelcomePage
         defaultTab,
         isDisplayedOnWelcomePage
     });
+}
+
+/**
+ * Closes {@code SettingsDialog}.
+ *
+ * @returns {Function}
+ */
+export function closeSettingsDialog() {
+    return hideDialog(SettingsDialog);
+}
+
+/**
+ * Toggles the {@code SettingsDialog}.
+ *
+ * @param {string} defaultTab - The tab in {@code SettingsDialog} that should be
+ * displayed initially.
+ * @returns {Function}
+ */
+export function toggleSettingsDialog(defaultTab?: string) {
+    return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
+        const dialogComponent = getState()['features/base/dialog']?.component;
+
+        if (dialogComponent) {
+            dispatch(closeSettingsDialog());
+        } else {
+            dispatch(openSettingsDialog(defaultTab, false));
+        }
+    };
 }
 
 /**
