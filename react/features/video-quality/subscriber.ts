@@ -241,7 +241,7 @@ StateListenerRegistry.register(
                 maxVideoQualityChanged = true;
 
                 // Ugly hack to avoid setting the max quality to high
-                dispatch(setMaxReceiverVideoQualityForTileView(VIDEO_QUALITY_LEVELS.HIGH));
+                dispatch(setMaxReceiverVideoQualityForTileView(VIDEO_QUALITY_LEVELS.STANDARD));
 
                 // dispatch(setMaxReceiverVideoQualityForTileView(newMaxRecvVideoQuality));
             }
@@ -312,7 +312,7 @@ StateListenerRegistry.register(
 
                 // dispatch(setMaxReceiverVideoQualityForStageFilmstrip(newMaxRecvVideoQualityForStageFilmstrip));
                 // ugly hack to avoid setting the max quality to high
-                dispatch(setMaxReceiverVideoQualityForStageFilmstrip(VIDEO_QUALITY_LEVELS.HIGH));
+                dispatch(setMaxReceiverVideoQualityForStageFilmstrip(VIDEO_QUALITY_LEVELS.STANDARD));
             }
 
             if (maxReceiverVideoQualityForVerticalFilmstrip !== newMaxRecvVideoQualityForVerticalFilmstrip) {
@@ -320,7 +320,7 @@ StateListenerRegistry.register(
 
                 // dispatch(setMaxReceiverVideoQualityForVerticalFilmstrip(newMaxRecvVideoQualityForVerticalFilmstrip));
                 // ugly hack to avoid setting the max quality to high
-                dispatch(setMaxReceiverVideoQualityForVerticalFilmstrip(VIDEO_QUALITY_LEVELS.HIGH));
+                dispatch(setMaxReceiverVideoQualityForVerticalFilmstrip(VIDEO_QUALITY_LEVELS.STANDARD));
             }
 
             if (maxReceiverVideoQualityForLargeVideo !== newMaxRecvVideoQualityForLargeVideo) {
@@ -328,7 +328,7 @@ StateListenerRegistry.register(
 
                 // ugly hack to avoid setting the max quality to high
                 // dispatch(setMaxReceiverVideoQualityForLargeVideo(newMaxRecvVideoQualityForLargeVideo));
-                dispatch(setMaxReceiverVideoQualityForLargeVideo(VIDEO_QUALITY_LEVELS.HIGH));
+                dispatch(setMaxReceiverVideoQualityForLargeVideo(VIDEO_QUALITY_LEVELS.STANDARD));
             }
 
             if (maxReceiverVideoQualityForScreenSharingFilmstrip !== newMaxRecvVideoQualityForScreenSharingFilmstrip) {
@@ -338,7 +338,7 @@ StateListenerRegistry.register(
                 //     setMaxReceiverVideoQualityForScreenSharingFilmstrip(newMaxRecvVideoQualityForScreenSharingFilmstrip)
                 // );
                 // ugly hack to avoid setting the max quality to high
-                dispatch(setMaxReceiverVideoQualityForScreenSharingFilmstrip(VIDEO_QUALITY_LEVELS.HIGH));
+                dispatch(setMaxReceiverVideoQualityForScreenSharingFilmstrip(VIDEO_QUALITY_LEVELS.STANDARD));
             }
         }
 

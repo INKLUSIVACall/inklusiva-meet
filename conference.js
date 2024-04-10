@@ -398,7 +398,7 @@ class ConferenceConnector {
         }
 
         setTimeout(() => {
-            this._setPreferredVideoQuality(VIDEO_QUALITY_LEVELS.HIGH);
+            this._setPreferredVideoQuality(VIDEO_QUALITY_LEVELS.STANDARD);
         }, 3000);
 
         this._unsubscribe();
