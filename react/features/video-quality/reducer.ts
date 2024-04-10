@@ -17,13 +17,13 @@ import { validateMinHeightForQualityLvl } from './functions';
 import logger from './logger';
 
 const DEFAULT_STATE = {
-    maxReceiverVideoQualityForLargeVideo: VIDEO_QUALITY_LEVELS.ULTRA,
+    maxReceiverVideoQualityForLargeVideo: VIDEO_QUALITY_LEVELS.HIGH,
     maxReceiverVideoQualityForScreenSharingFilmstrip: VIDEO_QUALITY_LEVELS.HIGH,
-    maxReceiverVideoQualityForStageFilmstrip: VIDEO_QUALITY_LEVELS.HIGH,
+    maxReceiverVideoQualityForStageFilmstrip: VIDEO_QUALITY_LEVELS.STANDARD,
     maxReceiverVideoQualityForTileView: VIDEO_QUALITY_LEVELS.STANDARD,
-    maxReceiverVideoQualityForVerticalFilmstrip: VIDEO_QUALITY_LEVELS.HIGH,
+    maxReceiverVideoQualityForVerticalFilmstrip: VIDEO_QUALITY_LEVELS.LOW,
     minHeightForQualityLvl: new Map(),
-    preferredVideoQuality: VIDEO_QUALITY_LEVELS.ULTRA
+    preferredVideoQuality: VIDEO_QUALITY_LEVELS.STANDARD
 };
 
 
