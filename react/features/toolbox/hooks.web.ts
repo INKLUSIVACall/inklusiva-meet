@@ -14,8 +14,7 @@ import { setGifMenuVisibility } from '../gifs/actions';
 import { isGifEnabled } from '../gifs/function.any';
 import { registerShortcut, unregisterShortcut } from '../keyboard-shortcuts/actions.any';
 import {
-    close as closeParticipantsPane,
-    open as openParticipantsPane
+    toggleParticipantsPane
 } from '../participants-pane/actions.web';
 import { addReactionToBuffer } from '../reactions/actions.any';
 import { toggleReactionsMenuVisibility } from '../reactions/actions.web';
@@ -34,7 +33,6 @@ import { isDesktopShareButtonDisabled } from './functions.web';
 
 export const useKeyboardShortcuts = (toolbarButtons: Array<string>) => {
     const dispatch = useDispatch();
-    const participantsPanelState = useSelector((state: IReduxState) => state['features/participants-pane']);
     const _isSpeakerStatsDisabled = useSelector(isSpeakerStatsDisabled);
     const _toolbarButtons = useSelector((state: IReduxState) => toolbarButtons || getToolbarButtons(state));
     const chatOpen = useSelector((state: IReduxState) => state['features/chat'].isOpen);
@@ -89,11 +87,7 @@ export const useKeyboardShortcuts = (toolbarButtons: Array<string>) => {
                 enable: !participantsPaneOpen
             }));
 
-        if (participantsPaneOpen) {
-            dispatch(closeParticipantsPane());
-        } else {
-            dispatch(openParticipantsPane());
-        }
+        dispatch(toggleParticipantsPane());
     }
 
     /**
