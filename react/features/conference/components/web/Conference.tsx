@@ -246,6 +246,17 @@ class Conference extends AbstractConference<IProps, any> {
                 onMouseLeave = { this._onMouseLeave }
                 onMouseMove = { this._onMouseMove }
                 ref = { this._setBackground }>
+                { _showPrejoin || _showLobby || (
+                    <>
+                        <span
+                            aria-level = { 1 }
+                            className = 'sr-only'
+                            role = 'heading'>
+                            { t('toolbar.accessibilityLabel.heading') }
+                        </span>
+                        <Toolbox />
+                    </>
+                )}
                 <div
                     className = { _layoutClassName }
                     id = 'videoconference_page'
@@ -265,17 +276,7 @@ class Conference extends AbstractConference<IProps, any> {
                         }
                     </div>
 
-                    { _showPrejoin || _showLobby || (
-                        <>
-                            <span
-                                aria-level = { 1 }
-                                className = 'sr-only'
-                                role = 'heading'>
-                                { t('toolbar.accessibilityLabel.heading') }
-                            </span>
-                            <Toolbox />
-                        </>
-                    )}
+    
 
                     {
                         _showPrejoin || _showLobby || <SignLangTranslatorFilmStrip />
