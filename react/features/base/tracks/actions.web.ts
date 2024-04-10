@@ -253,7 +253,7 @@ async function _toggleScreenSharing(
         }
 
         setTimeout(() => {
-            const qualityLevel = VIDEO_QUALITY_LEVELS.HIGH;
+            const qualityLevel = VIDEO_QUALITY_LEVELS.STANDARD;
 
             dispatch(setPreferredVideoQuality(qualityLevel));
 
