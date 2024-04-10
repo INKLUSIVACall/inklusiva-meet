@@ -241,9 +241,10 @@ StateListenerRegistry.register(
                 maxVideoQualityChanged = true;
 
                 // Ugly hack to avoid setting the max quality to high
-                dispatch(setMaxReceiverVideoQualityForTileView(VIDEO_QUALITY_LEVELS.HIGH));
+                // dispatch(setMaxReceiverVideoQualityForTileView(VIDEO_QUALITY_LEVELS.HIGH));
 
-                // dispatch(setMaxReceiverVideoQualityForTileView(newMaxRecvVideoQuality));
+                console.log('VQ', 'Tile view', newMaxRecvVideoQuality);
+                dispatch(setMaxReceiverVideoQualityForTileView(newMaxRecvVideoQuality));
             }
         } else {
             let newMaxRecvVideoQualityForStageFilmstrip;
@@ -310,35 +311,39 @@ StateListenerRegistry.register(
             if (maxReceiverVideoQualityForStageFilmstrip !== newMaxRecvVideoQualityForStageFilmstrip) {
                 maxVideoQualityChanged = true;
 
-                // dispatch(setMaxReceiverVideoQualityForStageFilmstrip(newMaxRecvVideoQualityForStageFilmstrip));
+                console.log('VQ', 'Stage Filmstrip', newMaxRecvVideoQualityForStageFilmstrip);
+                dispatch(setMaxReceiverVideoQualityForStageFilmstrip(newMaxRecvVideoQualityForStageFilmstrip));
                 // ugly hack to avoid setting the max quality to high
-                dispatch(setMaxReceiverVideoQualityForStageFilmstrip(VIDEO_QUALITY_LEVELS.HIGH));
+                // dispatch(setMaxReceiverVideoQualityForStageFilmstrip(VIDEO_QUALITY_LEVELS.HIGH));
             }
 
             if (maxReceiverVideoQualityForVerticalFilmstrip !== newMaxRecvVideoQualityForVerticalFilmstrip) {
                 maxVideoQualityChanged = true;
 
-                // dispatch(setMaxReceiverVideoQualityForVerticalFilmstrip(newMaxRecvVideoQualityForVerticalFilmstrip));
+                console.log('VQ', 'Vertical Filmstrip', newMaxRecvVideoQualityForVerticalFilmstrip);
+                dispatch(setMaxReceiverVideoQualityForVerticalFilmstrip(newMaxRecvVideoQualityForVerticalFilmstrip));
                 // ugly hack to avoid setting the max quality to high
-                dispatch(setMaxReceiverVideoQualityForVerticalFilmstrip(VIDEO_QUALITY_LEVELS.HIGH));
+                // dispatch(setMaxReceiverVideoQualityForVerticalFilmstrip(VIDEO_QUALITY_LEVELS.HIGH));
             }
 
             if (maxReceiverVideoQualityForLargeVideo !== newMaxRecvVideoQualityForLargeVideo) {
                 maxVideoQualityChanged = true;
 
+                console.log('VQ', 'Large Video', newMaxRecvVideoQualityForLargeVideo);
                 // ugly hack to avoid setting the max quality to high
-                // dispatch(setMaxReceiverVideoQualityForLargeVideo(newMaxRecvVideoQualityForLargeVideo));
-                dispatch(setMaxReceiverVideoQualityForLargeVideo(VIDEO_QUALITY_LEVELS.HIGH));
+                dispatch(setMaxReceiverVideoQualityForLargeVideo(newMaxRecvVideoQualityForLargeVideo));
+                // dispatch(setMaxReceiverVideoQualityForLargeVideo(VIDEO_QUALITY_LEVELS.HIGH));
             }
 
             if (maxReceiverVideoQualityForScreenSharingFilmstrip !== newMaxRecvVideoQualityForScreenSharingFilmstrip) {
                 maxVideoQualityChanged = true;
 
-                // dispatch(
-                //     setMaxReceiverVideoQualityForScreenSharingFilmstrip(newMaxRecvVideoQualityForScreenSharingFilmstrip)
-                // );
+                console.log('VQ', 'Screen Sharing', newMaxRecvVideoQualityForScreenSharingFilmstrip);
+                dispatch(
+                    setMaxReceiverVideoQualityForScreenSharingFilmstrip(newMaxRecvVideoQualityForScreenSharingFilmstrip)
+                );
                 // ugly hack to avoid setting the max quality to high
-                dispatch(setMaxReceiverVideoQualityForScreenSharingFilmstrip(VIDEO_QUALITY_LEVELS.HIGH));
+                //dispatch(setMaxReceiverVideoQualityForScreenSharingFilmstrip(VIDEO_QUALITY_LEVELS.HIGH));
             }
         }
 
@@ -556,6 +561,8 @@ function _updateReceiverVideoConstraints({ getState }: IStore) {
     }
 
     try {
+        console.log('VQ', 'Receiver constraints', receiverConstraints);
+
         conference.setReceiverConstraints(receiverConstraints);
     } catch (error: any) {
         _handleParticipantError(error);
