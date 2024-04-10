@@ -239,7 +239,8 @@ function getDevServerConfig() {
                 warnings: false
             }
         },
-        host: '127.0.0.1',
+        host: process.env.WEBPACK_DEV_SERVER_LISTEN_HOST || '127.0.0.1',
+        port: process.env.WEBPACK_DEV_SERVER_LISTEN_PORT || 8080,
         hot: true,
         proxy: {
             '/': {
