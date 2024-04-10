@@ -256,7 +256,7 @@ var config = {
 
     // How many participants while in the tile view mode, before the receiving video quality is reduced from HD to SD.
     // Use -1 to disable.
-    // maxFullResolutionParticipants: 2,
+    maxFullResolutionParticipants: 6,
 
     // w3c spec-compliant video constraints to use for video capture. Currently
     // used by browsers that return true from lib-jitsi-meet's
@@ -456,52 +456,52 @@ var config = {
     // startLastN: 1,
 
     // Specify the settings for video quality optimizations on the client.
-     videoQuality: {
+    videoQuality: {
     //
     //    // Provides a way to set the codec preference on desktop based endpoints.
         codecPreferenceOrder: [ 'VP9', 'VP8', 'H264' ],
-    //
-    //    // Provides a way to configure the maximum bitrates that will be enforced on the simulcast streams for
-    //    // video tracks. The keys in the object represent the type of the stream (LD, SD or HD) and the values
-    //    // are the max.bitrates to be set on that particular type of stream. The actual send may vary based on
-    //    // the available bandwidth calculated by the browser, but it will be capped by the values specified here.
-    //    // This is currently not implemented on app based clients on mobile.
+    
+        // Provides a way to configure the maximum bitrates that will be enforced on the simulcast streams for
+        // video tracks. The keys in the object represent the type of the stream (LD, SD or HD) and the values
+        // are the max.bitrates to be set on that particular type of stream. The actual send may vary based on
+        // the available bandwidth calculated by the browser, but it will be capped by the values specified here.
+        // This is currently not implemented on app based clients on mobile.
         maxBitratesVideo: {
-              H264: {
-                  low: 200000,
-                  standard: 500000,
-                  high: 1500000,
-              },
-              VP8 : {
-                  low: 200000,
-                  standard: 500000,
-                  high: 1500000,
-              },
-              VP9: {
-                  low: 100000,
-                  standard: 300000,
-                  high: 1200000,
-              },
+            H264: {
+                low: 200000,
+                standard: 500000,
+                high: 1500000,
+            },
+            VP8 : {
+                low: 200000,
+                standard: 500000,
+                high: 1500000,
+            },
+            VP9: {
+                low: 100000,
+                standard: 300000,
+                high: 1200000,
+            },
         },
-    //
-    //    // The options can be used to override default thresholds of video thumbnail heights corresponding to
-    //    // the video quality levels used in the application. At the time of this writing the allowed levels are:
-    //    //     'low' - for the low quality level (180p at the time of this writing)
-    //    //     'standard' - for the medium quality level (360p)
-    //    //     'high' - for the high quality level (720p)
-    //    // The keys should be positive numbers which represent the minimal thumbnail height for the quality level.
-    //    //
-    //    // With the default config value below the application will use 'low' quality until the thumbnails are
-    //    // at least 360 pixels tall. If the thumbnail height reaches 720 pixels then the application will switch to
-    //    // the high quality.
+
+        // The options can be used to override default thresholds of video thumbnail heights corresponding to
+        // the video quality levels used in the application. At the time of this writing the allowed levels are:
+        //     'low' - for the low quality level (180p at the time of this writing)
+        //     'standard' - for the medium quality level (360p)
+        //     'high' - for the high quality level (720p)
+        // The keys should be positive numbers which represent the minimal thumbnail height for the quality level.
+        //
+        // With the default config value below the application will use 'low' quality until the thumbnails are
+        // at least 360 pixels tall. If the thumbnail height reaches 720 pixels then the application will switch to
+        // the high quality.
         minHeightForQualityLvl: {
-            360: 'standard',
-            720: 'high',
+            200: 360,
+            400: 720,
         },
-    //
-    //    // Provides a way to set the codec preference on mobile devices, both on RN and mobile browser based endpoint
+
+        // Provides a way to set the codec preference on mobile devices, both on RN and mobile browser based endpoint
         mobileCodecPreferenceOrder: [ 'VP8', 'VP9', 'H264' ],
-    //
+
     //    // DEPRECATED! Use `codecPreferenceOrder/mobileCodecPreferenceOrder` instead.
     //    // Provides a way to prevent a video codec from being negotiated on the JVB connection. The codec specified
     //    // here will be removed from the list of codecs present in the SDP answer generated by the client. If the
