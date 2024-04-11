@@ -34,6 +34,7 @@ import { MAX_VIDEO_QUALITY, VIDEO_QUALITY_LEVELS, VIDEO_QUALITY_UNLIMITED } from
 import { getReceiverVideoQualityLevel } from './functions';
 import logger from './logger';
 import { getMinHeightForQualityLvlMap } from './selector';
+import { IC_ROLES } from '../base/conference/icRoles';
 
 /**
  * Handles changes in the visible participants in the filmstrip. The listener is debounced
@@ -163,6 +164,7 @@ StateListenerRegistry.register(
             screenshareFilmstripDimensions: { thumbnailSize }
         } = state['features/filmstrip'];
         const screenshareFilmstripParticipantId = getScreenshareFilmstripParticipantId(state);
+        const { assistant } = state['features/inklusiva/userdata'];
 
         return {
             activeParticipantsCount: activeParticipantsIds?.length,
@@ -177,7 +179,8 @@ StateListenerRegistry.register(
             stageFilmstripThumbnailHeight: state['features/filmstrip'].stageFilmstripDimensions?.thumbnailSize?.height,
             tileViewThumbnailHeight: tileViewThumbnailSize?.height,
             verticalFilmstripThumbnailHeight:
-                state['features/filmstrip'].verticalViewDimensions?.gridView?.thumbnailSize?.height
+                state['features/filmstrip'].verticalViewDimensions?.gridView?.thumbnailSize?.height,
+            signLangDisplay: assistant.signLang.display
         };
     },
     /* listener */ (
@@ -284,7 +287,8 @@ StateListenerRegistry.register(
 
                         if (
                             activeParticipantsCount
-                            > maxFullResolutionParticipants - (isScreenSharingFilmstripParticipantFullResolution ? 1 : 0)
+                            > maxFullResolutionParticipants
+                            - (isScreenSharingFilmstripParticipantFullResolution ? 1 : 0)
                         ) {
                             newMaxRecvVideoQualityForStageFilmstrip = VIDEO_QUALITY_LEVELS.STANDARD;
                             newMaxRecvVideoQualityForVerticalFilmstrip = Math.min(
@@ -447,7 +451,10 @@ function _updateReceiverVideoConstraints({ getState }: IStore) {
         preferredVideoQuality
     );
     const { remoteScreenShares } = state['features/video-layout'];
-    const { visibleRemoteParticipants } = state['features/filmstrip'];
+    const {
+        visibleRemoteParticipants: visibleRemoteParticipantsOriginal,
+        remoteParticipants
+    } = state['features/filmstrip'];
     const tracks = state['features/base/tracks'];
     const localParticipantId = getLocalParticipant(state)?.id;
     const activeParticipantsIds = getActiveParticipantsIds(state);
@@ -459,15 +466,53 @@ function _updateReceiverVideoConstraints({ getState }: IStore) {
         lastN
     };
 
+    const signLanguageParticipantIds: string[] = [];
+    const { assistant } = state['features/inklusiva/userdata'];
+
+    if (assistant.signLang.display === 'window') {
+        remoteParticipants?.forEach((participantId: string) => {
+            if (conference?.checkMemberHasRole(participantId, IC_ROLES.SIGN_LANG_TRANSLATOR)) {
+                signLanguageParticipantIds.push(participantId);
+            }
+        });
+    }
+
+    // Sign Language Translators must be among the visible remote participants.
+    // They must be the first in the list to be prioritized.
+    let visibleRemoteParticipants: Set<string> = new Set(visibleRemoteParticipantsOriginal);
+
+    if (signLanguageParticipantIds.length) {
+        signLanguageParticipantIds.forEach(participantId => {
+            if (!visibleRemoteParticipants.has(participantId)) {
+                visibleRemoteParticipants.add(participantId);
+            }
+        });
+
+        visibleRemoteParticipants = new Set(Array.from(visibleRemoteParticipants).sort(
+            (a: string, b: string): number => {
+                if (signLanguageParticipantIds.includes(a) && !signLanguageParticipantIds.includes(b)) {
+                    return -1;
+                } else if (!signLanguageParticipantIds.includes(a) && signLanguageParticipantIds.includes(b)) {
+                    return 1;
+                }
+
+                return 0;
+            }));
+    }
+
     let activeParticipantsSources: string[] = [];
     let visibleRemoteTrackSourceNames: string[] = [];
     let largeVideoSourceName: string | undefined;
+    let signLanguageParticipantSources: string[] = [];
 
     receiverConstraints.onStageSources = [];
     receiverConstraints.selectedSources = [];
 
     if (visibleRemoteParticipants?.size) {
         visibleRemoteTrackSourceNames = _getSourceNames(Array.from(visibleRemoteParticipants), state);
+    }
+    if (signLanguageParticipantIds?.length) {
+        signLanguageParticipantSources = _getSourceNames(signLanguageParticipantIds, state);
     }
 
     if (activeParticipantsIds?.length > 0) {
@@ -490,13 +535,34 @@ function _updateReceiverVideoConstraints({ getState }: IStore) {
             return;
         }
 
+        console.log('VQ', 'Tile View Default MaxHeight', maxFrameHeightForTileView);
+
         visibleRemoteTrackSourceNames.forEach(sourceName => {
-            receiverConstraints.constraints[sourceName] = { maxHeight: maxFrameHeightForTileView };
+            // Sign language translators should always be displayed in high quality if they use the window display mode.
+            if (signLanguageParticipantSources.includes(sourceName)) {
+                receiverConstraints.constraints[sourceName] = { maxHeight: VIDEO_QUALITY_LEVELS.HIGH };
+            } else {
+                receiverConstraints.constraints[sourceName] = { maxHeight: maxFrameHeightForTileView };
+            }
         });
+
+        const selectedSources: string[] = [];
 
         // Prioritize screenshare in tile view.
         if (remoteScreenShares?.length) {
-            receiverConstraints.selectedSources = remoteScreenShares;
+            selectedSources.push(...remoteScreenShares);
+        }
+
+        // Prioritise sign language translators in tile view.
+        if (signLanguageParticipantSources?.length) {
+            selectedSources.push(...signLanguageParticipantSources);
+        }
+
+        // If selected sources are more than one, they need to be added to the 'selectedSources' so that the bridge can
+        // allocate bandwidth for all the sources as opposed to doing greedy allocation for the sources (which happens
+        // when they are added to 'onStageSources').
+        if (selectedSources.length >= 1) {
+            receiverConstraints.selectedSources = selectedSources;
         }
 
         // Stage view.
@@ -507,9 +573,20 @@ function _updateReceiverVideoConstraints({ getState }: IStore) {
 
         if (visibleRemoteTrackSourceNames?.length) {
             visibleRemoteTrackSourceNames.forEach(sourceName => {
-                receiverConstraints.constraints[sourceName] = { maxHeight: maxFrameHeightForVerticalFilmstrip };
+                // Sign language translators should always be displayed in high quality if they use the window
+                // display mode.
+                if (signLanguageParticipantSources.includes(sourceName)) {
+                    receiverConstraints.constraints[sourceName] = { maxHeight: VIDEO_QUALITY_LEVELS.HIGH };
+                } else {
+                    receiverConstraints.constraints[sourceName] = { maxHeight: maxFrameHeightForVerticalFilmstrip };
+                }
             });
         }
+
+        const activeSources: string[] = [];
+
+        activeSources.push(...activeParticipantsSources);
+        activeSources.push(...signLanguageParticipantSources);
 
         if (getCurrentLayout(state) === LAYOUTS.STAGE_FILMSTRIP_VIEW && activeParticipantsSources.length > 0) {
             const selectedSources: string[] = [];
@@ -518,18 +595,21 @@ function _updateReceiverVideoConstraints({ getState }: IStore) {
             // If more than one video source is pinned to the stage filmstrip, they need to be added to the
             // 'selectedSources' so that the bridge can allocate bandwidth for all the sources as opposed to doing
             // greedy allocation for the sources (which happens when they are added to 'onStageSources').
-            if (activeParticipantsSources.length > 1) {
-                selectedSources.push(...activeParticipantsSources);
+            if (activeSources.length > 1) {
+                selectedSources.push(...activeSources);
             } else {
-                onStageSources.push(activeParticipantsSources[0]);
+                onStageSources.push(activeSources[0]);
             }
 
-            activeParticipantsSources.forEach(sourceName => {
+            activeSources.forEach(sourceName => {
                 const isScreenSharing = remoteScreenShares.includes(sourceName);
+                const isSignLanguage = signLanguageParticipantSources.includes(sourceName);
                 const quality
                     = isScreenSharing && preferredVideoQuality >= MAX_VIDEO_QUALITY
                         ? VIDEO_QUALITY_UNLIMITED
-                        : maxFrameHeightForStageFilmstrip;
+                        : isSignLanguage
+                            ? VIDEO_QUALITY_LEVELS.HIGH
+                            : maxFrameHeightForStageFilmstrip;
 
                 receiverConstraints.constraints[sourceName] = { maxHeight: quality };
             });
@@ -556,7 +636,21 @@ function _updateReceiverVideoConstraints({ getState }: IStore) {
                 quality = maxFrameHeightForLargeVideo;
             }
             receiverConstraints.constraints[largeVideoSourceName] = { maxHeight: quality };
-            receiverConstraints.onStageSources = [ largeVideoSourceName ];
+
+            const selectedSources: string[] = [ largeVideoSourceName ];
+
+            // If there is a sign language translator in the large video, it should be displayed in high quality.
+            signLanguageParticipantSources.forEach(sourceName => {
+                receiverConstraints.constraints[sourceName] = { maxHeight: VIDEO_QUALITY_LEVELS.HIGH };
+                selectedSources.push(sourceName);
+            });
+
+            if (selectedSources.length > 1) {
+                receiverConstraints.selectedSources = selectedSources;
+                receiverConstraints.onStageSources = [ largeVideoSourceName ];
+            } else {
+                receiverConstraints.onStageSources = [ largeVideoSourceName ];
+            }
         }
     }
 
