@@ -100,68 +100,47 @@ const VideoSettingsContextMenu = ({
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
-    const _onVolumeChange = useCallback(
-        value => {
-            if (participant) {
-                dispatch(setVolume(participant.id, value));
-            }
-        },
-        [ setVolume, dispatch ]
-    );
+    const _onVolumeChange = (value) => {
+        if (participant) {
+            dispatch(setVolume(participant.id, value));
+        }
+    };
 
-    const _onFrequencyAdjustChange = useCallback(
-        value => {
-            if (participant) {
-                dispatch(setFrequencyFilterSetting(participant.id, value));
-            }
-        },
-        [ setFrequencyFilterSetting, dispatch ]
-    );
+    const _onFrequencyAdjustChange = (value) => {
+        if (participant) {
+            dispatch(setFrequencyFilterSetting(participant.id, value));
+        }
+    };
 
-    const _onBrightnessChange = useCallback(
-        value => {
-            if (participant) {
-                dispatch(setParticipantBrightness(participant.id, value));
-            }
-        },
-        [ setParticipantBrightness, dispatch ]
-    );
+    const _onBrightnessChange = (value) => {
+        if (participant) {
+            dispatch(setParticipantBrightness(participant.id, value));
+        }
+    };
 
-    const _onContrastChange = useCallback(
-        value => {
-            if (participant) {
-                dispatch(setParticipantContrast(participant.id, value));
-            }
-        },
-        [ setParticipantContrast, dispatch ]
-    );
+    const _onContrastChange = (value) => {
+        if (participant) {
+            dispatch(setParticipantContrast(participant.id, value));
+        }
+    };
 
-    const _onParticipantOpacityAdjustChange = useCallback(
-        value => {
-            if (participant) {
-                dispatch(setParticipantOpacitySetting(participant.id, value));
-            }
-        },
-        [ setParticipantOpacitySetting, dispatch ]
-    );
+    const _onParticipantOpacityAdjustChange = (value) => {
+        if (participant) {
+            dispatch(setParticipantOpacitySetting(participant.id, value));
+        }
+    };
 
-    const _onSaturationChange = useCallback(
-        value => {
-            if (participant) {
-                dispatch(setParticipantSaturation(participant.id, value));
-            }
-        },
-        [ setParticipantSaturation, dispatch ]
-    );
+    const _onSaturationChange = (value) => {
+        if (participant) {
+            dispatch(setParticipantSaturation(participant.id, value));
+        }
+    };
 
-    const _onZoomLevelChange = useCallback(
-        value => {
-            if (participant) {
-                dispatch(setParticipantZoomLevel(participant.id, value));
-            }
-        },
-        [ setParticipantZoomLevel, dispatch ]
-    );
+    const _onZoomLevelChange = (value) => {
+        if (participant) {
+            dispatch(setParticipantZoomLevel(participant.id, value));
+        }
+    };
 
     return (
         <>
