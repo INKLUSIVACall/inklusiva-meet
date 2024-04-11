@@ -100,43 +100,43 @@ const VideoSettingsContextMenu = ({
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
-    const _onVolumeChange = (value) => {
+    const _onVolumeChange = (value: number) => {
         if (participant) {
             dispatch(setVolume(participant.id, value));
         }
     };
 
-    const _onFrequencyAdjustChange = (value) => {
+    const _onFrequencyAdjustChange = (value: number) => {
         if (participant) {
             dispatch(setFrequencyFilterSetting(participant.id, value));
         }
     };
 
-    const _onBrightnessChange = (value) => {
+    const _onBrightnessChange = (value: number) => {
         if (participant) {
             dispatch(setParticipantBrightness(participant.id, value));
         }
     };
 
-    const _onContrastChange = (value) => {
+    const _onContrastChange = (value: number) => {
         if (participant) {
             dispatch(setParticipantContrast(participant.id, value));
         }
     };
 
-    const _onParticipantOpacityAdjustChange = (value) => {
+    const _onParticipantOpacityAdjustChange = (value: number) => {
         if (participant) {
             dispatch(setParticipantOpacitySetting(participant.id, value));
         }
     };
 
-    const _onSaturationChange = (value) => {
+    const _onSaturationChange = (value: number) => {
         if (participant) {
             dispatch(setParticipantSaturation(participant.id, value));
         }
     };
 
-    const _onZoomLevelChange = (value) => {
+    const _onZoomLevelChange = (value: number) => {
         if (participant) {
             dispatch(setParticipantZoomLevel(participant.id, value));
         }
