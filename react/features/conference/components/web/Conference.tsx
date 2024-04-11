@@ -276,7 +276,6 @@ class Conference extends AbstractConference<IProps, any> {
                         }
                     </div>
 
-    
 
                     {
                         _showPrejoin || _showLobby || <SignLangTranslatorFilmStrip />
@@ -408,7 +407,7 @@ class Conference extends AbstractConference<IProps, any> {
      * @returns {void}
      */
     _onShowToolbar() {
-        this.props.dispatch(showToolbox());
+    //    this.props.dispatch(showToolbox());
     }
 
     /**

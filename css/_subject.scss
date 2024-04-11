@@ -1,6 +1,6 @@
 .subject {
     color: #fff;
-    transition: opacity .6s ease-in-out;
+    transition: opacity 0.6s ease-in-out;
     z-index: $toolbarZ + 2;
     margin-top: 10px;
     opacity: 0;
@@ -11,7 +11,7 @@
 
     &#autoHide.with-always-on {
         overflow: hidden;
-        animation: hideSubject forwards .6s ease-out;
+        animation: hideSubject forwards 0.6s ease-out;
 
         & > .subject-info-container {
             justify-content: flex-start;
@@ -19,7 +19,7 @@
         }
 
         &.visible {
-            animation: showSubject forwards .6s ease-out;
+            animation: showSubject forwards 0.6s ease-out;
         }
     }
 }
@@ -40,10 +40,11 @@
     display: flex;
     justify-content: center;
     position: relative;
-    top: 30;
+    top: -57px;
     height: 52px;
     max-width: calc(100% - 40px);
     background: #00000059;
+    background: #404040;
     margin: auto 20px;
     border-radius: 10px;
     margin-top: 1;
@@ -53,6 +54,41 @@
     margin: 0 auto;
     padding-left: 1rem;
     padding-right: 1rem;
+    transition: top 0.3s ease-in;
+    box-shadow: 0px 2px 8px 4px rgba(0, 0, 0, 0.25), 0px 0px 0px 1px rgba(0, 0, 0, 0.15);
+
+    &.visible {
+        top: 30;
+
+        .closeConferenceInfo {
+            .jitsi-icon {
+                top: -4px;
+            }
+        }
+    }
+
+    .closeConferenceInfo {
+        padding-bottom: env(safe-area-inset-bottom, 0);
+        height: 28px;
+        width: 90px;
+        left: calc(50% - 45px);
+        position: absolute;
+        // bottom: -42px;
+        bottom: -28px;
+        rotate: 0;
+        z-index: 0;
+        background: #393939;
+        cursor: pointer;
+        border-bottom-left-radius: 2rem;
+        border-bottom-right-radius: 2rem;
+
+        .jitsi-icon {
+            fill: #fff;
+            position: absolute;
+            left: calc(50% - 16px);
+            top: -1px;
+        }
+    }
 }
 
 .infobar-interactable {

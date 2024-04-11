@@ -14,12 +14,14 @@ import {
 } from '../../../base/config/functions.web';
 import { isMobileBrowser } from '../../../base/environment/utils';
 import { translate } from '../../../base/i18n/functions';
+import Icon from '../../../base/icons/components/Icon';
+import { IconArrowDown, IconArrowUp } from '../../../base/icons/svg';
 import { isLocalParticipantModerator } from '../../../base/participants/functions';
 import { ILocalParticipant } from '../../../base/participants/types';
 import ContextMenu from '../../../base/ui/components/web/ContextMenu';
 import { isReactionsButtonEnabled, isReactionsEnabled } from '../../../reactions/functions.web';
 import { iAmVisitor } from '../../../visitors/functions';
-import { setHangupMenuVisible, setOverflowMenuVisible, setToolbarHovered, showToolbox } from '../../actions.web';
+import { hideToolbox, setHangupMenuVisible, setOverflowMenuVisible, setToolbarHovered, setToolboxVisible, showToolbox, toggleToolboxVisible, toggleToolboxVisible } from '../../actions.web';
 import {
     BUTTONS_MODERATOR,
     BUTTONS_USER,
@@ -153,7 +155,6 @@ interface IProps extends WithTranslation {
      * Invoked to active other features of the app.
      */
     dispatch: IStore['dispatch'];
-
 
     /**
      * Explicitly passed array with the buttons which this Toolbox should display.
@@ -442,6 +443,20 @@ const Toolbox = ({
             || overflowMenuButtons.some(({ key }) => key === 'reactions');
         const showRaiseHandInReactionsMenu = showReactionsInOverflowMenu && raiseHandInOverflowMenu;
 
+        let closeIcon = IconArrowDown;
+
+        if (!_visible) {
+            closeIcon = IconArrowUp;
+        }
+
+        const toogleVisibility = () => {
+            if (_visible) {
+                dispatch(hideToolbox(true));
+            } else {
+                dispatch(showToolbox());
+            }
+        };
+
         return (
             <div className = { containerClassName }>
                 <div
@@ -453,6 +468,14 @@ const Toolbox = ({
                             onMouseOut,
                             onMouseOver
                         }) }>
+                    <div
+                        className = 'closeToolbox'
+                        onClick = { toogleVisibility }>
+                        <Icon
+                            size = { 32 }
+                            src = { closeIcon } />
+                    </div>
+
                     <div
                         className = 'toolbox-content-items'
                         ref = { _toolboxRef }>

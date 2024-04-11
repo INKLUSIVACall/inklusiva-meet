@@ -22,7 +22,6 @@ import SecurityDialogButton from '../security/components/security-dialog/web/Sec
 import SettingsButton from '../settings/components/web/SettingsButton';
 import SharedVideoButton from '../shared-video/components/web/SharedVideoButton';
 import SpeakerStatsButton from '../speaker-stats/components/web/SpeakerStatsButton';
-import ClosedCaptionButton from '../subtitles/components/web/ClosedCaptionButton';
 import ClosedCaptionButtonWithPopup from '../subtitles/components/web/ClosedCaptionButtonWithPopup';
 import TileViewButton from '../video-layout/components/TileViewButton';
 import VideoQualityButton from '../video-quality/components/VideoQualityButton.web';
@@ -83,8 +82,7 @@ export function isToolboxVisible(state: IReduxState) {
     const { iAmRecorder, iAmSipGateway, toolbarConfig } = state['features/base/config'];
     const { alwaysVisible } = toolbarConfig || {};
     const {
-        timeoutID,
-        visible
+        timeoutID, visible
     } = state['features/toolbox'];
     const { audioSettingsVisible, videoSettingsVisible } = state['features/settings'];
     const whiteboardVisible = isWhiteboardVisible(state);
