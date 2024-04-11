@@ -3,12 +3,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { IReduxState, IStore } from '../../../app/types';
+import Icon from '../../../base/icons/components/Icon';
+import { IconArrowDown, IconArrowUp } from '../../../base/icons/svg';
 import { JitsiRecordingConstants } from '../../../base/lib-jitsi-meet';
 import E2EELabel from '../../../e2ee/components/E2EELabel';
 import HighlightButton from '../../../recording/components/Recording/web/HighlightButton';
 import RecordingLabel from '../../../recording/components/web/RecordingLabel';
-import { showToolbox } from '../../../toolbox/actions.web';
-import { isToolboxVisible } from '../../../toolbox/functions.web';
+import { setConferenceInfoVisible, showToolbox } from '../../../toolbox/actions.web';
+import { isConferenceInfoVisible, isToolboxVisible } from '../../../toolbox/functions.web';
 import TranscribingLabel from '../../../transcribing/components/TranscribingLabel.web';
 import VideoQualityLabel from '../../../video-quality/components/VideoQualityLabel.web';
 import VisitorsCountLabel from '../../../visitors/components/web/VisitorsCountLabel';
@@ -299,14 +301,37 @@ class ConferenceInfo extends Component<IProps> {
      * @returns {ReactElement}
      */
     render() {
+        let closeIcon = IconArrowUp;
+
+        if (!this.props._visible) {
+            closeIcon = IconArrowDown;
+        }
+
+        const className = this.props._visible ? 'details-container visible' : 'details-container';
+
+        const toggleVisibility = () => {
+            if (this.props._visible) {
+                this.props.dispatch(setConferenceInfoVisible(false));
+            } else {
+                this.props.dispatch(setConferenceInfoVisible(true));
+            }
+        };
+
         return (
             <div
-                className = 'details-container'
+                className = { className }
                 onFocus = { this._onTabIn }>
                 { this._renderIndicatorsLeft() }
                 { this._renderAlwaysVisible() }
                 { this._renderAutoHide() }
                 { this._renderIndicatorsRight() }
+                <div
+                    className = 'closeConferenceInfo infobar-interactable'
+                    onClick = { toggleVisibility }>
+                    <Icon
+                        size = { 32 }
+                        src = { closeIcon } />
+                </div>
             </div>
         );
     }
@@ -325,7 +350,7 @@ class ConferenceInfo extends Component<IProps> {
  */
 function _mapStateToProps(state: IReduxState) {
     return {
-        _visible: isToolboxVisible(state),
+        _visible: isConferenceInfoVisible(state),
         _conferenceInfo: getConferenceInfo(state)
     };
 }

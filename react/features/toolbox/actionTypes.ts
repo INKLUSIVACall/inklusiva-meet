@@ -114,3 +114,13 @@ export const TOGGLE_TOOLBOX_VISIBLE = 'TOGGLE_TOOLBOX_VISIBLE';
  * }.
  */
 export const SET_TOOLBOX_SHIFT_UP = 'SET_TOOLBOX_SHIFT_UP';
+
+/**
+ * The type of the (redux) action which shows/hides the conference info.
+ *
+ * {
+ *    type: SET_CONFERENCE_INFO_VISIBLE,
+ *    visible: boolean
+ *  }.
+ */
+export const SET_CONFERENCE_INFO_VISIBLE = 'SET_CONFERENCE_INFO_VISIBLE';

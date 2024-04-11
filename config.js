@@ -460,7 +460,7 @@ var config = {
     //
     //    // Provides a way to set the codec preference on desktop based endpoints.
         codecPreferenceOrder: [ 'VP9', 'VP8', 'H264' ],
-    
+
         // Provides a way to configure the maximum bitrates that will be enforced on the simulcast streams for
         // video tracks. The keys in the object represent the type of the stream (LD, SD or HD) and the values
         // are the max.bitrates to be set on that particular type of stream. The actual send may vary based on
@@ -795,7 +795,7 @@ var config = {
 
         // Moved from interfaceConfig.TOOLBAR_ALWAYS_VISIBLE
         // Whether toolbar should be always visible or should hide after x milliseconds.
-        alwaysVisible: true
+        alwaysVisible: false
 
         // Indicates whether the toolbar should still autohide when chat is open
         // autoHideWhileChatIsOpen: false,
