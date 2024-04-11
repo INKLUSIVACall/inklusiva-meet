@@ -23,7 +23,7 @@ const DEFAULT_STATE = {
     maxReceiverVideoQualityForTileView: VIDEO_QUALITY_LEVELS.STANDARD,
     maxReceiverVideoQualityForVerticalFilmstrip: VIDEO_QUALITY_LEVELS.LOW,
     minHeightForQualityLvl: new Map(),
-    preferredVideoQuality: VIDEO_QUALITY_LEVELS.STANDARD
+    preferredVideoQuality: VIDEO_QUALITY_LEVELS.HIGH
 };
 
 
@@ -88,6 +88,9 @@ ReducerRegistry.register<IVideoQualityState>('features/video-quality',
             'maxReceiverVideoQualityForStageFilmstrip',
             action.maxReceiverVideoQuality);
     case SET_MAX_RECEIVER_VIDEO_QUALITY_FOR_TILE_VIEW:
+        console.log('VQ', 'Receiving reducer action to set maxReceiverVideoQualityForTileView', 
+            action.maxReceiverVideoQuality);
+
         return set(
             state,
             'maxReceiverVideoQualityForTileView',

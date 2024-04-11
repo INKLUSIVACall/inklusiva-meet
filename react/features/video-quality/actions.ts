@@ -73,6 +73,8 @@ export function setMaxReceiverVideoQualityForStageFilmstrip(maxReceiverVideoQual
  * }}
  */
 export function setMaxReceiverVideoQualityForTileView(maxReceiverVideoQuality: number) {
+    console.log('VQ', 'Submitting action to set maxReceiverVideoQualityForTileView', maxReceiverVideoQuality);
+
     return {
         type: SET_MAX_RECEIVER_VIDEO_QUALITY_FOR_TILE_VIEW,
         maxReceiverVideoQuality
