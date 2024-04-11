@@ -246,7 +246,7 @@ StateListenerRegistry.register(
                 // Ugly hack to avoid setting the max quality to high
                 // dispatch(setMaxReceiverVideoQualityForTileView(VIDEO_QUALITY_LEVELS.HIGH));
 
-                console.log('VQ', 'Tile view', newMaxRecvVideoQuality);
+                // console.log('VQ', 'Tile view', newMaxRecvVideoQuality);
                 dispatch(setMaxReceiverVideoQualityForTileView(newMaxRecvVideoQuality));
             }
         } else {
@@ -315,7 +315,7 @@ StateListenerRegistry.register(
             if (maxReceiverVideoQualityForStageFilmstrip !== newMaxRecvVideoQualityForStageFilmstrip) {
                 maxVideoQualityChanged = true;
 
-                console.log('VQ', 'Stage Filmstrip', newMaxRecvVideoQualityForStageFilmstrip);
+                // console.log('VQ', 'Stage Filmstrip', newMaxRecvVideoQualityForStageFilmstrip);
                 dispatch(setMaxReceiverVideoQualityForStageFilmstrip(newMaxRecvVideoQualityForStageFilmstrip));
                 // ugly hack to avoid setting the max quality to high
                 // dispatch(setMaxReceiverVideoQualityForStageFilmstrip(VIDEO_QUALITY_LEVELS.HIGH));
@@ -324,7 +324,7 @@ StateListenerRegistry.register(
             if (maxReceiverVideoQualityForVerticalFilmstrip !== newMaxRecvVideoQualityForVerticalFilmstrip) {
                 maxVideoQualityChanged = true;
 
-                console.log('VQ', 'Vertical Filmstrip', newMaxRecvVideoQualityForVerticalFilmstrip);
+                // console.log('VQ', 'Vertical Filmstrip', newMaxRecvVideoQualityForVerticalFilmstrip);
                 dispatch(setMaxReceiverVideoQualityForVerticalFilmstrip(newMaxRecvVideoQualityForVerticalFilmstrip));
                 // ugly hack to avoid setting the max quality to high
                 // dispatch(setMaxReceiverVideoQualityForVerticalFilmstrip(VIDEO_QUALITY_LEVELS.HIGH));
@@ -333,7 +333,7 @@ StateListenerRegistry.register(
             if (maxReceiverVideoQualityForLargeVideo !== newMaxRecvVideoQualityForLargeVideo) {
                 maxVideoQualityChanged = true;
 
-                console.log('VQ', 'Large Video', newMaxRecvVideoQualityForLargeVideo);
+                // console.log('VQ', 'Large Video', newMaxRecvVideoQualityForLargeVideo);
                 // ugly hack to avoid setting the max quality to high
                 dispatch(setMaxReceiverVideoQualityForLargeVideo(newMaxRecvVideoQualityForLargeVideo));
                 // dispatch(setMaxReceiverVideoQualityForLargeVideo(VIDEO_QUALITY_LEVELS.HIGH));
@@ -342,7 +342,7 @@ StateListenerRegistry.register(
             if (maxReceiverVideoQualityForScreenSharingFilmstrip !== newMaxRecvVideoQualityForScreenSharingFilmstrip) {
                 maxVideoQualityChanged = true;
 
-                console.log('VQ', 'Screen Sharing', newMaxRecvVideoQualityForScreenSharingFilmstrip);
+                // console.log('VQ', 'Screen Sharing', newMaxRecvVideoQualityForScreenSharingFilmstrip);
                 dispatch(
                     setMaxReceiverVideoQualityForScreenSharingFilmstrip(newMaxRecvVideoQualityForScreenSharingFilmstrip)
                 );
@@ -478,8 +478,7 @@ function _updateReceiverVideoConstraints({ getState }: IStore) {
     }
 
     // Sign Language Translators must be among the visible remote participants.
-    // They must be the first in the list to be prioritized.
-    let visibleRemoteParticipants: Set<string> = new Set(visibleRemoteParticipantsOriginal);
+    const visibleRemoteParticipants: Set<string> = new Set(visibleRemoteParticipantsOriginal);
 
     if (signLanguageParticipantIds.length) {
         signLanguageParticipantIds.forEach(participantId => {
@@ -487,17 +486,6 @@ function _updateReceiverVideoConstraints({ getState }: IStore) {
                 visibleRemoteParticipants.add(participantId);
             }
         });
-
-        visibleRemoteParticipants = new Set(Array.from(visibleRemoteParticipants).sort(
-            (a: string, b: string): number => {
-                if (signLanguageParticipantIds.includes(a) && !signLanguageParticipantIds.includes(b)) {
-                    return -1;
-                } else if (!signLanguageParticipantIds.includes(a) && signLanguageParticipantIds.includes(b)) {
-                    return 1;
-                }
-
-                return 0;
-            }));
     }
 
     let activeParticipantsSources: string[] = [];
@@ -535,7 +523,7 @@ function _updateReceiverVideoConstraints({ getState }: IStore) {
             return;
         }
 
-        console.log('VQ', 'Tile View Default MaxHeight', maxFrameHeightForTileView);
+        // console.log('VQ', 'Tile View Default MaxHeight', maxFrameHeightForTileView);
 
         visibleRemoteTrackSourceNames.forEach(sourceName => {
             // Sign language translators should always be displayed in high quality if they use the window display mode.
@@ -656,6 +644,11 @@ function _updateReceiverVideoConstraints({ getState }: IStore) {
 
     try {
         console.log('VQ', 'Receiver constraints', receiverConstraints);
+        if (signLanguageParticipantSources.length > 0) {
+            console.log('VQ', 'Sign language participants in overlay mode', signLanguageParticipantSources);
+        } else {
+            console.log('VQ', 'No sign language participants in overlay mode');
+        }
 
         conference.setReceiverConstraints(receiverConstraints);
     } catch (error: any) {
