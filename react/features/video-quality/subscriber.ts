@@ -429,7 +429,7 @@ function _updateReceiverVideoConstraints({ getState }: IStore) {
     if (!conference) {
         return;
     }
-    const { lastN } = state['features/base/lastn'];
+    let { lastN } = state['features/base/lastn'];
     const {
         maxReceiverVideoQualityForTileView,
         maxReceiverVideoQualityForStageFilmstrip,
@@ -501,6 +501,11 @@ function _updateReceiverVideoConstraints({ getState }: IStore) {
     }
     if (signLanguageParticipantIds?.length) {
         signLanguageParticipantSources = _getSourceNames(signLanguageParticipantIds, state);
+        if (receiverConstraints.lastN) {
+            receiverConstraints.lastN = Math.max(receiverConstraints.lastN, signLanguageParticipantIds.length + 1);
+        } else {
+            receiverConstraints.lastN = Math.max(signLanguageParticipantIds.length + 1, 20);
+        }
     }
 
     if (activeParticipantsIds?.length > 0) {
@@ -640,6 +645,19 @@ function _updateReceiverVideoConstraints({ getState }: IStore) {
                 receiverConstraints.onStageSources = [ largeVideoSourceName ];
             }
         }
+    }
+
+    // Make sure sign language translators are part of the selected sources.
+    if (signLanguageParticipantSources.length > 0) {
+        const selectedSources = receiverConstraints.selectedSources || [];
+
+        signLanguageParticipantSources.forEach(sourceName => {
+            if (!selectedSources.includes(sourceName)) {
+                selectedSources.push(sourceName);
+            }
+        });
+
+        receiverConstraints.selectedSources = selectedSources;
     }
 
     try {
