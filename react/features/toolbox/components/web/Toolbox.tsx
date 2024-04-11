@@ -21,7 +21,13 @@ import { ILocalParticipant } from '../../../base/participants/types';
 import ContextMenu from '../../../base/ui/components/web/ContextMenu';
 import { isReactionsButtonEnabled, isReactionsEnabled } from '../../../reactions/functions.web';
 import { iAmVisitor } from '../../../visitors/functions';
-import { hideToolbox, setHangupMenuVisible, setOverflowMenuVisible, setToolbarHovered, setToolboxVisible, showToolbox, toggleToolboxVisible, toggleToolboxVisible } from '../../actions.web';
+import {
+    hideToolbox,
+    setHangupMenuVisible,
+    setOverflowMenuVisible,
+    setToolbarHovered,
+    showToolbox
+} from '../../actions.web';
 import {
     BUTTONS_MODERATOR,
     BUTTONS_USER,
