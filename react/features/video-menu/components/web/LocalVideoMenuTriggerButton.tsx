@@ -277,6 +277,8 @@ function _mapStateToProps(state: IReduxState, ownProps: Partial<IProps>) {
     const { overflowDrawer } = state['features/toolbox'];
     const { showConnectionInfo } = state['features/base/connection'];
     const showHideSelfViewButton = !disableSelfViewSettings && !getHideSelfView(state);
+    // const triggerButtonPositionLeft = this.current.getBoundingClientRect().left;
+    // const triggerButtonPositionRight = this.current.getBoundingClientRect().right;
 
     let _menuPosition;
 
