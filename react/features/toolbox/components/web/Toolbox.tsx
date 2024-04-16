@@ -622,7 +622,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
         _overflowDrawer: overflowDrawer,
         _reactionsButtonEnabled: isReactionsButtonEnabled(state),
         _reactionsEnabled,
-        _shiftUp: state['features/toolbox'].shiftUp,
+        _shiftUp: false, // state['features/toolbox'].shiftUp,
         _toolbarButtons: toolbarButtons,
         _visible: isToolboxVisible(state),
         _distressButton: state['features/inklusiva/userdata'].distressbutton?.active ?? false,
