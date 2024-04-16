@@ -122,7 +122,7 @@ function ClosedCaptionButtonPopup({
         element.href = URL.createObjectURL(file);
         element.download = `${_conferenceName}_transkript.txt`;
         document.body.appendChild(element); // Required for this to work in Firefox
-        element.click();
+        element.click();        
     };
 
 
@@ -143,14 +143,15 @@ function ClosedCaptionButtonPopup({
                 label = { t('toolbar.ccHistory') }
                 // eslint-disable-next-line react/jsx-no-bind
                 onClick = { _onClickHistory } />
-            <Button
-                accessibilityLabel = { t('toolbar.accessibilityLabel.ccDownload') }
-                className = { classes.button }
-                icon = { IconDownload }
-                label = { t('toolbar.ccDownload') }
-                // eslint-disable-next-line react/jsx-no-bind
-                onClick = { _onClickDownload } />
-
+            { _transcriptionHistory.length > 0 && (
+                <Button
+                    accessibilityLabel = { t('toolbar.accessibilityLabel.ccDownload') }
+                    className = { classes.button }
+                    icon = { IconDownload }
+                    label = { t('toolbar.ccDownload') }
+                    // eslint-disable-next-line react/jsx-no-bind
+                    onClick = { _onClickDownload } />
+            ) }
         </ContextMenu>
 
     );
