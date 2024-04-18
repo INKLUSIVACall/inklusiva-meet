@@ -1,6 +1,7 @@
 import { Theme } from '@mui/material';
 import { withStyles } from '@mui/styles';
 import React, { useState } from 'react';
+import { FocusOn } from 'react-focus-on';
 import { useTranslation } from 'react-i18next';
 import { connect, useSelector } from 'react-redux';
 
@@ -10,6 +11,7 @@ import { ICRole, IC_ROLES } from '../../base/conference/icRoles';
 import { IJitsiConference } from '../../base/conference/reducer';
 import { getLocalParticipant, getRemoteParticipants, isParticipantModerator } from '../../base/participants/functions';
 import { IJitsiParticipant, IParticipant } from '../../base/participants/types';
+import { isElementInTheViewport } from '../../base/ui/functions.web';
 
 import { getParticipant } from './functions';
 
@@ -71,6 +73,9 @@ const styles = (theme: Theme) => {
             borderStyle: 'dashed',
             marginBottom: '1.2rem',
             marginTop: '1.2rem'
+        },
+        focusLock: {
+            zIndex: 1
         }
     };
 };
@@ -172,23 +177,40 @@ const AssisteesPanel = ({
     const showDialog = _visible && !localClose && isAssistancePartner;
 
     return showDialog ? (
-        <div
-            aria-modal = 'true'
-            className = { classes.assisteesPanel }
-            role = 'dialog'>
-            <button
-                className = { classes.closeButton }
-                // eslint-disable-next-line react/jsx-no-bind
-                onClick = { _onClickClose }
-                role = 'button'>
-                x
-            </button>
-            <h1 className = { classes.headline }>{t('assisteesPanel.headline')}</h1>
-            <p className = { classes.description }>{t('assisteesPanel.desc1')}</p>
-            <p className = { classes.description }>{t('assisteesPanel.desc2')}</p>
-            <hr className = { classes.divider } />
-            <ul className = { classes.list }>{_assistees.map((data: any, i: number) => _renderAssistees(data, i))}</ul>
-        </div>
+        <FocusOn
+            className = { classes.focusLock }
+            returnFocus = {
+
+                // If we return the focus to an element outside the viewport the page will scroll to
+                // this element which in our case is undesirable and the element is outside of the
+                // viewport on purpose (to be hidden). For example if we return the focus to the toolbox
+                // when it is hidden the whole page will move up in order to show the toolbox. This is
+                // usually followed up with displaying the toolbox (because now it is on focus) but
+                // because of the animation the whole scenario looks like jumping large video.
+                isElementInTheViewport
+            }>
+            <div
+                aria-modal = 'true'
+                className = { classes.assisteesPanel }
+                role = 'dialog'>
+                <button
+                    className = { classes.closeButton }
+                    // eslint-disable-next-line react/jsx-no-bind
+                    onClick = { _onClickClose }
+                    role = 'button'>
+                    x
+                </button>
+                <h1
+                    className = { classes.headline }
+                    id = 'assisteesHeadline'>
+                    {t('assisteesPanel.headline')}
+                </h1>
+                <p className = { classes.description }>{t('assisteesPanel.desc1')}</p>
+                <p className = { classes.description }>{t('assisteesPanel.desc2')}</p>
+                <hr className = { classes.divider } />
+                <ul className = { classes.list }>{_assistees.map((data: any, i: number) => _renderAssistees(data, i))}</ul>
+            </div>
+        </FocusOn>
     ) : null;
 };
 
