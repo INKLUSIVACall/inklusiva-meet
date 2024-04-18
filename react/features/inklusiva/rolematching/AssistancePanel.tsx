@@ -1,6 +1,7 @@
 import { Theme } from '@mui/material';
 import { withStyles } from '@mui/styles';
 import React from 'react';
+import { FocusOn } from 'react-focus-on';
 import { useTranslation } from 'react-i18next';
 import { connect, useDispatch } from 'react-redux';
 
@@ -11,6 +12,7 @@ import { IJitsiConference } from '../../base/conference/reducer';
 import { getLocalParticipant, getRemoteParticipants, isParticipantModerator } from '../../base/participants/functions';
 import { IParticipant } from '../../base/participants/types';
 import Button from '../../base/ui/components/web/Button';
+import { isElementInTheViewport } from '../../base/ui/functions.web';
 
 import { getParticipant, hideAssistancePanel, setParticipant } from './functions';
 
@@ -98,6 +100,9 @@ const styles = (theme: Theme) => {
             alignSelf: 'center',
             borderRadius: '30px',
             padding: '0.5rem 1rem !important'
+        },
+        focusLock: {
+            zIndex: 1
         }
     };
 };
@@ -178,23 +183,42 @@ const AssistancePanel = ({
 
     if (_visible) {
         if (!_iAmAssisted) {
+
             return (
-                <div
-                    aria-modal = 'true'
-                    className = { classes.assisteesPanel }
-                    role = 'dialog'>
-                    <button
-                        className = { classes.closeButton }
-                        // eslint-disable-next-line react/jsx-no-bind
-                        onClick = { _onClickClose }
-                        role = 'button'>
-                        x
-                    </button>
-                    <h1 className = { classes.headline }>{t('assistancePanel.headline')}</h1>
-                    <p className = { classes.description }>{t('assistancePanel.desc1')}</p>
-                    <p className = { classes.description }>{t('assistancePanel.desc2')}</p>
-                    <div className = { classes.inputblockContainer }>
-                        {_participantsList.length > 0
+                <FocusOn
+                    className = { classes.focusLock }
+                    returnFocus = {
+
+                        // If we return the focus to an element outside the viewport the page will scroll to
+                        // this element which in our case is undesirable and the element is outside of the
+                        // viewport on purpose (to be hidden). For example if we return the focus to the toolbox
+                        // when it is hidden the whole page will move up in order to show the toolbox. This is
+                        // usually followed up with displaying the toolbox (because now it is on focus) but
+                        // because of the animation the whole scenario looks like jumping large video.
+                        isElementInTheViewport
+                    }>
+                    <div
+                        aria-modal = 'true'
+                        autoFocus = { true as const }
+                        className = { classes.assisteesPanel }
+                        id = 'assistancePanel'
+                        role = 'dialog'>
+                        <button
+                            className = { classes.closeButton }
+                            // eslint-disable-next-line react/jsx-no-bind
+                            onClick = { _onClickClose }
+                            role = 'button'>
+                            x
+                        </button>
+                        <h1
+                            className = { classes.headline }
+                            id = 'assistancePanelHeadline'>
+                            {t('assistancePanel.headline')}
+                        </h1>
+                        <p className = { classes.description }>{t('assistancePanel.desc1')}</p>
+                        <p className = { classes.description }>{t('assistancePanel.desc2')}</p>
+                        <div className = { classes.inputblockContainer }>
+                            {_participantsList.length > 0
                             && !_iAmAssistant
                             && _participantsList.map(participant => (
                                 <div
@@ -209,39 +233,58 @@ const AssistancePanel = ({
                                         onClick = { () => onClickRequest(participant) } />
                                 </div>
                             ))}
-                        {(_participantsList.length <= 0 || _iAmAssistant) && (
-                            <div className = { classes.inputblock }>
-                                <div className = { classes.inputDescription }>
-                                    {t('toolbar.assistanceParticipantsListEmpty')}
+                            {(_participantsList.length <= 0 || _iAmAssistant) && (
+                                <div className = { classes.inputblock }>
+                                    <div className = { classes.inputDescription }>
+                                        {t('toolbar.assistanceParticipantsListEmpty')}
+                                    </div>
                                 </div>
-                            </div>
-                        )}
+                            )}
+                        </div>
                     </div>
-                </div>
+                </FocusOn>
             );
         }
 
         return (
-            <div
-                aria-modal = 'true'
-                className = { classes.assisteesPanel }
-                role = 'dialog'>
-                <button
-                    className = { classes.closeButton }
-                    // eslint-disable-next-line react/jsx-no-bind
-                    onClick = { _onClickClose }
-                    role = 'button'>
-                    x
-                </button>
-                <h1 className = { classes.headline }>{t('assistancePanel.headlineRelease')}</h1>
-                <p className = { classes.description }>{t('assistancePanel.descRelease')}</p>
-                <button
-                    className = { [ classes.participantButton, 'primary' ].join(' ') }
-                    // eslint-disable-next-line react/jsx-no-bind
-                    onClick = { onClickRelease }>
-                    {t('assistancePanel.buttonRelease')}
-                </button>
-            </div>
+            <FocusOn
+                className = { classes.focusLock }
+                returnFocus = {
+
+                    // If we return the focus to an element outside the viewport the page will scroll to
+                    // this element which in our case is undesirable and the element is outside of the
+                    // viewport on purpose (to be hidden). For example if we return the focus to the toolbox
+                    // when it is hidden the whole page will move up in order to show the toolbox. This is
+                    // usually followed up with displaying the toolbox (because now it is on focus) but
+                    // because of the animation the whole scenario looks like jumping large video.
+                    isElementInTheViewport
+                }>
+                <div
+                    aria-modal = 'true'
+                    className = { classes.assisteesPanel }
+                    id = 'assistancePanel'
+                    role = 'dialog'>
+                    <button
+                        className = { classes.closeButton }
+                        // eslint-disable-next-line react/jsx-no-bind
+                        onClick = { _onClickClose }
+                        role = 'button'>
+                        x
+                    </button>
+                    <h1
+                        className = { classes.headline }
+                        id = 'assistancePanelHeadline'>
+                        {t('assistancePanel.headlineRelease')}
+                    </h1>
+                    <p className = { classes.description }>{t('assistancePanel.descRelease')}</p>
+                    <button
+                        className = { [ classes.participantButton, 'primary' ].join(' ') }
+                        // eslint-disable-next-line react/jsx-no-bind
+                        onClick = { onClickRelease }>
+                        {t('assistancePanel.buttonRelease')}
+                    </button>
+                </div>
+            </FocusOn>
         );
     }
 
@@ -269,10 +312,8 @@ const mapStateToProps = (state: IReduxState) => {
     });
 
     const remoteParticipantsList = remoteParticipants // no local participants
-        .filter((participant: IParticipant) => !conference?.checkMemberHasRole(
-            participant.id, IC_ROLES.ASSISTANT)) // no assistants
-        .filter((participant: IParticipant) => !conference?.checkMemberHasRole(
-            participant.id, IC_ROLES.ASSISTED)) // no assistees
+        .filter((participant: IParticipant) => !conference?.checkMemberHasRole(participant.id, IC_ROLES.ASSISTANT)) // no assistants
+        .filter((participant: IParticipant) => !conference?.checkMemberHasRole(participant.id, IC_ROLES.ASSISTED)) // no assistees
         .filter((participant: IParticipant) => !isParticipantModerator(participant)); // no moderators
 
     return {
