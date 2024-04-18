@@ -199,7 +199,6 @@ const AssistancePanel = ({
                     }>
                     <div
                         aria-modal = 'true'
-                        autoFocus = { true as const }
                         className = { classes.assisteesPanel }
                         id = 'assistancePanel'
                         role = 'dialog'>
