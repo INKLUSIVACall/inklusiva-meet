@@ -12,7 +12,8 @@ import {
     SET_OVERFLOW_DRAWER,
     SET_OVERFLOW_MENU_VISIBLE,
     SET_TOOLBAR_HOVERED,
-    SET_TOOLBOX_TIMEOUT
+    SET_TOOLBOX_TIMEOUT,
+    TOGGLE_HELP_DIALOG
 } from './actionTypes';
 import { setToolboxVisible } from './actions.web';
 import { getToolbarTimeout } from './functions.web';
@@ -296,5 +297,18 @@ export function setConferenceInfoVisible(visible: boolean) {
             type: SET_CONFERENCE_INFO_VISIBLE,
             visible
         });
+    };
+}
+
+/**
+ * Toggles the visibility of the help dialog opend by the help button.
+ *
+ * @returns {{
+ *      type: TOGGLE_HELP_DIALOG
+ * }}
+ */
+export function toggleHelpDialogVisibility() {
+    return {
+        type: TOGGLE_HELP_DIALOG
     };
 }

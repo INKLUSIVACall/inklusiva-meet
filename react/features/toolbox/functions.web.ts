@@ -240,6 +240,12 @@ export function getAllToolboxButtons(_customToolbarButtons?: {
         group: 2
     };
 
+    const help = {
+        key: 'help',
+        Content: HelpButton,
+        group: 2
+    };
+
     const rolematching = {
         key: 'rolematching',
         Content: RoleMatchingButton,
@@ -401,12 +407,6 @@ export function getAllToolboxButtons(_customToolbarButtons?: {
         group: 4
     };
 
-    const help = {
-        key: 'help',
-        Content: HelpButton,
-        group: 4
-    };
-
     const customButtons = _customToolbarButtons?.reduce((prev, { icon, id, text }) => {
         return {
             ...prev,
@@ -420,6 +420,13 @@ export function getAllToolboxButtons(_customToolbarButtons?: {
             'rolematching': {
                 key: 'rolematching',
                 Content: RoleMatchingButton,
+                group: 1,
+                icon,
+                text
+            },
+            'help': {
+                key: 'help',
+                Content: HelpButton,
                 group: 1,
                 icon,
                 text
