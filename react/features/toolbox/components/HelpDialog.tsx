@@ -40,7 +40,7 @@ const HelpDialog = ({ _helpDialogVisibility }: IProps) => {
                 titleKey = 'toolbar.helpDialogTitle'>
                 <iframe
                     src = 'https://www.google.de'
-                    title = 'Test' />
+                    title = 'toolbar.helpDialogTitle' />
             </Dialog>
         );
     }
