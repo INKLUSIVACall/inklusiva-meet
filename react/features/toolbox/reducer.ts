@@ -13,8 +13,10 @@ import {
     SET_TOOLBOX_SHIFT_UP,
     SET_TOOLBOX_TIMEOUT,
     SET_TOOLBOX_VISIBLE,
+    TOGGLE_HELP_DIALOG,
     TOGGLE_TOOLBOX_VISIBLE
 } from './actionTypes';
+import { toggleHelpDialogVisibility } from './actions.web';
 
 /**
  * Initial state of toolbox's part of Redux store.
@@ -34,6 +36,14 @@ const INITIAL_STATE = {
      * @type {boolean}
      */
     hangupMenuVisible: false,
+
+
+    /**
+     * The indicator which determines whether the help dialog is visible.
+     *
+     * @type {boolean}
+     */
+    helpDialogVisibility: false,
 
     /**
      * The indicator which determines whether a Toolbar in the Toolbox is
@@ -94,6 +104,7 @@ export interface IToolboxState {
     enabled: boolean;
     fullScreen?: boolean;
     hangupMenuVisible: boolean;
+    helpDialogVisibility: boolean;
     hovered: boolean;
     overflowDrawer: boolean;
     overflowMenuVisible: boolean;
@@ -170,6 +181,11 @@ ReducerRegistry.register<IToolboxState>(
             return {
                 ...state,
                 conferenceInfoVisible: action.visible
+            };
+        case TOGGLE_HELP_DIALOG:
+            return {
+                ...state,
+                helpDialogVisibility: !state.helpDialogVisibility
             };
         }
 

@@ -45,6 +45,7 @@ import type { AbstractProps } from '../AbstractConference';
 
 import ConferenceInfo from './ConferenceInfo';
 import { default as Notice } from './Notice';
+import HelpDialog from '../../../toolbox/components/HelpDialog';
 
 /**
  * DOM events for when full screen mode has changed. Different browsers need
@@ -288,6 +289,7 @@ class Conference extends AbstractConference<IProps, any> {
                         : this.renderNotificationsContainer())
                     }
 
+                    <HelpDialog />
                     <AssisteesPanel />
                     <AssistancePanel />
                     <CalleeInfoContainer />
