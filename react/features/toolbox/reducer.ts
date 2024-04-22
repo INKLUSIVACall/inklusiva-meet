@@ -13,10 +13,8 @@ import {
     SET_TOOLBOX_SHIFT_UP,
     SET_TOOLBOX_TIMEOUT,
     SET_TOOLBOX_VISIBLE,
-    TOGGLE_HELP_DIALOG,
     TOGGLE_TOOLBOX_VISIBLE
 } from './actionTypes';
-import { toggleHelpDialogVisibility } from './actions.web';
 
 /**
  * Initial state of toolbox's part of Redux store.
@@ -181,11 +179,6 @@ ReducerRegistry.register<IToolboxState>(
             return {
                 ...state,
                 conferenceInfoVisible: action.visible
-            };
-        case TOGGLE_HELP_DIALOG:
-            return {
-                ...state,
-                helpDialogVisibility: !state.helpDialogVisibility
             };
         }
 

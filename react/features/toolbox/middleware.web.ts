@@ -5,10 +5,14 @@ import MiddlewareRegistry from '../base/redux/MiddlewareRegistry';
 import {
     CLEAR_TOOLBOX_TIMEOUT,
     SET_FULL_SCREEN,
-    SET_TOOLBOX_TIMEOUT
+    SET_TOOLBOX_TIMEOUT,
+    OPEN_HELP_DIALOG
 } from './actionTypes';
 
 import './subscriber.web';
+import HelpDialog from './components/HelpDialog';
+
+import { openDialog } from '../base/dialog/actions';
 
 /**
  * Middleware which intercepts Toolbox actions to handle changes to the
@@ -18,6 +22,8 @@ import './subscriber.web';
  * @returns {Function}
  */
 MiddlewareRegistry.register(store => next => action => {
+    const { dispatch } = store;
+
     switch (action.type) {
     case CLEAR_TOOLBOX_TIMEOUT: {
         const { timeoutID } = store.getState()['features/toolbox'];
@@ -35,6 +41,12 @@ MiddlewareRegistry.register(store => next => action => {
 
         clearTimeout(timeoutID ?? undefined);
         action.timeoutID = setTimeout(handler, timeoutMS);
+
+        break;
+    }
+
+    case OPEN_HELP_DIALOG: {
+        dispatch(openDialog(HelpDialog));
 
         break;
     }
