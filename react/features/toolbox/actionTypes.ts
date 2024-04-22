@@ -129,7 +129,7 @@ export const SET_CONFERENCE_INFO_VISIBLE = 'SET_CONFERENCE_INFO_VISIBLE';
  * The type of the redux action which toggles the help dialog visibility.
  *
  * {
- *      type: TOGGLE_HELP_DIALOG
+ *      type: OPEN_HELP_DIALOG
  * }
  */
-export const TOGGLE_HELP_DIALOG = 'TOGGLE_HELP_DIALOG';
+export const OPEN_HELP_DIALOG = 'OPEN_HELP_DIALOG';

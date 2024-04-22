@@ -1,3 +1,5 @@
+import { connect } from 'react-redux';
+
 import { translate } from '../../base/i18n/functions';
 import { IconHelp } from '../../base/icons/svg';
 import AbstractButton, { IProps as AbstractButtonProps } from '../../base/toolbox/components/AbstractButton';
@@ -25,4 +27,4 @@ class HelpButton extends AbstractButton<AbstractButtonProps> {
     }
 }
 
-export default translate(HelpButton);
+export default translate(connect()(HelpButton));
