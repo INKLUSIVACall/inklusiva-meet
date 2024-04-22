@@ -6,7 +6,6 @@ export const THRESHOLDS = [
         width: 565,
         order: [
             'rolematching',
-            'help',
             'distress',
             'microphone',
             'camera',
@@ -14,7 +13,8 @@ export const THRESHOLDS = [
             'chat',
             'raisehand',
             'reactions',
-            'participants'
+            'participants',
+            'help'
 
             // 'tileview'
         ]
@@ -23,37 +23,37 @@ export const THRESHOLDS = [
         width: 520,
         order: [
             'rolematching',
-            'help',
             'distress',
             'microphone',
             'camera',
             'desktop',
             'chat',
             'raisehand',
-            'participants'
+            'participants',
+            'help'
 
             // 'tileview'
         ]
     },
     {
         width: 470,
-        order: [ 'rolematching', 'help', 'distress', 'microphone', 'camera', 'desktop', 'chat', 'raisehand', 'participants' ]
+        order: [ 'rolematching', 'distress', 'microphone', 'camera', 'desktop', 'chat', 'raisehand', 'participants', 'help' ]
     },
     {
         width: 420,
-        order: [ 'rolematching', 'help', 'distress', 'microphone', 'camera', 'desktop', 'chat', 'participants' ]
+        order: [ 'rolematching', 'distress', 'microphone', 'camera', 'desktop', 'chat', 'participants', 'help' ]
     },
     {
         width: 370,
-        order: [ 'rolematching', 'help', 'distress', 'microphone', 'camera', 'chat', 'participants' ]
+        order: [ 'rolematching', 'distress', 'microphone', 'camera', 'chat', 'participants', 'help' ]
     },
     {
         width: 225,
-        order: [ 'rolematching', 'help', 'distress', 'microphone', 'camera', 'chat' ]
+        order: [ 'rolematching', 'distress', 'microphone', 'camera', 'chat', 'help' ]
     },
     {
         width: 200,
-        order: [ 'rolematching', 'help', 'distress', 'microphone', 'camera' ]
+        order: [ 'rolematching', 'distress', 'microphone', 'camera', 'help' ]
     }
 ];
 
@@ -61,7 +61,6 @@ export const THRESHOLDS_MODERATOR = [
     {
         width: 565,
         order: [
-            'help',
             'distress',
             'microphone',
             'camera',
@@ -70,7 +69,8 @@ export const THRESHOLDS_MODERATOR = [
             'raisehand',
             'reactions',
             'participants',
-            'cc'
+            'cc',
+            'help'
 
             // 'tileview'
         ]
@@ -78,7 +78,6 @@ export const THRESHOLDS_MODERATOR = [
     {
         width: 520,
         order: [
-            'help',
             'distress',
             'microphone',
             'camera',
@@ -86,30 +85,31 @@ export const THRESHOLDS_MODERATOR = [
             'chat',
             'raisehand',
             'participants',
-            'cc'
+            'cc',
+            'help'
 
             // 'tileview'
         ]
     },
     {
         width: 470,
-        order: [ 'help', 'distress', 'microphone', 'camera', 'desktop', 'chat', 'raisehand', 'participants' ]
+        order: [ 'distress', 'microphone', 'camera', 'desktop', 'chat', 'raisehand', 'participants', 'help' ]
     },
     {
         width: 420,
-        order: [ 'help', 'distress', 'microphone', 'camera', 'desktop', 'chat', 'participants' ]
+        order: [ 'distress', 'microphone', 'camera', 'desktop', 'chat', 'participants', 'help' ]
     },
     {
         width: 370,
-        order: [ 'help', 'distress', 'microphone', 'camera', 'chat', 'participants' ]
+        order: [ 'distress', 'microphone', 'camera', 'chat', 'participants', 'help' ]
     },
     {
         width: 225,
-        order: [ 'help', 'distress', 'microphone', 'camera', 'chat' ]
+        order: [ 'distress', 'microphone', 'camera', 'chat', 'help' ]
     },
     {
         width: 200,
-        order: [ 'help', 'distress', 'microphone', 'camera' ]
+        order: [ 'distress', 'microphone', 'camera', 'help' ]
     }
 ];
 
@@ -118,7 +118,6 @@ export const THRESHOLDS_USER = [
         width: 565,
         order: [
             'rolematching',
-            'help',
             'distress',
             'microphone',
             'camera',
@@ -129,6 +128,7 @@ export const THRESHOLDS_USER = [
             'participants',
             'cc',
             'shortcuts',
+            'help',
             'settings'
 
             // 'tileview'
@@ -138,7 +138,6 @@ export const THRESHOLDS_USER = [
         width: 520,
         order: [
             'rolematching',
-            'help',
             'distress',
             'microphone',
             'camera',
@@ -148,6 +147,7 @@ export const THRESHOLDS_USER = [
             'participants',
             'cc',
             'shortcuts',
+            'help',
             'settings'
 
             // 'tileview'
@@ -157,7 +157,6 @@ export const THRESHOLDS_USER = [
         width: 470,
         order: [
             'rolematching',
-            'help',
             'distress',
             'microphone',
             'camera',
@@ -167,24 +166,25 @@ export const THRESHOLDS_USER = [
             'participants',
             'cc',
             'shortcuts',
+            'help',
             'settings'
         ]
     },
     {
         width: 420,
-        order: [ 'rolematching', 'help', 'distress', 'microphone', 'camera', 'desktop', 'chat', 'participants' ]
+        order: [ 'rolematching', 'distress', 'microphone', 'camera', 'desktop', 'chat', 'participants', 'help' ]
     },
     {
         width: 370,
-        order: [ 'rolematching', 'help', 'distress', 'microphone', 'camera', 'chat', 'participants' ]
+        order: [ 'rolematching', 'distress', 'microphone', 'camera', 'chat', 'participants', 'help' ]
     },
     {
         width: 225,
-        order: [ 'rolematching', 'help', 'distress', 'microphone', 'camera', 'chat' ]
+        order: [ 'rolematching', 'distress', 'microphone', 'camera', 'chat', 'help' ]
     },
     {
         width: 200,
-        order: [ 'rolematching', 'help', 'distress', 'microphone', 'camera' ]
+        order: [ 'rolematching', 'distress', 'microphone', 'camera', 'help' ]
     }
 ];
 
@@ -210,7 +210,6 @@ export const SPINNER_COLOR = '#929292';
 
 export const BUTTONS_MODERATOR = [
     // 'rolematching',
-    'help',
     'distress',
     'microphone',
     'camera',
@@ -221,6 +220,7 @@ export const BUTTONS_MODERATOR = [
     'participants-pane',
     'closedcaptions',
     'settings',
+    'help',
     'profile',
     'invite',
     'tileview',
@@ -246,7 +246,6 @@ export const BUTTONS_MODERATOR = [
 
 export const BUTTONS_USER = [
     'rolematching',
-    'help',
     'distress',
     'microphone',
     'camera',
@@ -257,6 +256,7 @@ export const BUTTONS_USER = [
     'participants-pane',
     'closedcaptions',
     'settings',
+    'help',
     //'profile',
     //'invite',
     //'tileview',
