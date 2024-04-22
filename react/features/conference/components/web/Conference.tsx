@@ -289,7 +289,6 @@ class Conference extends AbstractConference<IProps, any> {
                         : this.renderNotificationsContainer())
                     }
 
-                    <HelpDialog />
                     <AssisteesPanel />
                     <AssistancePanel />
                     <CalleeInfoContainer />
