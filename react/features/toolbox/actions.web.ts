@@ -6,14 +6,14 @@ import { isLayoutTileView } from '../video-layout/functions.any';
 import {
     CLEAR_TOOLBOX_TIMEOUT,
     FULL_SCREEN_CHANGED,
+    OPEN_HELP_DIALOG,
     SET_CONFERENCE_INFO_VISIBLE,
     SET_FULL_SCREEN,
     SET_HANGUP_MENU_VISIBLE,
     SET_OVERFLOW_DRAWER,
     SET_OVERFLOW_MENU_VISIBLE,
     SET_TOOLBAR_HOVERED,
-    SET_TOOLBOX_TIMEOUT,
-    TOGGLE_HELP_DIALOG
+    SET_TOOLBOX_TIMEOUT
 } from './actionTypes';
 import { setToolboxVisible } from './actions.web';
 import { getToolbarTimeout } from './functions.web';
@@ -304,11 +304,11 @@ export function setConferenceInfoVisible(visible: boolean) {
  * Toggles the visibility of the help dialog opend by the help button.
  *
  * @returns {{
- *      type: TOGGLE_HELP_DIALOG
+ *      type: OPEN_HELP_DIALOG
  * }}
  */
 export function toggleHelpDialogVisibility() {
     return {
-        type: TOGGLE_HELP_DIALOG
+        type: OPEN_HELP_DIALOG
     };
 }
