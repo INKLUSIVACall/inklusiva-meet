@@ -1002,6 +1002,7 @@
         "on": "Aufnahme",
         "onBy": "{{name}} startete die Aufnahme",
         "onlyRecordSelf": "Nur eigenes Kamerabild und Ton aufzeichnen",
+        "participant": "Ein Teilnehmer ",
         "pending": "Aufzeichnung des Meetings wird vorbereitet…",
         "rec": "AUFZ",
         "saveLocalRecording": "Aufzeichnung lokal abspeichern",
