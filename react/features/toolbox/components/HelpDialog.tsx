@@ -22,6 +22,7 @@ const useStyles = makeStyles()(() => {
         contentContainer: {
             width: '100%',
             height: 'calc(100vh - 480px)',
+            minHeight: 'calc(100vh - 480px)',
             border: 'none',
             borderRadius: '0.5rem'
         }
@@ -36,7 +37,7 @@ const HelpDialog = ({ t }: IProps) => {
             back = {{ hidden: true }}
             className = { classes.container }
             ok = {{ hidden: true }}
-            titleKey = { t('toolbar.helpDialogTitle') }>
+            titleKey = { 'Hilfe' }>
             <iframe
                 className = { classes.contentContainer }
                 src = 'https://conference.inklusiva-call.de/help/meeting/'
