@@ -5,7 +5,6 @@ import { makeStyles } from 'tss-react/mui';
 import { translate } from '../../base/i18n/functions';
 import Dialog from '../../base/ui/components/web/Dialog';
 
-
 interface IProps {
 
     /**
@@ -17,12 +16,14 @@ interface IProps {
 const useStyles = makeStyles()(() => {
     return {
         container: {
-            width: '70vw',
+            width: '90vw',
             height: '75vh'
         },
         contentContainer: {
             width: '100%',
-            height: '75vh'
+            height: 'calc(100vh - 480px)',
+            border: 'none',
+            borderRadius: '0.5rem'
         }
     };
 });
