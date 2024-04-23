@@ -261,6 +261,14 @@ MiddlewareRegistry.register(({ dispatch, getState }) => next => async action => 
                     dispatch(
                         showStoppedRecordingNotification(
                             mode, getParticipantDisplayName(getState, getResourceId(terminator))));
+                } else if (initiator) {
+                    dispatch(
+                        showStoppedRecordingNotification(
+                            mode, getParticipantDisplayName(getState, getResourceId(initiator))));
+                } else {
+                    dispatch(
+                        showStoppedRecordingNotification(
+                            mode, '$t(recording.participant)'));
                 }
 
                 let duration = 0, soundOff, soundOn;
