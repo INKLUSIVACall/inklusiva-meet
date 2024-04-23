@@ -1,9 +1,12 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { useCallback } from 'react';
+import { connect, useDispatch } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
 
+import { hideDialog } from '../../base/dialog/actions';
 import { translate } from '../../base/i18n/functions';
-import Dialog from '../../base/ui/components/web/Dialog';
+import { IconCloseLarge } from '../../base/icons/svg';
+import BaseDialog from '../../base/ui/components/web/BaseDialog';
+import ClickableIcon from '../../base/ui/components/web/ClickableIcon';
 
 interface IProps {
 
@@ -17,14 +20,20 @@ const useStyles = makeStyles()(() => {
     return {
         container: {
             width: '90vw',
-            height: '75vh'
+            height: 'auto',
+            marginTop: '2rem !important',
+            position: 'relative'
         },
         contentContainer: {
             width: '100%',
-            height: 'calc(100vh - 480px)',
-            minHeight: 'calc(100vh - 480px)',
-            border: 'none',
-            borderRadius: '0.5rem'
+            height: '1000px',
+            border: 'none'
+        },
+        modalHeaderCloseButton: {
+            position: 'absolute',
+            right: '1rem',
+            top: '1rem',
+            backgroundColor: 'black'
         }
     };
 });
@@ -32,17 +41,29 @@ const useStyles = makeStyles()(() => {
 const HelpDialog = ({ t }: IProps) => {
     const { classes } = useStyles();
 
+    const dispatch = useDispatch();
+    const onClose = () => {
+        console.log('onClose');
+        dispatch(hideDialog());
+    };
+
     return (
-        <Dialog
-            back = {{ hidden: true }}
+        <BaseDialog
             className = { classes.container }
-            ok = {{ hidden: true }}
+            size = 'large'
             titleKey = { 'Hilfe' }>
+            <ClickableIcon
+                accessibilityLabel = { t('dialog.accessibilityLabel.close') }
+                className = { classes.modalHeaderCloseButton }
+                icon = { IconCloseLarge }
+                id = 'modal-header-close-button'
+                onClick = { onClose } />
+
             <iframe
                 className = { classes.contentContainer }
                 src = 'https://conference.inklusiva-call.de/help/meeting/'
                 title = { t('toolbar.helpDialogTitle') } />
-        </Dialog>
+        </BaseDialog>
     );
 };
 
