@@ -12,10 +12,22 @@ import {
     ADD_STAGE_PARTICIPANT,
     CLEAR_STAGE_PARTICIPANTS,
     REMOVE_STAGE_PARTICIPANT,
+    RESET_PARTICIPANT_BRIGHTNESS,
+    RESET_PARTICIPANT_CONTRAST,
+    RESET_PARTICIPANT_OPACITY,
+    RESET_PARTICIPANT_SATURATION,
+    RESET_PARTICIPANT_ZOOM_LEVEL,
     RESIZE_FILMSTRIP,
     SET_FILMSTRIP_HEIGHT,
     SET_FILMSTRIP_WIDTH,
+    SET_FREQUENCY_FILTER_SETTING,
     SET_HORIZONTAL_VIEW_DIMENSIONS,
+    SET_PARTICIPANT_BRIGHTNESS,
+    SET_PARTICIPANT_CONTRAST,
+    SET_PARTICIPANT_OPACITY,
+    SET_PARTICIPANT_SATURATION,
+    SET_PARTICIPANT_ZOOM_LEVEL,
+    SET_MOVING_SIGN_LANGUAGE_PARTICIPANT,
     SET_SCREENSHARE_FILMSTRIP_PARTICIPANT,
     SET_SCREENSHARING_TILE_DIMENSIONS,
     SET_STAGE_FILMSTRIP_DIMENSIONS,
@@ -53,8 +65,9 @@ import {
     getVerticalViewMaxWidth,
     isFilmstripResizable,
     isStageFilmstripAvailable,
-    isStageFilmstripTopPanel
-    , showGridInVerticalView } from './functions.web';
+    isStageFilmstripTopPanel,
+    showGridInVerticalView
+} from './functions.web';
 
 export * from './actions.any';
 
@@ -84,21 +97,12 @@ export function setTileViewDimensions() {
     return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
         const state = getState();
         const { clientHeight, clientWidth } = state['features/base/responsive-ui'];
-        const {
-            disableResponsiveTiles,
-            disableTileEnlargement,
-            tileView = {}
-        } = state['features/base/config'];
+        const { disableResponsiveTiles, disableTileEnlargement, tileView = {} } = state['features/base/config'];
         const { numberOfVisibleTiles = TILE_VIEW_DEFAULT_NUMBER_OF_VISIBLE_TILES } = tileView;
         const numberOfParticipants = getNumberOfPartipantsForTileView(state);
         const maxColumns = getMaxColumnCount(state);
 
-        const {
-            height,
-            width,
-            columns,
-            rows
-        } = disableResponsiveTiles
+        const { height, width, columns, rows } = disableResponsiveTiles
             ? calculateNonResponsiveTileViewDimensions(state)
             : calculateResponsiveTileViewDimensions({
                 clientWidth,
@@ -112,9 +116,10 @@ export function setTileViewDimensions() {
         const availableHeight = clientHeight - TILE_VIEW_GRID_VERTICAL_MARGIN;
         const hasScroll = availableHeight < thumbnailsTotalHeight;
         const filmstripWidth
-            = Math.min(clientWidth - TILE_VIEW_GRID_HORIZONTAL_MARGIN,
-                (columns ?? 1) * (TILE_HORIZONTAL_MARGIN + (width ?? 0)))
-                + (hasScroll ? SCROLL_SIZE : 0);
+            = Math.min(
+                clientWidth - TILE_VIEW_GRID_HORIZONTAL_MARGIN,
+                (columns ?? 1) * (TILE_HORIZONTAL_MARGIN + (width ?? 0))
+            ) + (hasScroll ? SCROLL_SIZE : 0);
         const filmstripHeight = Math.min(availableHeight, thumbnailsTotalHeight);
 
         dispatch({
@@ -169,12 +174,7 @@ export function setVerticalViewDimensions() {
                 disableResponsiveTiles: false,
                 disableTileEnlargement: false
             });
-            const {
-                height,
-                width,
-                columns,
-                rows
-            } = calculateResponsiveTileViewDimensions({
+            const { height, width, columns, rows } = calculateResponsiveTileViewDimensions({
                 clientWidth: filmstripWidth.current ?? 0,
                 clientHeight,
                 disableTileEnlargement: false,
@@ -186,8 +186,8 @@ export function setVerticalViewDimensions() {
             const thumbnailsTotalHeight = (rows ?? 1) * (TILE_VERTICAL_MARGIN + (height ?? 0));
 
             hasScroll = clientHeight < thumbnailsTotalHeight;
-            const widthOfFilmstrip = ((columns ?? 1) * (TILE_HORIZONTAL_MARGIN + (width ?? 0)))
-                + (hasScroll ? SCROLL_SIZE : 0);
+            const widthOfFilmstrip
+                = (columns ?? 1) * (TILE_HORIZONTAL_MARGIN + (width ?? 0)) + (hasScroll ? SCROLL_SIZE : 0);
             const filmstripHeight = Math.min(clientHeight - TILE_VIEW_GRID_VERTICAL_MARGIN, thumbnailsTotalHeight);
 
             gridView = {
@@ -207,8 +207,11 @@ export function setVerticalViewDimensions() {
                 width: widthOfFilmstrip
             };
         } else {
-            thumbnails = calculateThumbnailSizeForVerticalView(clientWidth, filmstripWidth.current ?? 0,
-                resizableFilmstrip);
+            thumbnails = calculateThumbnailSizeForVerticalView(
+                clientWidth,
+                filmstripWidth.current ?? 0,
+                resizableFilmstrip
+            );
 
             remoteVideosContainerWidth
                 = thumbnails?.local?.width + TILE_VERTICAL_CONTAINER_HORIZONTAL_MARGIN + SCROLL_SIZE;
@@ -221,24 +224,27 @@ export function setVerticalViewDimensions() {
             const localScreenShareThumbnailHeight
                 = localScreenShare && !disableSelfView ? thumbnails?.local?.height : 0;
 
-            remoteVideosContainerHeight = clientHeight
+            remoteVideosContainerHeight
+                = clientHeight
                 - localCameraThumbnailHeight
                 - localScreenShareThumbnailHeight
                 - VERTICAL_FILMSTRIP_VERTICAL_MARGIN;
 
             hasScroll
                 = remoteVideosContainerHeight
-                    < (thumbnails?.remote.height + TILE_VERTICAL_MARGIN) * numberOfRemoteParticipants;
+                < (thumbnails?.remote.height + TILE_VERTICAL_MARGIN) * numberOfRemoteParticipants;
         }
 
         dispatch({
             type: SET_VERTICAL_VIEW_DIMENSIONS,
             dimensions: {
                 ...thumbnails,
-                remoteVideosContainer: _verticalViewGrid ? filmstripDimensions : {
-                    width: remoteVideosContainerWidth,
-                    height: remoteVideosContainerHeight
-                },
+                remoteVideosContainer: _verticalViewGrid
+                    ? filmstripDimensions
+                    : {
+                        width: remoteVideosContainerWidth,
+                        height: remoteVideosContainerHeight
+                    },
                 gridView,
                 hasScroll
             }
@@ -264,7 +270,7 @@ export function setHorizontalViewDimensions() {
         const numberOfRemoteParticipants = getRemoteParticipantCountWithFake(state);
         const hasScroll
             = remoteVideosContainerHeight
-                < (thumbnails?.remote.width + TILE_HORIZONTAL_MARGIN) * numberOfRemoteParticipants;
+            < (thumbnails?.remote.width + TILE_HORIZONTAL_MARGIN) * numberOfRemoteParticipants;
 
         dispatch({
             type: SET_HORIZONTAL_VIEW_DIMENSIONS,
@@ -289,9 +295,7 @@ export function setStageFilmstripViewDimensions() {
     return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
         const state = getState();
         const { clientHeight, clientWidth } = state['features/base/responsive-ui'];
-        const {
-            tileView = {}
-        } = state['features/base/config'];
+        const { tileView = {} } = state['features/base/config'];
         const { visible, topPanelHeight } = state['features/filmstrip'];
         const verticalWidth = visible ? getVerticalViewMaxWidth(state) : 0;
         const { numberOfVisibleTiles = MAX_ACTIVE_PARTICIPANTS } = tileView;
@@ -304,12 +308,7 @@ export function setStageFilmstripViewDimensions() {
         });
         const topPanel = isStageFilmstripTopPanel(state);
 
-        const {
-            height,
-            width,
-            columns,
-            rows
-        } = calculateResponsiveTileViewDimensions({
+        const { height, width, columns, rows } = calculateResponsiveTileViewDimensions({
             clientWidth: availableWidth,
             clientHeight: topPanel ? topPanelHeight?.current || TOP_FILMSTRIP_HEIGHT : clientHeight,
             disableTileEnlargement: false,
@@ -322,9 +321,10 @@ export function setStageFilmstripViewDimensions() {
         const thumbnailsTotalHeight = (rows ?? 1) * (TILE_VERTICAL_MARGIN + (height ?? 0));
         const hasScroll = clientHeight < thumbnailsTotalHeight;
         const filmstripWidth
-            = Math.min(clientWidth - TILE_VIEW_GRID_HORIZONTAL_MARGIN,
-                (columns ?? 1) * (TILE_HORIZONTAL_MARGIN + (width ?? 0)))
-            + (hasScroll ? SCROLL_SIZE : 0);
+            = Math.min(
+                clientWidth - TILE_VIEW_GRID_HORIZONTAL_MARGIN,
+                (columns ?? 1) * (TILE_HORIZONTAL_MARGIN + (width ?? 0))
+            ) + (hasScroll ? SCROLL_SIZE : 0);
         const filmstripHeight = Math.min(clientHeight - TILE_VIEW_GRID_VERTICAL_MARGIN, thumbnailsTotalHeight);
 
         dispatch({
@@ -390,6 +390,190 @@ export function setVolume(participantId: string, volume: number) {
         type: SET_VOLUME,
         participantId,
         volume
+    };
+}
+
+/**
+ * Sets the frequency filter setting for a thumbnail's audio.
+ *
+ * @param {string} participantId - The participant ID associated with the audio.
+ * @param {string} setting - Frequency Setting.
+ * @returns {{
+ *     type: SET_FREQUENCY_FILTER_SETTING,
+ *     participantId: string,
+ *     setting: number
+ * }}
+ */
+export function setFrequencyFilterSetting(participantId: string, setting: number) {
+    return {
+        type: SET_FREQUENCY_FILTER_SETTING,
+        participantId,
+        setting
+    };
+}
+
+/**
+ * Resets the brightness for a thumbnails video.
+ *
+ * @returns {{
+ *    type: RESET_PARTICIPANT_BRIGHTNESS
+ *    }}
+ */
+export function resetParticipantBrightness() {
+    return {
+        type: RESET_PARTICIPANT_BRIGHTNESS
+    };
+}
+
+/**
+ * Resets the contrast for a thumbnails video.
+ *
+ * @returns {{
+ *   type: RESET_PARTICIPANT_CONTRAST
+ *   }}
+ */
+export function resetParticipantContrast() {
+    return {
+        type: RESET_PARTICIPANT_CONTRAST
+    };
+}
+
+/**
+ * Resets the opacity for a thumbnails video.
+ *
+ * @returns {{
+ *  type: RESET_PARTICIPANT_OPACITY
+ *  }}
+ */
+export function resetParticipantOpacitySetting() {
+    return {
+        type: RESET_PARTICIPANT_OPACITY
+    };
+}
+
+/**
+ * Resets the saturation for a thumbnails video.
+ *
+ * @returns {{
+ * type: RESET_PARTICIPANT_SATURATION
+ * }}
+ */
+export function resetParticipantSaturation() {
+    return {
+        type: RESET_PARTICIPANT_SATURATION
+    };
+}
+
+/**
+ * Resets the zoom level for a thumbnails video.
+ *
+ * @returns {{
+ * type: RESET_PARTICIPANT_ZOOM_LEVEL
+ * }}
+ */
+export function resetParticipantZoomLevel() {
+    return {
+        type: RESET_PARTICIPANT_ZOOM_LEVEL
+    };
+}
+
+/**
+ * Sets the brightness for a thumbnails video.
+ *
+ * @param {string} participantId - The participant ID associated with the brightness.
+ * @param {number} brightness - Brightness of the user.
+ * @returns {
+ *     type: SET_PARTICIPANT_BRIGHTNESS
+ *     participantId: string,
+ *     brightness: number
+ * }
+ */
+export function setParticipantBrightness(participantId: string, brightness: number) {
+    return {
+        type: SET_PARTICIPANT_BRIGHTNESS,
+        participantId,
+        brightness
+    };
+}
+
+/**
+ * Sets the contrast for a thumbnails video.
+ *
+ * @param {string} participantId - The participant ID associated with the contrast.
+ * @param {number} contrast - Contrast of the user.
+ * @returns {{
+*     type: SET_PARTICIPANT_CONTRAST
+*     participantId: string,
+*     contrast: number
+* }}
+*/
+export function setParticipantContrast(participantId: string, contrast: number) {
+    return {
+        type: SET_PARTICIPANT_CONTRAST,
+        participantId,
+        contrast
+    };
+}
+
+/**
+ * Sets the opacity for a thumbnails video.
+ *
+ * @param {string} participantId - The participant ID associated with the audio.
+ * @param {number} opacity - Opacity of the user.
+ * @returns {{
+ *     type: SET_PARTICIPANT_OPACITY,
+ *     local: boolean,
+ *     participantId: string|null,
+ *     opacity: number
+ * }}
+ */
+export function setParticipantOpacitySetting(
+        participantId: string | null,
+        opacity: number
+) {
+    return {
+        type: SET_PARTICIPANT_OPACITY,
+        participantId,
+        opacity
+    };
+}
+
+/**
+ * Sets the saturation for a thumbnails video.
+ *
+ * @param {string} participantId - The participant ID associated with the audio.
+ * @param {number} saturation - Saturation of the user.
+ * @returns {{
+*     type: SET_PARTICIPANT_SATURATION
+*     participantId: string,
+*     saturation: number
+* }}
+*/
+export function setParticipantSaturation(participantId: string, saturation: number) {
+
+    return {
+        type: SET_PARTICIPANT_SATURATION,
+        participantId,
+        saturation
+    };
+}
+
+/**
+ * Sets the zoom level for a thumbnails video.
+ *
+ * @param {string} participantId - The participant ID associated with the audio.
+ * @param {number} zoomLevel - Zoom level of the user.
+ * @returns {{
+ *     type: SET_PARTICIPANT_ZOOM_LEVEL,
+ *     participantId: string,
+ *     zoomLevel: number
+ * }}
+ */
+export function setParticipantZoomLevel(participantId: string, zoomLevel: number) {
+    return {
+        type: SET_PARTICIPANT_ZOOM_LEVEL,
+        participantId,
+        zoomLevel
     };
 }
 
@@ -586,6 +770,22 @@ export function setTopPanelVisible(visible: boolean) {
 export function setScreenshareFilmstripParticipant(participantId?: string) {
     return {
         type: SET_SCREENSHARE_FILMSTRIP_PARTICIPANT,
+        participantId
+    };
+}
+
+/**
+ * Sends a signal to all sign language tiles to reset the other zIndices to 10.
+ *
+ * @param {string|undefined} participantId - The id of the participant who's moving.
+ * @returns {{
+ *      type: SET_MOVING_SIGN_LANGUAGE_PARTICIPANT,
+ *      participantId?: string|null
+ * }}
+ */
+export function setMovingSignlanguageParticipant(participantId?: string) {
+    return {
+        type: SET_MOVING_SIGN_LANGUAGE_PARTICIPANT,
         participantId
     };
 }

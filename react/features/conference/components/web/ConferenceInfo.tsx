@@ -3,24 +3,32 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { IReduxState, IStore } from '../../../app/types';
+import Icon from '../../../base/icons/components/Icon';
+import { IconArrowDown, IconArrowUp } from '../../../base/icons/svg';
 import { JitsiRecordingConstants } from '../../../base/lib-jitsi-meet';
 import E2EELabel from '../../../e2ee/components/E2EELabel';
 import HighlightButton from '../../../recording/components/Recording/web/HighlightButton';
 import RecordingLabel from '../../../recording/components/web/RecordingLabel';
-import { showToolbox } from '../../../toolbox/actions.web';
-import { isToolboxVisible } from '../../../toolbox/functions.web';
+import { setConferenceInfoVisible, showToolbox } from '../../../toolbox/actions.web';
+import { isConferenceInfoVisible, isToolboxVisible } from '../../../toolbox/functions.web';
 import TranscribingLabel from '../../../transcribing/components/TranscribingLabel.web';
 import VideoQualityLabel from '../../../video-quality/components/VideoQualityLabel.web';
 import VisitorsCountLabel from '../../../visitors/components/web/VisitorsCountLabel';
 import ConferenceTimer from '../ConferenceTimer';
 import { getConferenceInfo } from '../functions.web';
 
+import AcousticCuesStatusLabel from './AcousticCuesStatusLabel';
+import AssistantRelationLabel from './AssistantRelationLabel';
 import ConferenceInfoContainer from './ConferenceInfoContainer';
 import InsecureRoomNameLabel from './InsecureRoomNameLabel';
 import RaisedHandsCountLabel from './RaisedHandsCountLabel';
+import RecordingStatusLabel from './RecordingStatusLabel';
 import SpeakerStatsLabel from './SpeakerStatsLabel';
 import SubjectText from './SubjectText';
 import ToggleTopPanelLabel from './ToggleTopPanelLabel';
+import TranscriptLink from './TranscriptLink';
+import TranscriptLinkEdit from './TranscriptLinkEdit';
+import VisualCuesStatusLabel from './VisualCuesStatusLabel';
 
 /**
  * The type of the React {@code Component} props of {@link Subject}.
@@ -33,6 +41,8 @@ interface IProps {
     _conferenceInfo: {
         alwaysVisible?: string[];
         autoHide?: string[];
+        detailIndicatorsLeft?: string[];
+        detailIndicatorsRight?: string[];
     };
 
     /**
@@ -102,6 +112,35 @@ const COMPONENTS: Array<{
     {
         Component: ToggleTopPanelLabel,
         id: 'top-panel-toggle'
+    },
+    {
+        Component: TranscriptLink,
+        id: 'transcript-link'
+    },
+    {
+        Component: () => (
+            <>
+                <RecordingStatusLabel mode = { JitsiRecordingConstants.mode.FILE } />
+                <RecordingStatusLabel mode = { JitsiRecordingConstants.mode.STREAM } />
+            </>
+        ),
+        id: 'recording-status'
+    },
+    {
+        Component: AssistantRelationLabel,
+        id: 'assistant-relation'
+    },
+    {
+        Component: VisualCuesStatusLabel,
+        id: 'visual-cues-status'
+    },
+    {
+        Component: AcousticCuesStatusLabel,
+        id: 'acoustic-cues-status'
+    },
+    {
+        Component: TranscriptLinkEdit,
+        id: 'transcript-link-edit'
     }
 ];
 
@@ -157,8 +196,11 @@ class ConferenceInfo extends Component<IProps> {
                 {
                     COMPONENTS
                         .filter(comp => autoHide.includes(comp.id))
-                        .map(c =>
-                            <c.Component key = { c.id } />
+                        .map(c => (
+                            <c.Component
+                                className = { 'infobar-interactable' }
+                                key = { c.id } />
+                        )
                         )
                 }
             </ConferenceInfoContainer>
@@ -184,6 +226,66 @@ class ConferenceInfo extends Component<IProps> {
                 {
                     COMPONENTS
                         .filter(comp => alwaysVisible.includes(comp.id))
+                        .map(c => (
+                            <c.Component
+                                className = 'infobar-interactable'
+                                key = { c.id } />
+                        )
+                        )
+                }
+            </ConferenceInfoContainer>
+        );
+    }
+
+    /**
+     * Renders the indicators.
+     *
+     * @returns {void}
+     */
+    _renderIndicatorsLeft() {
+        const { detailIndicatorsLeft } = this.props._conferenceInfo;
+
+        if (!detailIndicatorsLeft?.length) {
+            return null;
+        }
+
+        return (
+            <ConferenceInfoContainer
+                id = 'detailIndicatorsLeft'
+                visible = { true } >
+                {
+                    COMPONENTS
+                        .filter(comp => detailIndicatorsLeft.includes(comp.id))
+                        .map(c => (
+                            <c.Component
+                                className = 'infobar-interactable'
+                                key = { c.id } />
+                        )
+                        )
+                }
+            </ConferenceInfoContainer>
+        );
+    }
+
+    /**
+     * Renders the indicators.
+     *
+     * @returns {void}
+     */
+    _renderIndicatorsRight() {
+        const { detailIndicatorsRight } = this.props._conferenceInfo;
+
+        if (!detailIndicatorsRight?.length) {
+            return null;
+        }
+
+        return (
+            <ConferenceInfoContainer
+                id = 'detailIndicatorsRight'
+                visible = { true } >
+                {
+                    COMPONENTS
+                        .filter(comp => detailIndicatorsRight.includes(comp.id))
                         .map(c =>
                             <c.Component key = { c.id } />
                         )
@@ -199,12 +301,37 @@ class ConferenceInfo extends Component<IProps> {
      * @returns {ReactElement}
      */
     render() {
+        let closeIcon = IconArrowUp;
+
+        if (!this.props._visible) {
+            closeIcon = IconArrowDown;
+        }
+
+        const className = this.props._visible ? 'details-container visible' : 'details-container';
+
+        const toggleVisibility = () => {
+            if (this.props._visible) {
+                this.props.dispatch(setConferenceInfoVisible(false));
+            } else {
+                this.props.dispatch(setConferenceInfoVisible(true));
+            }
+        };
+
         return (
             <div
-                className = 'details-container'
+                className = { className }
                 onFocus = { this._onTabIn }>
+                { this._renderIndicatorsLeft() }
                 { this._renderAlwaysVisible() }
                 { this._renderAutoHide() }
+                { this._renderIndicatorsRight() }
+                <div
+                    className = 'closeConferenceInfo infobar-interactable'
+                    onClick = { toggleVisibility }>
+                    <Icon
+                        size = { 32 }
+                        src = { closeIcon } />
+                </div>
             </div>
         );
     }
@@ -223,7 +350,7 @@ class ConferenceInfo extends Component<IProps> {
  */
 function _mapStateToProps(state: IReduxState) {
     return {
-        _visible: isToolboxVisible(state),
+        _visible: isConferenceInfoVisible(state),
         _conferenceInfo: getConferenceInfo(state)
     };
 }

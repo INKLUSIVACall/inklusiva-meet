@@ -133,6 +133,7 @@ const useStyles = makeStyles()(theme => {
         selected: {
             borderLeft: `3px solid ${theme.palette.action01Hover}`,
             paddingLeft: '13px',
+            background: theme.palette.ui02,
             backgroundColor: theme.palette.ui02
         },
 
@@ -151,8 +152,10 @@ const useStyles = makeStyles()(theme => {
         },
 
         text: {
-            ...withPixelLineHeight(theme.typography.bodyShortRegular),
-            color: theme.palette.text01
+            // ...withPixelLineHeight(theme.typography.bodyShortRegular),
+            lineHeight: '1.25rem',
+            color: theme.palette.text01,
+            fontSize: '0.875rem'
         },
 
         drawerText: {

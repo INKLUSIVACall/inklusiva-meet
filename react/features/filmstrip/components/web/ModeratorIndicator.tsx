@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IconModerator } from '../../../base/icons/svg';
+import { IconEmptyStar } from '../../../base/icons/svg';
 import BaseIndicator from '../../../base/react/components/web/BaseIndicator';
 import { TOOLTIP_POSITION } from '../../../base/ui/constants.any';
 
@@ -22,7 +22,7 @@ interface IProps {
  */
 const ModeratorIndicator = ({ tooltipPosition }: IProps): JSX.Element => (
     <BaseIndicator
-        icon = { IconModerator }
+        icon = { IconEmptyStar }
         iconSize = { 16 }
         tooltipKey = 'videothumbnail.moderator'
         tooltipPosition = { tooltipPosition } />

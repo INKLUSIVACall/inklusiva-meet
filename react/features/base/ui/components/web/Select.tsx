@@ -69,6 +69,7 @@ const useStyles = makeStyles()(theme => {
             color: theme.palette.text01,
             ...withPixelLineHeight(theme.typography.bodyShortRegular),
             marginBottom: theme.spacing(2),
+            fontSize: '0.875rem',
 
             '&.is-mobile': {
                 ...withPixelLineHeight(theme.typography.bodyShortRegularLarge)
@@ -92,6 +93,7 @@ const useStyles = makeStyles()(theme => {
             overflow: 'hidden',
             whiteSpace: 'nowrap',
             textOverflow: 'ellipsis',
+            fontSize: '0.875rem',
 
             '&:focus': {
                 outline: 0,
@@ -129,6 +131,7 @@ const useStyles = makeStyles()(theme => {
             marginTop: theme.spacing(2),
             ...withPixelLineHeight(theme.typography.labelRegular),
             color: theme.palette.text02,
+            fontSize: '0.75rem',
 
             '&.is-mobile': {
                 ...withPixelLineHeight(theme.typography.bodyShortRegular)

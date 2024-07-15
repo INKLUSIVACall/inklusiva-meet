@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { batch, connect } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
@@ -138,6 +138,22 @@ const RemoteVideoMenuTriggerButton = ({
     const { classes } = useStyles();
     const { t } = useTranslation();
 
+    const buttonRef = useRef<HTMLButtonElement>(null);
+
+    const [ menuPos, setMenuPos ] = useState(_menuPosition);
+
+    useEffect(() => {
+        if (buttonRef.current) {
+            const triggerButtonPositionLeft = buttonRef?.current?.getBoundingClientRect().left;
+
+            if (triggerButtonPositionLeft - 280 <= 0) {
+                setMenuPos('right-start');
+            } else {
+                setMenuPos('left-start');
+            }
+        }
+    });
+
     const _onPopoverOpen = useCallback(() => {
         showPopover?.();
         dispatch(setParticipantContextMenuOpen(true));
@@ -196,10 +212,11 @@ const RemoteVideoMenuTriggerButton = ({
             id = 'remote-video-menu-trigger'
             onPopoverClose = { _onPopoverClose }
             onPopoverOpen = { _onPopoverOpen }
-            position = { _menuPosition }
+            position = { menuPos }
             visible = { Boolean(popoverVisible) }>
             {buttonVisible && !_disabled && (
                 !isMobileBrowser() && <Button
+                    ref = { buttonRef }
                     accessibilityLabel = { t('dialog.remoteUserControls', { username }) }
                     className = { classes.triggerButton }
                     icon = { IconDotsHorizontal }

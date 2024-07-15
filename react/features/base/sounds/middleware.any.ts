@@ -1,4 +1,5 @@
 import { IStore } from '../../app/types';
+import { isAcousticCuesEnabled } from '../../inklusiva/uisettings/functions';
 import MiddlewareRegistry from '../redux/MiddlewareRegistry';
 
 import { PLAY_SOUND, STOP_SOUND } from './actionTypes';
@@ -33,10 +34,11 @@ MiddlewareRegistry.register(store => next => action => {
  * @returns {void}
  */
 function _playSound({ getState }: IStore, soundId: string) {
+    const acousticCuesEnabled = isAcousticCuesEnabled(getState());
     const sounds = getState()['features/base/sounds'];
     const sound = sounds.get(soundId);
 
-    if (sound) {
+    if (sound && acousticCuesEnabled) {
         if (sound.audioElement) {
             sound.audioElement.play();
         } else {

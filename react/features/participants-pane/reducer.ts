@@ -3,12 +3,25 @@ import ReducerRegistry from '../base/redux/ReducerRegistry';
 import {
     PARTICIPANTS_PANE_CLOSE,
     PARTICIPANTS_PANE_OPEN,
+    SET_FREQUENCY_FILTER_SETTING,
+    SET_PARTICIPANT_OPACITY,
+    SET_PARTICIPANT_ZOOM_LEVEL,
     SET_VOLUME
 } from './actionTypes';
 import { REDUCER_KEY } from './constants';
 
 export interface IParticipantsPaneState {
     isOpen: boolean;
+    localOpacity: number | null;
+    participantZoomLevel: {
+        [participantId: string]: number;
+    };
+    participantsFrequencySetting: {
+        [participantId: string]: number;
+    };
+    participantsOpacity: {
+        [participantId: string]: number;
+    };
     participantsVolume: {
         [participantId: string]: number;
     };
@@ -16,7 +29,11 @@ export interface IParticipantsPaneState {
 
 const DEFAULT_STATE = {
     isOpen: false,
-    participantsVolume: {}
+    participantsVolume: {},
+    participantsFrequencySetting: {},
+    participantsOpacity: {},
+    localOpacity: 1,
+    participantZoomLevel: {}
 };
 
 /**
@@ -46,7 +63,41 @@ ReducerRegistry.register(
                     [action.participantId]: action.volume
                 }
             };
+        case SET_FREQUENCY_FILTER_SETTING:
+            return {
+                ...state,
+                participantsFrequencySetting: {
+                    ...state.participantsFrequencySetting,
 
+                    [action.participantId]: action.setting
+                }
+            };
+        case SET_PARTICIPANT_OPACITY:
+            if (action.local) {
+                return {
+                    ...state,
+                    localOpacity: action.opacity
+                };
+            }
+
+            return {
+                ...state,
+                participantsOpacity: {
+                    ...state.participantsOpacity,
+
+                    [action.participantId]: action.opacity
+                }
+            };
+
+        case SET_PARTICIPANT_ZOOM_LEVEL:
+            return {
+                ...state,
+                participantZoomLevel: {
+                    ...state.participantZoomLevel,
+
+                    [action.participantId]: action.zoomLevel
+                }
+            };
         default:
             return state;
         }

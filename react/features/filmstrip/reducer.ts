@@ -4,11 +4,23 @@ import ReducerRegistry from '../base/redux/ReducerRegistry';
 import {
     CLEAR_STAGE_PARTICIPANTS,
     REMOVE_STAGE_PARTICIPANT,
+    RESET_PARTICIPANT_BRIGHTNESS,
+    RESET_PARTICIPANT_CONTRAST,
+    RESET_PARTICIPANT_OPACITY,
+    RESET_PARTICIPANT_SATURATION,
+    RESET_PARTICIPANT_ZOOM_LEVEL,
     SET_FILMSTRIP_ENABLED,
     SET_FILMSTRIP_HEIGHT,
     SET_FILMSTRIP_VISIBLE,
     SET_FILMSTRIP_WIDTH,
+    SET_FREQUENCY_FILTER_SETTING,
     SET_HORIZONTAL_VIEW_DIMENSIONS,
+    SET_MOVING_SIGN_LANGUAGE_PARTICIPANT,
+    SET_PARTICIPANT_BRIGHTNESS,
+    SET_PARTICIPANT_CONTRAST,
+    SET_PARTICIPANT_OPACITY,
+    SET_PARTICIPANT_SATURATION,
+    SET_PARTICIPANT_ZOOM_LEVEL,
     SET_REMOTE_PARTICIPANTS,
     SET_SCREENSHARE_FILMSTRIP_PARTICIPANT,
     SET_SCREENSHARING_TILE_DIMENSIONS,
@@ -23,6 +35,7 @@ import {
     SET_VISIBLE_REMOTE_PARTICIPANTS,
     SET_VOLUME
 } from './actionTypes';
+
 
 const DEFAULT_STATE = {
 
@@ -61,6 +74,60 @@ const DEFAULT_STATE = {
      * @type {Object}
      */
     participantsVolume: {},
+
+    /**
+     * The custom frequency filter setting per participant.
+     *
+     * @type {Object}
+     */
+    participantsFrequencySetting: {},
+
+    /**
+     * The brightness of each participant.
+     *
+     * @type {Object}
+     */
+    participantsBrightness: {},
+
+    /**
+     * The contrast of each participant.
+     *
+     * @type {Object}
+     */
+    participantsContrast: {},
+
+    /**
+     * The opacity of each participant.
+     *
+     * @type {Object}
+     */
+    participantsOpacity: {},
+
+    /**
+     * The opacity of local participant.
+     *
+     * @type {Object}
+     */
+    localOpacity: 0,
+
+    /**
+     * The id of the participant whose video will have the highest zIndex in the filmstrip.
+     */
+    movingSignlanguageParticipant: null,
+
+    /**
+     * The saturation of each participant.
+     *
+     * @type {Object}
+     */
+    participantsSaturation: {},
+
+    /**
+     * The zoom level of each participant.
+     *
+     * @type {Object}
+     */
+    participantZoomLevel: {},
 
     /**
      * The ordered IDs of the remote participants displayed in the filmstrip.
@@ -208,6 +275,26 @@ export interface IFilmstripState {
         remoteVideosContainer?: IDimensions;
     };
     isResizing: boolean;
+    localOpacity: number | null;
+    movingSignlanguageParticipant: string | null;
+    participantZoomLevel: {
+        [participantId: string]: number;
+    };
+    participantsBrightness: {
+        [participantID: string]: number;
+    };
+    participantsContrast: {
+        [participantID: string]: number;
+    };
+    participantsFrequencySetting: {
+        [participantId: string]: number;
+    };
+    participantsOpacity: {
+        [participantId: string]: number;
+    };
+    participantsSaturation: {
+        [participantID: string]: number;
+    };
     participantsVolume: {
         [participantId: string]: number;
     };
@@ -254,15 +341,31 @@ ReducerRegistry.register<IFilmstripState>(
     (state = DEFAULT_STATE, action): IFilmstripState => {
         switch (action.type) {
         case SET_FILMSTRIP_ENABLED:
+            // In the InklusivaCall-Version of Jitsi, we never want to show the Filmstrip, so we always set it to false.
+            // original code:
+            /*
             return {
                 ...state,
                 enabled: action.enabled
             };
+            */
+            return {
+                ...state,
+                enabled: false
+            };
 
         case SET_FILMSTRIP_VISIBLE:
+            // In the InklusivaCall-Version of Jitsi, we never want to show the Filmstrip, so we always set it to false.
+            // original code:
+            /*
             return {
                 ...state,
                 visible: action.visible
+            };
+            */
+            return {
+                ...state,
+                visible: false
             };
 
         case SET_HORIZONTAL_VIEW_DIMENSIONS:
@@ -300,6 +403,101 @@ ReducerRegistry.register<IFilmstripState>(
                     [action.participantId]: action.volume
                 }
             };
+        case SET_FREQUENCY_FILTER_SETTING:
+            return {
+                ...state,
+                participantsFrequencySetting: {
+                    ...state.participantsFrequencySetting,
+
+                    // NOTE: Same note for Volume
+                    [action.participantId]: action.setting
+                }
+            };
+        case SET_PARTICIPANT_BRIGHTNESS: {
+            return {
+                ...state,
+                participantsBrightness: {
+                    ...state.participantsBrightness,
+
+                    [action.participantId]: action.brightness
+                }
+            };
+        }
+        case SET_PARTICIPANT_CONTRAST: {
+            return {
+                ...state,
+                participantsContrast: {
+                    ...state.participantsContrast,
+
+                    [action.participantId]: action.contrast
+                }
+            };
+        }
+        case SET_PARTICIPANT_OPACITY: {
+            return {
+                ...state,
+                participantsOpacity: {
+                    ...state.participantsOpacity,
+
+                    [action.participantId]: action.opacity
+                }
+            };
+        }
+        case SET_PARTICIPANT_SATURATION: {
+            return {
+                ...state,
+                participantsSaturation: {
+                    ...state.participantsSaturation,
+
+                    [action.participantId]: action.saturation
+                }
+            };
+        }
+        case SET_PARTICIPANT_ZOOM_LEVEL: {
+            return {
+                ...state,
+                participantZoomLevel: {
+                    ...state.participantZoomLevel,
+
+                    [action.participantId]: action.zoomLevel
+                }
+            };
+        }
+        case RESET_PARTICIPANT_BRIGHTNESS: {
+            return {
+                ...state,
+                participantsBrightness: {
+                }
+            };
+        }
+        case RESET_PARTICIPANT_CONTRAST: {
+            return {
+                ...state,
+                participantsContrast: {
+                }
+            };
+        }
+        case RESET_PARTICIPANT_OPACITY: {
+            return {
+                ...state,
+                participantsOpacity: {
+                }
+            };
+        }
+        case RESET_PARTICIPANT_SATURATION: {
+            return {
+                ...state,
+                participantsSaturation: {
+                }
+            };
+        }
+        case RESET_PARTICIPANT_ZOOM_LEVEL: {
+            return {
+                ...state,
+                participantZoomLevel: {
+                }
+            };
+        }
         case SET_VISIBLE_REMOTE_PARTICIPANTS: {
             const { endIndex, startIndex } = action;
             const { remoteParticipants } = state;
@@ -412,7 +610,12 @@ ReducerRegistry.register<IFilmstripState>(
                 screenshareFilmstripParticipantId: action.participantId
             };
         }
-        }
+        case SET_MOVING_SIGN_LANGUAGE_PARTICIPANT: {
+            return {
+                ...state,
+                movingSignlanguageParticipant: action.participantId
+            };
+        }}
 
         return state;
     });

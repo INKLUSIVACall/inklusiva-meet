@@ -14,7 +14,11 @@ import { setColorAlpha } from '../../../base/util/helpers';
 import Chat from '../../../chat/components/web/Chat';
 import MainFilmstrip from '../../../filmstrip/components/web/MainFilmstrip';
 import ScreenshareFilmstrip from '../../../filmstrip/components/web/ScreenshareFilmstrip';
+import SignLangTranslatorFilmStrip from '../../../filmstrip/components/web/SignLangTranslatorFilmStrip';
 import StageFilmstrip from '../../../filmstrip/components/web/StageFilmstrip';
+import AssistancePanel from '../../../inklusiva/rolematching/AssistancePanel';
+import AssisteesPanel from '../../../inklusiva/rolematching/AssisteesPanel';
+import { getUserVideoTabProps } from '../../../inklusiva/uservideo/functions';
 import CalleeInfoContainer from '../../../invite/components/callee-info/CalleeInfoContainer';
 import LargeVideo from '../../../large-video/components/LargeVideo.web';
 import LobbyScreen from '../../../lobby/components/web/LobbyScreen';
@@ -23,6 +27,8 @@ import { getOverlayToRender } from '../../../overlay/functions.web';
 import ParticipantsPane from '../../../participants-pane/components/web/ParticipantsPane';
 import Prejoin from '../../../prejoin/components/web/Prejoin';
 import { isPrejoinPageVisible } from '../../../prejoin/functions';
+import Captions from '../../../subtitles/components/web/Captions';
+import ClosedCaptionPanel from '../../../subtitles/components/web/ClosedCaptionPanel';
 import { toggleToolboxVisible } from '../../../toolbox/actions.any';
 import { fullScreenChanged, showToolbox } from '../../../toolbox/actions.web';
 import JitsiPortal from '../../../toolbox/components/web/JitsiPortal';
@@ -39,6 +45,7 @@ import type { AbstractProps } from '../AbstractConference';
 
 import ConferenceInfo from './ConferenceInfo';
 import { default as Notice } from './Notice';
+import HelpDialog from '../../../toolbox/components/HelpDialog';
 
 /**
  * DOM events for when full screen mode has changed. Different browsers need
@@ -98,6 +105,31 @@ interface IProps extends AbstractProps, WithTranslation {
      * If prejoin page is visible or not.
      */
     _showPrejoin: boolean;
+
+    /**
+     * The User Video brightness.
+     */
+    _userVideoBrightness?: number;
+
+    /**
+     * The User Video contrast.
+     */
+     _userVideoContrast?: number;
+
+     /**
+     * The User Video dimming.
+     */
+    _userVideoDimming?: number;
+
+    /**
+     * The User Video saturation.
+     */
+    _userVideoSaturation?: number;
+
+    /**
+     * The User Video zoom.
+     */
+    _userVideoZoom?: number;
 
     dispatch: IStore['dispatch'];
 }
@@ -215,7 +247,17 @@ class Conference extends AbstractConference<IProps, any> {
                 onMouseLeave = { this._onMouseLeave }
                 onMouseMove = { this._onMouseMove }
                 ref = { this._setBackground }>
-                <Chat />
+                { _showPrejoin || _showLobby || (
+                    <>
+                        <span
+                            aria-level = { 1 }
+                            className = 'sr-only'
+                            role = 'heading'>
+                            { t('toolbar.accessibilityLabel.heading') }
+                        </span>
+                        <Toolbox />
+                    </>
+                )}
                 <div
                     className = { _layoutClassName }
                     id = 'videoconference_page'
@@ -224,7 +266,7 @@ class Conference extends AbstractConference<IProps, any> {
                     <Notice />
                     <div
                         id = 'videospace'
-                        onTouchStart = { this._onVidespaceTouchStart }>
+                        onTouchStart = { this._onVidespaceTouchStart } >
                         <LargeVideo />
                         {
                             _showPrejoin || _showLobby || (<>
@@ -235,17 +277,10 @@ class Conference extends AbstractConference<IProps, any> {
                         }
                     </div>
 
-                    { _showPrejoin || _showLobby || (
-                        <>
-                            <span
-                                aria-level = { 1 }
-                                className = 'sr-only'
-                                role = 'heading'>
-                                { t('toolbar.accessibilityLabel.heading') }
-                            </span>
-                            <Toolbox />
-                        </>
-                    )}
+
+                    {
+                        _showPrejoin || _showLobby || <SignLangTranslatorFilmStrip />
+                    }
 
                     {_notificationsVisible && !_isAnyOverlayVisible && (_overflowDrawer
                         ? <JitsiPortal className = 'notification-portal'>
@@ -254,14 +289,33 @@ class Conference extends AbstractConference<IProps, any> {
                         : this.renderNotificationsContainer())
                     }
 
+                    <AssisteesPanel />
+                    <AssistancePanel />
                     <CalleeInfoContainer />
 
+                    { interfaceConfig.DISABLE_TRANSCRIPTION_SUBTITLES
+                    || <Captions /> }
                     { _showPrejoin && <Prejoin />}
                     { _showLobby && <LobbyScreen />}
                 </div>
+                <Chat />
+                <ClosedCaptionPanel />
                 <ParticipantsPane />
             </div>
         );
+    }
+
+    /**
+     * Creates the custom styles object.
+     *
+     * @private
+     * @returns {Object}
+     */
+    _useStyle() {
+        const styles: any = {};
+
+
+        return styles;
     }
 
     /**
@@ -354,7 +408,7 @@ class Conference extends AbstractConference<IProps, any> {
      * @returns {void}
      */
     _onShowToolbar() {
-        this.props.dispatch(showToolbox());
+    //    this.props.dispatch(showToolbox());
     }
 
     /**
@@ -392,6 +446,7 @@ class Conference extends AbstractConference<IProps, any> {
 function _mapStateToProps(state: IReduxState) {
     const { backgroundAlpha, mouseMoveCallbackInterval } = state['features/base/config'];
     const { overflowDrawer } = state['features/toolbox'];
+    const userVideoData = getUserVideoTabProps(state);
 
     return {
         ...abstractMapStateToProps(state),
@@ -402,7 +457,12 @@ function _mapStateToProps(state: IReduxState) {
         _overflowDrawer: overflowDrawer,
         _roomName: getConferenceNameForTitle(state),
         _showLobby: getIsLobbyVisible(state),
-        _showPrejoin: isPrejoinPageVisible(state)
+        _showPrejoin: isPrejoinPageVisible(state),
+        _userVideoBrightness: userVideoData.brightness,
+        _userVideoContrast: userVideoData.contrast,
+        _userVideoDimming: userVideoData.dimming,
+        _userVideoSaturation: userVideoData.saturation,
+        _userVideoZoom: userVideoData.zoom
     };
 }
 

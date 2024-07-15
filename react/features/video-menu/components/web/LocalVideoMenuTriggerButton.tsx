@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { batch, connect, useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
@@ -26,6 +26,7 @@ import ConnectionStatusButton from './ConnectionStatusButton';
 import FlipLocalVideoButton from './FlipLocalVideoButton';
 import HideSelfViewVideoButton from './HideSelfViewVideoButton';
 import TogglePinToStageButton from './TogglePinToStageButton';
+import VideoSettingsContextMenu from './VideoSettingsContextMenu';
 
 /**
  * The type of the React {@code Component} props of
@@ -117,7 +118,8 @@ const useStyles = makeStyles()(() => {
             marginTop: 0,
             right: 'auto',
             padding: '0',
-            minWidth: '200px'
+            minWidth: '200px',
+            maxHeight: '80vh'
         },
 
         flipText: {
@@ -143,6 +145,22 @@ const LocalVideoMenuTriggerButton = ({
     const { classes } = useStyles();
     const { t } = useTranslation();
     const buttonsWithNotifyClick = useSelector(getParticipantMenuButtonsWithNotifyClick);
+
+    const buttonRef = useRef<HTMLButtonElement>(null);
+
+    const [ menuPos, setMenuPos ] = useState(_menuPosition);
+
+    useEffect(() => {
+        if (buttonRef.current) {
+            const triggerButtonPositionLeft = buttonRef?.current?.getBoundingClientRect().left;
+
+            if (triggerButtonPositionLeft - 280 <= 0) {
+                setMenuPos('right-start');
+            } else {
+                setMenuPos('left-start');
+            }
+        }
+    });
 
     const notifyClick = useCallback(
         (buttonKey: string) => {
@@ -214,6 +232,9 @@ const LocalVideoMenuTriggerButton = ({
                             participantID = { _localParticipantId } />
                     }
                 </ContextMenuItemGroup>
+                <VideoSettingsContextMenu
+                    participantId = { _localParticipantId }
+                    soundControl = { false } />
             </ContextMenu>
         );
 
@@ -225,10 +246,11 @@ const LocalVideoMenuTriggerButton = ({
                 id = 'local-video-menu-trigger'
                 onPopoverClose = { _onPopoverClose }
                 onPopoverOpen = { _onPopoverOpen }
-                position = { _menuPosition }
+                position = { menuPos }
                 visible = { Boolean(popoverVisible) }>
                 {buttonVisible && !isMobileBrowser() && (
                     <Button
+                        ref = { buttonRef }
                         accessibilityLabel = { t('dialog.localUserControls') }
                         className = { classes.triggerButton }
                         icon = { IconDotsHorizontal }
@@ -255,11 +277,13 @@ function _mapStateToProps(state: IReduxState, ownProps: Partial<IProps>) {
     const { overflowDrawer } = state['features/toolbox'];
     const { showConnectionInfo } = state['features/base/connection'];
     const showHideSelfViewButton = !disableSelfViewSettings && !getHideSelfView(state);
+    // const triggerButtonPositionLeft = this.current.getBoundingClientRect().left;
+    // const triggerButtonPositionRight = this.current.getBoundingClientRect().right;
 
     let _menuPosition;
 
     switch (thumbnailType) {
-    case THUMBNAIL_TYPE.TILE:
+    case THUMBNAIL_TYPE.TILE: 
         _menuPosition = 'left-start';
         break;
     case THUMBNAIL_TYPE.VERTICAL:

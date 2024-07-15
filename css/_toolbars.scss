@@ -2,10 +2,10 @@
  * Round badge.
  */
 .badge-round {
-    background-color: #165ECC;
+    background-color: #165ecc;
     border-radius: 50%;
     box-sizing: border-box;
-    color: #FFFFFF;
+    color: #ffffff;
     // Do not inherit the font-family from the toolbar button, because it's an
     // icon style.
     font-family: $baseFontFamily;
@@ -27,7 +27,7 @@
     left: 0;
     position: absolute;
     right: 0;
-    transition: bottom .3s ease-in;
+    transition: bottom 0.3s ease-in;
     width: 100%;
     pointer-events: none;
     z-index: $toolbarZ + 2;
@@ -88,6 +88,28 @@
 
     .toolbox-content-items {
         @include ltr;
+        z-index: 0;
+    }
+}
+
+.closeToolbox {
+    padding-bottom: env(safe-area-inset-bottom, 0);
+    height: 100px;
+    width: 90px;
+    left: calc(50% - 45px);
+    position: absolute;
+    top: -49px;
+    rotate: 0;
+    z-index: 0;
+    background: #393939;
+    cursor: pointer;
+    border-radius: 2rem;
+
+    .jitsi-icon {
+        fill: #fff;
+        position: absolute;
+        left: calc(50% - 16px);
+        top: 6px;
     }
 }
 
@@ -98,21 +120,21 @@
 }
 
 .overflow-menu-hr {
-    border-top: 1px solid #4C4D50;
+    border-top: 1px solid #4c4d50;
     border-bottom: 0;
     margin: 8px 0;
 }
 
 div.hangup-button {
-    background-color: #CB2233;
+    background-color: #cb2233;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
-            background-color: #E04757;
+            background-color: #e04757;
         }
 
         &:active {
-            background-color: #A21B29;
+            background-color: #a21b29;
         }
     }
 
@@ -122,15 +144,15 @@ div.hangup-button {
 }
 
 div.hangup-menu-button {
-    background-color: #CB2233;
+    background-color: #cb2233;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
-            background-color: #E04757;
+            background-color: #e04757;
         }
 
         &:active {
-            background-color: #A21B29;
+            background-color: #a21b29;
         }
     }
 
@@ -149,13 +171,13 @@ div.hangup-menu-button {
 .fadeIn {
     opacity: 1;
 
-    @include transition(all .3s ease-in);
+    @include transition(all 0.3s ease-in);
 }
 
 .fadeOut {
     opacity: 0;
 
-    @include transition(all .3s ease-out);
+    @include transition(all 0.3s ease-out);
 }
 
 /**
@@ -170,7 +192,6 @@ div.hangup-menu-button {
             background: rgba(255, 255, 255, 0.2);
         }
     }
-
 }
 
 /**
@@ -201,4 +222,15 @@ div.hangup-menu-button {
             margin-bottom: 52px;
         }
     }
+}
+
+.accessiblePopover {
+    position: absolute;
+    bottom: 50px;
+    left: 3rem;
+    width: max-content;
+}
+
+.focusOnPopover {
+    position: relative;
 }

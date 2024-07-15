@@ -15,8 +15,8 @@ interface IProps extends AbstractToolboxItemProps {
     contextMenu?: boolean;
 
     /**
-    * On key down handler.
-    */
+     * On key down handler.
+     */
     onKeyDown: (e?: React.KeyboardEvent) => void;
 }
 
@@ -59,17 +59,8 @@ export default class ToolboxItem extends AbstractToolboxItem<IProps> {
      * @returns {ReactElement}
      */
     _renderItem() {
-        const {
-            contextMenu,
-            disabled,
-            elementAfter,
-            icon,
-            onClick,
-            onKeyDown,
-            showLabel,
-            tooltipPosition,
-            toggled
-        } = this.props;
+        const { contextMenu, disabled, elementAfter, icon, onClick, onKeyDown, showLabel, tooltipPosition, toggled }
+            = this.props;
         const className = showLabel ? 'overflow-menu-item' : 'toolbox-button';
         const props = {
             'aria-pressed': toggled,
@@ -98,13 +89,22 @@ export default class ToolboxItem extends AbstractToolboxItem<IProps> {
                     text = { this.label } />
             );
         }
+
+        // const labelStyle = {
+        //     display: 'flex',
+        //     justifyContent: 'center',
+        //     alignItems: 'center',
+        //     width: '7.5rem',
+        //     fontSize: '1.0rem',
+        //     paddingTop: '0.4rem',
+        //     lineHeight: '1.4'
+        // };
         let children = (
             <Fragment>
-                { this._renderIcon() }
-                { showLabel && <span>
-                    { this.label }
-                </span> }
-                { elementAfter }
+                {this._renderIcon()}
+                {showLabel && <span>{this.label}</span>}
+                {/* <div style = { labelStyle }>{this.tooltip}</div> */}
+                {elementAfter}
             </Fragment>
         );
 
@@ -113,7 +113,7 @@ export default class ToolboxItem extends AbstractToolboxItem<IProps> {
                 <Tooltip
                     content = { this.tooltip ?? '' }
                     position = { tooltipPosition }>
-                    { children }
+                    {children}
                 </Tooltip>
             );
         }
@@ -133,8 +133,9 @@ export default class ToolboxItem extends AbstractToolboxItem<IProps> {
             size = { showLabel ? undefined : 24 }
             src = { icon } />);
         const elementType = showLabel ? 'span' : 'div';
-        const className = `${showLabel ? 'overflow-menu-item-icon' : 'toolbox-icon'} ${
-            toggled ? 'toggled' : ''} ${disabled ? 'disabled' : ''} ${customClass ?? ''}`;
+        const className = `${showLabel ? 'overflow-menu-item-icon' : 'toolbox-icon'} ${toggled ? 'toggled' : ''} ${
+            disabled ? 'disabled' : ''
+        } ${customClass ?? ''}`;
 
         return React.createElement(elementType, { className }, iconComponent);
     }

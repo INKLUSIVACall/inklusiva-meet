@@ -4,15 +4,14 @@ import { translate } from '../../../base/i18n/functions';
 import { IconSubtitles } from '../../../base/icons/svg';
 import { toggleLanguageSelectorDialog } from '../../actions.web';
 import {
-    AbstractClosedCaptionButton,
-    _abstractMapStateToProps
+    AbstractClosedCaptionButton, _abstractMapStateToProps
 } from '../AbstractClosedCaptionButton';
 
 /**
  * A button which starts/stops the transcriptions.
  */
-class ClosedCaptionButton
-    extends AbstractClosedCaptionButton {
+class ClosedCaptionButton extends AbstractClosedCaptionButton {
+
     accessibilityLabel = 'toolbar.accessibilityLabel.cc';
     icon = IconSubtitles;
     tooltip = 'transcribing.ccButtonTooltip';

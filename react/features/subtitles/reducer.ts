@@ -2,7 +2,13 @@ import ReducerRegistry from '../base/redux/ReducerRegistry';
 
 import {
     REMOVE_TRANSCRIPT_MESSAGE,
-    SET_REQUESTING_SUBTITLES, UPDATE_TRANSCRIPT_MESSAGE, UPDATE_TRANSLATION_LANGUAGE
+    SET_HISTORY_VISIBILITY,
+    SET_OLD_TRANSCRIPT_MESSAGE,
+    SET_POPUP_VISIBILITY,
+    SET_REQUESTING_SUBTITLES,
+    UPDATE_TRANSCRIPTION_HISTORY,
+    UPDATE_TRANSCRIPT_MESSAGE,
+    UPDATE_TRANSLATION_LANGUAGE
 } from './actionTypes';
 
 /**
@@ -11,7 +17,12 @@ import {
 const defaultState = {
     _transcriptMessages: new Map(),
     _requestingSubtitles: false,
-    _language: 'transcribing.subtitlesOff'
+    _language: 'transcribing.subtitlesOff',
+    _oldTranscriptMessage: null,
+    _popupVisibility: false,
+    _transcriptionHistory: [],
+    _historyVisibility: false,
+    _visibility: false
 };
 
 interface ITranscriptMessage {
@@ -22,17 +33,21 @@ interface ITranscriptMessage {
 }
 
 export interface ISubtitlesState {
+    _historyVisibility: boolean;
     _language: string;
+    _oldTranscriptMessage: any;
+    _popupVisibility: boolean;
     _requestingSubtitles: boolean;
     _transcriptMessages: Map<string, ITranscriptMessage> | any;
+    _transcriptionHistory: any[];
 }
 
 /**
  * Listen for actions for the transcription feature to be used by the actions
  * to update the rendered transcription subtitles.
  */
-ReducerRegistry.register<ISubtitlesState>('features/subtitles', (
-        state = defaultState, action): ISubtitlesState => {
+ReducerRegistry.register<ISubtitlesState>('features/subtitles', (state = defaultState, action): ISubtitlesState => {
+
     switch (action.type) {
     case REMOVE_TRANSCRIPT_MESSAGE:
         return _removeTranscriptMessage(state, action);
@@ -47,6 +62,23 @@ ReducerRegistry.register<ISubtitlesState>('features/subtitles', (
         return {
             ...state,
             _requestingSubtitles: action.enabled
+        };
+    case UPDATE_TRANSCRIPTION_HISTORY:
+        return _updateTranscriptionHistory(state, action);
+    case SET_OLD_TRANSCRIPT_MESSAGE:
+        return {
+            ...state,
+            _oldTranscriptMessage: action.oldTranscriptMessage
+        };
+    case SET_POPUP_VISIBILITY:
+        return {
+            ...state,
+            _popupVisibility: action.visibility
+        };
+    case SET_HISTORY_VISIBILITY:
+        return {
+            ...state,
+            _historyVisibility: action.historyVisibility
         };
     }
 
@@ -93,5 +125,26 @@ function _updateTranscriptMessage(state: ISubtitlesState, { transcriptMessageID,
     return {
         ...state,
         _transcriptMessages: newTranscriptMessages
+    };
+}
+
+/**
+ * Reduces a specific Redux action UPDATE_TRANSCRIPTION_HISTORY of the feature
+ * transcription.
+ *
+ * @param {Object} state
+ * @param {any} transcriptionHistory
+ * @returns {Object} The new state of the feature transcription after the
+ * reduction of the specified action.
+ */
+function _updateTranscriptionHistory(state: ISubtitlesState, transcriptionHistory: any) {
+    const newTranscriptionHistory = state._transcriptionHistory;
+    const length = newTranscriptionHistory.length;
+
+    newTranscriptionHistory[length] = transcriptionHistory.transcriptionHistory;
+
+    return {
+        ...state,
+        _transcriptionHistory: newTranscriptionHistory
     };
 }

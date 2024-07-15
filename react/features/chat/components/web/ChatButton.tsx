@@ -28,6 +28,7 @@ interface IProps extends AbstractButtonProps {
  */
 class ChatButton extends AbstractButton<IProps> {
     accessibilityLabel = 'toolbar.accessibilityLabel.openChat';
+    accessibilityLabelShortcut = 'keyboardShortcuts.toggleChat';
     toggledAccessibilityLabel = 'toolbar.accessibilityLabel.closeChat';
     icon = IconMessage;
     label = 'toolbar.openChat';

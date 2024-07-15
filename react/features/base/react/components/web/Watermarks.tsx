@@ -165,9 +165,12 @@ class Watermarks extends Component<IProps, State> {
         if (_showJitsiWatermark) {
             const style = {
                 backgroundImage: `url(${_logoUrl})`,
-                maxWidth: 140,
+                maxWidth: 170,
                 maxHeight: 70,
-                position: _logoLink ? 'static' : 'absolute'
+                position: _logoLink ? 'static' : 'absolute',
+                backgroundSize: 'cover',
+                width: '170px',
+                height: '56px'
             } as const;
 
             reactElement = (<div
@@ -203,9 +206,9 @@ class Watermarks extends Component<IProps, State> {
             return (
                 <a
                     className = 'poweredby'
-                    href = 'http://jitsi.org'
+                    href = 'http://inklusiva-call.de'
                     target = '_new'>
-                    <span>{ t('poweredby') } jitsi.org</span>
+                    <span>{ t('poweredby') } Inklusiva Call</span>
                 </a>
             );
         }

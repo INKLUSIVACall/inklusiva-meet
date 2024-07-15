@@ -11,15 +11,19 @@ export const colors = {
     primary03: '#003486',
     primary04: '#0045B3',
     primary05: '#0056E0',
-    primary06: '#246FE5',
+
+    // primary06: '#246FE5',
+    primary06: '#2E5E72',
     primary07: '#4687ED',
     primary08: '#99BBF3',
     primary09: '#CCDDF9',
 
     surface01: '#040404',
-    surface02: '#141414',
+    surface02: '#404040',
     surface03: '#292929',
-    surface04: '#3D3D3D',
+
+    // surface04: '#3D3D3D',
+    surface04: '#292929',
     surface05: '#525252',
     surface06: '#666',
     surface07: '#858585',
@@ -28,7 +32,7 @@ export const colors = {
     surface10: '#E0E0E0',
     surface11: '#FFF',
 
-    success04: '#189B55',
+    success04: '#147340',
     success05: '#1EC26A',
 
     warning05: '#F8AE1A',
@@ -97,6 +101,7 @@ export const colorMap = {
     link01: 'primary07',
     link01Hover: 'primary08',
     link01Active: 'primary06',
+    link02: '#91AEDB',
 
     // ----- Text -----
 

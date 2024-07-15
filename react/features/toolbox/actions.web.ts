@@ -6,6 +6,8 @@ import { isLayoutTileView } from '../video-layout/functions.any';
 import {
     CLEAR_TOOLBOX_TIMEOUT,
     FULL_SCREEN_CHANGED,
+    OPEN_HELP_DIALOG,
+    SET_CONFERENCE_INFO_VISIBLE,
     SET_FULL_SCREEN,
     SET_HANGUP_MENU_VISIBLE,
     SET_OVERFLOW_DRAWER,
@@ -153,10 +155,11 @@ export function showToolbox(timeout = 0) {
                         initialTimeout: null
                     } }));
                 }
-                dispatch(
-                    setToolboxTimeout(
-                        () => dispatch(hideToolbox()),
-                        timeout || initialTimeout || toolbarTimeout));
+
+                // dispatch(
+                //     setToolboxTimeout(
+                //         () => dispatch(hideToolbox()),
+                //         timeout || initialTimeout || toolbarTimeout));
             }
         }
     };
@@ -266,15 +269,46 @@ export function setToolboxTimeout(handler: Function, timeoutMS: number) {
 }
 
 /**
-     * Closes the overflow menu if opened.
-     *
-     * @private
-     * @returns {void}
-     */
+ * Closes the overflow menu if opened.
+ *
+ * @private
+ * @returns {void}
+ */
 export function closeOverflowMenuIfOpen() {
     return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
         const { overflowMenuVisible } = getState()['features/toolbox'];
 
         overflowMenuVisible && dispatch(setOverflowMenuVisible(false));
+    };
+}
+
+/**
+ * Shows/hides the conference info.
+ *
+ * @param {boolean} visible - True to show the conference info or false to hide it.
+ * @returns {{
+ *    type: SET_CONFERENCE_INFO_VISIBLE,
+ *    visible: boolean
+ *    }}
+ */
+export function setConferenceInfoVisible(visible: boolean) {
+    return (dispatch: IStore['dispatch']) => {
+        dispatch({
+            type: SET_CONFERENCE_INFO_VISIBLE,
+            visible
+        });
+    };
+}
+
+/**
+ * Toggles the visibility of the help dialog opend by the help button.
+ *
+ * @returns {{
+ *      type: OPEN_HELP_DIALOG
+ * }}
+ */
+export function toggleHelpDialogVisibility() {
+    return {
+        type: OPEN_HELP_DIALOG
     };
 }

@@ -1,6 +1,8 @@
+import { Theme } from '@mui/material';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { makeStyles } from 'tss-react/mui';
 
 import { IReduxState } from '../../app/types';
 import { openDialog } from '../../base/dialog/actions';
@@ -11,6 +13,15 @@ import Tooltip from '../../base/tooltip/components/Tooltip';
 import { shouldDisplayTileView } from '../../video-layout/functions.web';
 
 import VideoQualityDialog from './VideoQualityDialog.web';
+
+const useStyles = makeStyles()(theme => {
+    return {
+        videoQualityLabel: {
+            backgroundColor: 'transparent',
+            borderColor: 'transparent'
+        }
+    };
+});
 
 /**
  * React {@code Component} responsible for displaying a label that indicates
@@ -23,14 +34,16 @@ import VideoQualityDialog from './VideoQualityDialog.web';
  */
 const VideoQualityLabel = () => {
     const _audioOnly = useSelector((state: IReduxState) => state['features/base/audio-only'].enabled);
-    const _visible = useSelector((state: IReduxState) => !(shouldDisplayTileView(state)
-        || interfaceConfig.VIDEO_QUALITY_LABEL_DISABLED));
+
+    // const _visible = useSelector((state: IReduxState) => !(shouldDisplayTileView(state)
+    //     || interfaceConfig.VIDEO_QUALITY_LABEL_DISABLED));
     const dispatch = useDispatch();
     const { t } = useTranslation();
+    const { classes } = useStyles();
 
-    if (!_visible) {
-        return null;
-    }
+    // if (!_visible) {
+    //     return null;
+    // }
 
     let className, icon, labelContent, tooltipKey;
 
@@ -44,6 +57,8 @@ const VideoQualityLabel = () => {
         tooltipKey = 'videoStatus.performanceSettings';
     }
 
+    className = `${className} ${classes?.videoQualityLabel}`;
+
     const onClick = () => dispatch(openDialog(VideoQualityDialog));
 
     return (
@@ -53,9 +68,9 @@ const VideoQualityLabel = () => {
             <Label
                 accessibilityText = { t(tooltipKey) }
                 className = { className }
-                color = { COLORS.white }
                 icon = { icon }
                 iconColor = '#fff'
+                iconSize = { '24' }
                 id = 'videoResolutionLabel'
                 // eslint-disable-next-line react/jsx-no-bind
                 onClick = { onClick }

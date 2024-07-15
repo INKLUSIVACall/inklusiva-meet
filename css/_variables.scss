@@ -22,7 +22,7 @@ $newToolbarSizeWithPadding: calc(#{$newToolbarSize} + 24px);
  * Chat
  */
 $chatBackgroundColor: #131519;
-$sidebarWidth: 315px;
+$sidebarWidth: 415px;
 
 /**
  * Misc.
@@ -37,7 +37,7 @@ $zindex0: 0;
 $zindex1: 1;
 $zindex2: 2;
 $zindex3: 3;
-$toolbarZ: 250;
+$toolbarZ: 300;
 // Place filmstrip videos over toolbar in order
 // to make connection info visible.
 $filmstripVideosZ: $toolbarZ + 1;

@@ -4,6 +4,7 @@ import { set } from '../base/redux/functions';
 import {
     CLEAR_TOOLBOX_TIMEOUT,
     FULL_SCREEN_CHANGED,
+    SET_CONFERENCE_INFO_VISIBLE,
     SET_HANGUP_MENU_VISIBLE,
     SET_OVERFLOW_DRAWER,
     SET_OVERFLOW_MENU_VISIBLE,
@@ -33,6 +34,14 @@ const INITIAL_STATE = {
      * @type {boolean}
      */
     hangupMenuVisible: false,
+
+
+    /**
+     * The indicator which determines whether the help dialog is visible.
+     *
+     * @type {boolean}
+     */
+    helpDialogVisibility: false,
 
     /**
      * The indicator which determines whether a Toolbar in the Toolbox is
@@ -75,13 +84,25 @@ const INITIAL_STATE = {
      *
      * @type {boolean}
      */
-    visible: false
+    visible: false,
+
+
+    /**
+     * The indicator which determines whether the conference info is visible.
+     *
+     * @type {boolean}
+     */
+    conferenceInfoVisible: true
+
+
 };
 
 export interface IToolboxState {
+    conferenceInfoVisible: boolean;
     enabled: boolean;
     fullScreen?: boolean;
     hangupMenuVisible: boolean;
+    helpDialogVisibility: boolean;
     hovered: boolean;
     overflowDrawer: boolean;
     overflowMenuVisible: boolean;
@@ -153,6 +174,12 @@ ReducerRegistry.register<IToolboxState>(
 
         case TOGGLE_TOOLBOX_VISIBLE:
             return set(state, 'visible', !state.visible);
+
+        case SET_CONFERENCE_INFO_VISIBLE:
+            return {
+                ...state,
+                conferenceInfoVisible: action.visible
+            };
         }
 
         return state;

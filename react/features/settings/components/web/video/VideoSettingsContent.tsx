@@ -29,9 +29,19 @@ export interface IProps {
     changeFlip: (flip: boolean) => void;
 
     /**
+     * Callback to change the self view state.
+     */
+    changeSelfView: (selfView: boolean) => void;
+
+    /**
      * The deviceId of the camera device currently being used.
      */
     currentCameraDeviceId: string;
+
+    /**
+     * Whether the own video is hidden or not.
+     */
+    hideSelfView: boolean;
 
     /**
      * Whether or not the local video is flipped.
@@ -130,6 +140,11 @@ const useStyles = makeStyles()(theme => {
 
         checkboxContainer: {
             padding: '10px 14px'
+        },
+        videoCheckbox: {
+            marginBottom: theme.spacing(3),
+            textAlign: 'left',
+            width: '100%'
         }
     };
 });
@@ -140,7 +155,9 @@ const stopPropagation = (e: React.MouseEvent) => {
 
 const VideoSettingsContent = ({
     changeFlip,
+    changeSelfView,
     currentCameraDeviceId,
+    hideSelfView,
     localFlipX,
     selectBackground,
     setVideoInputDevice,
@@ -164,6 +181,10 @@ const VideoSettingsContent = ({
     const _onToggleFlip = useCallback(() => {
         changeFlip(!localFlipX);
     }, [ localFlipX, changeFlip ]);
+
+    const _onToggleSelfView = useCallback(() => {
+        changeSelfView(!hideSelfView);
+    }, [ hideSelfView, changeSelfView ]);
 
     /**
      * Destroys all the tracks from trackData object.
@@ -311,8 +332,14 @@ const VideoSettingsContent = ({
                     onClick = { stopPropagation }>
                     <Checkbox
                         checked = { localFlipX }
+                        className = { classes.videoCheckbox }
                         label = { t('videothumbnail.mirrorVideo') }
                         onChange = { _onToggleFlip } />
+                    <Checkbox
+                        checked = { hideSelfView }
+                        className = { classes.videoCheckbox }
+                        label = { t('videothumbnail.hideSelfView') }
+                        onChange = { _onToggleSelfView } />
                 </div>
             </ContextMenuItemGroup>
         </ContextMenu>
@@ -321,9 +348,12 @@ const VideoSettingsContent = ({
 
 const mapStateToProps = (state: IReduxState) => {
     const { localFlipX } = state['features/base/settings'];
+    const { disableSelfView, hideSelfView } = state['features/base/settings'];
 
     return {
-        localFlipX: Boolean(localFlipX)
+        localFlipX: Boolean(localFlipX),
+        disableSelfView: Boolean(disableSelfView),
+        hideSelfView: Boolean(hideSelfView)
     };
 };
 
@@ -333,6 +363,12 @@ const mapDispatchToProps = (dispatch: IStore['dispatch']) => {
         changeFlip: (flip: boolean) => {
             dispatch(updateSettings({
                 localFlipX: flip
+            }));
+        },
+        changeSelfView: (selfView: boolean) => {
+            dispatch(updateSettings({
+                hideSelfView: selfView,
+                disableSelfView: selfView
             }));
         }
     };

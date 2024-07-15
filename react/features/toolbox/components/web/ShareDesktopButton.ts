@@ -30,6 +30,7 @@ interface IProps extends AbstractButtonProps {
  */
 class ShareDesktopButton extends AbstractButton<IProps> {
     accessibilityLabel = 'toolbar.accessibilityLabel.shareYourScreen';
+    accessibilityLabelShortcut = 'keyboardShortcuts.toggleScreensharing';
     toggledAccessibilityLabel = 'toolbar.accessibilityLabel.stopScreenSharing';
     label = 'toolbar.startScreenSharing';
     icon = IconScreenshare;

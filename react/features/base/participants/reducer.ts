@@ -15,7 +15,8 @@ import {
     PIN_PARTICIPANT,
     RAISE_HAND_UPDATED,
     SCREENSHARE_PARTICIPANT_NAME_CHANGED,
-    SET_LOADABLE_AVATAR_URL
+    SET_LOADABLE_AVATAR_URL,
+    UPDATE_IC_ROLES
 } from './actionTypes';
 import { LOCAL_PARTICIPANT_DEFAULT_ID, PARTICIPANT_ROLE } from './constants';
 import {
@@ -139,31 +140,12 @@ ReducerRegistry.register<IParticipantsState>('features/base/participants',
         const newSpeakers = [ id, ...previousSpeakers ];
         const sortedSpeakersList: Array<Array<string>> = [];
 
-        for (const speaker of newSpeakers) {
-            if (speaker !== local?.id) {
-                const remoteParticipant = state.remote.get(speaker);
-
-                remoteParticipant
-                && sortedSpeakersList.push(
-                    [ speaker, _getDisplayName(state, remoteParticipant?.name) ]
-                );
-            }
-        }
-
         // Keep the remote speaker list sorted alphabetically.
         sortedSpeakersList.sort((a, b) => a[1].localeCompare(b[1]));
 
         // Only one dominant speaker is allowed.
         if (dominantSpeaker) {
             _updateParticipantProperty(state, dominantSpeaker, 'dominantSpeaker', false);
-        }
-
-        if (_updateParticipantProperty(state, id, 'dominantSpeaker', true)) {
-            return {
-                ...state,
-                dominantSpeaker: id, // @ts-ignore
-                speakersList: new Map(sortedSpeakersList)
-            };
         }
 
         delete state.dominantSpeaker;
@@ -190,6 +172,15 @@ ReducerRegistry.register<IParticipantsState>('features/base/participants',
         }
 
         delete state.pinnedParticipant;
+
+        return {
+            ...state
+        };
+    }
+    case UPDATE_IC_ROLES: {
+        const { id, roles } = action;
+
+        _updateParticipantProperty(state, id, 'icRoles', roles);
 
         return {
             ...state
@@ -564,7 +555,8 @@ function _participantJoined({ participant }: { participant: IParticipant; }) {
         pinned,
         presence,
         role,
-        sources
+        sources,
+        tags
     } = participant;
     let { conference, id } = participant;
 
@@ -595,7 +587,8 @@ function _participantJoined({ participant }: { participant: IParticipant; }) {
         pinned: pinned || false,
         presence,
         role: role || PARTICIPANT_ROLE.NONE,
-        sources
+        sources,
+        tags
     };
 }
 

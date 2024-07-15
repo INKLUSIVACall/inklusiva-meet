@@ -60,14 +60,16 @@ const styles = (theme: Theme) => {
             alignItems: 'center',
             padding: `${theme.spacing(1)} 0`,
             ...withPixelLineHeight(theme.typography.bodyShortRegular),
-            color: theme.palette.text01
+            color: theme.palette.text01,
+            fontSize: '0.875rem'
         },
 
         listItemKey: {
             backgroundColor: theme.palette.ui04,
             ...withPixelLineHeight(theme.typography.labelBold),
             padding: `${theme.spacing(1)} ${theme.spacing(2)}`,
-            borderRadius: `${Number(theme.shape.borderRadius) / 2}px`
+            borderRadius: `${Number(theme.shape.borderRadius) / 2}px`,
+            fontSize: '0.75rem'
         }
     };
 };
@@ -121,6 +123,8 @@ class ShortcutsTab extends AbstractDialogTab<IProps, any> {
             }
         }
 
+        const keyboardKeyForDisplay = keyboardKey.replace('^', 'Shift ');
+
         return (
             <li
                 className = { classes.listItem }
@@ -130,9 +134,9 @@ class ShortcutsTab extends AbstractDialogTab<IProps, any> {
                     {t(translationKey)}
                 </span>
                 <span className = { classes.listItemKey }>
-                    {keyboardKey.startsWith(':')
-                        ? `${modifierKey} + ${keyboardKey.slice(1)}`
-                        : keyboardKey}
+                    {keyboardKeyForDisplay.startsWith(':')
+                        ? `${modifierKey} + ${keyboardKeyForDisplay.slice(1)}`
+                        : keyboardKeyForDisplay}
                 </span>
             </li>
         );

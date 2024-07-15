@@ -8,8 +8,8 @@
  *         id: string,
  *         previousSpeakers: Array<string>,
  *         silence: boolean
- *     }
- * }
+ *     }.
+ * }.
  */
 export const DOMINANT_SPEAKER_CHANGED = 'DOMINANT_SPEAKER_CHANGED';
 
@@ -19,9 +19,33 @@ export const DOMINANT_SPEAKER_CHANGED = 'DOMINANT_SPEAKER_CHANGED';
  * {
  *     type: GRANT_MODERATOR,
  *     id: string
- * }
+ * }.
  */
 export const GRANT_MODERATOR = 'GRANT_MODERATOR';
+
+/**
+ * Adds an inclusiva call role to a user.
+ *
+ * {
+ *     type: ADD_IC_ROLE,
+ *     id: string,
+ *     role: string,
+ *     partnerId: string|null,
+ * }.
+ */
+export const ADD_IC_ROLE = 'ADD_IC_ROLE';
+
+/**
+ * Removes an inclusiva call role from a user.
+ *
+ * {
+ *     type: REMOVE_IC_ROLE,
+ *     id: string,
+ *     role: string,
+ *     partnerId: string|null,
+ * }.
+ */
+export const REMOVE_IC_ROLE = 'REMOVE_IC_ROLE';
 
 /**
  * Create an action for removing a participant from the conference.
@@ -29,7 +53,7 @@ export const GRANT_MODERATOR = 'GRANT_MODERATOR';
  * {
  *     type: KICK_PARTICIPANT,
  *     id: string
- * }
+ * }.
  */
 export const KICK_PARTICIPANT = 'KICK_PARTICIPANT';
 
@@ -39,7 +63,7 @@ export const KICK_PARTICIPANT = 'KICK_PARTICIPANT';
  * {
  *     type: MUTE_REMOTE_PARTICIPANT,
  *     id: string
- * }
+ * }.
  */
 export const MUTE_REMOTE_PARTICIPANT = 'MUTE_REMOTE_PARTICIPANT';
 
@@ -50,7 +74,7 @@ export const MUTE_REMOTE_PARTICIPANT = 'MUTE_REMOTE_PARTICIPANT';
  *     type: PARTICIPANT_DISPLAY_NAME_CHANGED,
  *     id: string,
  *     name: string
- * }
+ * }.
  */
 export const PARTICIPANT_DISPLAY_NAME_CHANGED
     = 'PARTICIPANT_DISPLAY_NAME_CHANGED';
@@ -64,20 +88,20 @@ export const PARTICIPANT_DISPLAY_NAME_CHANGED
  *     conference: JitsiConference
  *     newValue: string,
  *     oldValue: string
- * }
+ * }.
  */
 export const PARTICIPANT_ID_CHANGED = 'PARTICIPANT_ID_CHANGED';
 
 /**
- * Action to signal that participant role has changed. e.
+ * Action to signal that participant role has changed. E.
  *
  * {
  *     type: PARTICIPANT_ROLE_CHANGED,
  *     participant: {
  *         id: string
- *     }
- *     role: string
- * }
+ *     }.
+ *     Role: string
+ * }.
  */
 export const PARTICIPANT_ROLE_CHANGED = 'PARTICIPANT_ROLE_CHANGED';
 
@@ -87,7 +111,7 @@ export const PARTICIPANT_ROLE_CHANGED = 'PARTICIPANT_ROLE_CHANGED';
  * {
  *     type: PARTICIPANT_JOINED,
  *     participant: Participant
- * }
+ * }.
  */
 export const PARTICIPANT_JOINED = 'PARTICIPANT_JOINED';
 
@@ -99,7 +123,7 @@ export const PARTICIPANT_JOINED = 'PARTICIPANT_JOINED';
  *     type: PARTICIPANT_KICKED,
  *     kicked: Object,
  *     kicker: Object
- * }
+ * }.
  */
 export const PARTICIPANT_KICKED = 'PARTICIPANT_KICKED';
 
@@ -110,8 +134,8 @@ export const PARTICIPANT_KICKED = 'PARTICIPANT_KICKED';
  *     type: PARTICIPANT_LEFT,
  *     participant: {
  *         id: string
- *     }
- * }
+ *     }.
+ * }.
  */
 export const PARTICIPANT_LEFT = 'PARTICIPANT_LEFT';
 
@@ -122,8 +146,8 @@ export const PARTICIPANT_LEFT = 'PARTICIPANT_LEFT';
  *      type: PARTICIPANT_SOURCES_UPDATED,
  *      participant: {
  *          id: string
- *      }
- * }
+ *      }.
+ * }.
  */
 export const PARTICIPANT_SOURCES_UPDATED = 'PARTICIPANT_SOURCES_UPDATED';
 
@@ -133,7 +157,7 @@ export const PARTICIPANT_SOURCES_UPDATED = 'PARTICIPANT_SOURCES_UPDATED';
  * {
  *     type: PARTICIPANT_UPDATED,
  *     participant: Participant
- * }
+ * }.
  */
 export const PARTICIPANT_UPDATED = 'PARTICIPANT_UPDATED';
 
@@ -144,10 +168,21 @@ export const PARTICIPANT_UPDATED = 'PARTICIPANT_UPDATED';
  *     type: PIN_PARTICIPANT,
  *     participant: {
  *         id: string
- *     }
- * }
+ *     }.
+ * }.
  */
 export const PIN_PARTICIPANT = 'PIN_PARTICIPANT';
+
+/**
+ * The type of the Redux action which sets new ic-roles for a participant.
+ *
+ * {
+ *    type: UPDATE_IC_ROLES,
+ *    id: string,
+ *    roles: ICRole[]
+ *  }.
+ */
+export const UPDATE_IC_ROLES = 'UPDATE_IC_ROLES';
 
 /**
  * Action to signal that a hidden participant has joined.
@@ -155,7 +190,7 @@ export const PIN_PARTICIPANT = 'PIN_PARTICIPANT';
  * {
  *     type: HIDDEN_PARTICIPANT_JOINED,
  *     participant: Participant
- * }
+ * }.
  */
 export const HIDDEN_PARTICIPANT_JOINED = 'HIDDEN_PARTICIPANT_JOINED';
 
@@ -166,8 +201,8 @@ export const HIDDEN_PARTICIPANT_JOINED = 'HIDDEN_PARTICIPANT_JOINED';
  *     type: PARTICIPANT_LEFT,
  *     participant: {
  *         id: string
- *     }
- * }
+ *     }.
+ * }.
  */
 export const HIDDEN_PARTICIPANT_LEFT = 'HIDDEN_PARTICIPANT_LEFT';
 
@@ -179,8 +214,8 @@ export const HIDDEN_PARTICIPANT_LEFT = 'HIDDEN_PARTICIPANT_LEFT';
  *     participant: {
  *         id: string,
            loadableAvatarUrl: string
- *     }
- * }
+ *     }.
+ * }.
  */
 export const SET_LOADABLE_AVATAR_URL = 'SET_LOADABLE_AVATAR_URL';
 
@@ -191,15 +226,15 @@ export const SET_LOADABLE_AVATAR_URL = 'SET_LOADABLE_AVATAR_URL';
  *     type: SCREENSHARE_PARTICIPANT_NAME_CHANGED,
  *     id: string,
  *     name: string
- * }
+ * }.
  */
- export const SCREENSHARE_PARTICIPANT_NAME_CHANGED = 'SCREENSHARE_PARTICIPANT_NAME_CHANGED';
+export const SCREENSHARE_PARTICIPANT_NAME_CHANGED = 'SCREENSHARE_PARTICIPANT_NAME_CHANGED';
 
 /**
  * Raises hand for the local participant.
  * {
  *     type: LOCAL_PARTICIPANT_RAISE_HAND
- * }
+ * }.
  */
 export const LOCAL_PARTICIPANT_RAISE_HAND = 'LOCAL_PARTICIPANT_RAISE_HAND';
 
@@ -210,8 +245,8 @@ export const LOCAL_PARTICIPANT_RAISE_HAND = 'LOCAL_PARTICIPANT_RAISE_HAND';
  *     participant: {
  *         id: string,
  *         raiseHand: boolean
- *     }
- * }
+ *     }.
+ * }.
  */
 export const RAISE_HAND_UPDATED = 'RAISE_HAND_UPDATED';
 
@@ -220,9 +255,9 @@ export const RAISE_HAND_UPDATED = 'RAISE_HAND_UPDATED';
  * {
  *     type: LOCAL_PARTICIPANT_AUDIO_LEVEL_CHANGED
  *     level: number
- * }
+ * }.
  */
-export const LOCAL_PARTICIPANT_AUDIO_LEVEL_CHANGED = 'LOCAL_PARTICIPANT_AUDIO_LEVEL_CHANGED'
+export const LOCAL_PARTICIPANT_AUDIO_LEVEL_CHANGED = 'LOCAL_PARTICIPANT_AUDIO_LEVEL_CHANGED';
 
 /**
  * The type of Redux action which overwrites the name of a participant.
@@ -230,7 +265,7 @@ export const LOCAL_PARTICIPANT_AUDIO_LEVEL_CHANGED = 'LOCAL_PARTICIPANT_AUDIO_LE
  *     type: OVERWRITE_PARTICIPANT_NAME,
  *     id: string,
  *     name: string
- * }
+ * }.
  */
 export const OVERWRITE_PARTICIPANT_NAME = 'OVERWRITE_PARTICIPANT_NAME';
 
@@ -239,7 +274,7 @@ export const OVERWRITE_PARTICIPANT_NAME = 'OVERWRITE_PARTICIPANT_NAME';
  * {
  *     type: OVERWRITE_PARTICIPANTS_NAMES,
  *     participantsList: Array<Object>,
- * }
+ * }.
  */
 export const OVERWRITE_PARTICIPANTS_NAMES = 'OVERWRITE_PARTICIPANTS_NAMES';
 
@@ -249,6 +284,6 @@ export const OVERWRITE_PARTICIPANTS_NAMES = 'OVERWRITE_PARTICIPANTS_NAMES';
  *     type: SET_LOCAL_PARTICIPANT_RECORDING_STATUS,
  *     recording: boolean,
  *     onlySelf: boolean
- * }
+ * }.
  */
 export const SET_LOCAL_PARTICIPANT_RECORDING_STATUS = 'SET_LOCAL_PARTICIPANT_RECORDING_STATUS';

@@ -42,6 +42,7 @@ local NOTIFY_LOBBY_ACCESS_GRANTED = 'LOBBY-ACCESS-GRANTED';
 local NOTIFY_LOBBY_ACCESS_DENIED = 'LOBBY-ACCESS-DENIED';
 
 local util = module:require "util";
+local ends_with = util.ends_with;
 local get_room_by_name_and_subdomain = util.get_room_by_name_and_subdomain;
 local is_healthcheck_room = util.is_healthcheck_room;
 local presence_check_status = util.presence_check_status;
@@ -164,6 +165,12 @@ function filter_stanza(stanza)
             -- allow messages to or from moderator
             local lobby_room_jid = jid_bare(stanza.attr.from);
             local lobby_room = lobby_muc_service.get_room_from_jid(lobby_room_jid);
+
+            if not lobby_room then
+                module:log('warn', 'No lobby room found %s', stanza.attr.from);
+                return nil;
+            end
+
             local is_to_moderator = lobby_room:get_affiliation(stanza.attr.to) == 'owner';
             local from_occupant = lobby_room:get_occupant_by_nick(stanza.attr.from);
 
@@ -215,7 +222,7 @@ end
 -- destroys lobby room for the supplied main room
 function destroy_lobby_room(room, newjid, message)
     if not message then
-        message = 'Lobby room closed.';
+        message = 'Der Moderator hat die Konferenz beendet. Sie können das Fenster jetzt schließen.';
     end
     if lobby_muc_service and room and room._data.lobbyroom then
         local lobby_room_obj = lobby_muc_service.get_room_from_jid(room._data.lobbyroom);
@@ -363,9 +370,9 @@ process_host_module(main_muc_component_config, function(host_module, host)
     end);
 
     host_module:hook('muc-occupant-pre-join', function (event)
-        local room, stanza = event.room, event.stanza;
+        local occupant, room, stanza = event.occupant, event.room, event.stanza;
 
-        if is_healthcheck_room(room.jid) or not room:get_members_only() then
+        if is_healthcheck_room(room.jid) or not room:get_members_only() or ends_with(occupant.nick, '/focus') then
             return;
         end
 
@@ -391,10 +398,11 @@ process_host_module(main_muc_component_config, function(host_module, host)
 
         if whitelistJoin then
             local affiliation = room:get_affiliation(invitee);
-            if not affiliation or affiliation == 0 then
-                event.occupant.role = 'participant';
+            -- if it was already set to be whitelisted member
+            if not affiliation or affiliation == 'none' or affiliation == 'member' then
+                occupant.role = 'participant';
                 room:set_affiliation(true, invitee_bare_jid, 'member');
-                room:save();
+                    room:save_occupant(occupant);
 
                 return;
             end
@@ -402,7 +410,7 @@ process_host_module(main_muc_component_config, function(host_module, host)
 
         -- Check for display name if missing return an error
         local displayName = stanza:get_child_text('nick', 'http://jabber.org/protocol/nick');
-        if not displayName or #displayName == 0 then
+        if (not displayName or #displayName == 0) and not room._data.lobby_skip_display_name_check then
             local reply = st.error_reply(stanza, 'modify', 'not-acceptable');
             reply.tags[1].attr.code = '406';
             reply:tag('displayname-required', { xmlns = 'http://jitsi.org/jitmeet', lobby = 'true' }):up():up();
@@ -417,6 +425,9 @@ process_host_module(main_muc_component_config, function(host_module, host)
         if not affiliation or affiliation == 'none' then
             local reply = st.error_reply(stanza, 'auth', 'registration-required');
             reply.tags[1].attr.code = '407';
+            if room._data.lobby_extra_reason then
+                reply:tag(room._data.lobby_extra_reason, { xmlns = 'http://jitsi.org/jitmeet' }):up();
+            end
             reply:tag('lobbyroom', { xmlns = 'http://jitsi.org/jitmeet' }):text(room._data.lobbyroom):up():up();
 
             -- TODO: Drop this tag at some point (when all mobile clients and jigasi are updated), as this violates the rfc
@@ -465,6 +476,8 @@ function handle_create_lobby(event)
     end
     -- Now it is safe to set the room to members only
     room:set_members_only(true);
+    room._data.lobby_extra_reason = event.reason;
+    room._data.lobby_skip_display_name_check = event.skip_display_name_check;
 
     -- Trigger a presence with 104 so existing participants retrieves new muc#roomconfig
     room:broadcast_message(
@@ -478,7 +491,18 @@ function handle_create_lobby(event)
 end
 
 function handle_destroy_lobby(event)
-    destroy_lobby_room(event.room, event.newjid, event.message);
+    local room = event.room;
+
+    -- since this is called by backend rather than triggered by UI, we need to
+    -- trigger a 104 (config change) status message so UI state is properly updated for existing users (and jicofo)
+    destroy_lobby_room(room, event.newjid, event.message);
+
+    -- Trigger a presence with 104 so existing participants retrieves new muc#roomconfig
+    room:broadcast_message(
+        st.message({ type='groupchat', from=room.jid })
+            :tag('x', { xmlns='http://jabber.org/protocol/muc#user' })
+                :tag('status', { code='104' })
+    );
 end
 
 module:hook_global('config-reloaded', load_config);

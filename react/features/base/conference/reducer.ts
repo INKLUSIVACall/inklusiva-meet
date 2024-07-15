@@ -45,12 +45,16 @@ const DEFAULT_STATE = {
 
 export interface IJitsiConference {
     addCommandListener: Function;
+    addICRole: Function;
     addLobbyMessageListener: Function;
+    addLocalICRole: Function;
     addTrack: Function;
     authenticateAndUpgradeRole: Function;
     avModerationApprove: Function;
     avModerationReject: Function;
     callUUID?: string;
+    checkLocalHasRole: Function;
+    checkMemberHasRole: Function;
     createVideoSIPGWSession: Function;
     dial: Function;
     disableAVModeration: Function;
@@ -59,9 +63,11 @@ export interface IJitsiConference {
     enableLobby: Function;
     end: Function;
     getBreakoutRooms: Function;
+    getLocalICRoles: Function;
     getLocalParticipantProperty: Function;
     getLocalTracks: Function;
     getMeetingUniqueId: Function;
+    getMemberICRoles: Function;
     getMetadataHandler: Function;
     getName: Function;
     getParticipantById: Function;
@@ -70,6 +76,7 @@ export interface IJitsiConference {
     getRole: Function;
     getSpeakerStats: () => ISpeakerStats;
     getSsrcByTrack: Function;
+    getTranscriptLink: Function;
     grantOwner: Function;
     isAVModerationSupported: Function;
     isCallstatsEnabled: Function;
@@ -95,6 +102,9 @@ export interface IJitsiConference {
     off: Function;
     on: Function;
     options: any;
+    rejectRecording: Function;
+    removeICRole: Function;
+    removeLocalICRole: Function;
     removeTrack: Function;
     replaceTrack: Function;
     room: IJitsiConferenceRoom;
@@ -123,6 +133,8 @@ export interface IJitsiConference {
     startVerification: Function;
     stopRecording: Function;
     toggleE2EE: Function;
+    transcriptionLink: string;
+    updateTranscriptLink: Function;
 }
 
 export interface IConferenceState {

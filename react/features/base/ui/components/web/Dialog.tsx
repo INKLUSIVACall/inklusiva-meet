@@ -28,7 +28,8 @@ const useStyles = makeStyles()(theme => {
             color: theme.palette.text01,
             ...withPixelLineHeight(theme.typography.heading5),
             margin: 0,
-            padding: 0
+            padding: 0,
+            fontSize: '1.25rem'
         },
 
         content: {
@@ -39,6 +40,7 @@ const useStyles = makeStyles()(theme => {
             padding: '0 24px',
             overflowX: 'hidden',
             minHeight: '40px',
+            fontSize: '1rem',
 
             '@media (max-width: 448px)': {
                 height: '100%'
@@ -64,10 +66,12 @@ interface IDialogProps extends IBaseDialogProps {
     back?: {
         hidden?: boolean;
         onClick?: () => void;
+        accessibilityLabel?: string;
         translationKey?: string;
     };
     cancel?: {
         hidden?: boolean;
+        accessibilityLabel?: string;
         translationKey?: string;
     };
     children?: React.ReactNode;
@@ -76,6 +80,7 @@ interface IDialogProps extends IBaseDialogProps {
     ok?: {
         disabled?: boolean;
         hidden?: boolean;
+        accessibilityLabel?: string;
         translationKey?: string;
     };
     onCancel?: () => void;
@@ -83,8 +88,14 @@ interface IDialogProps extends IBaseDialogProps {
 }
 
 const Dialog = ({
-    back = { hidden: true },
-    cancel = { translationKey: 'dialog.Cancel' },
+    back = {
+        hidden: true,
+        accessibilityLabel: 'dialog.accessibilityLabel.Back'
+    },
+    cancel = {
+        accessibilityLabel: 'dialog.accessibilityLabel.Cancel',
+        translationKey: 'dialog.Cancel'
+    },
     children,
     className,
     description,
@@ -92,7 +103,10 @@ const Dialog = ({
     disableBackdropClose,
     hideCloseButton,
     disableEnter,
-    ok = { translationKey: 'dialog.Ok' },
+    ok = {
+        accessibilityLabel: 'dialog.accessibilityLabel.Ok',
+        translationKey: 'dialog.Ok'
+    },
     onCancel,
     onSubmit,
     size,
@@ -152,18 +166,18 @@ const Dialog = ({
                 className = { classes.footer }
                 data-autofocus-inside = 'true'>
                 {!back.hidden && <Button
-                    accessibilityLabel = { t(back.translationKey ?? '') }
+                    accessibilityLabel = { back.accessibilityLabel }
                     labelKey = { back.translationKey }
                     // eslint-disable-next-line react/jsx-handler-names
                     onClick = { back.onClick }
                     type = 'secondary' />}
                 {!cancel.hidden && <Button
-                    accessibilityLabel = { t(cancel.translationKey ?? '') }
+                    accessibilityLabel = { cancel.accessibilityLabel }
                     labelKey = { cancel.translationKey }
                     onClick = { onClose }
                     type = 'tertiary' />}
                 {!ok.hidden && <Button
-                    accessibilityLabel = { t(ok.translationKey ?? '') }
+                    accessibilityLabel = { ok.accessibilityLabel }
                     disabled = { ok.disabled }
                     id = 'modal-dialog-ok-button'
                     isSubmit = { true }

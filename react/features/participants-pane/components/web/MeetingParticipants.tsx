@@ -23,6 +23,8 @@ import { InviteButton } from './InviteButton';
 import MeetingParticipantContextMenu from './MeetingParticipantContextMenu';
 import MeetingParticipantItems from './MeetingParticipantItems';
 
+import { SEARCH_PARTICIPANTS_STATUS } from '../../constants';
+
 const useStyles = makeStyles()(theme => {
     return {
         headingW: {
@@ -124,13 +126,13 @@ function MeetingParticipants({
                     : t('participantsPane.headings.participantsList', { count: participantsCount })}
             </div>
             {showInviteButton && <InviteButton />}
-            <Input
+            {SEARCH_PARTICIPANTS_STATUS && <Input
                 className = { styles.search }
                 clearable = { true }
                 id = 'participants-search-input'
                 onChange = { setSearchString }
                 placeholder = { t('participantsPane.search') }
-                value = { searchString } />
+                value = { searchString } />}
             <div>
                 <MeetingParticipantItems
                     isInBreakoutRoom = { isBreakoutRoom }

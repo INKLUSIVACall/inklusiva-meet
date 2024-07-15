@@ -9,7 +9,9 @@
  */
 
 var interfaceConfig = {
-    APP_NAME: 'Jitsi Meet',
+
+
+    APP_NAME: 'INKLUSIVA Call',
     AUDIO_LEVEL_PRIMARY_COLOR: 'rgba(255,255,255,0.4)',
     AUDIO_LEVEL_SECONDARY_COLOR: 'rgba(255,255,255,0.2)',
 
@@ -25,6 +27,8 @@ var interfaceConfig = {
     BRAND_WATERMARK_LINK: '',
 
     CLOSE_PAGE_GUEST_HINT: false, // A html text to be shown to guests on the close page, false disables it
+    // CLOSE_PAGE_ROOT_URL: 'http://127.0.0.1/endscreen/',
+    CLOSE_PAGE_ROOT_URL: 'https://conference.inklusiva-call.de/backend/endscreen',
 
     DEFAULT_BACKGROUND: '#040404',
     DEFAULT_WELCOME_PAGE_LOGO_URL: 'images/watermark.svg',
@@ -82,9 +86,9 @@ var interfaceConfig = {
      */
     HIDE_INVITE_MORE_HEADER: false,
 
-    JITSI_WATERMARK_LINK: 'https://jitsi.org',
+    JITSI_WATERMARK_LINK: 'https://inklusiva-call.de',
 
-    LANG_DETECTION: true, // Allow i18n to detect the system language
+    LANG_DETECTION: false, // Allow i18n to detect the system language
     LOCAL_THUMBNAIL_RATIO: 16 / 9, // 16:9
 
     /**
@@ -138,7 +142,7 @@ var interfaceConfig = {
      */
     SHOW_CHROME_EXTENSION_BANNER: false,
 
-    SHOW_JITSI_WATERMARK: true,
+    SHOW_JITSI_WATERMARK: false,
     SHOW_POWERED_BY: false,
     SHOW_PROMOTIONAL_CLOSE_PAGE: false,
 

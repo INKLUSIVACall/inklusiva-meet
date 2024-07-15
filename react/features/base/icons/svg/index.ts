@@ -9,6 +9,8 @@ export { default as IconAudioOnly } from './visibility.svg';
 export { default as IconAudioOnlyOff } from './visibility-off.svg';
 export { default as IconBluetooth } from './bluetooth.svg';
 export { default as IconBell } from './bell.svg';
+export { default as IconBellConcierge } from './bell-concierge.svg';
+export { default as IconBubble } from './bubbleSquare.svg';
 export { default as IconCalendar } from './calendar.svg';
 export { default as IconCameraRefresh } from './camera-refresh.svg';
 export { default as IconCar } from './car.svg';
@@ -20,6 +22,7 @@ export { default as IconCloudUpload } from './cloud-upload.svg';
 export { default as IconCode } from './code.svg';
 export { default as IconConnection } from './connection.svg';
 export { default as IconConnectionInactive } from './ninja.svg';
+export { default as IconContrast } from './contrast.svg'
 export { default as IconCopy } from './copy.svg';
 export { default as IconDeviceHeadphone } from './headset.svg';
 export { default as IconDotsHorizontal } from './dots-horizontal.svg';
@@ -44,6 +47,8 @@ export { default as IconFavoriteSolid } from './favorite-solid.svg';
 export { default as IconFeedback } from './feedback.svg';
 export { default as IconGear } from './gear.svg';
 export { default as IconGoogle } from './google.svg';
+export { default as IconHandHoldingHand } from './hand-holding-hand.svg';
+export { default as IconHands } from './hands.svg';
 export { default as IconHangup } from './hangup.svg';
 export { default as IconHelp } from './help.svg';
 export { default as IconHighlight } from './highlight.svg';
@@ -106,3 +111,17 @@ export { default as IconWifi1Bar } from './wifi-1.svg';
 export { default as IconWifi2Bars } from './wifi-2.svg';
 export { default as IconWifi3Bars } from './wifi-3.svg';
 export { default as IconYahoo } from './yahoo.svg';
+
+export { default as IconBrightness } from './brightness.svg'
+export { default as IconDimming } from './dimming.svg'
+export { default as IconSaturation } from './saturation.svg'
+export { default as IconZoom } from './zoom.svg'
+export { default as IconEmptyHourglass } from './empty-hourglass.svg';
+export { default as IconFullHourglass } from './full-hourglass.svg';
+export { default as IconLink } from './link.svg'
+export { default as IconEmptyStar } from './empty-star.svg'
+export { default as IconHalfStar } from './half-star.svg'
+export { default as IconLifeSaver } from './life-saver.svg'
+export { default as IconContact } from './contact.svg'
+export { default as IconGridPlus} from './grid-plus.svg'
+export { default as IconBullhorn } from './bullhorn.svg'

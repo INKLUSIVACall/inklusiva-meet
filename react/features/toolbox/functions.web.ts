@@ -22,7 +22,7 @@ import SecurityDialogButton from '../security/components/security-dialog/web/Sec
 import SettingsButton from '../settings/components/web/SettingsButton';
 import SharedVideoButton from '../shared-video/components/web/SharedVideoButton';
 import SpeakerStatsButton from '../speaker-stats/components/web/SpeakerStatsButton';
-import ClosedCaptionButton from '../subtitles/components/web/ClosedCaptionButton';
+import ClosedCaptionButtonWithPopup from '../subtitles/components/web/ClosedCaptionButtonWithPopup';
 import TileViewButton from '../video-layout/components/TileViewButton';
 import VideoQualityButton from '../video-quality/components/VideoQualityButton.web';
 import VideoBackgroundButton from '../virtual-background/components/VideoBackgroundButton';
@@ -32,10 +32,11 @@ import { isWhiteboardVisible } from '../whiteboard/functions';
 import DownloadButton from './components/DownloadButton';
 import HelpButton from './components/HelpButton';
 import AudioSettingsButton from './components/web/AudioSettingsButton';
-import CustomOptionButton from './components/web/CustomOptionButton';
+import DistressButton from './components/web/DistressButton';
 import FullscreenButton from './components/web/FullscreenButton';
 import LinkToSalesforceButton from './components/web/LinkToSalesforceButton';
 import ProfileButton from './components/web/ProfileButton';
+import RoleMatchingButton from './components/web/RoleMatchingButton';
 import ShareDesktopButton from './components/web/ShareDesktopButton';
 import ToggleCameraButton from './components/web/ToggleCameraButton';
 import VideoSettingsButton from './components/web/VideoSettingsButton';
@@ -81,8 +82,7 @@ export function isToolboxVisible(state: IReduxState) {
     const { iAmRecorder, iAmSipGateway, toolbarConfig } = state['features/base/config'];
     const { alwaysVisible } = toolbarConfig || {};
     const {
-        timeoutID,
-        visible
+        timeoutID, visible
     } = state['features/toolbox'];
     const { audioSettingsVisible, videoSettingsVisible } = state['features/settings'];
     const whiteboardVisible = isWhiteboardVisible(state);
@@ -234,6 +234,24 @@ export function getAllToolboxButtons(_customToolbarButtons?: {
         group: 2
     };
 
+    const distress = {
+        key: 'distress',
+        Content: DistressButton,
+        group: 2
+    };
+
+    const help = {
+        key: 'help',
+        Content: HelpButton,
+        group: 2
+    };
+
+    const rolematching = {
+        key: 'rolematching',
+        Content: RoleMatchingButton,
+        group: 2
+    };
+
     // In Narrow layout and mobile web we are using drawer for popups and that is why it is better to include
     // all forms of reactions in the overflow menu. Otherwise the toolbox will be hidden and the reactions popup
     // misaligned.
@@ -294,7 +312,7 @@ export function getAllToolboxButtons(_customToolbarButtons?: {
 
     const cc = {
         key: 'closedcaptions',
-        Content: ClosedCaptionButton,
+        Content: ClosedCaptionButtonWithPopup,
         group: 2
     };
 
@@ -389,19 +407,27 @@ export function getAllToolboxButtons(_customToolbarButtons?: {
         group: 4
     };
 
-    const help = {
-        key: 'help',
-        Content: HelpButton,
-        group: 4
-    };
-
     const customButtons = _customToolbarButtons?.reduce((prev, { icon, id, text }) => {
         return {
             ...prev,
-            [id]: {
-                key: id,
-                Content: CustomOptionButton,
-                group: 4,
+            'distress': {
+                key: 'distress',
+                Content: DistressButton,
+                group: 1,
+                icon,
+                text
+            },
+            'rolematching': {
+                key: 'rolematching',
+                Content: RoleMatchingButton,
+                group: 1,
+                icon,
+                text
+            },
+            'help': {
+                key: 'help',
+                Content: HelpButton,
+                group: 1,
                 icon,
                 text
             }
@@ -440,6 +466,8 @@ export function getAllToolboxButtons(_customToolbarButtons?: {
         feedback,
         download,
         help,
+        distress,
+        rolematching,
         ...customButtons
     };
 }

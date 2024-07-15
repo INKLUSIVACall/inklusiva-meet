@@ -69,10 +69,16 @@ import {
     setAudioOutputDeviceId
 } from './react/features/base/devices/functions.web';
 import {
+    isMobileBrowser
+} from './react/features/base/environment/utils';
+import { setLastN } from './react/features/base/lastn/actions';
+import { getLastNForQualityLevel } from './react/features/base/lastn/functions';
+import {
     JitsiConferenceErrors,
     JitsiConferenceEvents,
     JitsiE2ePingEvents,
     JitsiMediaDevicesEvents,
+    JitsiRecordingConstants,
     JitsiTrackErrors,
     JitsiTrackEvents,
     browser
@@ -104,12 +110,15 @@ import {
     participantSourcesUpdated,
     participantUpdated,
     screenshareParticipantDisplayNameChanged,
+    updateIcRoles,
     updateRemoteParticipantFeatures
 } from './react/features/base/participants/actions';
+import { PARTICIPANT_ROLE } from './react/features/base/participants/constants';
 import {
     getLocalParticipant,
     getNormalizedDisplayName,
-    getVirtualScreenshareParticipantByOwnerId
+    getVirtualScreenshareParticipantByOwnerId,
+    isParticipantModerator
 } from './react/features/base/participants/functions';
 import { updateSettings } from './react/features/base/settings/actions';
 import {
@@ -133,6 +142,7 @@ import { downloadJSON } from './react/features/base/util/downloadJSON';
 import { showDesktopPicker } from './react/features/desktop-picker/actions';
 import { appendSuffix } from './react/features/display-name/functions';
 import { maybeOpenFeedbackDialog, submitFeedback } from './react/features/feedback/actions';
+import { updateTranscriptLink } from './react/features/inklusiva/transcription/actions.web';
 import { initKeyboardShortcuts } from './react/features/keyboard-shortcuts/actions';
 import { maybeSetLobbyChatMessageListener } from './react/features/lobby/actions.any';
 import { setNoiseSuppressionEnabled } from './react/features/noise-suppression/actions';
@@ -148,9 +158,11 @@ import {
 } from './react/features/notifications/constants';
 import { isModerationNotificationDisplayed } from './react/features/notifications/functions';
 import { mediaPermissionPromptVisibilityChanged } from './react/features/overlay/actions';
+import { open as openParticipantsPane } from './react/features/participants-pane/actions.web';
 import { suspendDetected } from './react/features/power-monitor/actions';
 import { initPrejoin, makePrecallTest } from './react/features/prejoin/actions';
 import { isPrejoinPageVisible } from './react/features/prejoin/functions';
+import { getActiveSession } from './react/features/recording/functions';
 import { disableReceiver, stopReceiver } from './react/features/remote-control/actions';
 import { setScreenAudioShareState } from './react/features/screen-share/actions.web';
 import { isScreenAudioShared } from './react/features/screen-share/functions';
@@ -159,9 +171,13 @@ import { AudioMixerEffect } from './react/features/stream-effects/audio-mixer/Au
 import { createRnnoiseProcessor } from './react/features/stream-effects/rnnoise';
 import { endpointMessageReceived } from './react/features/subtitles/actions.any';
 import { handleToggleVideoMuted } from './react/features/toolbox/actions.any';
+import { setTileView } from './react/features/video-layout/actions.any';
 import { muteLocal } from './react/features/video-menu/actions.any';
+import { setPreferredVideoQuality } from './react/features/video-quality/actions';
+import { VIDEO_QUALITY_LEVELS } from './react/features/video-quality/constants';
 import { iAmVisitor } from './react/features/visitors/functions';
 import UIEvents from './service/UI/UIEvents';
+
 
 const logger = Logger.getLogger(__filename);
 
@@ -353,10 +369,38 @@ class ConferenceConnector {
         }
     }
 
+    _setPreferredVideoQuality(qualityLevel) {
+        APP.store.dispatch(setPreferredVideoQuality(qualityLevel));
+
+        const DEFAULT_LAST_N = 20;
+
+        let _channelLastN = APP.store.getState()['features/base/config'].channelLastN;
+
+        _channelLastN = _channelLastN === -1 ? DEFAULT_LAST_N : _channelLastN;
+        const lastN = getLastNForQualityLevel(qualityLevel, _channelLastN);
+
+        // Set the lastN for the conference.
+        APP.store.dispatch(setLastN(lastN));
+    }
+
     /**
      *
      */
     _handleConferenceJoined() {
+        const transcriptionLink = APP.store.getState()['features/inklusiva/userdata'].transcriptionLink;
+
+        if (transcriptionLink) {
+            APP.store.dispatch(updateTranscriptLink(transcriptionLink));
+        }
+        APP.store.dispatch(setTileView(true));
+        if (!config.iAmRecorder && !isMobileBrowser()) {
+            APP.store.dispatch(openParticipantsPane());
+        }
+
+        setTimeout(() => {
+            this._setPreferredVideoQuality(VIDEO_QUALITY_LEVELS.HIGH);
+        }, 3000);
+
         this._unsubscribe();
         this._resolve();
     }
@@ -2004,6 +2048,39 @@ export default {
             }
         );
 
+        room.on(
+            JitsiConferenceEvents.USER_IC_ROLES_CHANGED, (id, roles) => {
+                APP.store.dispatch(updateIcRoles(id, roles));
+            }
+        );
+
+        room.on(
+            JitsiConferenceEvents.ROOM_IC_TRANSCRIPT_LINKS_CHANGED, link => {
+                console.log('ROOM_IC_TRANSCRIPT_LINKS_CHANGED', link);
+                APP.store.dispatch(updateTranscriptLink(link));
+            }
+        );
+
+        room.on(
+            JitsiConferenceEvents.ROOM_IC_REJECT_RECORDING, () => {
+                const localParticipant = getLocalParticipant(APP.store.getState());
+
+                if (localParticipant.role === PARTICIPANT_ROLE.MODERATOR) {
+                    const activeSession = getActiveSession(APP.store.getState(), JitsiRecordingConstants.mode.FILE);
+
+                    logger.info('Member rejected recording');
+
+                    if (activeSession && activeSession.id) {
+                        APP.store.getState()['features/base/conference'].conference.stopRecording(activeSession.id);
+                    } else {
+                        logger.error('No recording or streaming session found');
+                    }
+                } else {
+                    logger.error('Moderator check for ', localParticipant.id, ' failed');
+                }
+            }
+        );
+
         // call hangup
         APP.UI.addListener(UIEvents.HANGUP, () => {
             this.hangup(true);
@@ -2468,9 +2545,9 @@ export default {
              * and let the page take care of sending the message, since there will be
              * a redirect to the page regardlessly.
              */
-            if (!interfaceConfig.SHOW_PROMOTIONAL_CLOSE_PAGE) {
-                APP.API.notifyReadyToClose();
-            }
+            // if (!interfaceConfig.SHOW_PROMOTIONAL_CLOSE_PAGE) {
+            //     APP.API.notifyReadyToClose();
+            // }
             APP.store.dispatch(maybeRedirectToWelcomePage(values[0]));
         });
     },

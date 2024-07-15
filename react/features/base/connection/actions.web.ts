@@ -9,6 +9,7 @@ import { NOTIFICATION_TIMEOUT_TYPE } from '../../notifications/constants';
 import { stopLocalVideoRecording } from '../../recording/actions.any';
 import LocalRecordingManager from '../../recording/components/Recording/LocalRecordingManager.web';
 import { setJWT } from '../jwt/actions';
+import { setUserdata } from '../../inklusiva/userdata/actions';
 
 import { _connectInternal } from './actions.any';
 
@@ -34,7 +35,7 @@ export function connect(id?: string, password?: string) {
                         return getJaasJWT(state);
                     }
                 })
-                .then(j => j && dispatch(setJWT(j)))
+                .then(j => j && dispatch(setJWT(j)) && dispatch(setUserdata(j)))
                 .then(() => _connectInternal(id, password));
         }
 

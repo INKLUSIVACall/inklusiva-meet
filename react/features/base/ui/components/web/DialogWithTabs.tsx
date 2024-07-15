@@ -19,7 +19,9 @@ const useStyles = makeStyles()(theme => {
     return {
         dialog: {
             flexDirection: 'row',
-            height: '560px',
+
+            // height: '780px',
+            height: '75vh',
 
             '@media (min-width: 608px) and (max-width: 712px)': {
                 width: '560px'
@@ -41,7 +43,7 @@ const useStyles = makeStyles()(theme => {
         sidebar: {
             display: 'flex',
             flexDirection: 'column',
-            minWidth: '211px',
+            minWidth: '290px',
             maxWidth: '100%',
             borderRight: `1px solid ${theme.palette.ui03}`,
 
@@ -73,7 +75,8 @@ const useStyles = makeStyles()(theme => {
             ...withPixelLineHeight(theme.typography.heading5),
             color: `${theme.palette.text01} !important`,
             margin: 0,
-            padding: 0
+            padding: 0,
+            fontSize: '1.25rem'
         },
 
         contentContainer: {
@@ -96,6 +99,7 @@ const useStyles = makeStyles()(theme => {
             alignItems: 'center',
             justifyContent: 'flex-end',
             flexGrow: 0,
+            fontSize: '0.875rem',
 
             [`@media (max-width: ${MOBILE_BREAKPOINT}px)`]: {
                 justifyContent: 'space-between',
@@ -153,6 +157,8 @@ export interface IDialogTab<P> {
     name: string;
     props?: IObject;
     propsUpdateFunction?: (tabState: IObject, newProps: P, tabStates?: (IObject | undefined)[]) => P;
+    separatorAfter?: boolean;
+    specialTab?: boolean;
     submit?: Function;
 }
 
@@ -161,12 +167,7 @@ interface IProps extends IBaseProps {
     tabs: IDialogTab<any>[];
 }
 
-const DialogWithTabs = ({
-    className,
-    defaultTab,
-    titleKey,
-    tabs
-}: IProps) => {
+const DialogWithTabs = ({ className, defaultTab, titleKey, tabs }: IProps) => {
     const { classes, cx } = useStyles();
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -196,20 +197,17 @@ const DialogWithTabs = ({
         setUserSelected(true);
         setSelectedTab(tabName);
     }, []);
-
     const back = useCallback(() => {
         onUserSelection(undefined);
     }, []);
-
 
     // the userSelected state is used to prevent setting focus when the user
     // didn't actually interact (for the first rendering for example)
     useEffect(() => {
         if (userSelected) {
-            document.querySelector<HTMLElement>(isMobile
-                ? `.${classes.title}`
-                : `#${`dialogtab-button-${selectedTab}`}`
-            )?.focus();
+            document
+                .querySelector<HTMLElement>(isMobile ? `.${classes.title}` : `#${`dialogtab-button-${selectedTab}`}`)
+                ?.focus();
             setUserSelected(false);
         }
     }, [ isMobile, userSelected, selectedTab ]);
@@ -223,52 +221,61 @@ const DialogWithTabs = ({
         dispatch(hideDialog());
     }, []);
 
-    const onClick = useCallback((tabName: string) => () => {
-        onUserSelection(tabName);
-    }, []);
-
-    const onTabKeyDown = useCallback((index: number) => (event: React.KeyboardEvent<HTMLDivElement>) => {
-        let newTab: IDialogTab<any> | null = null;
-
-        if (event.key === 'ArrowUp') {
-            newTab = index === 0 ? tabs[tabs.length - 1] : tabs[index - 1];
-        }
-
-        if (event.key === 'ArrowDown') {
-            newTab = index === tabs.length - 1 ? tabs[0] : tabs[index + 1];
-        }
-
-        if (newTab !== null) {
-            onUserSelection(newTab.name);
-        }
-    }, [ tabs.length ]);
-
-    const onMobileKeyDown = useCallback((tabName: string) => (event: React.KeyboardEvent<HTMLDivElement>) => {
-        if (event.key === ' ' || event.key === 'Enter') {
+    const onClick = useCallback(
+        (tabName: string) => () => {
             onUserSelection(tabName);
-        }
-    }, [ classes.contentContainer ]);
+        },
+        []
+    );
+
+    const onTabKeyDown = useCallback(
+        (index: number) => (event: React.KeyboardEvent<HTMLDivElement>) => {
+            let newTab: IDialogTab<any> | null = null;
+
+            if (event.key === 'ArrowUp') {
+                newTab = index === 0 ? tabs[tabs.length - 1] : tabs[index - 1];
+            }
+
+            if (event.key === 'ArrowDown') {
+                newTab = index === tabs.length - 1 ? tabs[0] : tabs[index + 1];
+            }
+
+            if (newTab !== null) {
+                onUserSelection(newTab.name);
+            }
+        },
+        [ tabs.length ]
+    );
+
+    const onMobileKeyDown = useCallback(
+        (tabName: string) => (event: React.KeyboardEvent<HTMLDivElement>) => {
+            if (event.key === ' ' || event.key === 'Enter') {
+                onUserSelection(tabName);
+            }
+        },
+        [ classes.contentContainer ]
+    );
 
     const getTabProps = (tabId: number) => {
         const tabConfiguration = tabs[tabId];
         const currentTabState = tabStates[tabId];
 
         if (tabConfiguration.propsUpdateFunction) {
-            return tabConfiguration.propsUpdateFunction(
-                currentTabState ?? {},
-                tabConfiguration.props ?? {},
-                tabStates);
+            return tabConfiguration.propsUpdateFunction(currentTabState ?? {}, tabConfiguration.props ?? {}, tabStates);
         }
 
         return { ...currentTabState };
     };
 
-    const onTabStateChange = useCallback((tabId: number, state: IObject) => {
-        const newTabStates = [ ...tabStates ];
+    const onTabStateChange = useCallback(
+        (tabId: number, state: IObject) => {
+            const newTabStates = [ ...tabStates ];
 
-        newTabStates[tabId] = state;
-        setTabStates(newTabStates);
-    }, [ tabStates ]);
+            newTabStates[tabId] = state;
+            setTabStates(newTabStates);
+        },
+        [ tabStates ]
+    );
 
     const onSubmit = useCallback(() => {
         tabs.forEach(({ submit }, idx) => {
@@ -304,13 +311,16 @@ const DialogWithTabs = ({
         return null;
     }, [ selectedTabIndex, tabStates ]);
 
-    const closeIcon = useMemo(() => (
-        <ClickableIcon
-            accessibilityLabel = { t('dialog.accessibilityLabel.close') }
-            icon = { IconCloseLarge }
-            id = 'modal-header-close-button'
-            onClick = { onClose } />
-    ), [ onClose ]);
+    const closeIcon = useMemo(
+        () => (
+            <ClickableIcon
+                accessibilityLabel = { t('dialog.accessibilityLabel.close') }
+                icon = { IconCloseLarge }
+                id = 'modal-header-close-button'
+                onClick = { onClose } />
+        ),
+        [ onClose ]
+    );
 
     return (
         <BaseDialog
@@ -342,7 +352,11 @@ const DialogWithTabs = ({
                         return (
                             <ContextMenuItem
                                 accessibilityLabel = { label }
-                                className = { cx(isMobile && classes.menuItemMobile) }
+                                className = { cx(
+                                    isMobile && classes.menuItemMobile,
+                                    tab.specialTab && 'specialTab',
+                                    tab.separatorAfter && 'separatorAfter'
+                                ) }
                                 controls = { isMobile ? undefined : `dialogtab-content-${tab.name}` }
                                 icon = { tab.icon }
                                 id = { `dialogtab-button-${tab.name}` }
@@ -367,7 +381,7 @@ const DialogWithTabs = ({
                                 <h1
                                     className = { classes.title }
                                     tabIndex = { -1 }>
-                                    {(selectedTabIndex !== null) && t(tabs[selectedTabIndex].labelKey)}
+                                    {selectedTabIndex !== null && t(tabs[selectedTabIndex].labelKey)}
                                 </h1>
                                 <ClickableIcon
                                     accessibilityLabel = { t('dialog.Back') }
@@ -380,24 +394,19 @@ const DialogWithTabs = ({
                     )}
                     {tabs.map(tab => (
                         <div
-                            aria-labelledby = { isMobile ? undefined : `${tab.name}-button` }
+                            aria-labelledby = { isMobile ? undefined : `dialogtab-content-${tab.name}` }
                             className = { cx(classes.content, tab.name !== selectedTab && 'hide') }
                             id = { `dialogtab-content-${tab.name}` }
                             key = { tab.name }
                             role = { isMobile ? undefined : 'tabpanel' }
                             tabIndex = { isMobile ? -1 : 0 }>
-                            { tab.name === selectedTab && selectedTabComponent }
+                            {tab.name === selectedTab && selectedTabComponent}
                         </div>
                     ))}
                     {/* But show the close button *after* tab panels when not on mobile (using tabs).
                     This is so that we can tab back and forth tab buttons and tab panels easily. */}
-                    {!isMobile && (
-                        <div className = { cx(classes.buttonContainer, classes.header) }>
-                            {closeIcon}
-                        </div>
-                    )}
-                    <div
-                        className = { cx(classes.buttonContainer, classes.footer) }>
+                    {!isMobile && <div className = { cx(classes.buttonContainer, classes.header) }>{closeIcon}</div>}
+                    <div className = { cx(classes.buttonContainer, classes.footer) }>
                         <Button
                             accessibilityLabel = { t('dialog.accessibilityLabel.Cancel') }
                             id = 'modal-dialog-cancel-button'

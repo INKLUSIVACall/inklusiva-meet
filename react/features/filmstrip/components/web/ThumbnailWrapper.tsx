@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { shouldComponentUpdate } from 'react-window';
 
 import { IReduxState } from '../../../app/types';
+import { IC_ROLES } from '../../../base/conference/icRoles';
 import { getLocalParticipant } from '../../../base/participants/functions';
 import { getHideSelfView } from '../../../base/settings/functions.any';
 import { LAYOUTS } from '../../../video-layout/constants';
@@ -152,7 +153,23 @@ class ThumbnailWrapper extends Component<IProps> {
 function _mapStateToProps(state: IReduxState, ownProps: { columnIndex: number;
         data: { filmstripType: string; }; index?: number; rowIndex: number; }) {
     const _currentLayout = getCurrentLayout(state);
-    const { remoteParticipants: remote } = state['features/filmstrip'];
+    const { remoteParticipants: remoteParticipantsOriginal } = state['features/filmstrip'];
+
+    const { assistant } = state['features/inklusiva/userdata'];
+    let remote: string[] = [];
+
+    if (assistant.signLang.display === 'window') {
+        const { conference } = state['features/base/conference'];
+
+        remoteParticipantsOriginal?.forEach((participantId: string) => {
+            if (!conference?.checkMemberHasRole(participantId, IC_ROLES.SIGN_LANG_TRANSLATOR)) {
+                remote.push(participantId);
+            }
+        });
+    } else {
+        remote = remoteParticipantsOriginal;
+    }
+
     const activeParticipants = getActiveParticipantsIds(state);
     const disableSelfView = getHideSelfView(state);
     const _verticalViewGrid = showGridInVerticalView(state);

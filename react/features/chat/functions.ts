@@ -8,6 +8,7 @@ import { IReduxState } from '../app/types';
 import { getLocalizedDateFormatter } from '../base/i18n/dateUtil';
 import i18next from '../base/i18n/i18next';
 import { escapeRegexp } from '../base/util/helpers';
+import { INotificationProps } from '../notifications/types';
 
 import { MESSAGE_TYPE_ERROR, MESSAGE_TYPE_LOCAL, TIMESTAMP_FORMAT } from './constants';
 import { IMessage } from './types';
@@ -171,4 +172,39 @@ export function getPrivateNoticeMessage(message: IMessage) {
     return i18next.t('chat.privateNotice', {
         recipient: message.messageType === MESSAGE_TYPE_LOCAL ? message.recipient : i18next.t('chat.you')
     });
+}
+
+/**
+ * Takes a notification in form of an action and deconstructs it to build a valid message text.
+ *
+ * @param {Object} action - The notification action.
+ * @returns {string}
+ */
+export function buildMessageTextFromNotification(action: { props: INotificationProps; timeout: number; uid: string; }) {
+    const { titleKey, title, descriptionKey, titleArguments, uid } = action.props;
+
+    switch (titleKey) {
+    case 'notify.moderator':
+        return i18next.t(titleKey ?? '');
+
+    case 'notify.leftOneMember':
+    case 'notify.connectedOneMember':
+    case 'notify.connectedTwoMembers':
+    case 'notify.leftTwoMembers':
+    case 'notify.leftThreePlusMembers':
+    case 'notify.connectedThreePlusMembers':
+        return `${i18next.t(titleKey ?? '', titleArguments)}.`;
+    case 'toolbar.noisyAudioInputTitle':
+        return `${i18next.t(titleKey)} ${i18next.t(descriptionKey ?? '')}.`;
+    default:
+        switch (uid) {
+        case 'LOBBY_NOTIFICATION':
+            return `${title} ${i18next.t(descriptionKey ?? '').charAt(0)
+.toLowerCase() + i18next.t(descriptionKey ?? '').slice(1)}.`;
+        case 'RAISE_HAND_NOTIFICATION':
+            return `${title ?? titleKey}${i18next.t(descriptionKey ?? '')}`;
+        default:
+            return `${i18next.t(titleKey ?? '')}. ${i18next.t(descriptionKey ?? '')}.`;
+        }
+    }
 }

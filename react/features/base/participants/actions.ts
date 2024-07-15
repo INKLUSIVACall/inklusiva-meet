@@ -1,10 +1,12 @@
 import { IStore } from '../../app/types';
 import { showNotification } from '../../notifications/actions';
 import { NOTIFICATION_TIMEOUT_TYPE } from '../../notifications/constants';
+import { ICRole } from '../conference/icRoles';
 import { IJitsiConference } from '../conference/reducer';
 import { set } from '../redux/functions';
 
 import {
+    ADD_IC_ROLE,
     DOMINANT_SPEAKER_CHANGED,
     GRANT_MODERATOR,
     HIDDEN_PARTICIPANT_JOINED,
@@ -23,9 +25,11 @@ import {
     PARTICIPANT_UPDATED,
     PIN_PARTICIPANT,
     RAISE_HAND_UPDATED,
+    REMOVE_IC_ROLE,
     SCREENSHARE_PARTICIPANT_NAME_CHANGED,
     SET_LOADABLE_AVATAR_URL,
-    SET_LOCAL_PARTICIPANT_RECORDING_STATUS
+    SET_LOCAL_PARTICIPANT_RECORDING_STATUS,
+    UPDATE_IC_ROLES
 } from './actionTypes';
 import {
     DISCO_REMOTE_CONTROL_FEATURE
@@ -86,6 +90,65 @@ export function grantModerator(id: string) {
     return {
         type: GRANT_MODERATOR,
         id
+    };
+}
+
+/**
+ * Create an action for granting an IC role to a participant.
+ *
+ * @param {string} id - Participant's ID.
+ * @returns {{
+*     type: ADD_IC_ROLE,
+*     id: string
+*     icRole: string,
+*     partnerId: string|null
+* }}
+*/
+export function addIcRole(id: string, icRole: string, partnerId: string | null = null) {
+    return {
+        type: ADD_IC_ROLE,
+        id,
+        icRole,
+        partnerId
+    };
+}
+
+/**
+ * Create an action for granting moderator to a participant.
+ *
+ * @param {string} id - Participant's ID.
+ * @returns {{
+*     type: REMOVE_IC_ROLE,
+*     id: string,
+*     icRole: string,
+*     partnerId: string|null
+* }}
+*/
+export function removeIcRole(id: string, icRole: string, partnerId: string | null = null) {
+    return {
+        type: REMOVE_IC_ROLE,
+        id,
+        icRole,
+        partnerId
+    };
+}
+
+/**
+ * Create an action for updating the IC roles of a participant.
+ *
+ * @param {string} id - Participant's ID.
+ * @param {ICRole[]} roles - Participant's IC roles.
+ * @returns {{
+ *    type: UPDATE_IC_ROLES,
+ *    id: string
+ *    roles: ICRole[]
+ *    }}
+ */
+export function updateIcRoles(id: string, roles: ICRole[]) {
+    return {
+        type: UPDATE_IC_ROLES,
+        id,
+        roles
     };
 }
 

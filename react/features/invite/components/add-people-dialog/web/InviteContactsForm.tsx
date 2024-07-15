@@ -184,6 +184,7 @@ class InviteContactsForm extends AbstractAddPeopleDialog<IProps, IState> {
             <div
                 className = { this.props.classes.formWrap }
                 onKeyDown = { this._onKeyDown }>
+                <label htmlFor = 'invite-contacts-input'>{ t('addPeople.addContacts') }</label>
                 <MultiSelectAutocomplete
                     id = 'invite-contacts-input'
                     isDisabled = { isMultiSelectDisabled }

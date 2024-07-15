@@ -15,6 +15,7 @@ import AbstractAudioMuteButton, {
     IProps as AbstractAudioMuteButtonProps,
     mapStateToProps as abstractMapStateToProps
 } from '../AbstractAudioMuteButton';
+import { IKeyboardShortcut } from '../../../keyboard-shortcuts/types';
 
 const styles = () => {
     return {
@@ -49,6 +50,7 @@ interface IProps extends AbstractAudioMuteButtonProps {
  * @augments AbstractAudioMuteButton
  */
 class AudioMuteButton extends AbstractAudioMuteButton<IProps> {
+    accessibilityLabelShortcut = 'keyboardShortcuts.mute';
 
     /**
      * Initializes a new {@code AudioMuteButton} instance.
@@ -73,7 +75,9 @@ class AudioMuteButton extends AbstractAudioMuteButton<IProps> {
     componentDidMount() {
         this.props.dispatch(registerShortcut({
             character: 'M',
-            helpDescription: 'keyboardShortcuts.mute',
+            alt: true,
+            shift: true,
+            helpDescription: this.accessibilityLabelShortcut,
             handler: this._onKeyboardShortcut
         }));
     }

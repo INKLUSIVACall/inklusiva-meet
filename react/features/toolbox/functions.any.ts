@@ -31,3 +31,15 @@ export function getJwtDisabledButtons(state: IReduxState) {
         return acc;
     }, []);
 }
+
+/**
+ * Indicated weather the conference info is visible or not.
+ *
+ * @param {IReduxState} state - The state from the Redux store.
+ * @returns {boolean}
+ */
+export function isConferenceInfoVisible(state: IReduxState) {
+    const { iAmRecorder, iAmSipGateway } = state['features/base/config'];
+
+    return Boolean(!iAmRecorder && !iAmSipGateway && state['features/toolbox'].conferenceInfoVisible);
+}

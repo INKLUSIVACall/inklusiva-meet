@@ -1,5 +1,7 @@
+import clsx from 'clsx';
 import React, { ReactNode, useCallback } from 'react';
 import { WithTranslation } from 'react-i18next';
+import { useStore } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
 
 import Avatar from '../../../base/avatar/components/Avatar';
@@ -8,14 +10,26 @@ import { withPixelLineHeight } from '../../../base/styles/functions.web';
 import ListItem from '../../../base/ui/components/web/ListItem';
 import {
     ACTION_TRIGGER,
+    ACTIVE_CONNECTION,
     type ActionTrigger,
     AudioStateIcons,
+    ConnectionStateIcons,
+    DEFAULT_MEETING_ROLE,
+    DEFAULT_MEETING_STATE,
+    ESCORT_REQUIRED,
+    EscortIcons,
     MEDIA_STATE,
     MediaState,
+    MeetingRoleIcons,
+    MeetingStateIcons,
+    SUPPORT_OFFERED,
+    SupportOfferIcons,
+    TECHNICAL_SUPPORT_REQUIRED,
+    TechnicalSupportIcons,
     VideoStateIcons
 } from '../../constants';
 
-import { RaisedHandIndicator } from './RaisedHandIndicator';
+import RaisedHandIndicator from './RaisedHandIndicator';
 
 interface IProps extends WithTranslation {
 
@@ -43,6 +57,11 @@ interface IProps extends WithTranslation {
      * The name of the participant. Used for showing lobby names.
      */
     displayName?: string;
+
+    /**
+     * True if the user is in the Lobby.
+     */
+    inLobby?: boolean;
 
     /**
      * Is this item highlighted/raised.
@@ -100,7 +119,8 @@ const useStyles = makeStyles()(theme => {
         nameContainer: {
             display: 'flex',
             flex: 1,
-            overflow: 'hidden'
+            overflow: 'hidden',
+            fontSize: '0.875rem'
         },
 
         name: {
@@ -142,43 +162,78 @@ function ParticipantItem({
     raisedHand,
     t,
     videoMediaState = MEDIA_STATE.NONE,
-    youText
+    youText,
+    inLobby
 }: IProps) {
     const onClick = useCallback(
-        () => openDrawerForParticipant?.({
-            participantID,
-            displayName
-        }), []);
+        () =>
+            openDrawerForParticipant?.({
+                participantID,
+                displayName
+            }),
+        []
+    );
 
     const { classes } = useStyles();
 
-    const icon = (
-        <Avatar
+    const meetingRole = DEFAULT_MEETING_ROLE;
+
+    const icon
+        = (<Avatar
             className = { classes.avatar }
             displayName = { displayName }
             participantId = { participantID }
-            size = { 32 } />
-    );
+            size = { 32 } />)
+    ;
+
+    // Reading roles of participant
+    const store = useStore();
+    const { conference } = store.getState()['features/base/conference'];
+    const icRoles = conference?.getMemberICRoles(participantID);
+
+    // Role cascading
+    let mainRole = DEFAULT_MEETING_ROLE;
+
+    if (isModerator) {
+        mainRole = (icRoles && icRoles[0]?.name) || 'moderator';
+    } else {
+        mainRole = (icRoles && icRoles[0]?.name) || 'participant';
+    }
+
+    // Getting the role icon
+    const roleIcon = MeetingRoleIcons[mainRole];
 
     const text = (
         <>
             <div className = { classes.nameContainer }>
-                <div className = { classes.name }>
-                    {displayName}
-                </div>
+                {inLobby && <div className = { clsx(classes.name, 'lobby-participant-name') }>{displayName}</div>}
+                {!inLobby && <div className = { classes.name }>{displayName}</div>}
                 {local ? <span>&nbsp;({youText})</span> : null}
+
+                <div className = 'LeftPlacedIcons'>
+                    {/* {TECHNICAL_SUPPORT_REQUIRED && TechnicalSupportIcons} */}
+                    {/* {ESCORT_REQUIRED && EscortIcons} */}
+                    {/* {SUPPORT_OFFERED && SupportOfferIcons} */}
+                    {ACTIVE_CONNECTION && ConnectionStateIcons}
+                    {raisedHand && <RaisedHandIndicator participantID = { participantID } />}
+                </div>
             </div>
-            {isModerator && !disableModeratorIndicator && <div className = { classes.moderatorLabel }>
+            {/* {isModerator && !disableModeratorIndicator && <div className = { classes.moderatorLabel }>
                 {t('videothumbnail.moderator')}
-            </div>}
+            </div>}*/}
         </>
     );
 
     const indicators = (
         <>
-            {raisedHand && <RaisedHandIndicator />}
-            {VideoStateIcons[videoMediaState]}
-            {AudioStateIcons[audioMediaState]}
+            <div className = 'MiddlePlacedIcons'>
+                {VideoStateIcons[videoMediaState]}
+                {AudioStateIcons[audioMediaState]}
+            </div>
+            <div className = 'RightPlacedIcons'>
+                {MeetingStateIcons[DEFAULT_MEETING_STATE]}
+                {roleIcon}
+            </div>
         </>
     );
 

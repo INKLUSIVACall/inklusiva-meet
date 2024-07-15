@@ -2,6 +2,8 @@
 import { jitsiLocalStorage } from '@jitsi/js-utils';
 import _ from 'lodash';
 
+import { SET_AUDIO_CUES_ENABLED_STATE, SET_VISUAL_CUES_ENABLED_STATE } from '../../inklusiva/uisettings/actionTypes';
+import { SET_USERDATA } from '../../inklusiva/userdata/actionTypes';
 import { APP_WILL_MOUNT } from '../app/actionTypes';
 import PersistenceRegistry from '../redux/PersistenceRegistry';
 import ReducerRegistry from '../redux/ReducerRegistry';
@@ -24,6 +26,7 @@ const DEFAULT_STATE: ISettingsState = {
     disableSelfView: false,
     displayName: undefined,
     email: undefined,
+    hideSelfView: false,
     localFlipX: true,
     maxStageParticipants: 1,
     micDeviceId: undefined,
@@ -62,6 +65,7 @@ export interface ISettingsState {
     disableSelfView?: boolean;
     displayName?: string;
     email?: string;
+    hideSelfView?: boolean;
     hideShareAudioHelper?: boolean;
     localFlipX?: boolean;
     maxStageParticipants?: number;
@@ -124,6 +128,40 @@ ReducerRegistry.register<ISettingsState>(STORE_NAME, (state = DEFAULT_STATE, act
         return {
             ...state,
             ...action.settings
+        };
+
+    case SET_AUDIO_CUES_ENABLED_STATE:
+
+        return {
+            ...state,
+            soundsIncomingMessage: action.enabled,
+            soundsParticipantJoined: action.enabled,
+            soundsParticipantKnocking: action.enabled,
+            soundsParticipantLeft: action.enabled,
+            soundsTalkWhileMuted: action.enabled,
+            soundsReactions: action.enabled
+        };
+
+    case SET_VISUAL_CUES_ENABLED_STATE:
+
+        return {
+            userSelectedNotifications: {
+                'notify.chatMessages': action.enabled
+            }
+        };
+    case SET_USERDATA:
+
+        return {
+            ...state,
+            soundsIncomingMessage: action.userData.ui.acousticCues,
+            soundsParticipantJoined: action.userData.ui.acousticCues,
+            soundsParticipantKnocking: action.userData.ui.acousticCues,
+            soundsParticipantLeft: action.userData.ui.acousticCues,
+            soundsTalkWhileMuted: action.userData.ui.acousticCues,
+            soundsReactions: action.userData.ui.acousticCues,
+            userSelectedNotifications: {
+                'notify.chatMessages': action.userData.ui.visualCues
+            }
         };
     }
 

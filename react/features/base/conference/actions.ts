@@ -138,6 +138,20 @@ function _addConferenceListeners(conference: IJitsiConference, dispatch: IStore[
         JitsiConferenceEvents.LOCK_STATE_CHANGED,
         (locked: boolean) => dispatch(lockStateChanged(conference, locked)));
 
+    conference.on(
+        JitsiConferenceEvents.UPDATE_BREAKOUT_ROOMS,
+        (breakoutRooms: any) => {
+            console.log('BOR UPDATED', breakoutRooms);
+        });
+    conference.on(JitsiConferenceEvents.USER_IC_ROLES_CHANGED,
+        (id: string, roles: []) => {
+            console.log('USER_IC_ROLES_CHANGED', id, roles);
+        });
+    conference.on(JitsiConferenceEvents.ROOM_IC_TRANSCRIPT_LINKS_CHANGED,
+        (link: string) => {
+            console.log('ROOM_IC_TRANSCRIPT_LINKS_CHANGED', link);
+        });
+
     // Dispatches into features/base/media follow:
 
     conference.on(

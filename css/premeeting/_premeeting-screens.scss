@@ -1,4 +1,9 @@
 .premeeting-screen {
+
+    .closeToolbox {
+        display: none;
+    }
+
     .action-btn {
         border-radius: 6px;
         box-sizing: border-box;
@@ -81,6 +86,7 @@
             display: flex;
             justify-content: space-between;
             padding: 8px 0;
+            flex-flow: wrap;
         }
 
         .toolbox-content,

@@ -116,6 +116,7 @@ const useStyles = makeStyles()(theme => {
             boxSizing: 'border-box',
             color: theme.palette.text01,
             ...withPixelLineHeight(theme.typography.heading6),
+            fontSize: '1rem',
 
             '.jitsi-icon': {
                 cursor: 'pointer'
@@ -217,7 +218,7 @@ const Chat = ({
             <>
                 {_isPollsEnabled && renderTabs()}
                 <div
-                    aria-labelledby = { CHAT_TABS.CHAT }
+                    aria-labelledby = { `${CHAT_TABS.CHAT}-panel` }
                     className = { cx(
                         classes.chatPanel,
                         !_isPollsEnabled && classes.chatPanelNoTabs,

@@ -19,6 +19,7 @@ const useStyles = makeStyles()(theme => {
             height: '28px',
             borderRadius: `${theme.shape.borderRadius}px 0 0 ${theme.shape.borderRadius}px`,
             marginLeft: '2px',
+            fontSize: '0.875rem',
 
             '@media (max-width: 300px)': {
                 display: 'none'
@@ -46,6 +47,7 @@ const SubjectText = () => {
             content = { subject }
             position = 'bottom'>
             <div className = { classes.container }>
+                <h1 hidden = { true } >{ subject }</h1>
                 <div className = { clsx('subject-text--content', classes.content) }>{subject}</div>
             </div>
         </Tooltip>

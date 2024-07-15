@@ -14,6 +14,69 @@ export const NATIVE_VOLUME_SLIDER_SCALE = 19;
 export const VOLUME_SLIDER_SCALE = 100;
 
 /**
+ * Minimum value of the zoom slider - this value gets divided by 100 and applied
+ * to the transform zoom of the <video> element.
+ */
+export const ZOOM_SLIDER_MINIMUM = 100;
+
+/**
+ * Maximum value of the zoom slider - this value gets divided by 100 and applied
+ * to the transform zoom of the <video> element.
+ */
+export const ZOOM_SLIDER_MAXIMUM = 300;
+
+
+/**
+ * Minimum value of the brightness slider.
+ */
+export const BRIGHTNESS_SLIDER_MINIMUM = 50;
+
+/**
+ * Maximum value of the brightness slider.
+ */
+export const BRIGHTNESS_SLIDER_MAXIMUM = 150;
+
+/**
+ * Minimum value of the contrast slider.
+ */
+export const CONTRAST_SLIDER_MINIMUM = 0;
+
+/**
+ * Maximum value of the contrast slider.
+ */
+export const CONTRAST_SLIDER_MAXIMUM = 100;
+
+/**
+ * Minimum value of the saturation slider.
+ */
+export const OPACITY_SLIDER_MINIMUM = 0;
+
+/**
+ * Maximum value of the saturation slider.
+ */
+export const OPACITY_SLIDER_MAXIMUM = 100;
+
+/**
+ * Minimum value of the saturation slider.
+ */
+export const SATURATION_SLIDER_MINIMUM = 0;
+
+/**
+ * Maximum value of the saturation slider.
+ */
+export const SATURATION_SLIDER_MAXIMUM = 100;
+
+/**
+ * Minimum value of the frequency slider.
+ */
+export const FREQUENCY_FILTER_SLIDER_MINIMUM = 0;
+
+/**
+ * Maximum value of the frequency slider.
+ */
+export const FREQUENCY_FILTER_SLIDER_MAXIMUM = 100;
+
+/**
  * Participant context menu button keys.
  */
 export const PARTICIPANT_MENU_BUTTONS = {
@@ -22,6 +85,7 @@ export const PARTICIPANT_MENU_BUTTONS = {
     CONN_STATUS: 'conn-status',
     FLIP_LOCAL_VIDEO: 'flip-local-video',
     GRANT_MODERATOR: 'grant-moderator',
+    GRANT_COHOST: 'grant-cohost',
     HIDE_SELF_VIEW: 'hide-self-view',
     KICK: 'kick',
     MUTE: 'mute',
@@ -29,6 +93,7 @@ export const PARTICIPANT_MENU_BUTTONS = {
     MUTE_OTHERS_VIDEO: 'mute-others-video',
     MUTE_VIDEO: 'mute-video',
     PIN_TO_STAGE: 'pinToStage',
+    ASSISTANCE_MESSAGE: 'assistanceMessage',
     PRIVATE_MESSAGE: 'privateMessage',
     REMOTE_CONTROL: 'remote-control',
     SEND_PARTICIPANT_TO_ROOM: 'send-participant-to-room',

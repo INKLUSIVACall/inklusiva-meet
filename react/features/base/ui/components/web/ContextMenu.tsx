@@ -121,7 +121,7 @@ interface IProps {
     tabIndex?: number;
 }
 
-const MAX_HEIGHT = 400;
+const MAX_HEIGHT = 80;
 
 const useStyles = makeStyles()(theme => {
     return {
@@ -137,7 +137,8 @@ const useStyles = makeStyles()(theme => {
             right: `${participantsPaneTheme.panePadding}px`,
             top: 0,
             zIndex: 2,
-            maxHeight: `${MAX_HEIGHT}px`,
+            maxWidth: '280px',
+            maxHeight: `${MAX_HEIGHT}vh`,
             overflowY: 'auto',
             padding: `${theme.spacing(2)} 0`
         },
@@ -200,7 +201,9 @@ const ContextMenu = ({
             container.style.maxHeight = 'none';
             const { offsetTop, offsetParent: { offsetHeight, scrollTop } } = offsetTarget;
             let outerHeight = getComputedOuterHeight(container);
-            let height = Math.min(MAX_HEIGHT, outerHeight);
+
+            const vhInPixels = window.innerHeight * MAX_HEIGHT / 100;
+            let height = Math.min(vhInPixels, outerHeight);
 
             if (offsetTop + height > offsetHeight + scrollTop && height > offsetTop) {
                 // top offset and + padding + border
@@ -209,7 +212,7 @@ const ContextMenu = ({
 
             // get the height after style changes
             outerHeight = getComputedOuterHeight(container);
-            height = Math.min(MAX_HEIGHT, outerHeight);
+            height = Math.min(vhInPixels, outerHeight);
 
             container.style.top = offsetTop + height > offsetHeight + scrollTop
                 ? `${offsetTop - outerHeight}`

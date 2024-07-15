@@ -4,7 +4,7 @@ import { ACTION_SHORTCUT_PRESSED, ACTION_SHORTCUT_RELEASED, createShortcutEvent 
 import { sendAnalytics } from '../analytics/functions';
 import { IStore } from '../app/types';
 import { clickOnVideo } from '../filmstrip/actions.web';
-import { openSettingsDialog } from '../settings/actions.web';
+import { toggleSettingsDialog } from '../settings/actions.web';
 import { SETTINGS_TABS } from '../settings/constants';
 import { iAmVisitor } from '../visitors/functions';
 
@@ -27,18 +27,21 @@ const initGlobalKeyboardShortcuts = () =>
     (dispatch: IStore['dispatch']) => {
         batch(() => {
             dispatch(registerShortcut({
-                character: '?',
+                character: 'O',
+                alt: true,
+                shift: true,
                 helpDescription: 'keyboardShortcuts.toggleShortcuts',
                 handler: () => {
                     sendAnalytics(createShortcutEvent('help'));
-                    dispatch(openSettingsDialog(SETTINGS_TABS.SHORTCUTS, false));
+                    dispatch(toggleSettingsDialog(SETTINGS_TABS.SHORTCUTS));
                 }
             }));
 
             // register SPACE shortcut in two steps to insure visibility of help message
             dispatch(registerShortcut({
-                character: ' ',
-                helpCharacter: 'SPACE',
+                character: 'SPACE', // :SPACE maps to alt+space, only space is ' '.
+                alt: true,
+                helpCharacter: ':SPACE',
                 helpDescription: 'keyboardShortcuts.pushToTalk',
                 handler: () => {
                     sendAnalytics(createShortcutEvent('push.to.talk', ACTION_SHORTCUT_RELEASED));
@@ -86,14 +89,19 @@ export const initKeyboardShortcuts = () =>
             const state = getState();
             const enabled = areKeyboardShortcutsEnabled(state);
             const shortcuts = getKeyboardShortcuts(state);
+            const focusedElement = getPriorityFocusedElement();
 
-            if (!enabled || getPriorityFocusedElement()) {
+            if (!enabled) {
                 return;
             }
 
             const key = getKeyboardKey(e).toUpperCase();
 
             if (shortcuts.has(key)) {
+                if (focusedElement?.tagName === 'TEXTAREA') {
+                    focusedElement.blur();
+                }
+
                 shortcuts.get(key)?.handler(e);
             }
         };
@@ -106,10 +114,17 @@ export const initKeyboardShortcuts = () =>
                 return;
             }
 
+            const shortcuts = getKeyboardShortcuts(state);
             const focusedElement = getPriorityFocusedElement();
             const key = getKeyboardKey(e).toUpperCase();
 
-            if (key === ' ' && !focusedElement) {
+            if (shortcuts.has(key)) {
+                if (focusedElement?.tagName === 'TEXTAREA') {
+                    focusedElement.blur();
+                }
+            }
+
+            if (key === ':SPACE') {
                 sendAnalytics(createShortcutEvent('push.to.talk', ACTION_SHORTCUT_PRESSED));
                 logger.log('Talk shortcut pressed');
                 APP.conference.muteAudio(false);

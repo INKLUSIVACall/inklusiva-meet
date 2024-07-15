@@ -3,7 +3,7 @@
  *
  * {
  *     type: CLEAR_TOOLBOX_TIMEOUT
- * }
+ * }.
  */
 export const CLEAR_TOOLBOX_TIMEOUT = 'CLEAR_TOOLBOX_TIMEOUT';
 
@@ -14,7 +14,7 @@ export const CLEAR_TOOLBOX_TIMEOUT = 'CLEAR_TOOLBOX_TIMEOUT';
  * {
  *     type: FULL_SCREEN_CHANGED,
  *     fullScreen: boolean
- * }
+ * }.
  */
 export const FULL_SCREEN_CHANGED = 'FULL_SCREEN_CHANGED';
 
@@ -25,7 +25,7 @@ export const FULL_SCREEN_CHANGED = 'FULL_SCREEN_CHANGED';
  * {
  *     type: SET_FULL_SCREEN,
  *     fullScreen: boolean
- * }
+ * }.
  */
 export const SET_FULL_SCREEN = 'SET_FULL_SCREEN';
 
@@ -35,7 +35,7 @@ export const SET_FULL_SCREEN = 'SET_FULL_SCREEN';
  * {
  *     type: SET_HANGUP_MENU_VISIBLE,
  *     visible: boolean
- * }
+ * }.
  */
 export const SET_HANGUP_MENU_VISIBLE = 'SET_HANGUP_MENU_VISIBLE';
 
@@ -50,7 +50,7 @@ export const SET_OVERFLOW_DRAWER = 'SET_OVERFLOW_DRAWER';
  * {
  *     type: SET_OVERFLOW_MENU_VISIBLE,
  *     visible: boolean
- * }
+ * }.
  */
 export const SET_OVERFLOW_MENU_VISIBLE = 'SET_OVERFLOW_MENU_VISIBLE';
 
@@ -61,7 +61,7 @@ export const SET_OVERFLOW_MENU_VISIBLE = 'SET_OVERFLOW_MENU_VISIBLE';
  * {
  *     type: SET_TOOLBAR_HOVERED,
  *     hovered: boolean
- * }
+ * }.
  */
 export const SET_TOOLBAR_HOVERED = 'SET_TOOLBAR_HOVERED';
 
@@ -71,7 +71,7 @@ export const SET_TOOLBAR_HOVERED = 'SET_TOOLBAR_HOVERED';
  * {
  *     type: SET_TOOLBOX_ENABLED,
  *     enabled: boolean
- * }
+ * }.
  */
 export const SET_TOOLBOX_ENABLED = 'SET_TOOLBOX_ENABLED';
 
@@ -83,7 +83,7 @@ export const SET_TOOLBOX_ENABLED = 'SET_TOOLBOX_ENABLED';
  *     type: SET_TOOLBOX_TIMEOUT,
  *     handler: Function,
  *     timeoutMS: number
- * }
+ * }.
  */
 export const SET_TOOLBOX_TIMEOUT = 'SET_TOOLBOX_TIMEOUT';
 
@@ -93,7 +93,7 @@ export const SET_TOOLBOX_TIMEOUT = 'SET_TOOLBOX_TIMEOUT';
  * {
  *     type: SET_TOOLBOX_VISIBLE,
  *     visible: boolean
- * }
+ * }.
  */
 export const SET_TOOLBOX_VISIBLE = 'SET_TOOLBOX_VISIBLE';
 
@@ -102,7 +102,7 @@ export const SET_TOOLBOX_VISIBLE = 'SET_TOOLBOX_VISIBLE';
  *
  * {
  *     type: TOGGLE_TOOLBOX_VISIBLE
- * }
+ * }.
  */
 export const TOGGLE_TOOLBOX_VISIBLE = 'TOGGLE_TOOLBOX_VISIBLE';
 
@@ -111,6 +111,25 @@ export const TOGGLE_TOOLBOX_VISIBLE = 'TOGGLE_TOOLBOX_VISIBLE';
  *
  * {
  *     type: SET_TOOLBOX_SHIFT_UP
- * }
+ * }.
  */
 export const SET_TOOLBOX_SHIFT_UP = 'SET_TOOLBOX_SHIFT_UP';
+
+/**
+ * The type of the (redux) action which shows/hides the conference info.
+ *
+ * {
+ *    type: SET_CONFERENCE_INFO_VISIBLE,
+ *    visible: boolean
+ *  }.
+ */
+export const SET_CONFERENCE_INFO_VISIBLE = 'SET_CONFERENCE_INFO_VISIBLE';
+
+/**
+ * The type of the redux action which toggles the help dialog visibility.
+ *
+ * {
+ *      type: OPEN_HELP_DIALOG
+ * }
+ */
+export const OPEN_HELP_DIALOG = 'OPEN_HELP_DIALOG';

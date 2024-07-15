@@ -2,7 +2,7 @@ import { Theme } from '@mui/material';
 import { withStyles } from '@mui/styles';
 import React from 'react';
 import { WithTranslation } from 'react-i18next';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 
 import { IReduxState, IStore } from '../../app/types';
 import { getAvailableDevices } from '../../base/devices/actions.web';
@@ -52,6 +52,11 @@ export interface IProps extends AbstractDialogTabProps, WithTranslation {
     disableDeviceChange: boolean;
 
     /**
+     * Whether to show hide self view setting.
+     */
+    disableHideSelfView: boolean;
+
+    /**
      * Whether video input dropdown should be enabled or not.
      */
     disableVideoInputSelect: boolean;
@@ -70,6 +75,11 @@ export interface IProps extends AbstractDialogTabProps, WithTranslation {
      * Whether to hide the additional settings or not.
      */
     hideAdditionalSettings: boolean;
+
+    /**
+     * Whether the own video is hidden or not.
+     */
+    hideSelfView: boolean;
 
     /**
      * Whether video input preview should be displayed or not.
@@ -110,11 +120,12 @@ const styles = (theme: Theme) => {
             display: 'flex',
             flexDirection: 'column' as const,
             padding: '0 2px',
-            width: '100%'
+            width: '100%',
+            fontsize: '0.875rem'
         },
 
         checkboxContainer: {
-            margin: `${theme.spacing(4)} 0`
+            margin: `${theme.spacing(3)} 0`
         }
     };
 };
@@ -204,7 +215,9 @@ class VideoDeviceSelection extends AbstractDialogTab<IProps, IState> {
     render() {
         const {
             classes,
+            disableHideSelfView,
             hideAdditionalSettings,
+            hideSelfView,
             hideVideoInputPreview,
             localFlipX,
             t
@@ -230,6 +243,14 @@ class VideoDeviceSelection extends AbstractDialogTab<IProps, IState> {
                                 label = { t('videothumbnail.mirrorVideo') }
                                 // eslint-disable-next-line react/jsx-no-bind
                                 onChange = { () => super._onChange({ localFlipX: !localFlipX }) } />
+                            
+                        </div>
+                        <div className = { classes.checkboxContainer }>
+                            <Checkbox
+                                checked = { hideSelfView }
+                                label = { t('videothumbnail.hideSelfView') }
+                                // eslint-disable-next-line react/jsx-no-bind
+                                onChange = { () => super._onChange({ hideSelfView: !hideSelfView }) } />
                         </div>
                         {this._renderFramerateSelect()}
                     </>

@@ -1,87 +1,44 @@
-# <p align="center">Jitsi Meet</p>
+# INKLUSIVA Call
 
-Jitsi Meet is a set of Open Source projects which empower users to use and deploy
-video conferencing platforms with state-of-the-art video quality and features.
+INKLUSIVA Call is a friendly [Jitsi](https://github.com/jitsi|Jitsi) Fork which enables accessible video meetings on the internet. 
+
+It is GDPR-compliant and very data-efficient. The software was developed together with and for people with disabilities and those active in self-help groups. The INKLUSIVA Call project is implemented by LAG Selbsthilfe Rheinland-Pfalz and funded by Aktion Mensch.
+
+INKLUSIVA Call was developed for:
+
+* People with disabilities and/or chronic illnesses
+* Self-help and self-advocacy organizations
+* Organizations that want to use the application for inclusive events, meetings, and services (inclusive meetings).
 
 <hr />
 
-<p align="center">
-<img src="https://raw.githubusercontent.com/jitsi/jitsi-meet/master/readme-img1.png" width="900" />
-</p>
+Amongst the features you may know from jitsi here are the main features INKLUSIVA-Call offers:
+### Accessibility Features
+The goal of INKLUSIVA Call is to enable barrier-free video meetings. The functions of INKLUSIVA Call are designed for accessibility. They were developed or reviewed in focus groups. These focus groups bring together people with disabilities or impairments. The following and other features have been developed:
 
-<hr />
+### Settings for Hearing, Vision, Interpretation, and Emergencies
+In INKLUSIVA Call, settings can be configured for hearing, vision, assistance, and emergencies. The participation of interpreters is supported, and there is automatic captioning.
 
-Amongst others here are the main features Jitsi Meet offers:
+### Savable Meeting Settings
+In INKLUSIVA Call, users can save their own meeting settings: in the browser or as a downloadable file. We, as operators, do not store this data.
 
-* Support for all current browsers
-* Mobile applications
-* Web and native SDKs for integration
-* HD audio and video
-* Content sharing
-* Raise hand and reactions
-* Chat with private conversations
-* Polls
-* Virtual backgrounds
+### Settings for Vision and Hearing
+INKLUSIVA Call allows precise settings in the areas of hearing and vision. For example, video tiles can be darkened or brightened. Or quiet sounds can be amplified.
 
-And many more!
+### Sign Language and Text Interpretation
+INKLUSIVA Call supports the participation of text interpreters. The display of sign language interpreters can be individually adjusted. Automatic captioning can also be activated.
 
-## Using Jitsi Meet
+### Emergency Settings
+In INKLUSIVA Call, users can set up emergency settings. For example, dimming all videos. If an emergency occurs, these settings can be activated with one click.
 
-Using Jitsi Meet is straightforward, as it's browser based. Head over to [meet.jit.si](https://meet.jit.si) and give it a try. It's anonymous, scalable and free to use. All browsers are supported! 
-
-Using mobile? No problem, you can either use your mobile web browser or our fully-featured
-mobile apps:
-
-| Android | Android (F-Droid) | iOS |
-|:-:|:-:|:-:|
-| [<img src="resources/img/google-play-badge.png" height="50">](https://play.google.com/store/apps/details?id=org.jitsi.meet) | [<img src="resources/img/f-droid-badge.png" height="50">](https://f-droid.org/en/packages/org.jitsi.meet/) | [<img src="resources/img/appstore-badge.png" height="50">](https://itunes.apple.com/us/app/jitsi-meet/id1165103905) |
-
-If you are feeling adventurous and want to get an early scoop of the features as they are being
-developed you can also sign up for our open beta testing here:
-
-* [Android](https://play.google.com/apps/testing/org.jitsi.meet)
-* [iOS](https://testflight.apple.com/join/isy6ja7S)
-
-## Running your own instance
-
-If you'd like to run your own Jitsi Meet installation head over to the [handbook](https://jitsi.github.io/handbook/docs/devops-guide/) to get started.
-
-We provide Debian packages and a comprehensive Docker setup to make deployments as simple as possible.
-Advanced users also have the possibility of building all the components from source.
-
-You can check the latest releases [here](https://jitsi.github.io/handbook/docs/releases).
-
-## Jitsi as a Service
-
-If you like the branding capabilities of running your own instance but you'd like
-to avoid dealing with the complexity of monitoring, scaling and updates, JaaS might be
-for you.
-
-[8x8 Jitsi as a Service (JaaS)](https://jaas.8x8.vc) is an enterprise-ready video meeting platform that allows developers, organizations and businesses to easily build and deploy video solutions. With Jitsi as a Service we now give you all the power of Jitsi running on our global platform so you can focus on building secure and branded video experiences.
-
-## Documentation
-
-All the Jitsi Meet documentation is available in [the handbook](https://jitsi.github.io/handbook/).
-
-## Security
-
-For a comprehensive description of all Jitsi Meet's security aspects, please check [this link](https://jitsi.org/security).
-
-For a detailed description of Jitsi Meet's End-to-End Encryption (E2EE) implementation,
-please check [this link](https://jitsi.org/e2ee-whitepaper/).
-
-For information on reporting security vulnerabilities in Jitsi Meet, see [SECURITY.md](./SECURITY.md).
-
-## Contributing
-
-If you are looking to contribute to Jitsi Meet, first of all, thank you! Please
-see our [guidelines for contributing](CONTRIBUTING.md).
-
-<br />
-<br />
-
+### Configure Settings in the Accessibility Assistant
+Personal settings for INKLUSIVA Call can be determined before joining a meeting, depending on which functions the user needs. For this, there is the so-called Accessibility Assistant. This is a form that asks for the desired settings.
+* Settings can be changed at any time during the meeting.
+* Settings can be saved in the web browser or downloaded as a file.
+* The next time INKLUSIVA Call is used, the file with the settings can be uploaded again. Then the settings will be restored.
+* The Accessibility Assistant can also be skipped. In this case, standard settings are active.
+<br/>
+<br/>
 <footer>
-<p align="center" style="font-size: smaller;">
-Built with ❤️ by the Jitsi team at <a href="https://8x8.com" target="_blank">8x8</a> and our community.
-</p>
+❤️  A big thank you to the Jitsi team at <a href="https://8x8.com" target="_blank">8x8</a> for creating such great software for so many years.
 </footer>

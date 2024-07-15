@@ -10,7 +10,9 @@ import {
 } from './actionTypes';
 import {
     removeTranscriptMessage,
-    updateTranscriptMessage
+    setOldTranscriptMessage,
+    updateTranscriptMessage,
+    updateTranscriptionHistory
 } from './actions.any';
 import logger from './logger';
 
@@ -137,7 +139,19 @@ function _endpointMessageReceived({ dispatch, getState }: IStore, next: Function
             // If this is final result, update the state as a final result
             // and start a count down to remove the subtitle from the state
             if (!json.is_interim) {
+                const { _oldTranscriptMessage, _transcriptionHistory } = state['features/subtitles'];
+
                 newTranscriptMessage.final = text;
+
+                if (_oldTranscriptMessage === null) {
+                    // first message always needs to be added to the history.
+                    dispatch(updateTranscriptionHistory(newTranscriptMessage));
+                } else if (newTranscriptMessage.clearTimeOut - _oldTranscriptMessage.clearTimeOut > 10) {
+                    // If the timeout is smaller than 10ms the transcript message hasn't change.
+                    dispatch(updateTranscriptionHistory(newTranscriptMessage));
+                }
+
+                dispatch(setOldTranscriptMessage(newTranscriptMessage));
 
             } else if (json.stability > 0.85) {
                 // If the message has a high stability, we can update the

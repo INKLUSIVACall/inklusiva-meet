@@ -9,7 +9,6 @@ import {
     isLocalParticipantModerator
 } from '../base/participants/functions';
 import { toState } from '../base/redux/functions';
-import { getHideSelfView } from '../base/settings/functions';
 import { parseStandardURIString } from '../base/util/uri';
 import { isStageFilmstripEnabled } from '../filmstrip/functions';
 import { isFollowMeActive } from '../follow-me/functions';
@@ -117,13 +116,8 @@ export function getMoreTabProps(stateful: IStateful) {
     const language = i18next.language || DEFAULT_LANGUAGE;
     const configuredTabs: string[] = interfaceConfig.SETTINGS_SECTIONS || [];
 
-    // when self view is controlled by the config we hide the settings
-    const { disableSelfView, disableSelfViewSettings } = state['features/base/config'];
-
     return {
         currentLanguage: language,
-        disableHideSelfView: disableSelfViewSettings || disableSelfView,
-        hideSelfView: getHideSelfView(state),
         iAmVisitor: iAmVisitor(state),
         languages: LANGUAGES,
         maxStageParticipants: state['features/base/settings'].maxStageParticipants,
@@ -200,8 +194,10 @@ export function getProfileTabProps(stateful: IStateful) {
     } = state['features/base/conference'];
     const { hideEmailInSettings } = state['features/base/config'];
     const localParticipant = getLocalParticipant(state);
+    const learningDifficulties = state['features/inklusiva/userdata'].support.learning_difficulties ?? false;
 
     return {
+        learningDifficulties,
         authEnabled: Boolean(conference && authEnabled),
         authLogin,
         displayName: localParticipant?.name,

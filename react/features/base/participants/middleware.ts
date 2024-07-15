@@ -35,6 +35,8 @@ import { playSound, registerSound, unregisterSound } from '../sounds/actions';
 import {
     DOMINANT_SPEAKER_CHANGED,
     GRANT_MODERATOR,
+    ADD_IC_ROLE,
+    REMOVE_IC_ROLE,
     KICK_PARTICIPANT,
     LOCAL_PARTICIPANT_AUDIO_LEVEL_CHANGED,
     LOCAL_PARTICIPANT_RAISE_HAND,
@@ -144,6 +146,20 @@ MiddlewareRegistry.register(store => next => action => {
         const { conference } = store.getState()['features/base/conference'];
 
         conference?.grantOwner(action.id);
+        break;
+    }
+
+    case ADD_IC_ROLE: {
+        const { conference } = store.getState()['features/base/conference'];
+
+        conference?.addICRole(action.id, action.icRole, action.partnerId);
+        break;
+    }
+
+    case REMOVE_IC_ROLE: {
+        const { conference } = store.getState()['features/base/conference'];
+
+        conference?.removeICRole(action.id, action.icRole, action.partnerId);
         break;
     }
 

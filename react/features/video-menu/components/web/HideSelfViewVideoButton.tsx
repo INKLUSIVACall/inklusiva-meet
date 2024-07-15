@@ -103,6 +103,7 @@ class HideSelfViewVideoButton extends PureComponent<IProps> {
         }
         onClick?.();
         dispatch(updateSettings({
+            hideSelfView: !disableSelfView,
             disableSelfView: !disableSelfView
         }));
     }

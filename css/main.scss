@@ -58,6 +58,7 @@ $flagsImagePath: "../images/";
 @import 'filmstrip/tile_view_overrides';
 @import 'filmstrip/vertical_filmstrip';
 @import 'filmstrip/vertical_filmstrip_overrides';
+@import 'filmstrip/active_speaker_indicator';
 @import 'unsupported-browser/main';
 @import 'deep-linking/main';
 @import 'transcription-subtitles';
@@ -77,5 +78,6 @@ $flagsImagePath: "../images/";
 @import 'participants-pane';
 @import 'reactions-menu';
 @import 'plan-limit';
+@import 'inklusiva';
 
 /* Modules END */

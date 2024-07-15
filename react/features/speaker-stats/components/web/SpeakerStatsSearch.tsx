@@ -96,7 +96,7 @@ function SpeakerStatsSearch({ onSearch }: IProps) {
         return null;
     }
 
-    return (
+    return ( // The hidden label below is not taken into account by WAVES because it is hidden. So there is an error named "Missing form label".
         <div className = { classes.speakerStatsSearchContainer }>
             <Icon
                 className = { classes.searchIcon }
@@ -113,6 +113,7 @@ function SpeakerStatsSearch({ onSearch }: IProps) {
                 placeholder = { t('speakerStats.search') }
                 tabIndex = { 0 }
                 value = { searchValue } />
+            <label hidden htmlFor = 'speaker-stats-search'>{ t('speakerStats.search') }</label>
         </div>
     );
 }

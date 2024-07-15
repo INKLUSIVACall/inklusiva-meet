@@ -63,3 +63,6 @@ export const PUSH_REACTIONS = 'PUSH_REACTIONS';
  * The type of action to display disable notification sounds.
  */
 export const SHOW_SOUNDS_NOTIFICATION = 'SHOW_SOUNDS_NOTIFICATION';
+
+
+export const DISPLAY_NOTIFICATION_INSTEAD_OF_REACTION_SOUND = 'DISPLAY_NOTIFICATION_INSTEAD_OF_REACTION_SOUND';

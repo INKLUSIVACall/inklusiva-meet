@@ -147,7 +147,7 @@ const useStyles = makeStyles()(theme => {
             },
 
             '& .jitsi-icon': {
-                padding: '3px'
+                padding: '0.5rem'
             }
         },
 

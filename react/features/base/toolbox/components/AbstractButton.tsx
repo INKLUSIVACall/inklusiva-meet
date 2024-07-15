@@ -2,12 +2,65 @@ import React, { Component, ReactElement, ReactNode } from 'react';
 import { WithTranslation } from 'react-i18next';
 import { GestureResponderEvent } from 'react-native';
 
-import { IStore } from '../../../app/types';
+import { IReduxState, IStore } from '../../../app/types';
+import { getKeyboardShortcuts } from '../../../keyboard-shortcuts/functions';
+import { IKeyboardShortcut } from '../../../keyboard-shortcuts/types';
 import { NOTIFY_CLICK_MODE } from '../../../toolbox/constants';
 import { combineStyles } from '../../styles/functions.any';
 
 import { Styles } from './AbstractToolboxItem';
 import ToolboxItem from './ToolboxItem';
+
+/**
+ * Sets the string of the accessibility label including shortcut.
+ *
+ * @param {boolean} state - The redux state.
+ * @param {string} shortcutHelpDescription - The shortcut of the button.
+ * @returns {string}
+ */
+function _getShortcut(state: IReduxState, shortcutHelpDescription: string) {
+    const keyboardShortcuts = getKeyboardShortcuts(state);
+
+    if (!keyboardShortcuts) {
+        return null;
+    }
+
+    let shortcut: null | IKeyboardShortcut = null;
+
+    for (const value of keyboardShortcuts.values()) {
+        if (value.helpDescription === shortcutHelpDescription) {
+            shortcut = value;
+            break;
+        }
+    }
+
+    if (!shortcut) {
+        return null;
+    }
+
+    let accessibilityLabel = '';
+
+    if (shortcut?.alt) {
+        let modifierKey = 'Alt';
+
+        if (window.navigator?.platform) {
+            if (window.navigator.platform.indexOf('Mac') !== -1) {
+                modifierKey = '⌥';
+            }
+        }
+
+        accessibilityLabel += `${modifierKey} +`;
+    }
+    if (shortcut?.shift) {
+        const shiftKey = 'Shift';
+
+        accessibilityLabel = `${accessibilityLabel} ${shiftKey} +`;
+    }
+
+    accessibilityLabel = `${accessibilityLabel} ${shortcut?.character}`;
+
+    return accessibilityLabel;
+}
 
 export interface IProps extends WithTranslation {
 
@@ -97,7 +150,7 @@ export const defaultDisabledButtonStyles = {
 /**
  * An abstract implementation of a button.
  */
-export default class AbstractButton<P extends IProps, S=any> extends Component<P, S> {
+export default class AbstractButton<P extends IProps, S = any> extends Component<P, S> {
     static defaultProps = {
         afterClick: undefined,
         disabledStyles: defaultDisabledButtonStyles,
@@ -118,6 +171,11 @@ export default class AbstractButton<P extends IProps, S=any> extends Component<P
      * @abstract
      */
     accessibilityLabel: string;
+
+    /**
+     * Interpolation in language file for shortcuts.
+     */
+    accessibilityLabelShortcut: string;
 
     /**
      * This is the same as `accessibilityLabel`, replacing it when the button
@@ -230,9 +288,7 @@ export default class AbstractButton<P extends IProps, S=any> extends Component<P
      * @returns {string}
      */
     _getIcon() {
-        return (
-            this._isToggled() ? this.toggledIcon : this.icon
-        ) || this.icon;
+        return (this._isToggled() ? this.toggledIcon : this.icon) || this.icon;
     }
 
     /**
@@ -244,8 +300,7 @@ export default class AbstractButton<P extends IProps, S=any> extends Component<P
      * @returns {string}
      */
     _getLabel() {
-        return (this._isToggled() ? this.toggledLabel : this.label)
-            || this.label;
+        return (this._isToggled() ? this.toggledLabel : this.label) || this.label;
     }
 
     /**
@@ -260,10 +315,33 @@ export default class AbstractButton<P extends IProps, S=any> extends Component<P
      * @returns {string}
      */
     _getAccessibilityLabel() {
+        /*
         return (this._isToggled()
             ? this.toggledAccessibilityLabel
             : this.accessibilityLabel
         ) || this.accessibilityLabel;
+        */
+
+        // For Inklusiva-Call, we never want to toogle the accessibility label.
+        return this.accessibilityLabel;
+    }
+
+    /**
+     * Gets the current interpolation of the shortcut for every button in the toolbox.
+     *
+     * @private
+     * @returns {string}
+     */
+    _getAccessibilityLabelShortcut() {
+        if (this.accessibilityLabelShortcut) {
+            const shortcut = _getShortcut(APP.store.getState(), this.accessibilityLabelShortcut);
+
+            if (shortcut) {
+                return { shortcut };
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -276,19 +354,14 @@ export default class AbstractButton<P extends IProps, S=any> extends Component<P
      */
     _getStyles(): Styles | undefined {
         const { disabledStyles, styles, toggledStyles } = this.props;
-        const buttonStyles
-            = (this._isToggled() ? toggledStyles : styles) || styles;
+        const buttonStyles = (this._isToggled() ? toggledStyles : styles) || styles;
 
         if (this._isDisabled() && buttonStyles && disabledStyles) {
             return {
-                iconStyle: combineStyles(
-                    buttonStyles.iconStyle ?? {}, disabledStyles.iconStyle ?? {}),
-                labelStyle: combineStyles(
-                    buttonStyles.labelStyle ?? {}, disabledStyles.labelStyle ?? {}),
-                style: combineStyles(
-                    buttonStyles.style ?? {}, disabledStyles.style ?? {}),
-                underlayColor:
-                    disabledStyles.underlayColor || buttonStyles.underlayColor
+                iconStyle: combineStyles(buttonStyles.iconStyle ?? {}, disabledStyles.iconStyle ?? {}),
+                labelStyle: combineStyles(buttonStyles.labelStyle ?? {}, disabledStyles.labelStyle ?? {}),
+                style: combineStyles(buttonStyles.style ?? {}, disabledStyles.style ?? {}),
+                underlayColor: disabledStyles.underlayColor || buttonStyles.underlayColor
             };
         }
 
@@ -302,9 +375,7 @@ export default class AbstractButton<P extends IProps, S=any> extends Component<P
      * @returns {string}
      */
     _getTooltip() {
-        return (this._isToggled() ? this.toggledTooltip : this.tooltip)
-            || this.tooltip
-            || '';
+        return (this._isToggled() ? this.toggledTooltip : this.tooltip) || this.tooltip || '';
     }
 
     /**
@@ -341,9 +412,7 @@ export default class AbstractButton<P extends IProps, S=any> extends Component<P
         const { afterClick, buttonKey, handleClick, notifyMode } = this.props;
 
         if (typeof APP !== 'undefined' && notifyMode) {
-            APP.API.notifyToolbarButtonClicked(
-                    buttonKey, notifyMode === NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY
-            );
+            APP.API.notifyToolbarButtonClicked(buttonKey, notifyMode === NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY);
         }
 
         if (notifyMode !== NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY) {
@@ -357,8 +426,10 @@ export default class AbstractButton<P extends IProps, S=any> extends Component<P
         afterClick?.(e);
 
         // blur after click to release focus from button to allow PTT.
+        // Inklusiva-Call: We don't want to blur the button, because we want to keep the focus on the button.
+        // PTT is also on another shortcut than space for us.
         // @ts-ignore
-        e?.currentTarget?.blur && e.currentTarget.blur();
+        // e?.currentTarget?.blur && e.currentTarget.blur();
     }
 
     /**
@@ -371,6 +442,7 @@ export default class AbstractButton<P extends IProps, S=any> extends Component<P
         const props: any = {
             ...this.props,
             accessibilityLabel: this._getAccessibilityLabel(),
+            accessibilityLabelInterpolation: this._getAccessibilityLabelShortcut(),
             elementAfter: this._getElementAfter(),
             icon: this._getIcon(),
             label: this._getLabel(),

@@ -10,6 +10,8 @@ import ContextMenu from '../../../base/ui/components/web/ContextMenu';
 import ContextMenuItemGroup from '../../../base/ui/components/web/ContextMenuItemGroup';
 import { setGifMenuVisibility } from '../../../gifs/actions';
 import { isGifsMenuOpen } from '../../../gifs/functions.web';
+import AccessibleDialogPortal from '../../../inklusiva/accessiblePopover/accessibleDialogPortal';
+import AccessiblePopover from '../../../inklusiva/accessiblePopover/accessiblePopover';
 import ReactionEmoji from '../../../reactions/components/web/ReactionEmoji';
 import ReactionsMenu from '../../../reactions/components/web/ReactionsMenu';
 import {
@@ -204,7 +206,7 @@ const OverflowMenuButton = ({
                         handleClick = { toggleDialogVisibility }
                         isOpen = { isOpen }
                         onKeyDown = { onEscClick } />
-                    <JitsiPortal>
+                    <AccessibleDialogPortal>
                         <Drawer
                             isOpen = { isOpen }
                             onClose = { onCloseDialog }>
@@ -221,7 +223,7 @@ const OverflowMenuButton = ({
                                 reaction = { reaction }
                                 uid = { uid } />))}
                         </div>}
-                    </JitsiPortal>
+                    </AccessibleDialogPortal>
                 </>
             </div>
         );
@@ -229,7 +231,7 @@ const OverflowMenuButton = ({
 
     return (
         <div className = 'toolbox-button-wth-dialog context-menu'>
-            <Popover
+            <AccessiblePopover
                 content = { overflowMenu }
                 headingId = 'overflow-context-menu'
                 onPopoverClose = { onCloseDialog }
@@ -240,7 +242,7 @@ const OverflowMenuButton = ({
                 <OverflowToggleButton
                     isOpen = { isOpen }
                     onKeyDown = { onEscClick } />
-            </Popover>
+            </AccessiblePopover>
             {showReactionsMenu && <div className = 'reactions-animations-container'>
                 {reactionsQueue.map(({ reaction, uid }, index) => (<ReactionEmoji
                     index = { index }

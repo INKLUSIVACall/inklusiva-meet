@@ -99,6 +99,7 @@ function getConfig(options = {}) {
     return {
         devtool: isProduction ? 'source-map' : 'eval-source-map',
         mode: isProduction ? 'production' : 'development',
+        cache: true,
         module: {
             rules: [ {
                 // Transpile ES2015 (aka ES6) to ES5. Accept the JSX syntax by React
@@ -238,7 +239,8 @@ function getDevServerConfig() {
                 warnings: false
             }
         },
-        host: '127.0.0.1',
+        host: process.env.WEBPACK_DEV_SERVER_LISTEN_HOST || '127.0.0.1',
+        port: process.env.WEBPACK_DEV_SERVER_LISTEN_PORT || 8080,
         hot: true,
         proxy: {
             '/': {
@@ -339,7 +341,7 @@ module.exports = (_env, argv) => {
                 ...config.plugins,
                 ...getBundleAnalyzerPlugin(analyzeBundle, 'external_api')
             ],
-            performance: getPerformanceHints(perfHintOptions, 35 * 1024)
+            performance: getPerformanceHints(perfHintOptions, 40 * 1024)
         }),
         Object.assign({}, config, {
             entry: {

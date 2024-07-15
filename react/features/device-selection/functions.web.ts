@@ -18,14 +18,26 @@ import { isIosMobileBrowser } from '../base/environment/utils';
 import JitsiMeetJS from '../base/lib-jitsi-meet';
 import { toState } from '../base/redux/functions';
 import {
+    getHideSelfView,
     getUserSelectedCameraDeviceId,
     getUserSelectedMicDeviceId,
     getUserSelectedOutputDeviceId
 } from '../base/settings/functions.web';
+import { isAcousticCuesEnabled } from '../inklusiva/uisettings/functions';
+import {
+    getAmplifyValue,
+    getBalanceValue,
+    getHighFrequenciesValue,
+    getVolumeValue,
+    isFilterBackgroundNoiseEnabled,
+    isOthersAudioInputEnabled,
+    isOwnAudioInputEnabled
+} from '../inklusiva/userdata/functions';
 import { isNoiseSuppressionEnabled } from '../noise-suppression/functions';
 import { isPrejoinPageVisible } from '../prejoin/functions';
 import { SS_DEFAULT_FRAME_RATE, SS_SUPPORTED_FRAMERATES } from '../settings/constants';
 import { isDeviceHidSupported } from '../web-hid/functions';
+
 
 /**
  * Returns the properties for the audio device selection dialog from Redux state.
@@ -50,6 +62,16 @@ export function getAudioDeviceSelectionDialogProps(stateful: IStateful, isDispla
     const deviceHidSupported = isDeviceHidSupported() && getWebHIDFeatureConfig(state);
     const noiseSuppressionEnabled = isNoiseSuppressionEnabled(state);
     const hideNoiseSuppression = isPrejoinPageVisible(state) || isDisplayedOnWelcomePage;
+
+    const ownAudio = isOwnAudioInputEnabled(state);
+    const othersAudio = isOthersAudioInputEnabled(state);
+    const othersVolume = getVolumeValue(state);
+    const highFrequencies = getHighFrequenciesValue(state);
+    const amplify = getAmplifyValue(state);
+    const balance = getBalanceValue(state);
+    const background = isFilterBackgroundNoiseEnabled(state);
+    const acousticCues = isAcousticCuesEnabled(state);
+
 
     // When the previews are disabled we don't need multiple audio input support in order to change the mic. This is the
     // case for Safari on iOS.
@@ -81,7 +103,16 @@ export function getAudioDeviceSelectionDialogProps(stateful: IStateful, isDispla
         hideNoiseSuppression,
         noiseSuppressionEnabled,
         selectedAudioInputId,
-        selectedAudioOutputId
+        selectedAudioOutputId,
+
+        ownAudio,
+        othersAudio,
+        othersVolume,
+        highFrequencies,
+        amplify,
+        balance,
+        background,
+        acousticCues
     };
 }
 
@@ -105,6 +136,10 @@ export function getVideoDeviceSelectionDialogProps(stateful: IStateful, isDispla
     const inputDeviceChangeSupported = JitsiMeetJS.mediaDevices.isDeviceChangeAvailable('input');
     const userSelectedCamera = getUserSelectedCameraDeviceId(state);
     const { localFlipX } = state['features/base/settings'];
+
+    // when self view is controlled by the config we hide the settings
+    const { disableSelfView, disableSelfViewSettings } = state['features/base/config'];
+    const hideSelfView = state['features/base/settings'].hideSelfView;
     const hideAdditionalSettings = isPrejoinPageVisible(state) || isDisplayedOnWelcomePage;
     const framerate = state['features/screen-share'].captureFrameRate ?? SS_DEFAULT_FRAME_RATE;
 
@@ -126,9 +161,11 @@ export function getVideoDeviceSelectionDialogProps(stateful: IStateful, isDispla
         currentFramerate: framerate,
         desktopShareFramerates: SS_SUPPORTED_FRAMERATES,
         disableDeviceChange: !JitsiMeetJS.mediaDevices.isDeviceChangeAvailable(),
+        disableHideSelfView: disableSelfViewSettings || disableSelfView,
         disableVideoInputSelect,
         hasVideoPermission: permissions.video,
         hideAdditionalSettings,
+        hideSelfView,
         hideVideoInputPreview: !inputDeviceChangeSupported || disablePreviews,
         localFlipX: Boolean(localFlipX),
         selectedVideoInputId

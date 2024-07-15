@@ -46,6 +46,8 @@ const useStyles = makeStyles()(theme => {
             color: theme.palette.text01,
             display: 'inline-flex',
             alignItems: 'center',
+            fontSize: '1rem',
+            fontWeight: 500,
 
             '&.is-mobile': {
                 ...withPixelLineHeight(theme.typography.bodyLongRegularLarge)
@@ -55,6 +57,10 @@ const useStyles = makeStyles()(theme => {
 
         disabled: {
             cursor: 'not-allowed'
+        },
+
+        disabledLabel: {
+            color: theme.palette.text03
         },
 
         activeArea: {
@@ -171,9 +177,10 @@ const Checkbox = ({
                     size = { 18 }
                     src = { IconCheck } />
             </div>
-            <div>{label}</div>
+            <div className = { disabled ? styles.disabledLabel : '' }>{label}</div>
         </label>
     );
 };
 
 export default Checkbox;
+

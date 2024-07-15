@@ -6,7 +6,7 @@ import {
     setStartMutedPolicy,
     setStartReactionsMuted
 } from '../base/conference/actions';
-import { openDialog } from '../base/dialog/actions';
+import { hideDialog, openDialog } from '../base/dialog/actions';
 import i18next from '../base/i18n/i18next';
 import { updateSettings } from '../base/settings/actions';
 import { getLocalVideoTrack } from '../base/tracks/functions.any';
@@ -56,6 +56,34 @@ export function openSettingsDialog(defaultTab?: string, isDisplayedOnWelcomePage
 }
 
 /**
+ * Closes {@code SettingsDialog}.
+ *
+ * @returns {Function}
+ */
+export function closeSettingsDialog() {
+    return hideDialog(SettingsDialog);
+}
+
+/**
+ * Toggles the {@code SettingsDialog}.
+ *
+ * @param {string} defaultTab - The tab in {@code SettingsDialog} that should be
+ * displayed initially.
+ * @returns {Function}
+ */
+export function toggleSettingsDialog(defaultTab?: string) {
+    return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
+        const dialogComponent = getState()['features/base/dialog']?.component;
+
+        if (dialogComponent) {
+            dispatch(closeSettingsDialog());
+        } else {
+            dispatch(openSettingsDialog(defaultTab, false));
+        }
+    };
+}
+
+/**
  * Sets the visibility of the audio settings.
  *
  * @param {boolean} value - The new value.
@@ -101,10 +129,6 @@ export function submitMoreTab(newState: any) {
 
         if (newState.maxStageParticipants !== currentState.maxStageParticipants) {
             dispatch(updateSettings({ maxStageParticipants: Number(newState.maxStageParticipants) }));
-        }
-
-        if (newState.hideSelfView !== currentState.hideSelfView) {
-            dispatch(updateSettings({ disableSelfView: newState.hideSelfView }));
         }
 
         if (newState.currentLanguage !== currentState.currentLanguage) {
@@ -272,9 +296,9 @@ export function submitVirtualBackgroundTab(newState: any, isCancel = false) {
 
             if (!isCancel) {
                 // Set x scale to default value.
-                dispatch(updateSettings({
-                    localFlipX: true
-                }));
+                // dispatch(updateSettings({
+                //     localFlipX: true
+                // }));
 
                 virtualBackgroundLogger.info(`Virtual background type: '${
                     typeof newState.options.backgroundType === 'undefined'

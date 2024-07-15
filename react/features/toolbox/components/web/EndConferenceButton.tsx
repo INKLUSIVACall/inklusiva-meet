@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { endConference } from '../../../base/conference/actions';
+import { endConference, leaveConference } from '../../../base/conference/actions';
 import { isLocalParticipantModerator } from '../../../base/participants/functions';
 import { BUTTON_TYPES } from '../../../base/ui/constants.web';
 import { isInBreakoutRoom } from '../../../breakout-rooms/functions';
@@ -26,7 +26,6 @@ interface IProps {
     notifyMode?: string;
 }
 
-
 /**
  * Button to end the conference for all participants.
  *
@@ -41,15 +40,20 @@ export const EndConferenceButton = (props: IProps) => {
 
     const onEndConference = useCallback(() => {
         dispatch(endConference());
+        dispatch(leaveConference());
     }, [ dispatch ]);
 
-    return (<>
-        { !_isInBreakoutRoom && _isLocalParticipantModerator && <HangupContextMenuItem
-            accessibilityLabel = { t('toolbar.accessibilityLabel.endConference') }
-            buttonKey = { props.buttonKey }
-            buttonType = { BUTTON_TYPES.DESTRUCTIVE }
-            label = { t('toolbar.endConference') }
-            notifyMode = { props.notifyMode }
-            onClick = { onEndConference } /> }
-    </>);
+    return (
+        <>
+            {!_isInBreakoutRoom && _isLocalParticipantModerator && (
+                <HangupContextMenuItem
+                    accessibilityLabel = { t('toolbar.accessibilityLabel.endConference') }
+                    buttonKey = { props.buttonKey }
+                    buttonType = { BUTTON_TYPES.DESTRUCTIVE }
+                    label = { t('toolbar.endConference') }
+                    notifyMode = { props.notifyMode }
+                    onClick = { onEndConference } />
+            )}
+        </>
+    );
 };

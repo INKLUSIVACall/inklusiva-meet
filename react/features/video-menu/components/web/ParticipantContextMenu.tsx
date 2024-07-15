@@ -6,6 +6,7 @@ import { makeStyles } from 'tss-react/mui';
 import { IReduxState, IStore } from '../../../app/types';
 import { isSupported as isAvModerationSupported } from '../../../av-moderation/functions';
 import Avatar from '../../../base/avatar/components/Avatar';
+import { IC_ROLES } from '../../../base/conference/icRoles';
 import { getButtonNotifyMode, getParticipantMenuButtonsWithNotifyClick } from '../../../base/config/functions.web';
 import { isIosMobileBrowser, isMobileBrowser } from '../../../base/environment/utils';
 import { MEDIA_TYPE } from '../../../base/media/constants';
@@ -18,7 +19,6 @@ import ContextMenuItemGroup from '../../../base/ui/components/web/ContextMenuIte
 import { getBreakoutRooms, getCurrentRoomId, isInBreakoutRoom } from '../../../breakout-rooms/functions';
 import { IRoom } from '../../../breakout-rooms/types';
 import { displayVerification } from '../../../e2ee/functions';
-import { setVolume } from '../../../filmstrip/actions.web';
 import { isStageFilmstripAvailable } from '../../../filmstrip/functions.web';
 import { QUICK_ACTION_BUTTON } from '../../../participants-pane/constants';
 import { getQuickActionButtonType, isForceMuted } from '../../../participants-pane/functions';
@@ -29,8 +29,10 @@ import { iAmVisitor } from '../../../visitors/functions';
 import { PARTICIPANT_MENU_BUTTONS as BUTTONS } from '../../constants';
 
 import AskToUnmuteButton from './AskToUnmuteButton';
+import AssistanceMessageButton from './AssistanceMessageButton';
 import ConnectionStatusButton from './ConnectionStatusButton';
 import CustomOptionButton from './CustomOptionButton';
+import GrantCoHostButton from './GrantCoHostButton';
 import GrantModeratorButton from './GrantModeratorButton';
 import KickButton from './KickButton';
 import MuteButton from './MuteButton';
@@ -42,12 +44,12 @@ import RemoteControlButton, { REMOTE_CONTROL_MENU_STATES } from './RemoteControl
 import SendToRoomButton from './SendToRoomButton';
 import TogglePinToStageButton from './TogglePinToStageButton';
 import VerifyParticipantButton from './VerifyParticipantButton';
-import VolumeSlider from './VolumeSlider';
+import VideoSettingsContextMenu from './VideoSettingsContextMenu';
 
 interface IProps {
 
     /**
-     * Class name for the context menu.
+     * Class name for the context menu.<.
      */
     className?: string;
 
@@ -131,20 +133,31 @@ const ParticipantContextMenu = ({
     const { t } = useTranslation();
     const { classes: styles } = useStyles();
 
+    const { conference } = useSelector((state: IReduxState) => state['features/base/conference']);
+
     const localParticipant = useSelector(getLocalParticipant);
+    const _isRemoteParticipantModerator = Boolean(participant?.role === PARTICIPANT_ROLE.MODERATOR);
     const _isModerator = Boolean(localParticipant?.role === PARTICIPANT_ROLE.MODERATOR);
-    const _isVideoForceMuted = useSelector<IReduxState>(state =>
-        isForceMuted(participant, MEDIA_TYPE.VIDEO, state));
+
+    const _isCoHost
+        = _isModerator
+        && conference?.checkLocalHasRole(IC_ROLES.COHOST)
+        && Boolean(localParticipant?.role === PARTICIPANT_ROLE.MODERATOR);
+    const _isHost = _isModerator && !_isCoHost;
+
+    const _isVideoForceMuted = useSelector<IReduxState>(state => isForceMuted(participant, MEDIA_TYPE.VIDEO, state));
     const _isAudioMuted = useSelector((state: IReduxState) => isParticipantAudioMuted(participant, state));
     const _isVideoMuted = useSelector((state: IReduxState) => isParticipantVideoMuted(participant, state));
     const _overflowDrawer: boolean = useSelector(showOverflowDrawer);
-    const { remoteVideoMenu = {}, disableRemoteMute, startSilent, customParticipantMenuButtons }
-        = useSelector((state: IReduxState) => state['features/base/config']);
+    const {
+        remoteVideoMenu = {},
+        disableRemoteMute,
+        startSilent,
+        customParticipantMenuButtons
+    } = useSelector((state: IReduxState) => state['features/base/config']);
     const visitorsMode = useSelector((state: IReduxState) => iAmVisitor(state));
     const { disableKick, disableGrantModerator, disablePrivateChat } = remoteVideoMenu;
-    const { participantsVolume } = useSelector((state: IReduxState) => state['features/filmstrip']);
-    const _volume = (participant?.local ?? true ? undefined
-        : participant?.id ? participantsVolume[participant?.id] : undefined) ?? 1;
+
     const isBreakoutRoom = useSelector(isInBreakoutRoom);
     const isModerationSupported = useSelector((state: IReduxState) => isAvModerationSupported()(state));
     const stageFilmstrip = useSelector(isStageFilmstripAvailable);
@@ -154,16 +167,11 @@ const ParticipantContextMenu = ({
     const _currentRoomId = useSelector(getCurrentRoomId);
     const _rooms: IRoom[] = Object.values(useSelector(getBreakoutRooms));
 
-    const _onVolumeChange = useCallback(value => {
-        dispatch(setVolume(participant.id, value));
-    }, [ setVolume, dispatch ]);
-
     const _getCurrentParticipantId = useCallback(() => {
         const drawer = _overflowDrawer && !thumbnailMenu;
 
         return (drawer ? drawerParticipant?.participantID : participant?.id) ?? '';
-    }
-    , [ thumbnailMenu, _overflowDrawer, drawerParticipant, participant ]);
+    }, [ thumbnailMenu, _overflowDrawer, drawerParticipant, participant ]);
 
     const notifyClick = useCallback(
         (buttonKey: string) => {
@@ -178,7 +186,9 @@ const ParticipantContextMenu = ({
                 _getCurrentParticipantId(),
                 notifyMode === NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY
             );
-        }, [ buttonsWithNotifyClick, getButtonNotifyMode, _getCurrentParticipantId ]);
+        },
+        [ buttonsWithNotifyClick, getButtonNotifyMode, _getCurrentParticipantId ]
+    );
 
     const onBreakoutRoomButtonClick = useCallback(() => {
         onSelect(true);
@@ -186,46 +196,55 @@ const ParticipantContextMenu = ({
 
     const isClickedFromParticipantPane = useMemo(
         () => !_overflowDrawer && !thumbnailMenu,
-    [ _overflowDrawer, thumbnailMenu ]);
+        [ _overflowDrawer, thumbnailMenu ]
+    );
     const quickActionButtonType = useSelector((state: IReduxState) =>
-        getQuickActionButtonType(participant, _isAudioMuted, _isVideoMuted, state));
+        getQuickActionButtonType(participant, _isAudioMuted, _isVideoMuted, state)
+    );
 
     const buttons: JSX.Element[] = [];
     const buttons2: JSX.Element[] = [];
 
-    const showVolumeSlider = !startSilent
-        && !isIosMobileBrowser()
-        && (_overflowDrawer || thumbnailMenu)
-        && typeof _volume === 'number'
-        && !isNaN(_volume);
+    const showVolumeSlider
+        = (!startSilent && !isIosMobileBrowser() && (_overflowDrawer || thumbnailMenu))
+        || (!startSilent && !isIosMobileBrowser() && !participant?.local);
 
-    const getButtonProps = useCallback((key: string) => {
-        const notifyMode = getButtonNotifyMode(key, buttonsWithNotifyClick);
-        const shouldNotifyClick = notifyMode !== NOTIFY_CLICK_MODE.ONLY_NOTIFY
-            || notifyMode !== NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY;
+    const getButtonProps = useCallback(
+        (key: string) => {
+            const notifyMode = getButtonNotifyMode(key, buttonsWithNotifyClick);
+            const shouldNotifyClick
+                = notifyMode !== NOTIFY_CLICK_MODE.ONLY_NOTIFY || notifyMode !== NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY;
 
-        return {
-            key,
-            notifyMode,
-            notifyClick: shouldNotifyClick ? () => notifyClick(key) : undefined,
-            participantID: _getCurrentParticipantId()
-        };
-    }, [ _getCurrentParticipantId, buttonsWithNotifyClick, getButtonNotifyMode, notifyClick ]);
+            return {
+                key,
+                notifyMode,
+                notifyClick: shouldNotifyClick ? () => notifyClick(key) : undefined,
+                participantID: _getCurrentParticipantId()
+            };
+        },
+        [ _getCurrentParticipantId, buttonsWithNotifyClick, getButtonNotifyMode, notifyClick ]
+    );
 
     if (_isModerator) {
         if (isModerationSupported) {
-            if (_isAudioMuted
-                && !(isClickedFromParticipantPane && quickActionButtonType === QUICK_ACTION_BUTTON.ASK_TO_UNMUTE)) {
-                buttons.push(<AskToUnmuteButton
-                    { ...getButtonProps(BUTTONS.ASK_UNMUTE) }
-                    buttonType = { MEDIA_TYPE.AUDIO } />
+            if (
+                _isAudioMuted
+                && !(isClickedFromParticipantPane && quickActionButtonType === QUICK_ACTION_BUTTON.ASK_TO_UNMUTE)
+            ) {
+                buttons.push(
+                    <AskToUnmuteButton
+                        { ...getButtonProps(BUTTONS.ASK_UNMUTE) }
+                        buttonType = { MEDIA_TYPE.AUDIO } />
                 );
             }
-            if (_isVideoForceMuted
-                && !(isClickedFromParticipantPane && quickActionButtonType === QUICK_ACTION_BUTTON.ALLOW_VIDEO)) {
-                buttons.push(<AskToUnmuteButton
-                    { ...getButtonProps(BUTTONS.ALLOW_VIDEO) }
-                    buttonType = { MEDIA_TYPE.VIDEO } />
+            if (
+                _isVideoForceMuted
+                && !(isClickedFromParticipantPane && quickActionButtonType === QUICK_ACTION_BUTTON.ALLOW_VIDEO)
+            ) {
+                buttons.push(
+                    <AskToUnmuteButton
+                        { ...getButtonProps(BUTTONS.ALLOW_VIDEO) }
+                        buttonType = { MEDIA_TYPE.VIDEO } />
                 );
             }
         }
@@ -241,8 +260,12 @@ const ParticipantContextMenu = ({
             buttons.push(<MuteEveryoneElsesVideoButton { ...getButtonProps(BUTTONS.MUTE_OTHERS_VIDEO) } />);
         }
 
-        if (!disableGrantModerator && !isBreakoutRoom) {
+        if (!disableGrantModerator && !isBreakoutRoom && _isHost) {
             buttons2.push(<GrantModeratorButton { ...getButtonProps(BUTTONS.GRANT_MODERATOR) } />);
+        }
+
+        if (!disableGrantModerator && !isBreakoutRoom) {
+            buttons2.push(<GrantCoHostButton { ...getButtonProps(BUTTONS.GRANT_COHOST) } />);
         }
 
         if (!disableKick) {
@@ -275,26 +298,25 @@ const ParticipantContextMenu = ({
             }
         }, [ dispatch, remoteControlState, stopController, requestRemoteControl ]);
 
-        buttons2.push(<RemoteControlButton
-            { ...getButtonProps(BUTTONS.REMOTE_CONTROL) }
-            onClick = { onRemoteControlToggle }
-            remoteControlState = { remoteControlState } />
+        buttons2.push(
+            <RemoteControlButton
+                { ...getButtonProps(BUTTONS.REMOTE_CONTROL) }
+                onClick = { onRemoteControlToggle }
+                remoteControlState = { remoteControlState } />
         );
     }
 
     if (customParticipantMenuButtons) {
-        customParticipantMenuButtons.forEach(
-            ({ icon, id, text }) => {
-                buttons2.push(
-                    <CustomOptionButton
-                        icon = { icon }
-                        key = { id }
-                        // eslint-disable-next-line react/jsx-no-bind
-                        onClick = { () => notifyClick(id) }
-                        text = { text } />
-                );
-            }
-        );
+        customParticipantMenuButtons.forEach(({ icon, id, text }) => {
+            buttons2.push(
+                <CustomOptionButton
+                    icon = { icon }
+                    key = { id }
+                    // eslint-disable-next-line react/jsx-no-bind
+                    onClick = { () => notifyClick(id) }
+                    text = { text } />
+            );
+        });
     }
 
     const breakoutRoomsButtons: any = [];
@@ -325,35 +347,27 @@ const ParticipantContextMenu = ({
             onDrawerClose = { thumbnailMenu ? onSelect : closeDrawer }
             onMouseEnter = { onEnter }
             onMouseLeave = { onLeave }>
-            {!thumbnailMenu && _overflowDrawer && drawerParticipant && <ContextMenuItemGroup
-                actions = { [ {
-                    accessibilityLabel: drawerParticipant.displayName,
-                    customIcon: <Avatar
-                        participantId = { drawerParticipant.participantID }
-                        size = { 20 } />,
-                    text: drawerParticipant.displayName
-                } ] } />}
-            {buttons.length > 0 && (
-                <ContextMenuItemGroup>
-                    {buttons}
-                </ContextMenuItemGroup>
+            {!thumbnailMenu && _overflowDrawer && drawerParticipant && (
+                <ContextMenuItemGroup
+                    actions = { [
+                        {
+                            accessibilityLabel: drawerParticipant.displayName,
+                            customIcon: <Avatar
+                                participantId = { drawerParticipant.participantID }
+                                size = { 20 } />,
+                            text: drawerParticipant.displayName
+                        }
+                    ] } />
             )}
-            <ContextMenuItemGroup>
-                {buttons2}
-            </ContextMenuItemGroup>
-            {showVolumeSlider && (
-                <ContextMenuItemGroup>
-                    <VolumeSlider
-                        initialValue = { _volume }
-                        key = 'volume-slider'
-                        onChange = { _onVolumeChange } />
-                </ContextMenuItemGroup>
-            )}
+            {buttons.length > 0 && <ContextMenuItemGroup>{buttons}</ContextMenuItemGroup>}
+            <ContextMenuItemGroup>{buttons2}</ContextMenuItemGroup>
+            <VideoSettingsContextMenu
+                participantId = { participant.id }
+                soundControl = { showVolumeSlider ?? false } />
+
             {breakoutRoomsButtons.length > 0 && (
                 <ContextMenuItemGroup>
-                    <div className = { styles.text }>
-                        {t('breakoutRooms.actions.sendToBreakoutRoom')}
-                    </div>
+                    <div className = { styles.text }>{t('breakoutRooms.actions.sendToBreakoutRoom')}</div>
                     {breakoutRoomsButtons}
                 </ContextMenuItemGroup>
             )}
