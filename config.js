@@ -497,8 +497,8 @@ var config = {
         // at least 360 pixels tall. If the thumbnail height reaches 720 pixels then the application will switch to
         // the high quality.
         minHeightForQualityLvl: {
-            200: 360,
-            400: 720,
+            200: 'standard',
+            400: 'high'
         },
 
         // Provides a way to set the codec preference on mobile devices, both on RN and mobile browser based endpoint
