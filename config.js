@@ -40,7 +40,7 @@ var config = {
         // anonymousdomain: 'guest.example.com',
 
         // Domain for authenticated users. Defaults to <domain>.
-        // authdomain: 'jitsi-meet.example.com',
+        // authdomain: 'inklusiva-call.example.com',
 
         // Focus component domain. Defaults to focus.<domain>.
         // focus: 'focus.jitsi-meet.example.com',
@@ -60,12 +60,7 @@ var config = {
     hiddenDomain: 'transcriber.inklusiva-meet.4morgen.de',
 
     // Websocket URL (XMPP)
-    // websocket: 'wss://jitsi-meet.example.com/' + subdir + 'xmpp-websocket',
-
-    // The real JID of focus participant - can be overridden here
-    // Do not change username - FIXME: Make focus username configurable
-    // https://github.com/jitsi/jitsi-meet/issues/7376
-    // focusUserJid: 'focus@auth.jitsi-meet.example.com',
+    // websocket: 'wss://inklusiva-call.example.com/' + subdir + 'xmpp-websocket',
 
     // Options related to the bridge (colibri) data channel
     bridgeChannel: {
@@ -495,8 +490,8 @@ var config = {
         // at least 360 pixels tall. If the thumbnail height reaches 720 pixels then the application will switch to
         // the high quality.
         minHeightForQualityLvl: {
-            200: 360,
-            400: 720,
+            200: 'standard',
+            400: 'high'
         },
 
         // Provides a way to set the codec preference on mobile devices, both on RN and mobile browser based endpoint
