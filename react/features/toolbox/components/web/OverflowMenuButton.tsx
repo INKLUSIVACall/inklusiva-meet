@@ -78,7 +78,7 @@ const useStyles = makeStyles<{ overflowDrawer: boolean; reactionsMenuHeight: num
             },
             contextMenu: {
                 position: 'relative' as const,
-                right: '145px',
+                right: '230px',
                 margin: 0,
                 marginBottom: '8px',
                 maxHeight: overflowDrawer ? undefined : 'calc(100vh - 100px)',

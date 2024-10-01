@@ -216,7 +216,7 @@ export const commonStyles = (theme: Theme) => {
             fontSize: 24,
             height: 48,
             justifyContent: 'center',
-            width: '4rem',
+            width: '4.5rem',
 
             '@media (hover: hover) and (pointer: fine)': {
                 '&:hover': {
@@ -226,6 +226,9 @@ export const commonStyles = (theme: Theme) => {
                 '&:active': {
                     backgroundColor: theme.palette.ui03
                 }
+            },
+            '@media (max-width: 868px) and (min-width: 840px)': {
+                width: '4rem'
             },
             [theme.breakpoints.down(320)]: {
                 height: 36,
