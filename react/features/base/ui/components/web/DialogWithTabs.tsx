@@ -19,7 +19,6 @@ const useStyles = makeStyles()(theme => {
     return {
         dialog: {
             flexDirection: 'row',
-            marginTop: '-20px',
             // height: '780px',
             height: '75vh',
 

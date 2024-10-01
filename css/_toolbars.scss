@@ -47,6 +47,10 @@
     &.no-buttons {
         display: none;
     }
+
+    @media (max-width: 868px) {
+        bottom: calc((70px * 2) * -1);
+    }
 }
 
 .toolbox-content {
