@@ -48,7 +48,7 @@
         display: none;
     }
 
-    @media (max-width: 868px) {
+    @media (max-width: 740px) {
         bottom: calc((70px * 2) * -1);
     }
 }
@@ -88,7 +88,6 @@
     margin: 0 auto;
     max-width: 100%;
     pointer-events: all;
-    border-radius: 6px;
 
     .toolbox-content-items {
         @include ltr;

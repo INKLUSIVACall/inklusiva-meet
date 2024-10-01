@@ -224,6 +224,12 @@ const Toolbox = ({
     useKeyboardShortcuts(toolbarButtons);
 
     useEffect(() => {
+        if (_dialog) {
+            dispatch(hideToolbox(true));
+        }
+    }, [_dialog]);
+
+    useEffect(() => {
         if (!_visible) {
             if (
                 document.activeElement instanceof HTMLElement &&
