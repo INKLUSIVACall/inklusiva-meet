@@ -227,7 +227,7 @@ export const commonStyles = (theme: Theme) => {
                     backgroundColor: theme.palette.ui03
                 }
             },
-            '@media (max-width: 868px) and (min-width: 840px)': {
+            '@media (max-width: 868px) and (min-width: 820px)': {
                 width: '4rem'
             },
             [theme.breakpoints.down(320)]: {
