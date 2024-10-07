@@ -242,6 +242,12 @@ const Toolbox = ({
         }
     }, [_visible]);
 
+    useEffect(() => {
+        if (_chatOpen) {
+            dispatch(hideToolbox(true));
+        }
+    }, [_chatOpen]);
+
     /**
      * Sets the visibility of the hangup menu.
      *
