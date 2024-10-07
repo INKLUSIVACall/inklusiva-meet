@@ -101,7 +101,7 @@ const useStyles = makeStyles()(theme => {
                 height: '100%',
                 margin: 0,
                 position: 'absolute',
-                top: 0,
+                top: '48px',
                 left: 0,
                 bottom: 0,
                 animation: `${keyframes`
