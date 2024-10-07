@@ -183,11 +183,13 @@ const useStyles = makeStyles()(() => {
             right: 'auto',
             display: 'flex',
             flexDirection: 'column',
-            rowGap: '8px',
             margin: 0,
-            padding: '16px',
+            padding: '10px',
             marginBottom: '4px',
-            left: '-50%'
+            left: '-90%',
+            '@media (min-width: 843px)': {
+                left: '-86%'
+            }
         }
     };
 });

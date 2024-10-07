@@ -27,6 +27,7 @@
     overflow-y: auto;
     margin-bottom: env(safe-area-inset-bottom, 0);
     width: 100%;
+    padding: 0 14px 14px 14px;
 
     &#{&} .overflow-menu {
         margin: auto;
