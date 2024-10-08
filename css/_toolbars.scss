@@ -92,6 +92,7 @@
     .toolbox-content-items {
         @include ltr;
         z-index: 0;
+        padding: 2px;
     }
 }
 
@@ -213,9 +214,9 @@ div.hangup-menu-button {
             border-radius: 0;
             display: flex;
             justify-content: center;
-            //justify-content: space-evenly;
             flex-wrap: wrap;
             padding: 8px 0;
+            border: 1px solid yellowgreen;
             width: 100%;
         }
 

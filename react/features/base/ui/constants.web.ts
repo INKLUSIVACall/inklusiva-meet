@@ -267,12 +267,7 @@ export const commonStyles = (theme: Theme) => {
             boxShadow: '0px 2px 8px 4px rgba(0, 0, 0, 0.25), 0px 0px 0px 1px rgba(0, 0, 0, 0.15)',
 
             '& > div': {
-                marginRight: theme.spacing(2),
-                marginTop: theme.spacing(),
-
-                '&:last-of-type': {
-                    marginRight: 0
-                }
+                margin: '4px'
             }
         }
     };
