@@ -22,7 +22,6 @@ import { createLocalVideoTracks } from '../../../functions.web';
  * The type of the React {@code Component} props of {@link VideoSettingsContent}.
  */
 export interface IProps {
-
     /**
      * Callback to change the flip state.
      */
@@ -77,7 +76,7 @@ const useStyles = makeStyles()(theme => {
             margin: 0,
             marginBottom: theme.spacing(1),
             position: 'relative',
-            right: 'auto'
+            right: '53px'
         },
 
         previewEntry: {
@@ -165,9 +164,11 @@ const VideoSettingsContent = ({
     videoDeviceIds
 }: IProps) => {
     const _componentWasUnmounted = useRef(false);
-    const [ trackData, setTrackData ] = useState(new Array(videoDeviceIds.length).fill({
-        jitsiTrack: null
-    }));
+    const [trackData, setTrackData] = useState(
+        new Array(videoDeviceIds.length).fill({
+            jitsiTrack: null
+        })
+    );
     const { t } = useTranslation();
     const videoDevicesRef = useRef(videoDeviceIds);
     const trackDataRef = useRef(trackData);
@@ -180,11 +181,11 @@ const VideoSettingsContent = ({
      */
     const _onToggleFlip = useCallback(() => {
         changeFlip(!localFlipX);
-    }, [ localFlipX, changeFlip ]);
+    }, [localFlipX, changeFlip]);
 
     const _onToggleSelfView = useCallback(() => {
         changeSelfView(!hideSelfView);
-    }, [ hideSelfView, changeSelfView ]);
+    }, [hideSelfView, changeSelfView]);
 
     /**
      * Destroys all the tracks from trackData object.
@@ -192,7 +193,7 @@ const VideoSettingsContent = ({
      * @param {Object[]} tracks - An array of tracks that are to be disposed.
      * @returns {Promise<void>}
      */
-    const _disposeTracks = (tracks: { jitsiTrack: any; }[]) => {
+    const _disposeTracks = (tracks: { jitsiTrack: any }[]) => {
         tracks.forEach(({ jitsiTrack }) => {
             jitsiTrack?.dispose();
         });
@@ -237,8 +238,7 @@ const VideoSettingsContent = ({
      * @returns {React$Node}
      */
     // eslint-disable-next-line react/no-multi-comp
-    const _renderPreviewEntry = (data: { deviceId: string; error?: string; jitsiTrack: any | null; },
-            index: number) => {
+    const _renderPreviewEntry = (data: { deviceId: string; error?: string; jitsiTrack: any | null }, index: number) => {
         const { error, jitsiTrack, deviceId } = data;
         const isSelected = deviceId === currentCameraDeviceId;
         const key = `vp-${index}`;
@@ -246,11 +246,8 @@ const VideoSettingsContent = ({
 
         if (error) {
             return (
-                <div
-                    className = { classes.previewEntry }
-                    key = { key }
-                    tabIndex = { -1 } >
-                    <div className = { classes.error }>{t(error)}</div>
+                <div className={classes.previewEntry} key={key} tabIndex={-1}>
+                    <div className={classes.error}>{t(error)}</div>
                 </div>
             );
         }
@@ -276,18 +273,19 @@ const VideoSettingsContent = ({
         }
 
         return (
-            <div
-                { ...previewProps }
-                role = 'radio'>
-                <div className = { classes.labelContainer }>
-                    {label && <div className = { classes.label }>
-                        <span>{label}</span>
-                    </div>}
+            <div {...previewProps} role="radio">
+                <div className={classes.labelContainer}>
+                    {label && (
+                        <div className={classes.label}>
+                            <span>{label}</span>
+                        </div>
+                    )}
                 </div>
                 <Video
-                    className = { cx(classes.previewVideo, 'flipVideoX') }
-                    playsinline = { true }
-                    videoTrack = {{ jitsiTrack }} />
+                    className={cx(classes.previewVideo, 'flipVideoX')}
+                    playsinline={true}
+                    videoTrack={{ jitsiTrack }}
+                />
             </div>
         );
     };
@@ -306,40 +304,42 @@ const VideoSettingsContent = ({
             _setTracks();
             videoDevicesRef.current = videoDeviceIds;
         }
-    }, [ videoDeviceIds ]);
+    }, [videoDeviceIds]);
 
     const virtualBackgroundSupported = checkBlurSupport();
 
     return (
         <ContextMenu
-            aria-labelledby = 'video-settings-button'
-            className = { classes.container }
-            hidden = { false }
-            id = 'video-settings-dialog'
-            role = 'radiogroup'
-            tabIndex = { -1 }>
+            aria-labelledby="video-settings-button"
+            className={classes.container}
+            hidden={false}
+            id="video-settings-dialog"
+            role="radiogroup"
+            tabIndex={-1}
+        >
+            <ContextMenuItemGroup>{trackData.map((data, i) => _renderPreviewEntry(data, i))}</ContextMenuItemGroup>
             <ContextMenuItemGroup>
-                {trackData.map((data, i) => _renderPreviewEntry(data, i))}
-            </ContextMenuItemGroup>
-            <ContextMenuItemGroup>
-                { virtualBackgroundSupported && <ContextMenuItem
-                    accessibilityLabel = { t('virtualBackground.title') }
-                    icon = { IconImage }
-                    onClick = { selectBackground }
-                    text = { t('virtualBackground.title') } /> }
-                <div
-                    className = { classes.checkboxContainer }
-                    onClick = { stopPropagation }>
+                {virtualBackgroundSupported && (
+                    <ContextMenuItem
+                        accessibilityLabel={t('virtualBackground.title')}
+                        icon={IconImage}
+                        onClick={selectBackground}
+                        text={t('virtualBackground.title')}
+                    />
+                )}
+                <div className={classes.checkboxContainer} onClick={stopPropagation}>
                     <Checkbox
-                        checked = { localFlipX }
-                        className = { classes.videoCheckbox }
-                        label = { t('videothumbnail.mirrorVideo') }
-                        onChange = { _onToggleFlip } />
+                        checked={localFlipX}
+                        className={classes.videoCheckbox}
+                        label={t('videothumbnail.mirrorVideo')}
+                        onChange={_onToggleFlip}
+                    />
                     <Checkbox
-                        checked = { hideSelfView }
-                        className = { classes.videoCheckbox }
-                        label = { t('videothumbnail.hideSelfView') }
-                        onChange = { _onToggleSelfView } />
+                        checked={hideSelfView}
+                        className={classes.videoCheckbox}
+                        label={t('videothumbnail.hideSelfView')}
+                        onChange={_onToggleSelfView}
+                    />
                 </div>
             </ContextMenuItemGroup>
         </ContextMenu>
@@ -361,15 +361,19 @@ const mapDispatchToProps = (dispatch: IStore['dispatch']) => {
     return {
         selectBackground: () => dispatch(openSettingsDialog(SETTINGS_TABS.VIRTUAL_BACKGROUND)),
         changeFlip: (flip: boolean) => {
-            dispatch(updateSettings({
-                localFlipX: flip
-            }));
+            dispatch(
+                updateSettings({
+                    localFlipX: flip
+                })
+            );
         },
         changeSelfView: (selfView: boolean) => {
-            dispatch(updateSettings({
-                hideSelfView: selfView,
-                disableSelfView: selfView
-            }));
+            dispatch(
+                updateSettings({
+                    hideSelfView: selfView,
+                    disableSelfView: selfView
+                })
+            );
         }
     };
 };

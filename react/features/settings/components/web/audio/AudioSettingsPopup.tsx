@@ -8,66 +8,58 @@ import {
     setAudioInputDeviceAndUpdateSettings,
     setAudioOutputDevice as setAudioOutputDeviceAction
 } from '../../../../base/devices/actions.web';
-import {
-    getAudioInputDeviceData,
-    getAudioOutputDeviceData
-} from '../../../../base/devices/functions.web';
+import { getAudioInputDeviceData, getAudioOutputDeviceData } from '../../../../base/devices/functions.web';
 import Popover from '../../../../base/popover/components/Popover.web';
 import { SMALL_MOBILE_WIDTH } from '../../../../base/responsive-ui/constants';
-import {
-    getCurrentMicDeviceId,
-    getCurrentOutputDeviceId
-} from '../../../../base/settings/functions.web';
+import { getCurrentMicDeviceId, getCurrentOutputDeviceId } from '../../../../base/settings/functions.web';
 import { toggleAudioSettings } from '../../../actions';
 import { getAudioSettingsVisibility } from '../../../functions.web';
 
 import AudioSettingsContent from './AudioSettingsContent';
 import AccessiblePopover from '../../../../inklusiva/accessiblePopover/accessiblePopover';
 
-
 interface IProps {
-
     /**
-    * Component's children (the audio button).
-    */
+     * Component's children (the audio button).
+     */
     children: ReactNode;
 
     /**
-    * The deviceId of the microphone in use.
-    */
+     * The deviceId of the microphone in use.
+     */
     currentMicDeviceId: string;
 
     /**
-    * The deviceId of the output device in use.
-    */
+     * The deviceId of the output device in use.
+     */
     currentOutputDeviceId?: string;
 
     /**
-    * Flag controlling the visibility of the popup.
-    */
+     * Flag controlling the visibility of the popup.
+     */
     isOpen: boolean;
 
     /**
-    * Used to decide whether to measure audio levels for microphone devices.
-    */
+     * Used to decide whether to measure audio levels for microphone devices.
+     */
     measureAudioLevels: boolean;
 
     /**
-    * A list with objects containing the labels and deviceIds
-    * of all the input devices.
-    */
-    microphoneDevices: Array<{ deviceId: string; label: string; }>;
+     * A list with objects containing the labels and deviceIds
+     * of all the input devices.
+     */
+    microphoneDevices: Array<{ deviceId: string; label: string }>;
 
     /**
-    * Callback executed when the popup closes.
-    */
+     * Callback executed when the popup closes.
+     */
     onClose: Function;
 
     /**
-    * A list of objects containing the labels and deviceIds
-    * of all the output devices.
-    */
-    outputDevices: Array<{ deviceId: string; label: string; }>;
+     * A list of objects containing the labels and deviceIds
+     * of all the output devices.
+     */
+    outputDevices: Array<{ deviceId: string; label: string }>;
 
     /**
      * The popup placement enum value.
@@ -75,13 +67,13 @@ interface IProps {
     popupPlacement: string;
 
     /**
-    * Used to set a new microphone as the current one.
-    */
+     * Used to set a new microphone as the current one.
+     */
     setAudioInputDevice: Function;
 
     /**
-    * Used to set a new output device as the current one.
-    */
+     * Used to set a new output device as the current one.
+     */
     setAudioOutputDevice: Function;
 }
 
@@ -114,22 +106,26 @@ function AudioSettingsPopup({
     const { classes, cx } = useStyles();
 
     return (
-        <div className = { cx(classes.container, 'audio-preview') }>
+        <div className={cx(classes.container, 'audio-preview')}>
             <AccessiblePopover
-                allowClick = { true }
-                content = { <AudioSettingsContent
-                    currentMicDeviceId = { currentMicDeviceId }
-                    currentOutputDeviceId = { currentOutputDeviceId }
-                    measureAudioLevels = { measureAudioLevels }
-                    microphoneDevices = { microphoneDevices }
-                    outputDevices = { outputDevices }
-                    setAudioInputDevice = { setAudioInputDevice }
-                    setAudioOutputDevice = { setAudioOutputDevice } /> }
-                headingId = 'audio-settings-button'
-                onPopoverClose = { onClose }
-                position = { popupPlacement }
-                trigger = 'click'
-                visible = { isOpen }>
+                allowClick={true}
+                content={
+                    <AudioSettingsContent
+                        currentMicDeviceId={currentMicDeviceId}
+                        currentOutputDeviceId={currentOutputDeviceId}
+                        measureAudioLevels={measureAudioLevels}
+                        microphoneDevices={microphoneDevices}
+                        outputDevices={outputDevices}
+                        setAudioInputDevice={setAudioInputDevice}
+                        setAudioOutputDevice={setAudioOutputDevice}
+                    />
+                }
+                headingId="audio-settings-button"
+                onPopoverClose={onClose}
+                position={popupPlacement}
+                trigger="click"
+                visible={isOpen}
+            >
                 {children}
             </AccessiblePopover>
         </div>

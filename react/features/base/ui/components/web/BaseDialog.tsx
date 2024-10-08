@@ -17,7 +17,7 @@ const useStyles = makeStyles()(theme => {
             position: 'fixed',
             color: theme.palette.text01,
             ...withPixelLineHeight(theme.typography.bodyLongRegular),
-            top: -50,
+            top: 0,
             left: 0,
             display: 'flex',
             justifyContent: 'center',
