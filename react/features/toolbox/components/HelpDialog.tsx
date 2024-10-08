@@ -9,7 +9,6 @@ import BaseDialog from '../../base/ui/components/web/BaseDialog';
 import ClickableIcon from '../../base/ui/components/web/ClickableIcon';
 
 interface IProps {
-
     /**
      * The function to translate human-readable text.
      */
@@ -20,9 +19,10 @@ const useStyles = makeStyles()(() => {
     return {
         container: {
             width: '90vw',
-            height: 'auto',
+            height: '90vh',
             marginTop: '2rem !important',
-            position: 'relative'
+            position: 'relative',
+            top: '0'
         },
         contentContainer: {
             width: '100%',
@@ -31,9 +31,10 @@ const useStyles = makeStyles()(() => {
         },
         modalHeaderCloseButton: {
             position: 'absolute',
-            right: '1rem',
-            top: '1rem',
-            backgroundColor: 'black'
+            right: '1.5rem',
+            top: '0.5rem',
+            backgroundColor: 'black',
+            zIndex: '100000'
         }
     };
 });
@@ -48,21 +49,20 @@ const HelpDialog = ({ t }: IProps) => {
     };
 
     return (
-        <BaseDialog
-            className = { classes.container }
-            size = 'large'
-            titleKey = { 'Hilfe' }>
+        <BaseDialog className={classes.container} size="large" titleKey={'Hilfe'}>
             <ClickableIcon
-                accessibilityLabel = { t('dialog.accessibilityLabel.close') }
-                className = { classes.modalHeaderCloseButton }
-                icon = { IconCloseLarge }
-                id = 'modal-header-close-button'
-                onClick = { onClose } />
+                accessibilityLabel={t('dialog.accessibilityLabel.close')}
+                className={classes.modalHeaderCloseButton}
+                icon={IconCloseLarge}
+                id="modal-header-close-button"
+                onClick={onClose}
+            />
 
             <iframe
-                className = { classes.contentContainer }
-                src = 'https://conference.inklusiva-call.de/help/meeting/'
-                title = { t('toolbar.helpDialogTitle') } />
+                className={classes.contentContainer}
+                src="https://conference.inklusiva-call.de/help/meeting/"
+                title={t('toolbar.helpDialogTitle')}
+            />
         </BaseDialog>
     );
 };
