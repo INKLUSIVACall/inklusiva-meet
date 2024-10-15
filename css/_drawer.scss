@@ -19,16 +19,15 @@
 
 .drawer-menu-container {
     height: 100vh;
+    width: 95vw;
     display: flex;
     align-items: flex-end;
 }
 
 .drawer-menu {
-    overflow-y: auto;
     margin-bottom: env(safe-area-inset-bottom, 0);
     width: 100%;
-    padding: 0 14px 14px 14px;
-
+    height: 100vh;
     &#{&} .overflow-menu {
         margin: auto;
         font-size: 1.2em;

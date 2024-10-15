@@ -73,8 +73,7 @@ const useStyles = makeStyles<{ overflowDrawer: boolean; reactionsMenuHeight: num
     (_theme, { reactionsMenuHeight, overflowDrawer }) => {
         return {
             overflowMenuDrawer: {
-                overflow: 'hidden',
-                height: `calc(${DRAWER_MAX_HEIGHT} - ${reactionsMenuHeight}px - 16px)`
+                overflow: 'auto'
             },
             contextMenu: {
                 position: 'relative' as const,

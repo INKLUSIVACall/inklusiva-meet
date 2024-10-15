@@ -70,7 +70,7 @@ const useStyles = makeStyles()(theme => {
                     margin-top: 85px
                 }
                 100% {
-                    margin-top: 64px
+                    margin-top: 50px
                 }
             `} 0.2s forwards ease-out`,
 
@@ -101,7 +101,7 @@ const useStyles = makeStyles()(theme => {
                 height: '100%',
                 margin: 0,
                 position: 'absolute',
-                top: '48px',
+                top: '0px',
                 left: 0,
                 bottom: 0,
                 animation: `${keyframes`
