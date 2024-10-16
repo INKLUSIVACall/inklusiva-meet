@@ -22,6 +22,7 @@ import { RoomList } from '../breakout-rooms/components/web/RoomList';
 
 import AllParticipants from './AllParticipants';
 import { FooterContextMenu } from './FooterContextMenu';
+import BaseDialog from '../../../base/ui/components/web/BaseDialog';
 
 const useStyles = makeStyles()(theme => {
     return {
@@ -94,8 +95,8 @@ const ParticipantsPane = () => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const [ contextOpen, setContextOpen ] = useState(false);
-    const [ searchString, setSearchString ] = useState('');
+    const [contextOpen, setContextOpen] = useState(false);
+    const [searchString, setSearchString] = useState('');
 
     const onWindowClickListener = useCallback(
         (e: any) => {
@@ -103,7 +104,7 @@ const ParticipantsPane = () => {
                 setContextOpen(false);
             }
         },
-        [ contextOpen ]
+        [contextOpen]
     );
 
     useEffect(() => {
@@ -134,48 +135,60 @@ const ParticipantsPane = () => {
         return null;
     }
 
-    return (
-        <div className = 'participants_pane'>
-            <div className = 'participants_pane-content'>
-                <div className = { classes.header }>
-                    <ClickableIcon
-                        accessibilityLabel = { t('participantsPane.close', 'Close') }
-                        icon = { IconCloseLarge }
-                        onClick = { onClosePane } />
-                </div>
-                <div className = { classes.container }>
-                    <AllParticipants
-                        searchString = { searchString }
-                        setSearchString = { setSearchString } />
-                    {BREAKOUTROOM_LIST_STATUS && isBreakoutRoomsSupported && <RoomList searchString = { searchString } />}
-                    {BREAKOUTROOM_BUTTON_STATUS && showAddRoomButton && <AddBreakoutRoomButton />}
-                </div>
-                {showFooter && (
-                    <div className = { classes.footer }>
-                        {showMuteAllButton && (
-                            <Button
-                                accessibilityLabel = { t('participantsPane.actions.muteAll') }
-                                labelKey = { 'participantsPane.actions.muteAll' }
-                                onClick = { onMuteAll }
-                                type = { BUTTON_TYPES.SECONDARY } />
-                        )}
-                        {showMoreActionsButton && (
-                            <div className = { classes.footerMoreContainer }>
-                                <Button
-                                    accessibilityLabel = { t('participantsPane.actions.moreModerationActions') }
-                                    icon = { IconDotsHorizontal }
-                                    id = 'participants-pane-context-menu'
-                                    onClick = { onToggleContext }
-                                    type = { BUTTON_TYPES.SECONDARY } />
-                                <FooterContextMenu
-                                    isOpen = { contextOpen }
-                                    onDrawerClose = { onDrawerClose }
-                                    onMouseLeave = { onToggleContext } />
-                            </div>
-                        )}
-                    </div>
-                )}
+    const isSmallViewport = window.innerWidth < 450;
+
+    const paneContent = (
+        <>
+            <div className={classes.header}>
+                <ClickableIcon
+                    accessibilityLabel={t('participantsPane.close', 'Close')}
+                    icon={IconCloseLarge}
+                    onClick={onClosePane}
+                />
             </div>
+            <div className={classes.container}>
+                <AllParticipants searchString={searchString} setSearchString={setSearchString} />
+                {BREAKOUTROOM_LIST_STATUS && isBreakoutRoomsSupported && <RoomList searchString={searchString} />}
+                {BREAKOUTROOM_BUTTON_STATUS && showAddRoomButton && <AddBreakoutRoomButton />}
+            </div>
+            {showFooter && (
+                <div className={classes.footer}>
+                    {showMuteAllButton && (
+                        <Button
+                            accessibilityLabel={t('participantsPane.actions.muteAll')}
+                            labelKey={'participantsPane.actions.muteAll'}
+                            onClick={onMuteAll}
+                            type={BUTTON_TYPES.SECONDARY}
+                        />
+                    )}
+                    {showMoreActionsButton && (
+                        <div className={classes.footerMoreContainer}>
+                            <Button
+                                accessibilityLabel={t('participantsPane.actions.moreModerationActions')}
+                                icon={IconDotsHorizontal}
+                                id="participants-pane-context-menu"
+                                onClick={onToggleContext}
+                                type={BUTTON_TYPES.SECONDARY}
+                            />
+                            <FooterContextMenu
+                                isOpen={contextOpen}
+                                onDrawerClose={onDrawerClose}
+                                onMouseLeave={onToggleContext}
+                            />
+                        </div>
+                    )}
+                </div>
+            )}
+        </>
+    );
+
+    return isSmallViewport ? (
+        <BaseDialog onClose={onClosePane} size="large">
+            {paneContent}
+        </BaseDialog>
+    ) : (
+        <div className="participants_pane">
+            <div className="participants_pane-content">{paneContent}</div>
         </div>
     );
 };

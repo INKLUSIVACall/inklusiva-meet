@@ -230,6 +230,9 @@ export const commonStyles = (theme: Theme) => {
             '@media (max-width: 868px) and (min-width: 820px)': {
                 width: '4rem'
             },
+            '@media (max-width: 344px)': {
+                width: '4rem'
+            },
             [theme.breakpoints.down(320)]: {
                 height: 36,
                 width: 36

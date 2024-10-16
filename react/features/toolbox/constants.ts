@@ -54,7 +54,7 @@ export const THRESHOLDS = [
         order: ['rolematching', 'distress', 'microphone', 'camera', 'desktop', 'chat', 'participants', 'help']
     },
     {
-        width: 370,
+        width: 340,
         order: ['rolematching', 'distress', 'microphone', 'camera', 'chat', 'participants', 'help']
     },
     {
@@ -110,7 +110,7 @@ export const THRESHOLDS_MODERATOR = [
         order: ['distress', 'microphone', 'camera', 'desktop', 'chat', 'participants', 'help']
     },
     {
-        width: 370,
+        width: 340,
         order: ['distress', 'microphone', 'camera', 'chat', 'participants', 'help']
     },
     {
@@ -185,7 +185,7 @@ export const THRESHOLDS_USER = [
         order: ['rolematching', 'distress', 'microphone', 'camera', 'desktop', 'chat', 'participants', 'help']
     },
     {
-        width: 370,
+        width: 340,
         order: ['rolematching', 'distress', 'microphone', 'camera', 'chat', 'participants', 'help']
     },
     {

@@ -165,6 +165,11 @@ interface IProps extends WithTranslation {
      * Explicitly passed array with the buttons which this Toolbox should display.
      */
     toolbarButtons: Array<string>;
+
+    /**
+     *  whether the participants-pane is visible or not
+     */
+    _participantsPaneOpen: boolean;
 }
 
 const useStyles = makeStyles()(() => {
@@ -218,7 +223,8 @@ const Toolbox = ({
     dispatch,
     t,
     toolbarButtons,
-    _distressButton
+    _distressButton,
+    _participantsPaneOpen
 }: IProps) => {
     const { classes, cx } = useStyles();
     const _toolboxRef = useRef<HTMLDivElement>(null);
@@ -247,6 +253,12 @@ const Toolbox = ({
             dispatch(hideToolbox(true));
         }
     }, [_chatOpen]);
+
+    useEffect(() => {
+        if (_participantsPaneOpen) {
+            dispatch(hideToolbox(true));
+        }
+    }, [_participantsPaneOpen]);
 
     /**
      * Sets the visibility of the hangup menu.
@@ -633,7 +645,8 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
         _toolbarButtons: toolbarButtons,
         _visible: isToolboxVisible(state),
         _distressButton: state['features/inklusiva/userdata'].distressbutton?.active ?? false,
-        _localUser: state['features/base/participants'].local
+        _localUser: state['features/base/participants'].local,
+        _participantsPaneOpen: state['features/participants-pane'].isOpen
     };
 }
 

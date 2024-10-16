@@ -3,7 +3,7 @@
     flex-shrink: 0;
     overflow: hidden;
     position: relative;
-    transition: width .16s ease-in-out;
+    transition: width 0.16s ease-in-out;
     width: 315px;
     z-index: $zindex0;
 }
@@ -20,7 +20,6 @@
         flex-shrink: 0;
     }
 }
-
 
 .LeftPlacedIcons {
     display: flex;
@@ -44,25 +43,17 @@
     color: #858585;
 }
 
-@media (max-width: 580px) {
+@media (max-width: 450px) {
     .participants_pane {
         height: 100vh;
         height: -webkit-fill-available;
-        left: 0;
-        position: fixed;
-        right: 0;
-        top: 0;
-        width: auto;
-    }
-
-    .participants_pane-content {
-        width: 100%;
+        width: 100vw;
     }
 }
 
 .jitsi-icon {
     &-dominant-speaker {
-        background-color: #1EC26A;
+        background-color: #1ec26a;
         border-radius: 3px;
     }
 }
