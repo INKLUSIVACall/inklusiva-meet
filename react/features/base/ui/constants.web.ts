@@ -227,12 +227,16 @@ export const commonStyles = (theme: Theme) => {
                     backgroundColor: theme.palette.ui03
                 }
             },
-            '@media (max-width: 868px) and (min-width: 820px)': {
-                width: '4rem'
+            '@media (max-width: 821px) and (min-width: 819px)': {
+                width: '3.7rem'
+            },
+            '@media (max-width: 431px) and (min-width: 429px)': {
+                width: '4.5rem'
             },
             '@media (max-width: 344px)': {
                 width: '4rem'
             },
+
             [theme.breakpoints.down(320)]: {
                 height: 36,
                 width: 36
