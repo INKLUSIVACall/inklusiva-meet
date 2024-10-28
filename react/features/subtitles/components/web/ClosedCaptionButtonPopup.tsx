@@ -14,9 +14,7 @@ import AccessiblePopover from '../../../inklusiva/accessiblePopover/accessiblePo
 import { toggleCCHistoryPanel, toggleClosedCaptionPopup } from '../../actions.web';
 import { getClosedCaptionVisibility } from '../../functions';
 
-
 interface IProps extends WithTranslation {
-
     /**
      * The name of the conference.
      */
@@ -31,13 +29,13 @@ interface IProps extends WithTranslation {
     _transcriptionHistory: any[];
 
     /**
-    * Component's children (the audio button).
-    */
+     * Component's children (the audio button).
+     */
     children: ReactNode;
 
     /**
-    * Flag controlling the visibility of the popup.
-    */
+     * Flag controlling the visibility of the popup.
+     */
     isOpen: boolean;
 
     /**
@@ -46,8 +44,8 @@ interface IProps extends WithTranslation {
     onClickHistory: Function;
 
     /**
-    * Callback executed when the popup closes.
-    */
+     * Callback executed when the popup closes.
+     */
     onClose: Function;
 
     /**
@@ -64,7 +62,7 @@ const useStyles = makeStyles()(theme => {
         },
         buttonContainer: {
             position: 'relative',
-            right: 'auto',
+            right: '50px',
             margin: 0,
             marginBottom: theme.spacing(1),
             maxHeight: 'calc(100vh - 100px)',
@@ -117,55 +115,57 @@ function ClosedCaptionButtonPopup({
         const content = formattedMessages.join('\n');
 
         const element = document.createElement('a');
-        const file = new Blob([ content ], { type: 'text/plain' } as BlobOptions);
+        const file = new Blob([content], { type: 'text/plain' } as BlobOptions);
 
         element.href = URL.createObjectURL(file);
         element.download = `${_conferenceName}_transkript.txt`;
         document.body.appendChild(element); // Required for this to work in Firefox
-        element.click();        
+        element.click();
     };
-
 
     let content: ReactElement | null = null;
 
     content = (
         <ContextMenu
-            aria-labelledby = 'cc-settings-button'
-            className = { classes.buttonContainer }
-            hidden = { false }
-            id = 'closed-caption-dialog'
-            role = 'radiogroup'
-            tabIndex = { -1 }>
+            aria-labelledby="cc-settings-button"
+            className={classes.buttonContainer}
+            hidden={false}
+            id="closed-caption-dialog"
+            role="radiogroup"
+            tabIndex={-1}
+        >
             <Button
-                accessibilityLabel = { t('toolbar.accessibilityLabel.ccHistory') }
-                className = { classes.button }
-                icon = { IconBubble }
-                label = { t('toolbar.ccHistory') }
+                accessibilityLabel={t('toolbar.accessibilityLabel.ccHistory')}
+                className={classes.button}
+                icon={IconBubble}
+                label={t('toolbar.ccHistory')}
                 // eslint-disable-next-line react/jsx-no-bind
-                onClick = { _onClickHistory } />
-            { _transcriptionHistory.length > 0 && (
+                onClick={_onClickHistory}
+            />
+            {_transcriptionHistory.length > 0 && (
                 <Button
-                    accessibilityLabel = { t('toolbar.accessibilityLabel.ccDownload') }
-                    className = { classes.button }
-                    icon = { IconDownload }
-                    label = { t('toolbar.ccDownload') }
+                    accessibilityLabel={t('toolbar.accessibilityLabel.ccDownload')}
+                    className={classes.button}
+                    icon={IconDownload}
+                    label={t('toolbar.ccDownload')}
                     // eslint-disable-next-line react/jsx-no-bind
-                    onClick = { _onClickDownload } />
-            ) }
+                    onClick={_onClickDownload}
+                />
+            )}
         </ContextMenu>
-
     );
 
     return (
-        <div className = { classes.container }>
+        <div className={classes.container}>
             <AccessiblePopover
-                allowClick = { true }
-                content = { content }
-                headingId = 'cc-settings-button'
-                onPopoverClose = { onClose }
-                position = { popupPlacement }
-                trigger = 'click'
-                visible = { isOpen }>
+                allowClick={true}
+                content={content}
+                headingId="cc-settings-button"
+                onPopoverClose={onClose}
+                position={popupPlacement}
+                trigger="click"
+                visible={isOpen}
+            >
                 {children}
             </AccessiblePopover>
         </div>
@@ -195,4 +195,3 @@ const mapDispatchToProps = {
 };
 
 export default translate(connect(mapStateToProps, mapDispatchToProps)(ClosedCaptionButtonPopup));
-
