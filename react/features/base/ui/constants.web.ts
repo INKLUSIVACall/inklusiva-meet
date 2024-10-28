@@ -227,13 +227,13 @@ export const commonStyles = (theme: Theme) => {
                     backgroundColor: theme.palette.ui03
                 }
             },
+            '@media (max-width: 950px) and (min-width: 822px)': {
+                width: '3.9rem'
+            },
             '@media (max-width: 821px) and (min-width: 819px)': {
                 width: '3.7rem'
             },
-            '@media (max-width: 431px) and (min-width: 429px)': {
-                width: '4.5rem'
-            },
-            '@media (max-width: 344px)': {
+            '@media (max-width: 431px)': {
                 width: '4rem'
             },
 

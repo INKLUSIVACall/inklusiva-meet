@@ -9,6 +9,10 @@
         justify-content: center;
         width: 4.5rem;
 
+        @media (max-width: 950px) and (min-width: 822px) {
+            width: 3.9rem;
+        }
+
         @media (max-width: 821px) and (min-width: 819px) {
             width: 3.7rem;
         }
