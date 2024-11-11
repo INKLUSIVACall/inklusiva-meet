@@ -15,6 +15,9 @@
 --     muc_room_locking = false
 --     muc_room_default_public_jids = true
 --
+
+module:depends('room_destroy');
+
 -- we use async to detect Prosody 0.10 and earlier
 local have_async = pcall(require, 'util.async');
 
@@ -26,13 +29,14 @@ end
 local jid_node = require 'util.jid'.node;
 local jid_host = require 'util.jid'.host;
 local jid_split = require 'util.jid'.split;
-local json = require 'util.json';
+local json = require 'cjson.safe';
 local st = require 'util.stanza';
 local uuid_gen = require 'util.uuid'.generate;
 
 local util = module:require 'util';
 local internal_room_jid_match_rewrite = util.internal_room_jid_match_rewrite;
 local is_healthcheck_room = util.is_healthcheck_room;
+local process_host_module = util.process_host_module;
 
 local BREAKOUT_ROOMS_IDENTITY_TYPE = 'breakout_rooms';
 -- Available breakout room functionality
@@ -162,12 +166,17 @@ function broadcast_breakout_rooms(room_jid)
             end
         end
 
-        local json_msg = json.encode({
+        local json_msg, error = json.encode({
             type = BREAKOUT_ROOMS_IDENTITY_TYPE,
             event = JSON_TYPE_UPDATE_BREAKOUT_ROOMS,
             roomCounter = main_room._data.breakout_rooms_counter,
             rooms = rooms
         });
+
+        if not json_msg then
+            module:log('error', 'not broadcasting breakout room information room:%s error:%s', main_room_jid, error);
+            return;
+        end
 
         for _, occupant in main_room:each_occupant() do
             if jid_node(occupant.jid) ~= 'focus' then
@@ -307,10 +316,10 @@ function on_message(event)
         end
     end
 
---    if occupant.role ~= 'moderator' then
---        module:log('warn', 'Occupant %s is not moderator and not allowed this operation for %s', from, room.jid);
---        return false;
---    end
+    if occupant.role ~= 'moderator' then
+        module:log('warn', 'Occupant %s is not moderator and not allowed this operation for %s', from, room.jid);
+        return false;
+    end
 
     if message.attr.type == JSON_TYPE_ADD_BREAKOUT_ROOM then
         create_breakout_room(room.jid, message.attr.subject);
@@ -325,11 +334,15 @@ function on_message(event)
         local participant_jid = message.attr.participantJid;
         local target_room_jid = message.attr.roomJid;
 
-        local json_msg = json.encode({
+        local json_msg, error = json.encode({
             type = BREAKOUT_ROOMS_IDENTITY_TYPE,
             event = JSON_TYPE_MOVE_TO_ROOM_REQUEST,
             roomJid = target_room_jid
         });
+
+        if not json_msg then
+            module:log('error', 'skip sending request room:%s error:%s', room.jid, error);
+        end
 
         send_json_msg(participant_jid, json_msg)
         return true;
@@ -403,6 +416,16 @@ function exist_occupants_in_rooms(main_room)
     return false;
 end
 
+function on_occupant_pre_leave(event)
+    local room, occupant, session, stanza = event.room, event.occupant, event.origin, event.stanza;
+
+    local main_room = get_main_room(room.jid);
+
+    prosody.events.fire_event('jitsi-breakout-occupant-leaving', {
+        room = room; main_room = main_room; occupant = occupant; stanza = stanza; session = session;
+    });
+end
+
 function on_occupant_left(event)
     local room_jid = event.room.jid;
 
@@ -420,28 +443,6 @@ function on_occupant_left(event)
         broadcast_breakout_rooms(main_room_jid);
     end
 
-    -- Close breakout room after timeout
-    module:log('info', 'User has left %s', room_jid);
-    if room_jid ~= main_room_jid then
-        module:log('info', '%s is a breakout room', room_jid);
-        local breakout_room = get_room_from_jid(room_jid);
-        if not exist_occupants_in_room(breakout_room) then
-            module:log('info', 'No more users in %s', room_jid);
-            destroy_breakout_room(room_jid);
-            --module:add_timer(3, function()
-            --    local breakout_room = get_room_from_jid(room_jid);
-            --    module:log('info', 'Preparing to destroy %s', room_jid);
-            --    if not breakout_room then
-            --        module:log('info', 'Umm... that shouldnt happen.', room_jid);
-            --    end
-            --    if breakout_room and not exist_occupants_in_room(breakout_room) then
-            --        module:log('info', 'Closing breakout room %s as all left for good.', room_jid);
-            --        destroy_breakout_room(room_jid);
-            --    end
-            --end);
-        end
-    end
-
     -- Close the conference if all left for good.
     if main_room._data.breakout_rooms_active and not main_room.close_timer and not exist_occupants_in_rooms(main_room) then
         main_room.close_timer = module:add_timer(ROOMS_TTL_IF_ALL_LEFT, function()
@@ -449,13 +450,38 @@ function on_occupant_left(event)
             -- and we will have the old instance
             local main_room, main_room_jid = get_main_room(room_jid);
             if main_room and main_room.close_timer then
-                module:log('info', 'Closing conference %s as all left for good.', main_room_jid);
-                main_room:set_persistent(false);
-                main_room:destroy(nil, 'All occupants left.');
+                prosody.events.fire_event("maybe-destroy-room", {
+                    room = main_room;
+                    reason = 'All occupants left.';
+                    caller = module:get_name();
+                });
             end
         end);
     end
 end
+
+-- Stop other modules from destroying room if breakout rooms not empty
+function handle_maybe_destroy_main_room(event)
+    local main_room = event.room;
+    local caller = event.caller;
+
+    if caller == module:get_name() then
+        -- we were the one that requested the deletion. Do not override.
+        return nil; -- stop room destruction
+    end
+
+    -- deletion was requested by another module. Check for break room occupants.
+    for breakout_room_jid, _ in pairs(main_room._data.breakout_rooms or {}) do
+        local breakout_room = breakout_rooms_muc_service.get_room_from_jid(breakout_room_jid);
+        if breakout_room and breakout_room:has_occupant() then
+            module:log('info', 'Suppressing room destroy. Breakout room still occupied %s', breakout_room_jid);
+            return true; -- stop room destruction
+        end
+    end
+end
+
+module:hook_global("maybe-destroy-room", handle_maybe_destroy_main_room)
+
 
 function on_main_room_destroyed(event)
     local main_room = event.room;
@@ -471,25 +497,6 @@ end
 
 
 -- Module operations
-
--- process a host module directly if loaded or hooks to wait for its load
-function process_host_module(name, callback)
-    local function process_host(host)
-        if host == name then
-            callback(module:context(host), host);
-        end
-    end
-
-    if prosody.hosts[name] == nil then
-        module:log('debug', 'No host/component found, will wait for it: %s', name)
-
-        -- when a host or component is added
-        prosody.events.add_handler('host-activated', process_host);
-    else
-        process_host(name);
-    end
-end
-
 
 -- operates on already loaded breakout rooms muc module
 function process_breakout_rooms_muc_loaded(breakout_rooms_muc, host_module)
@@ -513,6 +520,7 @@ function process_breakout_rooms_muc_loaded(breakout_rooms_muc, host_module)
     host_module:hook('muc-occupant-joined', on_occupant_joined);
     host_module:hook('muc-occupant-left', on_occupant_left);
     host_module:hook('muc-room-pre-create', on_breakout_room_pre_create);
+    host_module:hook('muc-occupant-pre-leave', on_occupant_pre_leave);
 
     host_module:hook('muc-disco#info', function (event)
         local room = event.room;
@@ -529,7 +537,7 @@ function process_breakout_rooms_muc_loaded(breakout_rooms_muc, host_module)
             name = 'muc#roominfo_breakout_main_room';
             label = 'The main room associated with this breakout room';
         });
-        event.formdata['muc#roominfo_breakout_main_room'] = main_room_jid;
+        event.formdata['muc#roominfo_breakout_main_room'] = internal_room_jid_match_rewrite(main_room_jid);
 
         -- If the main room has a lobby, make it so this breakout room also uses it.
         if (main_room and main_room._data.lobbyroom and main_room:get_members_only()) then
@@ -556,7 +564,7 @@ function process_breakout_rooms_muc_loaded(breakout_rooms_muc, host_module)
         table.insert(event.form, {
             name = 'muc#roominfo_breakout_main_room';
             label = 'The main room associated with this breakout room';
-            value = main_room_jid;
+            value = internal_room_jid_match_rewrite(main_room_jid);
         });
     end);
 

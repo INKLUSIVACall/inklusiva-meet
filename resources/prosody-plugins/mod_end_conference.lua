@@ -11,7 +11,7 @@
 --
 local get_room_by_name_and_subdomain = module:require 'util'.get_room_by_name_and_subdomain;
 
-local END_CONFERENCE_REASON = 'Das Meeting wurde beendet.';
+local END_CONFERENCE_REASON = 'The meeting has been terminated';
 
 -- Since this file serves as both the host module and the component, we rely on the assumption that
 -- end_conference_component var would only be define for the host and not in the end_conference component

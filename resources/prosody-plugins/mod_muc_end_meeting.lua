@@ -79,7 +79,7 @@ function handle_terminate_meeting (event)
         return { status_code = 404 };
     else
         module:log("info", "Destroy room jid %s", room.jid)
-        room:destroy(nil, "Das Meeting wurde beendet.")
+        room:destroy(nil, "The meeting has been terminated")
     end
     event_count_success()
     return { status_code = 200 };
