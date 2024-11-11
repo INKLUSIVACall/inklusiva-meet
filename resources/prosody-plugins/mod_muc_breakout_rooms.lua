@@ -316,10 +316,10 @@ function on_message(event)
         end
     end
 
-    if occupant.role ~= 'moderator' then
-        module:log('warn', 'Occupant %s is not moderator and not allowed this operation for %s', from, room.jid);
-        return false;
-    end
+--     if occupant.role ~= 'moderator' then
+--         module:log('warn', 'Occupant %s is not moderator and not allowed this operation for %s', from, room.jid);
+--         return false;
+--     end
 
     if message.attr.type == JSON_TYPE_ADD_BREAKOUT_ROOM then
         create_breakout_room(room.jid, message.attr.subject);
