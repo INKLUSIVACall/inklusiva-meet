@@ -11,6 +11,7 @@ import { IconCloseLarge } from '../../../base/icons/svg';
 import { withPixelLineHeight } from '../../../base/styles/functions.web';
 import { toggleCCHistoryPanel } from '../../actions.web';
 import { HISTORY_PANEL_SIZE } from '../../constants';
+import { hideToolbox } from '../../../toolbox/actions.web';
 
 interface IProps extends WithTranslation {
     /**
@@ -120,8 +121,7 @@ const useStyles = makeStyles()(theme => {
             paddingLeft: '25px',
             paddingRight: '20px',
             marginBottom: '1rem',
-            overflowAnchor: 'auto',
-            border: '1px solid red'
+            overflowAnchor: 'auto'
         }
     };
 });
@@ -207,7 +207,7 @@ const ClosedCaptionHistory = ({
 
     useEffect(() => {
         createBottomListObserver();
-    });
+    }, []);
 
     useEffect(() => {
         if (state.isScrolledToBottom === true) {
@@ -219,6 +219,12 @@ const ClosedCaptionHistory = ({
             }
         }
     }, [_transcriptionHistoryLength]);
+
+    useEffect(() => {
+        if (_isOpen) {
+            dispatch(hideToolbox(true));
+        }
+    }, [_isOpen, dispatch]);
 
     /**
      * Renders the panel header.
