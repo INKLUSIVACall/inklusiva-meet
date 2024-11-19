@@ -16,25 +16,25 @@ import { spacing } from '../../Tokens';
  * @param {string} name - Property name.
  * @returns {number} Float value.
  */
-const getFloatStyleProperty = (styles: CSSStyleDeclaration, name: string) =>
-    parseFloat(styles.getPropertyValue(name));
+const getFloatStyleProperty = (styles: CSSStyleDeclaration, name: string) => parseFloat(styles.getPropertyValue(name));
 
 /**
-* Gets the outer height of an element, including margins.
-*
-* @param {Element} element - Target element.
-* @returns {number} Computed height.
-*/
+ * Gets the outer height of an element, including margins.
+ *
+ * @param {Element} element - Target element.
+ * @returns {number} Computed height.
+ */
 const getComputedOuterHeight = (element: HTMLElement) => {
     const computedStyle = getComputedStyle(element);
 
-    return element.offsetHeight
-        + getFloatStyleProperty(computedStyle, 'margin-top')
-        + getFloatStyleProperty(computedStyle, 'margin-bottom');
+    return (
+        element.offsetHeight +
+        getFloatStyleProperty(computedStyle, 'margin-top') +
+        getFloatStyleProperty(computedStyle, 'margin-bottom')
+    );
 };
 
 interface IProps {
-
     /**
      * ARIA attributes.
      */
@@ -149,8 +149,6 @@ const useStyles = makeStyles()(theme => {
         },
 
         drawer: {
-            paddingTop: '16px',
-
             '& > div': {
                 ...withPixelLineHeight(theme.typography.bodyShortRegularLarge),
 
@@ -181,7 +179,7 @@ const ContextMenu = ({
     tabIndex,
     ...aria
 }: IProps) => {
-    const [ isHidden, setIsHidden ] = useState(true);
+    const [isHidden, setIsHidden] = useState(true);
     const containerRef = useRef<HTMLDivElement | null>(null);
     const { classes: styles, cx } = useStyles();
     const _overflowDrawer = useSelector(showOverflowDrawer);
@@ -190,83 +188,83 @@ const ContextMenu = ({
         if (_overflowDrawer) {
             return;
         }
-        if (entity && offsetTarget
-            && containerRef.current
-            && offsetTarget?.offsetParent
-            && offsetTarget.offsetParent instanceof HTMLElement
+        if (
+            entity &&
+            offsetTarget &&
+            containerRef.current &&
+            offsetTarget?.offsetParent &&
+            offsetTarget.offsetParent instanceof HTMLElement
         ) {
             const { current: container } = containerRef;
 
             // make sure the max height is not set
             container.style.maxHeight = 'none';
-            const { offsetTop, offsetParent: { offsetHeight, scrollTop } } = offsetTarget;
+            const {
+                offsetTop,
+                offsetParent: { offsetHeight, scrollTop }
+            } = offsetTarget;
             let outerHeight = getComputedOuterHeight(container);
 
-            const vhInPixels = window.innerHeight * MAX_HEIGHT / 100;
+            const vhInPixels = (window.innerHeight * MAX_HEIGHT) / 100;
             let height = Math.min(vhInPixels, outerHeight);
 
             if (offsetTop + height > offsetHeight + scrollTop && height > offsetTop) {
                 // top offset and + padding + border
-                container.style.maxHeight = `${offsetTop - ((spacing[2] * 2) + 2)}px`;
+                container.style.maxHeight = `${offsetTop - (spacing[2] * 2 + 2)}px`;
             }
 
             // get the height after style changes
             outerHeight = getComputedOuterHeight(container);
             height = Math.min(vhInPixels, outerHeight);
 
-            container.style.top = offsetTop + height > offsetHeight + scrollTop
-                ? `${offsetTop - outerHeight}`
-                : `${offsetTop}`;
+            container.style.top =
+                offsetTop + height > offsetHeight + scrollTop ? `${offsetTop - outerHeight}` : `${offsetTop}`;
 
             setIsHidden(false);
         } else {
             hidden === undefined && setIsHidden(true);
         }
-    }, [ entity, offsetTarget, _overflowDrawer ]);
+    }, [entity, offsetTarget, _overflowDrawer]);
 
     useEffect(() => {
         if (hidden !== undefined) {
             setIsHidden(hidden);
         }
-    }, [ hidden ]);
+    }, [hidden]);
 
     if (_overflowDrawer && inDrawer) {
-        return (<div
-            className = { styles.drawer }
-            onClick = { onDrawerClose }>
-            {children}
-        </div>);
+        return (
+            <div className={styles.drawer} onClick={onDrawerClose}>
+                {children}
+            </div>
+        );
     }
 
-    return _overflowDrawer
-        ? <JitsiPortal>
-            <Drawer
-                isOpen = { Boolean(isDrawerOpen && _overflowDrawer) }
-                onClose = { onDrawerClose }>
-                <div
-                    className = { styles.drawer }
-                    onClick = { onDrawerClose }>
+    return _overflowDrawer ? (
+        <JitsiPortal>
+            <Drawer isOpen={Boolean(isDrawerOpen && _overflowDrawer)} onClose={onDrawerClose}>
+                <div className={styles.drawer} onClick={onDrawerClose}>
                     {children}
                 </div>
             </Drawer>
         </JitsiPortal>
-        : <div
-            { ...aria }
-            aria-label = { accessibilityLabel }
-            className = { cx(styles.contextMenu,
-                isHidden && styles.contextMenuHidden,
-                className
-            ) }
-            id = { id }
-            onClick = { onClick }
-            onKeyDown = { onKeyDown }
-            onMouseEnter = { onMouseEnter }
-            onMouseLeave = { onMouseLeave }
-            ref = { containerRef }
-            role = { role }
-            tabIndex = { tabIndex }>
+    ) : (
+        <div
+            {...aria}
+            aria-label={accessibilityLabel}
+            className={cx(styles.contextMenu, isHidden && styles.contextMenuHidden, className)}
+            id={id}
+            onClick={onClick}
+            onKeyDown={onKeyDown}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+            ref={containerRef}
+            role={role}
+            tabIndex={tabIndex}
+        >
             {children}
-        </div>;
+        </div>
+    );
 };
 
 export default ContextMenu;

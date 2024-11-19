@@ -1,11 +1,11 @@
 @use 'sass:math';
 
 .reactions-menu {
-    width: 280px;
     background: #242528;
     box-shadow: 0px 3px 16px rgba(0, 0, 0, 0.6), 0px 0px 4px 1px rgba(0, 0, 0, 0.25);
     border-radius: 6px;
     padding: 16px;
+    max-height: none;
 
     &.with-gif {
         width: 328px;
@@ -21,7 +21,7 @@
 
     &.overflow {
         width: 100%;
-        height: auto;
+        height: fit-content;
 
         .toolbox-icon {
             width: 48px;
@@ -91,14 +91,15 @@
 
         .toolbox-icon {
             width: 100%;
+            height: fit-content;
             flex-direction: row;
             align-items: center;
 
             span.text {
                 font-style: normal;
                 font-weight: 600;
-                font-size: 14px;
-                line-height: 24px;
+                font-size: 15px;
+                line-height: 18px;
                 margin-left: 8px;
             }
         }

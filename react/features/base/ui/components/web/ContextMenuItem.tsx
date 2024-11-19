@@ -10,7 +10,6 @@ import { TEXT_OVERFLOW_TYPES } from '../../constants.any';
 import TextWithOverflow from './TextWithOverflow';
 
 export interface IProps {
-
     /**
      * Label used for accessibility.
      */
@@ -110,7 +109,7 @@ const useStyles = makeStyles()(theme => {
             cursor: 'pointer',
             display: 'flex',
             minHeight: '40px',
-            padding: '10px 16px',
+            padding: '10px 15px',
             boxSizing: 'border-box',
 
             '& > *:not(:last-child)': {
@@ -142,7 +141,7 @@ const useStyles = makeStyles()(theme => {
         },
 
         contextMenuItemDrawer: {
-            padding: '13px 16px'
+            padding: '10px 15px'
         },
 
         contextMenuItemIcon: {
@@ -181,21 +180,25 @@ const ContextMenuItem = ({
     selected,
     testId,
     text,
-    textClassName }: IProps) => {
+    textClassName
+}: IProps) => {
     const { classes: styles, cx } = useStyles();
     const _overflowDrawer: boolean = useSelector(showOverflowDrawer);
 
-    const onKeyPressHandler = useCallback(e => {
-        // only trigger the fallback behavior (onClick) if we dont have any explicit keyboard event handler
-        if (onClick && !onKeyPress && !onKeyDown && (e.key === 'Enter' || e.key === ' ')) {
-            e.preventDefault();
-            onClick(e);
-        }
+    const onKeyPressHandler = useCallback(
+        e => {
+            // only trigger the fallback behavior (onClick) if we dont have any explicit keyboard event handler
+            if (onClick && !onKeyPress && !onKeyDown && (e.key === 'Enter' || e.key === ' ')) {
+                e.preventDefault();
+                onClick(e);
+            }
 
-        if (onKeyPress) {
-            onKeyPress(e);
-        }
-    }, [ onClick, onKeyPress, onKeyDown ]);
+            if (onKeyPress) {
+                onKeyPress(e);
+            }
+        },
+        [onClick, onKeyPress, onKeyDown]
+    );
 
     let tabIndex: undefined | 0 | -1;
 
@@ -209,35 +212,32 @@ const ContextMenuItem = ({
 
     return (
         <div
-            aria-controls = { controls }
-            aria-disabled = { disabled }
-            aria-label = { accessibilityLabel }
-            aria-selected = { role === 'tab' ? selected : undefined }
-            className = { cx(styles.contextMenuItem,
-                    _overflowDrawer && styles.contextMenuItemDrawer,
-                    disabled && styles.contextMenuItemDisabled,
-                    selected && styles.selected,
-                    className
-            ) }
-            data-testid = { testId }
-            id = { id }
-            key = { text }
-            onClick = { disabled ? undefined : onClick }
-            onKeyDown = { disabled ? undefined : onKeyDown }
-            onKeyPress = { disabled ? undefined : onKeyPressHandler }
-            role = { onClick ? role : undefined }
-            tabIndex = { onClick ? tabIndex : undefined }>
-            {customIcon ? customIcon
-                : icon && <Icon
-                    className = { styles.contextMenuItemIcon }
-                    size = { 20 }
-                    src = { icon } />}
+            aria-controls={controls}
+            aria-disabled={disabled}
+            aria-label={accessibilityLabel}
+            aria-selected={role === 'tab' ? selected : undefined}
+            className={cx(
+                styles.contextMenuItem,
+                _overflowDrawer && styles.contextMenuItemDrawer,
+                disabled && styles.contextMenuItemDisabled,
+                selected && styles.selected,
+                className
+            )}
+            data-testid={testId}
+            id={id}
+            key={text}
+            onClick={disabled ? undefined : onClick}
+            onKeyDown={disabled ? undefined : onKeyDown}
+            onKeyPress={disabled ? undefined : onKeyPressHandler}
+            role={onClick ? role : undefined}
+            tabIndex={onClick ? tabIndex : undefined}
+        >
+            {customIcon ? customIcon : icon && <Icon className={styles.contextMenuItemIcon} size={20} src={icon} />}
             {text && (
                 <TextWithOverflow
-                    className = { cx(styles.text,
-                    _overflowDrawer && styles.drawerText,
-                    textClassName) }
-                    overflowType = { overflowType } >
+                    className={cx(styles.text, _overflowDrawer && styles.drawerText, textClassName)}
+                    overflowType={overflowType}
+                >
                     {text}
                 </TextWithOverflow>
             )}

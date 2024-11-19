@@ -240,7 +240,6 @@ const ReactionsMenu = (props: IProps) => {
                     <ReactionButton
                         accessibilityLabel={t('toolbar.accessibilityLabel.ccHistory')}
                         icon={<Icon src={IconBubble} />}
-                        //{IconBubble}
                         key="ccHistory"
                         label={t('toolbar.ccHistory')}
                         onClick={_onClickHistory}

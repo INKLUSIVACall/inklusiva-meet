@@ -22,19 +22,20 @@
     width: 95vw;
     display: flex;
     align-items: flex-end;
+    justify-content: flex-end;
+    flex-direction: column;
 }
 
 .drawer-menu {
     margin-bottom: env(safe-area-inset-bottom, 0);
     width: 100%;
-    height: 100vh;
+    overflow-y: auto;
     &#{&} .overflow-menu {
         margin: auto;
         font-size: 1.2em;
         list-style-type: none;
         padding: 0;
         height: calc(80vh - 144px - 64px);
-        overflow-y: auto;
 
         .overflow-menu-item {
             box-sizing: border-box;

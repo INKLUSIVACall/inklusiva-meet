@@ -86,10 +86,8 @@ const useStyles = makeStyles<{ overflowDrawer: boolean; reactionsMenuHeight: num
                 overflow: 'hidden'
             },
             content: {
+                maxHeight: overflowDrawer ? `calc(100% - 16px)` : `calc(100vh - 100px)`,
                 position: 'relative',
-                maxHeight: overflowDrawer
-                    ? `calc(100% - ${reactionsMenuHeight}px - 16px)`
-                    : `calc(100vh - 100px - ${reactionsMenuHeight}px)`,
                 overflowY: 'auto'
             },
             footer: {
@@ -187,17 +185,18 @@ const OverflowMenuButton = ({
             inDrawer={overflowDrawer}
             onKeyDown={onToolboxEscKey}
         >
-            <div className={classes.content}>{groupsJSX}</div>
-            {showReactionsMenu && (
-                <div className={classes.footer}>
+            <div className={classes.content}>
+                {groupsJSX}
+                {showReactionsMenu && (
                     <ReactionsMenu
                         parent={
                             overflowDrawer ? IReactionsMenuParent.OverflowDrawer : IReactionsMenuParent.OverflowMenu
                         }
                         showRaisedHand={showRaiseHandInReactionsMenu}
+                        _transcriptionHistory={[]}
                     />
-                </div>
-            )}
+                )}
+            </div>
         </ContextMenu>
     );
 
