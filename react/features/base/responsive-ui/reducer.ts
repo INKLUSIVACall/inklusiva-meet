@@ -11,10 +11,7 @@ import {
 } from './actionTypes';
 import { ASPECT_RATIO_NARROW } from './constants';
 
-const {
-    innerHeight = 0,
-    innerWidth = 0
-} = window;
+const { innerHeight = 0, innerWidth = 0 } = window;
 
 /**
  * The default/initial redux state of the feature base/responsive-ui.
@@ -25,7 +22,8 @@ const DEFAULT_STATE = {
     clientWidth: innerWidth,
     isNarrowLayout: false,
     reducedUI: false,
-    contextMenuOpened: false
+    contextMenuOpened: false,
+    toolboxWidth: 0
 };
 
 export interface IResponsiveUIState {
@@ -41,37 +39,41 @@ export interface IResponsiveUIState {
         right: number;
         top: number;
     };
+    toolboxWidth: number;
 }
 
-ReducerRegistry.register<IResponsiveUIState>('features/base/responsive-ui',
-(state = DEFAULT_STATE, action): IResponsiveUIState => {
-    switch (action.type) {
-    case CLIENT_RESIZED: {
-        return {
-            ...state,
-            clientWidth: action.clientWidth,
-            clientHeight: action.clientHeight
-        };
+ReducerRegistry.register<IResponsiveUIState>(
+    'features/base/responsive-ui',
+    (state = DEFAULT_STATE, action): IResponsiveUIState => {
+        switch (action.type) {
+            case CLIENT_RESIZED: {
+                return {
+                    ...state,
+                    clientWidth: action.clientWidth,
+                    clientHeight: action.clientHeight,
+                    toolboxWidth: action.toolboxWidth
+                };
+            }
+
+            case SAFE_AREA_INSETS_CHANGED:
+                return {
+                    ...state,
+                    safeAreaInsets: action.insets
+                };
+
+            case SET_ASPECT_RATIO:
+                return set(state, 'aspectRatio', action.aspectRatio);
+
+            case SET_REDUCED_UI:
+                return set(state, 'reducedUI', action.reducedUI);
+
+            case SET_CONTEXT_MENU_OPEN:
+                return set(state, 'contextMenuOpened', action.isOpen);
+
+            case SET_NARROW_LAYOUT:
+                return set(state, 'isNarrowLayout', action.isNarrow);
+        }
+
+        return state;
     }
-
-    case SAFE_AREA_INSETS_CHANGED:
-        return {
-            ...state,
-            safeAreaInsets: action.insets
-        };
-
-    case SET_ASPECT_RATIO:
-        return set(state, 'aspectRatio', action.aspectRatio);
-
-    case SET_REDUCED_UI:
-        return set(state, 'reducedUI', action.reducedUI);
-
-    case SET_CONTEXT_MENU_OPEN:
-        return set(state, 'contextMenuOpened', action.isOpen);
-
-    case SET_NARROW_LAYOUT:
-        return set(state, 'isNarrowLayout', action.isNarrow);
-    }
-
-    return state;
-});
+);

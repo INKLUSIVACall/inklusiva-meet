@@ -170,6 +170,8 @@ interface IProps extends WithTranslation {
      *  whether the participants-pane is visible or not
      */
     _participantsPaneOpen: boolean;
+
+    _toolboxWidth: number;
 }
 
 const useStyles = makeStyles()(() => {
@@ -224,7 +226,8 @@ const Toolbox = ({
     t,
     toolbarButtons,
     _distressButton,
-    _participantsPaneOpen
+    _participantsPaneOpen,
+    _toolboxWidth
 }: IProps) => {
     const { classes, cx } = useStyles();
     const _toolboxRef = useRef<HTMLDivElement>(null);
@@ -374,7 +377,7 @@ const Toolbox = ({
         }
 
         // order contains all buttons, that should be rendered right in the toolbar, based on clientWidth.
-        let { order } = thresholds.find(({ width }) => _clientWidth > width) || thresholds[thresholds.length - 1];
+        let { order } = thresholds.find(({ width }) => _toolboxWidth > width) || thresholds[thresholds.length - 1];
 
         const keys = Object.keys(buttons);
 
@@ -616,7 +619,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
 
     const { customToolbarButtons, iAmRecorder, iAmSipGateway } = state['features/base/config'];
     const { hangupMenuVisible, overflowMenuVisible, overflowDrawer } = state['features/toolbox'];
-    const { clientWidth } = state['features/base/responsive-ui'];
+    const { clientWidth, toolboxWidth } = state['features/base/responsive-ui'];
     let toolbarButtons = ownProps.toolbarButtons || getToolbarButtons(state);
     const _reactionsEnabled = isReactionsEnabled(state);
 
@@ -629,6 +632,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
         _buttonsWithNotifyClick: getButtonsWithNotifyClick(state),
         _chatOpen: state['features/chat'].isOpen,
         _clientWidth: clientWidth,
+        _toolboxWidth: toolboxWidth,
         _customToolbarButtons: customToolbarButtons,
         _dialog: Boolean(state['features/base/dialog'].component),
         _disabled: Boolean(iAmRecorder || iAmSipGateway),

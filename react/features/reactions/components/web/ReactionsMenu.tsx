@@ -114,7 +114,7 @@ const useStyles = makeStyles<IProps>()((theme, props: IProps) => {
                 },
                 '.raise-hand-row': {
                     '.toolbox-icon': {
-                        height: '32px'
+                        height: 'fit-content'
                     }
                 }
             }

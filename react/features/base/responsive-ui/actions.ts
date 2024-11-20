@@ -37,6 +37,7 @@ const REDUCED_UI_THRESHOLD = 300;
 export function clientResized(clientWidth: number, clientHeight: number) {
     return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
         let availableWidth = clientWidth;
+        let toolboxWidth = clientWidth;
 
         if (navigator.product !== 'ReactNative') {
             const state = getState();
@@ -57,11 +58,16 @@ export function clientResized(clientWidth: number, clientHeight: number) {
             }
         }
 
+        console.log('clientWidth: ', clientWidth);
+        console.log('availableWidth: ', availableWidth);
+        console.log('toolboxWidth: ', toolboxWidth);
+
         batch(() => {
             dispatch({
                 type: CLIENT_RESIZED,
                 clientHeight,
-                clientWidth: availableWidth
+                clientWidth: availableWidth,
+                toolboxWidth
             });
             dispatch(setAspectRatio(clientWidth, clientHeight));
         });
@@ -84,11 +90,9 @@ export function setAspectRatio(width: number, height: number) {
         // Don't change the aspect ratio if width and height are the same, that
         // is, if we transition to a 1:1 aspect ratio.
         if (width !== height) {
-            const aspectRatio
-                = width < height ? ASPECT_RATIO_NARROW : ASPECT_RATIO_WIDE;
+            const aspectRatio = width < height ? ASPECT_RATIO_NARROW : ASPECT_RATIO_WIDE;
 
-            if (aspectRatio
-                    !== getState()['features/base/responsive-ui'].aspectRatio) {
+            if (aspectRatio !== getState()['features/base/responsive-ui'].aspectRatio) {
                 return dispatch({
                     type: SET_ASPECT_RATIO,
                     aspectRatio
@@ -156,9 +160,9 @@ export function setSafeAreaInsets(insets: Object) {
  *
  * @param {boolean} isNarrow - Whether is narrow layout.
  * @returns {{
-*    type: SET_NARROW_LAYOUT,
-*    isNarrow: boolean
-* }}
+ *    type: SET_NARROW_LAYOUT,
+ *    isNarrow: boolean
+ * }}
  */
 export function setNarrowLayout(isNarrow: boolean) {
     return {
