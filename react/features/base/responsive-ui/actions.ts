@@ -3,6 +3,7 @@ import { batch } from 'react-redux';
 import { IStore } from '../../app/types';
 import { CHAT_SIZE } from '../../chat/constants';
 import { getParticipantsPaneOpen } from '../../participants-pane/functions';
+import { HISTORY_PANEL_SIZE } from '../../subtitles/constants';
 import theme from '../components/themes/participantsPaneTheme.json';
 
 import {
@@ -14,7 +15,6 @@ import {
     SET_REDUCED_UI
 } from './actionTypes';
 import { ASPECT_RATIO_NARROW, ASPECT_RATIO_WIDE } from './constants';
-import { HISTORY_PANEL_SIZE } from '../../subtitles/constants';
 
 /**
  * Size threshold for determining if we are in reduced UI mode or not.
@@ -37,7 +37,7 @@ const REDUCED_UI_THRESHOLD = 300;
 export function clientResized(clientWidth: number, clientHeight: number) {
     return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
         let availableWidth = clientWidth;
-        let toolboxWidth = clientWidth;
+        const toolboxWidth = clientWidth;
 
         if (navigator.product !== 'ReactNative') {
             const state = getState();

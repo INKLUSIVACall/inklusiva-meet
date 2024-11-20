@@ -51,19 +51,19 @@ export const THRESHOLDS = [
     },
     {
         width: 420,
-        order: ['rolematching', 'distress', 'microphone', 'camera', 'desktop', 'chat', 'participants', 'help']
+        order: [ 'rolematching', 'distress', 'microphone', 'camera', 'desktop', 'chat', 'participants', 'help' ]
     },
     {
         width: 340,
-        order: ['rolematching', 'distress', 'microphone', 'camera', 'chat', 'participants', 'help']
+        order: [ 'rolematching', 'distress', 'microphone', 'camera', 'chat', 'participants', 'help' ]
     },
     {
         width: 225,
-        order: ['rolematching', 'distress', 'microphone', 'camera', 'chat', 'help']
+        order: [ 'rolematching', 'distress', 'microphone', 'camera', 'chat', 'help' ]
     },
     {
         width: 200,
-        order: ['rolematching', 'distress', 'microphone', 'camera', 'help']
+        order: [ 'rolematching', 'distress', 'microphone', 'camera', 'help' ]
     }
 ];
 
@@ -103,23 +103,23 @@ export const THRESHOLDS_MODERATOR = [
     },
     {
         width: 470,
-        order: ['distress', 'microphone', 'camera', 'desktop', 'chat', 'raisehand', 'participants', 'help']
+        order: [ 'distress', 'microphone', 'camera', 'desktop', 'chat', 'raisehand', 'participants', 'help' ]
     },
     {
         width: 420,
-        order: ['distress', 'microphone', 'camera', 'desktop', 'chat', 'participants', 'help']
+        order: [ 'distress', 'microphone', 'camera', 'desktop', 'chat', 'participants', 'help' ]
     },
     {
         width: 340,
-        order: ['distress', 'microphone', 'camera', 'chat', 'participants', 'help']
+        order: [ 'distress', 'microphone', 'camera', 'chat', 'participants', 'help' ]
     },
     {
         width: 225,
-        order: ['distress', 'microphone', 'camera', 'chat', 'help']
+        order: [ 'distress', 'microphone', 'camera', 'chat', 'help' ]
     },
     {
         width: 200,
-        order: ['distress', 'microphone', 'camera', 'help']
+        order: [ 'distress', 'microphone', 'camera', 'help' ]
     }
 ];
 
@@ -182,19 +182,19 @@ export const THRESHOLDS_USER = [
     },
     {
         width: 420,
-        order: ['rolematching', 'distress', 'microphone', 'camera', 'desktop', 'chat', 'participants', 'help']
+        order: [ 'rolematching', 'distress', 'microphone', 'camera', 'desktop', 'chat', 'participants', 'help' ]
     },
     {
         width: 340,
-        order: ['rolematching', 'distress', 'microphone', 'camera', 'chat', 'participants', 'help']
+        order: [ 'rolematching', 'distress', 'microphone', 'camera', 'chat', 'participants', 'help' ]
     },
     {
         width: 225,
-        order: ['rolematching', 'distress', 'microphone', 'camera', 'chat', 'help']
+        order: [ 'rolematching', 'distress', 'microphone', 'camera', 'chat', 'help' ]
     },
     {
         width: 200,
-        order: ['rolematching', 'distress', 'microphone', 'camera', 'help']
+        order: [ 'rolematching', 'distress', 'microphone', 'camera', 'help' ]
     }
 ];
 
@@ -218,6 +218,7 @@ export const ZINDEX_DIALOG_PORTAL = 302;
 export const SPINNER_COLOR = '#929292';
 
 export const BUTTONS_MODERATOR = [
+
     // 'rolematching',
     'distress',
     'microphone',
@@ -266,25 +267,27 @@ export const BUTTONS_USER = [
     'closedcaptions',
     'settings',
     'help',
-    //'profile',
-    //'invite',
-    //'tileview',
-    //'toggle-camera',
-    //'videoquality',
-    //'fullscreen',
-    //'security',
-    //'recording',
-    //'livestreaming',
-    //'linktosalesforce',
-    //'sharedvideo',
-    //'shareaudio',
-    //'noisesuppression',
-    //'whiteboard',
-    //'etherpad',
-    //'select-background',
-    //'stats',
+
+    // 'profile',
+    // 'invite',
+    // 'tileview',
+    // 'toggle-camera',
+    // 'videoquality',
+    // 'fullscreen',
+    // 'security',
+    // 'recording',
+    // 'livestreaming',
+    // 'linktosalesforce',
+    // 'sharedvideo',
+    // 'shareaudio',
+    // 'noisesuppression',
+    // 'whiteboard',
+    // 'etherpad',
+    // 'select-background',
+    // 'stats',
     'shortcuts'
-    //'embedmeeting',
-    //'feedback',
-    //'download'
+
+    // 'embedmeeting',
+    // 'feedback',
+    // 'download'
 ];

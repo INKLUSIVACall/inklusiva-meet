@@ -28,9 +28,9 @@ const getComputedOuterHeight = (element: HTMLElement) => {
     const computedStyle = getComputedStyle(element);
 
     return (
-        element.offsetHeight +
-        getFloatStyleProperty(computedStyle, 'margin-top') +
-        getFloatStyleProperty(computedStyle, 'margin-bottom')
+        element.offsetHeight
+        + getFloatStyleProperty(computedStyle, 'margin-top')
+        + getFloatStyleProperty(computedStyle, 'margin-bottom')
     );
 };
 
@@ -199,9 +199,7 @@ const ContextMenu = ({
 
             // make sure the max height is not set
             container.style.maxHeight = 'none';
-            const {
-                offsetTop,
-                offsetParent: { offsetHeight, scrollTop }
+            const { offsetTop, offsetParent: { offsetHeight, scrollTop }
             } = offsetTarget;
             let outerHeight = getComputedOuterHeight(container);
 
@@ -217,8 +215,8 @@ const ContextMenu = ({
             outerHeight = getComputedOuterHeight(container);
             height = Math.min(vhInPixels, outerHeight);
 
-            container.style.top =
-                offsetTop + height > offsetHeight + scrollTop ? `${offsetTop - outerHeight}` : `${offsetTop}`;
+            container.style.top = offsetTop + height > offsetHeight + scrollTop
+                ? `${offsetTop - outerHeight}` : `${offsetTop}`;
 
             setIsHidden(false);
         } else {
@@ -234,7 +232,9 @@ const ContextMenu = ({
 
     if (_overflowDrawer && inDrawer) {
         return (
-            <div className={styles.drawer} onClick={onDrawerClose}>
+            <div
+                className = { styles.drawer }
+                onClick = { onDrawerClose }>
                 {children}
             </div>
         );
@@ -242,26 +242,29 @@ const ContextMenu = ({
 
     return _overflowDrawer ? (
         <JitsiPortal>
-            <Drawer isOpen={Boolean(isDrawerOpen && _overflowDrawer)} onClose={onDrawerClose}>
-                <div className={styles.drawer} onClick={onDrawerClose}>
+            <Drawer
+                isOpen = { Boolean(isDrawerOpen && _overflowDrawer) }
+                onClose = { onDrawerClose }>
+                <div
+                    className = { styles.drawer }
+                    onClick = { onDrawerClose }>
                     {children}
                 </div>
             </Drawer>
         </JitsiPortal>
     ) : (
         <div
-            {...aria}
-            aria-label={accessibilityLabel}
-            className={cx(styles.contextMenu, isHidden && styles.contextMenuHidden, className)}
-            id={id}
-            onClick={onClick}
-            onKeyDown={onKeyDown}
-            onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-            ref={containerRef}
-            role={role}
-            tabIndex={tabIndex}
-        >
+            { ...aria }
+            aria-label = { accessibilityLabel }
+            className = { cx(styles.contextMenu, isHidden && styles.contextMenuHidden, className) }
+            id = { id }
+            onClick = { onClick }
+            onKeyDown = { onKeyDown }
+            onMouseEnter = { onMouseEnter }
+            onMouseLeave = { onMouseLeave }
+            ref = { containerRef }
+            role = { role }
+            tabIndex = { tabIndex }>
             {children}
         </div>
     );

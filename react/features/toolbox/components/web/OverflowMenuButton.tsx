@@ -33,6 +33,7 @@ import OverflowToggleButton from './OverflowToggleButton';
  * The type of the React {@code Component} props of {@link OverflowMenuButton}.
  */
 interface IProps {
+
     /**
      * ID of the menu that is controlled by this button.
      */
@@ -69,7 +70,7 @@ interface IProps {
     showReactionsMenu: boolean;
 }
 
-const useStyles = makeStyles<{ overflowDrawer: boolean; reactionsMenuHeight: number }>()(
+const useStyles = makeStyles<{ overflowDrawer: boolean; reactionsMenuHeight: number; }>()(
     (_theme, { reactionsMenuHeight, overflowDrawer }) => {
         return {
             overflowMenuDrawer: {
@@ -86,7 +87,7 @@ const useStyles = makeStyles<{ overflowDrawer: boolean; reactionsMenuHeight: num
                 overflow: 'hidden'
             },
             content: {
-                maxHeight: overflowDrawer ? `calc(100% - 16px)` : `calc(100vh - 100px)`,
+                maxHeight: overflowDrawer ? 'calc(100% - 16px)' : 'calc(100vh - 100px)',
                 position: 'relative',
                 overflowY: 'auto'
             },
@@ -116,11 +117,12 @@ const OverflowMenuButton = ({
         if (isGiphyVisible && !overflowDrawer) {
             dispatch(setGifMenuVisibility(false));
         }
-    }, [onVisibilityChange, setGifMenuVisibility, isGiphyVisible, overflowDrawer, dispatch]);
+    }, [ onVisibilityChange, setGifMenuVisibility, isGiphyVisible, overflowDrawer, dispatch ]);
 
     const onOpenDialog = useCallback(() => {
         onVisibilityChange(true);
-    }, [onVisibilityChange]);
+    }, [ onVisibilityChange ]);
+
 
     const onEscClick = useCallback(
         (event: React.KeyboardEvent) => {
@@ -130,14 +132,14 @@ const OverflowMenuButton = ({
                 onCloseDialog();
             }
         },
-        [onCloseDialog]
+        [ onCloseDialog ]
     );
 
     const toggleDialogVisibility = useCallback(() => {
         sendAnalytics(createToolbarEvent('overflow'));
 
         onVisibilityChange(!isOpen);
-    }, [isOpen, onVisibilityChange]);
+    }, [ isOpen, onVisibilityChange ]);
 
     const toolbarAccLabel = 'toolbar.accessibilityLabel.moreActionsMenu';
     const { t } = useTranslation();
@@ -161,9 +163,9 @@ const OverflowMenuButton = ({
     });
 
     const groupsJSX = buttons.map((buttonGroup: any) => (
-        <ContextMenuItemGroup key={`group-${buttonGroup[0].group}`}>
-            {buttonGroup.map(({ key, Content, ...rest }: { Content: React.ElementType; key: string }) => {
-                const props: { buttonKey?: string; contextMenu?: boolean; showLabel?: boolean } = { ...rest };
+        <ContextMenuItemGroup key = { `group-${buttonGroup[0].group}` }>
+            {buttonGroup.map(({ key, Content, ...rest }: { Content: React.ElementType; key: string; }) => {
+                const props: { buttonKey?: string; contextMenu?: boolean; showLabel?: boolean; } = { ...rest };
 
                 if (key !== 'reactions') {
                     props.buttonKey = key;
@@ -171,51 +173,61 @@ const OverflowMenuButton = ({
                     props.showLabel = true;
                 }
 
-                return <Content {...props} key={key} />;
+                return (<Content
+                    { ...props }
+                    key = { key } />);
             })}
         </ContextMenuItemGroup>
     ));
 
     const overflowMenu = groupsJSX && (
         <ContextMenu
-            accessibilityLabel={t(toolbarAccLabel)}
-            className={classes.contextMenu}
-            hidden={false}
-            id="overflow-context-menu"
-            inDrawer={overflowDrawer}
-            onKeyDown={onToolboxEscKey}
-        >
-            <div className={classes.content}>
-                {groupsJSX}
-                {showReactionsMenu && (
+            accessibilityLabel = { t(toolbarAccLabel) }
+            className = { classes.contextMenu }
+            hidden = { false }
+            id = 'overflow-context-menu'
+            inDrawer = { overflowDrawer }
+            onKeyDown = { onToolboxEscKey }>
+            <div className = { classes.content } >     {groupsJSX}
+            </div>
+            {showReactionsMenu && (
+                <div className = { classes.footer } >
                     <ReactionsMenu
-                        parent={
+                        _transcriptionHistory = { [] }
+                        parent = {
                             overflowDrawer ? IReactionsMenuParent.OverflowDrawer : IReactionsMenuParent.OverflowMenu
                         }
-                        showRaisedHand={showRaiseHandInReactionsMenu}
-                        _transcriptionHistory={[]}
-                    />
-                )}
-            </div>
+                        showRaisedHand = { showRaiseHandInReactionsMenu } />
+                </div>
+            )}
         </ContextMenu>
     );
 
     if (overflowDrawer) {
         return (
-            <div className="toolbox-button-wth-dialog context-menu">
+            <div className = 'toolbox-button-wth-dialog context-menu'>
                 <>
-                    <OverflowToggleButton handleClick={toggleDialogVisibility} isOpen={isOpen} onKeyDown={onEscClick} />
+                    <OverflowToggleButton
+                        handleClick = { toggleDialogVisibility }
+                        isOpen = { isOpen }
+                        onKeyDown = { onEscClick } />
                     <AccessibleDialogPortal>
-                        <Drawer isOpen={isOpen} onClose={onCloseDialog}>
+                        <Drawer
+                            isOpen = { isOpen }
+                            onClose = { onCloseDialog }>
                             <>
-                                <div className={classes.overflowMenuDrawer}>{overflowMenu}</div>
+                                <div className = { classes.overflowMenuDrawer }>{overflowMenu}</div>
                             </>
                         </Drawer>
                         {showReactionsMenu && (
-                            <div className="reactions-animations-container">
-                                {reactionsQueue.map(({ reaction, uid }, index) => (
-                                    <ReactionEmoji index={index} key={uid} reaction={reaction} uid={uid} />
-                                ))}
+                            <div className = 'reactions-animations-container'>
+                                {reactionsQueue.map(({ reaction, uid }, index) =>
+                                    (<ReactionEmoji
+                                        index = { index }
+                                        key = { uid }
+                                        reaction = { reaction }
+                                        uid = { uid } />
+                                    ))}
                             </div>
                         )}
                     </AccessibleDialogPortal>
@@ -225,22 +237,27 @@ const OverflowMenuButton = ({
     }
 
     return (
-        <div className="toolbox-button-wth-dialog context-menu">
+        <div className = 'toolbox-button-wth-dialog context-menu'>
             <AccessiblePopover
-                content={overflowMenu}
-                headingId="overflow-context-menu"
-                onPopoverClose={onCloseDialog}
-                onPopoverOpen={onOpenDialog}
-                position="top"
-                trigger="click"
-                visible={isOpen}
-            >
-                <OverflowToggleButton isOpen={isOpen} onKeyDown={onEscClick} />
+                content = { overflowMenu }
+                headingId = 'overflow-context-menu'
+                onPopoverClose = { onCloseDialog }
+                onPopoverOpen = { onOpenDialog }
+                position = 'top'
+                trigger = 'click'
+                visible = { isOpen }>
+                <OverflowToggleButton
+                    isOpen = { isOpen }
+                    onKeyDown = { onEscClick } />
             </AccessiblePopover>
             {showReactionsMenu && (
-                <div className="reactions-animations-container">
+                <div className = 'reactions-animations-container'>
                     {reactionsQueue.map(({ reaction, uid }, index) => (
-                        <ReactionEmoji index={index} key={uid} reaction={reaction} uid={uid} />
+                        <ReactionEmoji
+                            index = { index }
+                            key = { uid }
+                            reaction = { reaction }
+                            uid = { uid } />
                     ))}
                 </div>
             )}

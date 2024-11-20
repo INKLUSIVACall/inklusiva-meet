@@ -7,5 +7,6 @@ export function getClosedCaptionVisibility(state: IReduxState) {
 
 export function showClosedCaptionDrawer(state: IReduxState) {
     const { clientWidth } = state['features/base/responsive-ui'];
+
     return clientWidth <= DISPLAY_DRAWER_THRESHOLD;
 }

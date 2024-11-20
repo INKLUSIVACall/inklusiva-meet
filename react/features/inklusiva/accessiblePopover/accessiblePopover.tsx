@@ -14,6 +14,7 @@ import AccessibleDialogPortal from './accessibleDialogPortal';
  * The type of the React {@code Component} props of {@link Popover}.
  */
 interface IProps {
+
     /**
      * Whether the child element can be clicked on.
      */
@@ -103,6 +104,7 @@ interface IProps {
  * The type of the React {@code Component} state of {@link Popover}.
  */
 interface IState {
+
     /**
      * The style to apply to the context menu in order to position it correctly.
      */
@@ -224,14 +226,28 @@ class accessiblePopover extends Component<IProps, IState> {
      * @returns {ReactElement}
      */
     render() {
-        const { children, className, content, focusable, headingId, id, overflowDrawer, visible, trigger } = this.props;
+        const { children,
+            className,
+            content,
+            focusable,
+            headingId,
+            id,
+            overflowDrawer,
+            visible,
+            trigger } = this.props;
 
         if (overflowDrawer) {
             return (
-                <div className={className} id={id} onClick={this._onShowDialog}>
+                <div
+                    className = { className }
+                    id = { id }
+                    onClick = { this._onShowDialog }>
                     {children}
                     <JitsiPortal>
-                        <Drawer headingId={headingId} isOpen={visible} onClose={this._onHideDialog}>
+                        <Drawer
+                            headingId = { headingId }
+                            isOpen = { visible }
+                            onClose = { this._onHideDialog }>
                             {content}
                         </Drawer>
                     </JitsiPortal>
@@ -241,40 +257,40 @@ class accessiblePopover extends Component<IProps, IState> {
 
         return (
             <div
-                className={className}
-                id={id}
-                onClick={this._onClick}
-                onKeyPress={this._onKeyPress}
-                {...(trigger === 'hover'
+                className = { className }
+                id = { id }
+                onClick = { this._onClick }
+                onKeyPress = { this._onKeyPress }
+                { ...(trigger === 'hover'
                     ? {
-                          onMouseEnter: this._onShowDialog,
-                          onMouseLeave: this._onHideDialog
-                      }
-                    : {})}
-                {...(trigger === 'hover' &&
-                    focusable && {
-                        role: 'button',
-                        tabIndex: 0
-                    })}
-                ref={this._containerRef}
-            >
+                        onMouseEnter: this._onShowDialog,
+                        onMouseLeave: this._onHideDialog
+                    }
+                    : {}) }
+                { ...(trigger === 'hover'
+                    && focusable && {
+                    role: 'button',
+                    tabIndex: 0
+                }) }
+                ref = { this._containerRef }>
                 {children}
                 {visible && (
                     <AccessibleDialogPortal
-                        className="accessiblePopover"
-                        getRef={this._setContextMenuRef}
-                        onVisible={this._isInteractive() ? this._enableFocusLock : undefined}
-                        setSize={this._setContextMenuStyle}
-                        style={this.state.contextMenuStyle}
-                        targetSelector=".popover-content"
-                    >
+                        className = 'accessiblePopover'
+                        getRef = { this._setContextMenuRef }
+                        onVisible = { this._isInteractive() ? this._enableFocusLock : undefined }
+                        setSize = { this._setContextMenuStyle }
+                        style = { this.state.contextMenuStyle }
+                        targetSelector = '.popover-content' >
                         <FocusOn
-                            className="focusOnPopover"
+                            className = 'focusOnPopover'
+
                             // Use the `enabled` prop instead of conditionally rendering ReactFocusOn
                             // to prevent UI stutter on dialog appearance. It seems the focus guards generated annoy
                             // our DialogPortal positioning calculations.
-                            enabled={Boolean(this._contextMenuRef) && this.state.enableFocusLock}
-                            returnFocus={
+                            enabled = { Boolean(this._contextMenuRef) && this.state.enableFocusLock }
+                            returnFocus = {
+
                                 // If we return the focus to an element outside the viewport the page will scroll to
                                 // this element which in our case is undesirable and the element is outside of the
                                 // viewport on purpose (to be hidden). For example if we return the focus to the
@@ -284,8 +300,7 @@ class accessiblePopover extends Component<IProps, IState> {
                                 // large video.
                                 isElementInTheViewport
                             }
-                            shards={this._contextMenuRef && [this._contextMenuRef]}
-                        >
+                            shards = { this._contextMenuRef && [ this._contextMenuRef ] }>
                             {this._renderContent()}
                         </FocusOn>
                     </AccessibleDialogPortal>
@@ -329,12 +344,12 @@ class accessiblePopover extends Component<IProps, IState> {
      */
     _onTouchStart(event: TouchEvent) {
         if (
-            this.props.visible &&
-            !this.props.overflowDrawer &&
-            this._contextMenuRef &&
-            this._contextMenuRef.contains &&
-            !this._contextMenuRef.contains(event.target as Node) &&
-            !this._containerRef?.current?.contains(event.target as Node)
+            this.props.visible
+            && !this.props.overflowDrawer
+            && this._contextMenuRef
+            && this._contextMenuRef.contains
+            && !this._contextMenuRef.contains(event.target as Node)
+            && !this._containerRef?.current?.contains(event.target as Node)
         ) {
             this._onHideDialog();
         }
@@ -460,19 +475,18 @@ class accessiblePopover extends Component<IProps, IState> {
         const { content, position, trigger, headingId, headingLabel } = this.props;
 
         return (
-            <div className={`accessiblePopover popover ${trigger}`}>
+            <div className = { `accessiblePopover popover ${trigger}` }>
                 <div
-                    className={`popover-content ${position.split('-')[0]}`}
-                    data-autofocus={this.state.enableFocusLock}
-                    onKeyDown={this._onEscKey}
-                    {...(this.state.enableFocusLock && {
+                    className = { `popover-content ${position.split('-')[0]}` }
+                    data-autofocus = { this.state.enableFocusLock }
+                    onKeyDown = { this._onEscKey }
+                    { ...(this.state.enableFocusLock && {
                         'aria-modal': true,
                         'aria-label': !headingId && headingLabel ? headingLabel : undefined,
                         'aria-labelledby': headingId,
                         role: 'dialog',
                         tabIndex: -1
-                    })}
-                >
+                    }) }>
                     {content}
                 </div>
             </div>

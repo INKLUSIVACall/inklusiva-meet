@@ -21,10 +21,10 @@
         .disabled & {
             cursor: initial;
             color: #929292;
-            background-color: #36383c;
+            background-color: #36383C;
 
             &:hover {
-                background-color: #36383c;
+                background-color: #36383C;
             }
         }
     }
@@ -62,7 +62,7 @@
     }
 
     &--disabled {
-        background-color: #36383c;
+        background-color: #36383C;
         cursor: default;
 
         & svg {

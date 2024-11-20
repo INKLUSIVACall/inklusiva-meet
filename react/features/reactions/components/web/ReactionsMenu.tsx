@@ -6,12 +6,16 @@ import { makeStyles } from 'tss-react/mui';
 import { createReactionMenuEvent, createToolbarEvent } from '../../../analytics/AnalyticsEvents';
 import { sendAnalytics } from '../../../analytics/functions';
 import { IReduxState, IStore } from '../../../app/types';
+import Icon from '../../../base/icons/components/Icon';
+import { IconBubble, IconDownload } from '../../../base/icons/svg';
 import { raiseHand } from '../../../base/participants/actions';
 import { getLocalParticipant, hasRaisedHand } from '../../../base/participants/functions';
+import Button from '../../../base/ui/components/web/Button';
 import GifsMenu from '../../../gifs/components/web/GifsMenu';
 import GifsMenuButton from '../../../gifs/components/web/GifsMenuButton';
 import { isGifEnabled, isGifsMenuOpen } from '../../../gifs/functions';
-import { dockToolbox } from '../../../toolbox/actions.web';
+import { toggleCCHistoryPanel} from '../../../subtitles/actions.web';
+import { dockToolbox, hideToolbox, setOverflowMenuVisible } from '../../../toolbox/actions.web';
 import { addReactionToBuffer } from '../../actions.any';
 import { toggleReactionsMenuVisibility } from '../../actions.web';
 import {
@@ -21,17 +25,13 @@ import {
     REACTIONS_MENU_HEIGHT_DRAWER,
     REACTIONS_MENU_HEIGHT_IN_OVERFLOW_MENU
 } from '../../constants';
+import { getClosedCaptionVisibility } from '../../subtitles/functions';
 import { IReactionsMenuParent } from '../../types';
 
 import ReactionButton from './ReactionButton';
-import { getClosedCaptionVisibility } from '../../subtitles/functions';
-import Button from '../../../base/ui/components/web/Button';
-import { IconBubble, IconDownload } from '../../../base/icons/svg';
-import { toggleCCHistoryPanel } from '../../../subtitles/actions.web';
-import { setOverflowMenuVisible, hideToolbox } from '../../../toolbox/actions.web';
-import Icon from '../../../base/icons/components/Icon';
 
 interface IProps {
+
     /**
      * Docks the toolbox.
      */
@@ -57,6 +57,8 @@ interface IProps {
      */
     _raisedHand: boolean;
 
+    _transcriptionHistory: any[];
+
     /**
      * The Redux Dispatch function.
      */
@@ -71,8 +73,6 @@ interface IProps {
      * Whether to show the raised hand button.
      */
     showRaisedHand?: boolean;
-
-    _transcriptionHistory: any[];
 }
 
 const useStyles = makeStyles<IProps>()((theme, props: IProps) => {
@@ -154,14 +154,13 @@ const _getReactionButtons = (dispatch: IStore['dispatch'], t: Function) => {
 
         return (
             <ReactionButton
-                accessibilityLabel={t(`toolbar.accessibilityLabel.${key}`)}
-                icon={REACTIONS[key].emoji}
-                key={key}
+                accessibilityLabel = { t(`toolbar.accessibilityLabel.${key}`) }
+                icon = { REACTIONS[key].emoji }
+                key = { key }
                 // eslint-disable-next-line react/jsx-no-bind
-                onClick={doSendReaction}
-                toggled={false}
-                tooltip={`${t(`toolbar.${key}`)} (${modifierKey} + ${REACTIONS[key].shortcutChar})`}
-            />
+                onClick = { doSendReaction }
+                toggled = { false }
+                tooltip = { `${t(`toolbar.${key}`)} (${modifierKey} + ${REACTIONS[key].shortcutChar})` } />
         );
     });
 };
@@ -176,8 +175,12 @@ const ReactionsMenu = (props: IProps) => {
         parent,
         showRaisedHand = false
     } = props;
-    const isInOverflowMenu =
-        parent === IReactionsMenuParent.OverflowDrawer || parent === IReactionsMenuParent.OverflowMenu;
+    const isInOverflowMenu
+<<<<<<< HEAD
+        = parent === IReactionsMenuParent.OverflowDrawer || parent === IReactionsMenuParent.OverflowMenu;
+=======
+    = parent === IReactionsMenuParent.OverflowDrawer || parent === IReactionsMenuParent.OverflowMenu;
+>>>>>>> 48da4bb68 (anpassen der Toolbox-Buttons-Breite, wenn Notfall-Knopf eingeblendet wird)
     const { classes, cx } = useStyles(props);
     const { t } = useTranslation();
 
@@ -191,60 +194,87 @@ const ReactionsMenu = (props: IProps) => {
 
     const _doToggleRaiseHand = useCallback(() => {
         dispatch(raiseHand(!_raisedHand));
-    }, [_raisedHand]);
+    }, [ _raisedHand ]);
 
     const _onToolbarToggleRaiseHand = useCallback(() => {
         sendAnalytics(createToolbarEvent('raise.hand', { enable: !_raisedHand }));
         _doToggleRaiseHand();
         dispatch(toggleReactionsMenuVisibility());
-    }, [_raisedHand]);
+    }, [ _raisedHand ]);
 
     const buttons = _getReactionButtons(dispatch, t);
 
     if (_isGifEnabled) {
-        buttons.push(<GifsMenuButton parent={parent} />);
+<<<<<<< HEAD
+        buttons.push(<GifsMenuButton
+            parent = { parent } />);
+=======
+        buttons.push(<GifsMenuButton parent = { parent } />);
+>>>>>>> 48da4bb68 (anpassen der Toolbox-Buttons-Breite, wenn Notfall-Knopf eingeblendet wird)
     }
     const _onClickHistory = useCallback(() => {
         dispatch(setOverflowMenuVisible(false));
         dispatch(toggleCCHistoryPanel());
-    }, [dispatch]);
+    }, [ dispatch ]);
 
     return (
         <div
-            className={cx(
+            className = { cx(
                 'reactions-menu',
                 parent === IReactionsMenuParent.OverflowMenu && classes.reactionsMenuInOverflowMenu,
                 _isGifEnabled && 'with-gif',
                 isInOverflowMenu && `overflow ${classes.overflow}`
-            )}
-        >
+<<<<<<< HEAD
+            ) }>
             {_isGifEnabled && _isGifMenuVisible && (
-                <GifsMenu columns={parent === IReactionsMenuParent.OverflowMenu ? 1 : undefined} parent={parent} />
+                <GifsMenu
+                    columns = { parent === IReactionsMenuParent.OverflowMenu
+                        ? 1 : undefined }
+=======
+            ) } >
+            {_isGifEnabled && _isGifMenuVisible && (
+                <GifsMenu
+                    columns = { parent === IReactionsMenuParent.OverflowMenu ? 1 : undefined }
+>>>>>>> 48da4bb68 (anpassen der Toolbox-Buttons-Breite, wenn Notfall-Knopf eingeblendet wird)
+                    parent = { parent } />
             )}
-            <div className="reactions-row">{buttons}</div>
+            <div className = 'reactions-row'>{buttons}</div>
             {showRaisedHand && (
-                <div className="raise-hand-row">
+                <div className = 'raise-hand-row'>
                     <ReactionButton
-                        accessibilityLabel={t('toolbar.accessibilityLabel.raiseHand')}
-                        icon="✋"
-                        key="raisehand"
-                        label={`${t(`toolbar.${_raisedHand ? 'lowerYourHand' : 'raiseYourHand'}`)}
-                                ${isInOverflowMenu ? '' : ' (R)'}`}
-                        onClick={_onToolbarToggleRaiseHand}
-                        toggled={true}
-                    />
+                        accessibilityLabel = { t('toolbar.accessibilityLabel.raiseHand') }
+                        icon = '✋'
+                        key = 'raisehand'
+                        label = { `${t(`toolbar.${_raisedHand ? 'lowerYourHand' : 'raiseYourHand'}`)}
+                                ${isInOverflowMenu ? '' : ' (R)'}` }
+                        onClick = { _onToolbarToggleRaiseHand }
+                        toggled = { true } />
                 </div>
             )}
             {isInOverflowMenu && (
-                <div className="raise-hand-row">
+                <div className = 'raise-hand-row'>
                     <ReactionButton
-                        accessibilityLabel={t('toolbar.accessibilityLabel.ccHistory')}
-                        icon={<Icon src={IconBubble} />}
-                        key="ccHistory"
-                        label={t('toolbar.ccHistory')}
-                        onClick={_onClickHistory}
-                        toggled={true}
-                    />
+<<<<<<< HEAD
+=======
+                        accessibilityLabel = { t('toolbar.accessibilityLabel.raiseHand') }
+                        icon = '✋'
+                        key = 'raisehand'
+                        label = { `${t(`toolbar.${_raisedHand ? 'lowerYourHand' : 'raiseYourHand'}`)}
+                                ${isInOverflowMenu ? '' : ' (R)'}` }
+                        onClick = { _onToolbarToggleRaiseHand }
+                        toggled = { true } />
+                </div>
+            )}
+            {isInOverflowMenu && (
+                <div className = 'raise-hand-row'>
+                    <ReactionButton
+>>>>>>> 48da4bb68 (anpassen der Toolbox-Buttons-Breite, wenn Notfall-Knopf eingeblendet wird)
+                        accessibilityLabel = { t('toolbar.accessibilityLabel.ccHistory') }
+                        icon = { <Icon src = { IconBubble } /> }
+                        key = 'ccHistory'
+                        label = { t('toolbar.ccHistory') }
+                        onClick = { _onClickHistory }
+                        toggled = { true } />
                 </div>
             )}
         </div>

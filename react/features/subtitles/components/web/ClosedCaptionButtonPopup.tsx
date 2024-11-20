@@ -127,21 +127,19 @@ function ClosedCaptionButtonPopup({
 
     content = (
         <ContextMenu
-            aria-labelledby="cc-settings-button"
-            className={classes.buttonContainer}
-            hidden={false}
-            id="closed-caption-dialog"
-            role="radiogroup"
-            tabIndex={-1}
-        >
+            aria-labelledby = 'cc-settings-button'
+            className = { classes.buttonContainer }
+            hidden = { false }
+            id = 'closed-caption-dialog'
+            role = 'radiogroup'
+            tabIndex = { -1 } >
             <Button
                 accessibilityLabel={t('toolbar.accessibilityLabel.ccHistory')}
                 className={classes.button}
                 icon={IconBubble}
                 label={t('toolbar.ccHistory')}
                 // eslint-disable-next-line react/jsx-no-bind
-                onClick={_onClickHistory}
-            />
+                onClick = { _onClickHistory } />
             {_transcriptionHistory.length > 0 && (
                 <Button
                     accessibilityLabel={t('toolbar.accessibilityLabel.ccDownload')}
@@ -149,8 +147,7 @@ function ClosedCaptionButtonPopup({
                     icon={IconDownload}
                     label={t('toolbar.ccDownload')}
                     // eslint-disable-next-line react/jsx-no-bind
-                    onClick={_onClickDownload}
-                />
+                    onClick = { _onClickDownload } />
             )}
         </ContextMenu>
     );
@@ -158,14 +155,13 @@ function ClosedCaptionButtonPopup({
     return (
         <div className={classes.container}>
             <AccessiblePopover
-                allowClick={true}
-                content={content}
-                headingId="cc-settings-button"
-                onPopoverClose={onClose}
-                position={popupPlacement}
-                trigger="click"
-                visible={isOpen}
-            >
+                allowClick = { true }
+                content = { content }
+                headingId = 'cc-settings-button'
+                onPopoverClose = { onClose }
+                position = { popupPlacement }
+                trigger = 'click'
+                visible = { isOpen } >
                 {children}
             </AccessiblePopover>
         </div>

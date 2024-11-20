@@ -9,11 +9,12 @@ import { translate } from '../../../base/i18n/functions';
 import Icon from '../../../base/icons/components/Icon';
 import { IconCloseLarge } from '../../../base/icons/svg';
 import { withPixelLineHeight } from '../../../base/styles/functions.web';
+import { hideToolbox } from '../../../toolbox/actions.web';
 import { toggleCCHistoryPanel } from '../../actions.web';
 import { HISTORY_PANEL_SIZE } from '../../constants';
-import { hideToolbox } from '../../../toolbox/actions.web';
 
 interface IProps extends WithTranslation {
+
     /**
      * Intersection observer used to detect intersections of messages with the bottom of the message container.
      */
@@ -44,6 +45,7 @@ interface IProps extends WithTranslation {
 }
 
 interface IState {
+
     /**
      * Indicates whether new transcription messages arrived while scolling through
      * the history. Triggers a message (Not implemented).
@@ -161,7 +163,7 @@ const ClosedCaptionHistory = ({
                 onToggleHistory();
             }
         },
-        [_isOpen]
+        [ _isOpen ]
     );
 
     const _transcriptionsListEndRef = React.createRef<HTMLDivElement>();
@@ -221,13 +223,19 @@ const ClosedCaptionHistory = ({
                 });
             }
         }
-    }, [_transcriptionHistoryLength]);
+    }, [ _transcriptionHistoryLength ]);
 
     useEffect(() => {
         if (_isOpen) {
             dispatch(hideToolbox(true));
         }
-    }, [_isOpen, dispatch]);
+    }, [ _isOpen, dispatch ]);
+
+    useEffect(() => {
+        if (_isOpen) {
+            dispatch(hideToolbox(true));
+        }
+    }, [ _isOpen, dispatch ]);
 
     /**
      * Renders the panel header.
@@ -236,20 +244,23 @@ const ClosedCaptionHistory = ({
      */
     function renderPanelHeader() {
         return (
-            <div className={classes.panelHeader} id="CCHistoryHeader">
-                <span aria-level={1} role="heading">
-                    {t('cc.title')}
+            <div
+                className = { classes.panelHeader }
+                id = 'CCHistoryHeader'>
+                <span
+                    aria-level = { 1 }
+                    role = 'heading'>
+                    { t('cc.title') }
                 </span>
                 <Icon
-                    ariaLabel={t('toolbar.closeChat')}
+                    ariaLabel = { t('toolbar.closeChat') }
                     // eslint-disable-next-line react/jsx-no-bind
-                    onClick={onToggleHistory}
+                    onClick = { onToggleHistory }
                     // eslint-disable-next-line react/jsx-no-bind
-                    onKeyPress={onEscClick}
-                    role="button"
-                    src={IconCloseLarge}
-                    tabIndex={0}
-                />
+                    onKeyPress = { onEscClick }
+                    role = 'button'
+                    src = { IconCloseLarge }
+                    tabIndex = { 0 } />
             </div>
         );
     }
@@ -261,28 +272,37 @@ const ClosedCaptionHistory = ({
      */
     function renderPanel() {
         return (
-            <div className={classes.panel} id="CCHistoryPanel">
+            <div
+                className = { classes.panel }
+                id = 'CCHistoryPanel'>
                 {_transcriptionHistory.map((transcriptionHistory, index) => (
-                    <div className={classes.content} key={index}>
+                    <div
+                        className = { classes.content }
+                        key = { index }>
                         {transcriptionHistory.participantName.length > 15
                             ? `${transcriptionHistory.participantName.substr(0, 12)}...`
                             : transcriptionHistory.participantName}
                         : {transcriptionHistory.final}
                     </div>
                 ))}
-                <div id="transcriptionsListEnd" ref={_transcriptionsListEndRef} />
+                <div
+                    id = 'transcriptionsListEnd'
+                    ref = { _transcriptionsListEndRef } />
             </div>
         );
     }
 
     return _isOpen ? (
-        <div className={classes.container} id="sideToolbarContainerCC" onKeyDown={onEscClick}>
+        <div
+            className = { classes.container }
+            id = 'sideToolbarContainerCC'
+            onKeyDown = { onEscClick } >
             {renderPanelHeader()}
             {renderPanel()}
         </div>
-    ) : (
-        <></>
-    );
+    )
+        : <></>
+    ;
 };
 
 function _mapStateToProps(state: IReduxState, _ownProps: any) {

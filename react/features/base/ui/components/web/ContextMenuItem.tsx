@@ -196,8 +196,7 @@ const ContextMenuItem = ({
             if (onKeyPress) {
                 onKeyPress(e);
             }
-        },
-        [onClick, onKeyPress, onKeyDown]
+        }, [ onClick, onKeyPress, onKeyDown ]
     );
 
     let tabIndex: undefined | 0 | -1;
@@ -212,32 +211,35 @@ const ContextMenuItem = ({
 
     return (
         <div
-            aria-controls={controls}
-            aria-disabled={disabled}
-            aria-label={accessibilityLabel}
-            aria-selected={role === 'tab' ? selected : undefined}
-            className={cx(
+            aria-controls = { controls }
+            aria-disabled = { disabled }
+            aria-label = { accessibilityLabel }
+            aria-selected = { role === 'tab' ? selected : undefined }
+            className = { cx(
                 styles.contextMenuItem,
                 _overflowDrawer && styles.contextMenuItemDrawer,
                 disabled && styles.contextMenuItemDisabled,
                 selected && styles.selected,
                 className
-            )}
-            data-testid={testId}
-            id={id}
-            key={text}
-            onClick={disabled ? undefined : onClick}
-            onKeyDown={disabled ? undefined : onKeyDown}
-            onKeyPress={disabled ? undefined : onKeyPressHandler}
-            role={onClick ? role : undefined}
-            tabIndex={onClick ? tabIndex : undefined}
-        >
-            {customIcon ? customIcon : icon && <Icon className={styles.contextMenuItemIcon} size={20} src={icon} />}
+            ) }
+            data-testid = { testId }
+            id = { id }
+            key = { text }
+            onClick = { disabled ? undefined : onClick }
+            onKeyDown = { disabled ? undefined : onKeyDown }
+            onKeyPress = { disabled ? undefined : onKeyPressHandler }
+            role = { onClick ? role : undefined }
+            tabIndex = { onClick ? tabIndex : undefined }>
+
+            {customIcon ? customIcon
+                : icon && <Icon
+                    className = { styles.contextMenuItemIcon }
+                    size = { 20 }
+                    src = { icon } />}
             {text && (
                 <TextWithOverflow
-                    className={cx(styles.text, _overflowDrawer && styles.drawerText, textClassName)}
-                    overflowType={overflowType}
-                >
+                    className = { cx(styles.text, _overflowDrawer && styles.drawerText, textClassName) }
+                    overflowType = { overflowType }>
                     {text}
                 </TextWithOverflow>
             )}
