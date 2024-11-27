@@ -140,6 +140,8 @@ class Popover extends Component<IProps, IState> {
         focusable: true,
         id: '',
         trigger: 'click'
+
+        // trigger: 'hover'
     };
 
     /**
@@ -261,11 +263,6 @@ class Popover extends Component<IProps, IState> {
                 onClick = { this._onClick }
                 onKeyPress = { this._onKeyPress }
                 { ...(trigger === 'hover'
-                className = { className }
-                id = { id }
-                onClick = { this._onClick }
-                onKeyPress = { this._onKeyPress }
-                { ...(trigger === 'hover'
                     ? {
                         onMouseEnter: this._onShowDialog,
                         onMouseLeave: this._onHideDialog
@@ -277,14 +274,13 @@ class Popover extends Component<IProps, IState> {
                     tabIndex: 0
                 }) }
                 ref = { this._containerRef }>
-
-                { visible && (
+                {visible && (
                     <DialogPortal
                         getRef = { this._setContextMenuRef }
                         onVisible = { this._isInteractive() ? this._enableFocusLock : undefined }
                         setSize = { this._setContextMenuStyle }
                         style = { this.state.contextMenuStyle }
-                        targetSelector = '.popover-content' >
+                        targetSelector = '.popover-content'>
                         <FocusOn
 
                             // Use the `enabled` prop instead of conditionally rendering ReactFocusOn
@@ -352,7 +348,8 @@ class Popover extends Component<IProps, IState> {
             && this._contextMenuRef
             && this._contextMenuRef.contains
             && !this._contextMenuRef.contains(event.target as Node)
-            && !this._containerRef?.current?.contains(event.target as Node)) {
+            && !this._containerRef?.current?.contains(event.target as Node)
+        ) {
             this._onHideDialog();
         }
     }

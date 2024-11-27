@@ -14,7 +14,7 @@ import Button from '../../../base/ui/components/web/Button';
 import GifsMenu from '../../../gifs/components/web/GifsMenu';
 import GifsMenuButton from '../../../gifs/components/web/GifsMenuButton';
 import { isGifEnabled, isGifsMenuOpen } from '../../../gifs/functions';
-import { toggleCCHistoryPanel} from '../../../subtitles/actions.web';
+import { toggleCCHistoryPanel } from '../../../subtitles/actions.web';
 import { dockToolbox, hideToolbox, setOverflowMenuVisible } from '../../../toolbox/actions.web';
 import { addReactionToBuffer } from '../../actions.any';
 import { toggleReactionsMenuVisibility } from '../../actions.web';
@@ -176,11 +176,7 @@ const ReactionsMenu = (props: IProps) => {
         showRaisedHand = false
     } = props;
     const isInOverflowMenu
-<<<<<<< HEAD
         = parent === IReactionsMenuParent.OverflowDrawer || parent === IReactionsMenuParent.OverflowMenu;
-=======
-    = parent === IReactionsMenuParent.OverflowDrawer || parent === IReactionsMenuParent.OverflowMenu;
->>>>>>> 48da4bb68 (anpassen der Toolbox-Buttons-Breite, wenn Notfall-Knopf eingeblendet wird)
     const { classes, cx } = useStyles(props);
     const { t } = useTranslation();
 
@@ -205,12 +201,8 @@ const ReactionsMenu = (props: IProps) => {
     const buttons = _getReactionButtons(dispatch, t);
 
     if (_isGifEnabled) {
-<<<<<<< HEAD
         buttons.push(<GifsMenuButton
             parent = { parent } />);
-=======
-        buttons.push(<GifsMenuButton parent = { parent } />);
->>>>>>> 48da4bb68 (anpassen der Toolbox-Buttons-Breite, wenn Notfall-Knopf eingeblendet wird)
     }
     const _onClickHistory = useCallback(() => {
         dispatch(setOverflowMenuVisible(false));
@@ -224,18 +216,11 @@ const ReactionsMenu = (props: IProps) => {
                 parent === IReactionsMenuParent.OverflowMenu && classes.reactionsMenuInOverflowMenu,
                 _isGifEnabled && 'with-gif',
                 isInOverflowMenu && `overflow ${classes.overflow}`
-<<<<<<< HEAD
             ) }>
             {_isGifEnabled && _isGifMenuVisible && (
                 <GifsMenu
                     columns = { parent === IReactionsMenuParent.OverflowMenu
                         ? 1 : undefined }
-=======
-            ) } >
-            {_isGifEnabled && _isGifMenuVisible && (
-                <GifsMenu
-                    columns = { parent === IReactionsMenuParent.OverflowMenu ? 1 : undefined }
->>>>>>> 48da4bb68 (anpassen der Toolbox-Buttons-Breite, wenn Notfall-Knopf eingeblendet wird)
                     parent = { parent } />
             )}
             <div className = 'reactions-row'>{buttons}</div>
@@ -254,21 +239,6 @@ const ReactionsMenu = (props: IProps) => {
             {isInOverflowMenu && (
                 <div className = 'raise-hand-row'>
                     <ReactionButton
-<<<<<<< HEAD
-=======
-                        accessibilityLabel = { t('toolbar.accessibilityLabel.raiseHand') }
-                        icon = '✋'
-                        key = 'raisehand'
-                        label = { `${t(`toolbar.${_raisedHand ? 'lowerYourHand' : 'raiseYourHand'}`)}
-                                ${isInOverflowMenu ? '' : ' (R)'}` }
-                        onClick = { _onToolbarToggleRaiseHand }
-                        toggled = { true } />
-                </div>
-            )}
-            {isInOverflowMenu && (
-                <div className = 'raise-hand-row'>
-                    <ReactionButton
->>>>>>> 48da4bb68 (anpassen der Toolbox-Buttons-Breite, wenn Notfall-Knopf eingeblendet wird)
                         accessibilityLabel = { t('toolbar.accessibilityLabel.ccHistory') }
                         icon = { <Icon src = { IconBubble } /> }
                         key = 'ccHistory'
