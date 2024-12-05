@@ -44,7 +44,6 @@ const useStyles = makeStyles()(() => {
     return {
         nameContainer: {
             display: 'flex',
-            overflow: 'hidden',
 
             '&>div': {
                 display: 'flex',
@@ -69,7 +68,7 @@ const ThumbnailBottomIndicators = ({
         (state: IReduxState) => isScreenShareParticipantById(state, participantId)
     );
 
-    return (<div className = { cx(className, 'bottom-indicators') }>
+    return (<div className = { cx(className, 'bottom-indicators') } >
         {
             showStatusIndicators && <StatusIndicators
                 audio = { !isVirtualScreenshareParticipant }
