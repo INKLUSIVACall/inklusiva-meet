@@ -141,7 +141,8 @@ function Drawer({ children, className = '', headingId, isOpen, onClose }: IProps
                         // usually followed up with displaying the toolbox (because now it is on focus) but
                         // because of the animation the whole scenario looks like jumping large video.
                         isElementInTheViewport
-                    } >
+                    }
+                    scrollLock = { false }>
                     <div
                         aria-labelledby = { headingId ? `#${headingId}` : undefined }
                         aria-modal = { true }
