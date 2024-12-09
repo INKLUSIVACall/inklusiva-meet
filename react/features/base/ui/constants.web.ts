@@ -233,8 +233,11 @@ export const commonStyles = (theme: Theme) => {
             '@media (max-width: 821px) and (min-width: 819px)': {
                 width: '3.7rem'
             },
-            '@media (max-width: 431px)': {
-                width: '4rem'
+            '@media (max-width: 431px) and (min-width: 345px)': {
+                width: '3.5rem'
+            },
+            '@media (max-width: 344px)': {
+                width: '3.3rem'
             },
 
             [theme.breakpoints.down(320)]: {

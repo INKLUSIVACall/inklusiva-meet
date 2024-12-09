@@ -7,10 +7,8 @@ import { IconCloseLarge } from '../../../base/icons/svg';
 import { isElementInTheViewport } from '../../../base/ui/functions.web';
 import { DRAWER_MAX_HEIGHT } from '../../constants';
 
-import Icon from '../../../base/icons/components/Icon';
-import { IconCloseLarge } from '../../../base/icons/svg';
-
 interface IProps {
+
     /**
      * The component(s) to be displayed within the drawer menu.
      */
