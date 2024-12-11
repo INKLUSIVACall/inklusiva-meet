@@ -135,12 +135,6 @@ export function updateAutoPinnedParticipant(
 
         return;
     }
-
-    const latestScreenShareParticipantId = remoteScreenShares[remoteScreenShares.length - 1];
-
-    if (latestScreenShareParticipantId) {
-        dispatch(pinParticipant(latestScreenShareParticipantId));
-    }
 }
 
 /**
