@@ -174,6 +174,7 @@ const useStyles = makeStyles()((theme: Theme) => {
 
 const Notification = ({
     appearance = NOTIFICATION_TYPE.NORMAL,
+    customChatNotificationAction,
     customActionHandler,
     customActionNameKey,
     customActionType,
@@ -201,7 +202,13 @@ const Notification = ({
 
     const onDismiss = useCallback(() => {
         onDismissed(uid);
-    }, [ uid ]);
+    }, [ onDismissed, uid ]);
+
+    const _onClick = useCallback(() => {
+        customChatNotificationAction?.onClick();
+        onDismiss();
+    }, [ customChatNotificationAction, onDismiss ]);
+
 
     // eslint-disable-next-line react/no-multi-comp
     const renderDescription = useCallback(() => {
@@ -335,6 +342,15 @@ const Notification = ({
                                 {content}
                             </button>
                         ))}
+                        {customChatNotificationAction && (
+                            <>
+                                <button
+                                    className = { classes.action }
+                                    onClick = { _onClick }>
+                                    {customChatNotificationAction.text}
+                                </button>
+                            </>
+                        )}
                     </div>
                 </div>
                 <Icon

@@ -35,6 +35,7 @@ import { showToolbox } from '../toolbox/actions';
 
 import { ADD_MESSAGE, CLOSE_CHAT, OPEN_CHAT, SEND_MESSAGE, SET_IS_POLL_TAB_FOCUSED } from './actionTypes';
 import { addMessage, clearMessages, closeChat } from './actions.any';
+import { openChat } from './actions.web';
 import { ChatPrivacyDialog } from './components';
 import {
     INCOMING_MSG_SOUND_ID,
@@ -447,10 +448,16 @@ function _handleReceivedMessage({ dispatch, getState }: IStore,
     }));
 
     if (shouldShowNotification) {
-        dispatch(showMessageNotification({
+        const notificationProps = {
             title: displayNameToShow,
-            description: message
-        }, NOTIFICATION_TIMEOUT_TYPE.MEDIUM));
+            description: message,
+            customChatNotificationAction: {
+                text: 'Chat öffnen',
+                onClick: () => dispatch(openChat())
+            }
+        };
+
+        dispatch(showMessageNotification(notificationProps, NOTIFICATION_TIMEOUT_TYPE.STICKY));
     }
 
     if (typeof APP !== 'undefined') {

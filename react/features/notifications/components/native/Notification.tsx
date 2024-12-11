@@ -43,6 +43,7 @@ export interface IProps extends INotificationProps {
 
 const Notification = ({
     appearance = NOTIFICATION_TYPE.NORMAL,
+    customChatNotificationAction,
     customActionHandler,
     customActionNameKey,
     customActionType,
@@ -87,6 +88,10 @@ const Notification = ({
     const onDismiss = useCallback(() => {
         onDismissed(uid);
     }, [ onDismissed, uid ]);
+
+    const _onClick = useCallback(() => {
+        customChatNotificationAction?.onClick();
+    }, [ customChatNotificationAction ]);
 
     const mapAppearanceToButtons = () => {
         if (customActionNameKey?.length && customActionHandler?.length && customActionType?.length) {
@@ -200,6 +205,17 @@ const Notification = ({
                     pointerEvents = 'box-none'
                     style = { styles.contentContainer }>
                     {_renderContent()}
+                    {customChatNotificationAction && (
+                        <>
+                            <Button
+                                accessibilityLabel = { customChatNotificationAction.text }
+                                labelKey = { customChatNotificationAction.text }
+                                mode = { BUTTON_MODES.TEXT }
+                                onClick = { _onClick }
+                                style = { styles.btn }
+                                type = { BUTTON_TYPES.PRIMARY } />
+                        </>
+                    )}
                 </View>
                 <View style = { styles.btnContainer as ViewStyle }>
                     {mapAppearanceToButtons()}
