@@ -58,6 +58,11 @@ interface IProps extends WithTranslation {
     _buttonsWithNotifyClick?: NotifyClickButton[];
 
     /**
+     * The number of unread chat messages.//!1.
+     */
+    _chatCounter: number;
+
+    /**
      * Whether or not the chat feature is currently displayed.
      */
     _chatOpen: boolean;
@@ -228,12 +233,18 @@ const Toolbox = ({
     toolbarButtons,
     _distressButton,
     _participantsPaneOpen,
-    _toolboxWidth
+    _toolboxWidth,
+    _chatCounter
 }: IProps) => {
     const { classes, cx } = useStyles();
     const _toolboxRef = useRef<HTMLDivElement>(null);
 
     useKeyboardShortcuts(toolbarButtons);
+
+    useEffect(() => {
+        console.log('chatOpen:', _chatOpen);
+        console.log('chatCounter:', _chatCounter);
+    }, [ _chatOpen, _chatCounter ]);
 
     useEffect(() => {
         if (_dialog) {
@@ -509,6 +520,11 @@ const Toolbox = ({
                         <Icon
                             size = { 32 }
                             src = { closeIcon } />
+                        {!_visible && _chatCounter > 0 && (
+                            <div className = 'badge-round'>//!1
+                                { _chatCounter }//!1
+                            </div>
+                        )}//!1
                     </div>
 
                     <div
@@ -637,6 +653,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
     return {
         _recordingEnabled: state['features/inklusiva/sessiondata'].recordingEnabled,
         _buttonsWithNotifyClick: getButtonsWithNotifyClick(state),
+        _chatCounter: state['features/chat'].nbUnreadMessages,
         _chatOpen: state['features/chat'].isOpen,
         _clientWidth: clientWidth,
         _toolboxWidth: toolboxWidth,
