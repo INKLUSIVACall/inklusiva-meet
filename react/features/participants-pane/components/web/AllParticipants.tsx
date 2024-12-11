@@ -167,7 +167,7 @@ function AllParticipants({
     const { classes: styles, cx } = useStyles();
 
     var allParticipantsCount = participants.length;
-    if (participantsCount!=undefined) {
+    if (participantsCount != undefined) {
         allParticipantsCount += participantsCount;
     }
 

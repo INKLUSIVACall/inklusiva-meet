@@ -143,7 +143,10 @@ const ParticipantsPane = () => {
                         icon = { IconCloseLarge }
                         onClick = { onClosePane } />
                 </div>
-                <div className = { classes.container }>
+                <div
+                    aria-label = { t('participantsPane.allParticipants') }
+                    className = { classes.container }
+                    tabIndex = { 0 }>
                     <AllParticipants
                         searchString = { searchString }
                         setSearchString = { setSearchString } />
