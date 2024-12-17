@@ -8,6 +8,7 @@ import participantsPaneTheme from '../../../base/components/themes/participantsP
 import { openDialog } from '../../../base/dialog/actions';
 import { IconCloseLarge, IconDotsHorizontal } from '../../../base/icons/svg';
 import { isLocalParticipantModerator } from '../../../base/participants/functions';
+import BaseDialog from '../../../base/ui/components/web/BaseDialog';
 import Button from '../../../base/ui/components/web/Button';
 import ClickableIcon from '../../../base/ui/components/web/ClickableIcon';
 import { BUTTON_TYPES } from '../../../base/ui/constants.web';
@@ -22,7 +23,8 @@ import { RoomList } from '../breakout-rooms/components/web/RoomList';
 
 import AllParticipants from './AllParticipants';
 import { FooterContextMenu } from './FooterContextMenu';
-import BaseDialog from '../../../base/ui/components/web/BaseDialog';
+import { isMobileBrowser } from '../../../base/environment/utils';
+import { toggleToolboxVisible } from '../../../toolbox/actions.any';
 
 const useStyles = makeStyles()(theme => {
     return {
@@ -95,8 +97,8 @@ const ParticipantsPane = () => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const [contextOpen, setContextOpen] = useState(false);
-    const [searchString, setSearchString] = useState('');
+    const [ contextOpen, setContextOpen ] = useState(false);
+    const [ searchString, setSearchString ] = useState('');
 
     const onWindowClickListener = useCallback(
         (e: any) => {
@@ -104,7 +106,7 @@ const ParticipantsPane = () => {
                 setContextOpen(false);
             }
         },
-        [contextOpen]
+        [ contextOpen ]
     );
 
     useEffect(() => {
@@ -117,6 +119,9 @@ const ParticipantsPane = () => {
 
     const onClosePane = useCallback(() => {
         dispatch(close());
+        if (isMobileBrowser()) {
+            dispatch(toggleToolboxVisible());
+        }
     }, []);
 
     const onDrawerClose = useCallback(() => {
@@ -139,42 +144,40 @@ const ParticipantsPane = () => {
 
     const paneContent = (
         <>
-            <div className={classes.header}>
+            <div className = { classes.header }>
                 <ClickableIcon
-                    accessibilityLabel={t('participantsPane.close', 'Close')}
-                    icon={IconCloseLarge}
-                    onClick={onClosePane}
-                />
+                    accessibilityLabel = { t('participantsPane.close', 'Close') }
+                    icon = { IconCloseLarge }
+                    onClick = { onClosePane } />
             </div>
-            <div className={classes.container}>
-                <AllParticipants searchString={searchString} setSearchString={setSearchString} />
-                {BREAKOUTROOM_LIST_STATUS && isBreakoutRoomsSupported && <RoomList searchString={searchString} />}
+            <div className = { classes.container }>
+                <AllParticipants
+                    searchString = { searchString }
+                    setSearchString = { setSearchString } />
+                {BREAKOUTROOM_LIST_STATUS && isBreakoutRoomsSupported && <RoomList searchString = { searchString } />}
                 {BREAKOUTROOM_BUTTON_STATUS && showAddRoomButton && <AddBreakoutRoomButton />}
             </div>
             {showFooter && (
-                <div className={classes.footer}>
+                <div className = { classes.footer }>
                     {showMuteAllButton && (
                         <Button
-                            accessibilityLabel={t('participantsPane.actions.muteAll')}
-                            labelKey={'participantsPane.actions.muteAll'}
-                            onClick={onMuteAll}
-                            type={BUTTON_TYPES.SECONDARY}
-                        />
+                            accessibilityLabel = { t('participantsPane.actions.muteAll') }
+                            labelKey = { 'participantsPane.actions.muteAll' }
+                            onClick = { onMuteAll }
+                            type = { BUTTON_TYPES.SECONDARY } />
                     )}
                     {showMoreActionsButton && (
-                        <div className={classes.footerMoreContainer}>
+                        <div className = { classes.footerMoreContainer }>
                             <Button
-                                accessibilityLabel={t('participantsPane.actions.moreModerationActions')}
-                                icon={IconDotsHorizontal}
-                                id="participants-pane-context-menu"
-                                onClick={onToggleContext}
-                                type={BUTTON_TYPES.SECONDARY}
-                            />
+                                accessibilityLabel = { t('participantsPane.actions.moreModerationActions') }
+                                icon = { IconDotsHorizontal }
+                                id = 'participants-pane-context-menu'
+                                onClick = { onToggleContext }
+                                type = { BUTTON_TYPES.SECONDARY } />
                             <FooterContextMenu
-                                isOpen={contextOpen}
-                                onDrawerClose={onDrawerClose}
-                                onMouseLeave={onToggleContext}
-                            />
+                                isOpen = { contextOpen }
+                                onDrawerClose = { onDrawerClose }
+                                onMouseLeave = { onToggleContext } />
                         </div>
                     )}
                 </div>
@@ -183,12 +186,14 @@ const ParticipantsPane = () => {
     );
 
     return isSmallViewport ? (
-        <BaseDialog onClose={onClosePane} size="large">
+        <BaseDialog
+            onClose = { onClosePane }
+            size = 'large'>
             {paneContent}
         </BaseDialog>
     ) : (
-        <div className="participants_pane">
-            <div className="participants_pane-content">{paneContent}</div>
+        <div className = 'participants_pane'>
+            <div className = 'participants_pane-content'>{paneContent}</div>
         </div>
     );
 };

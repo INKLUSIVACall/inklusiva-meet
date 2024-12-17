@@ -354,7 +354,7 @@ class Conference extends AbstractConference<IProps, any> {
      * @returns {void}
      */
     _onVidespaceTouchStart() {
-        this.props.dispatch(toggleToolboxVisible());
+        // this.props.dispatch(toggleToolboxVisible());
     }
 
     /**

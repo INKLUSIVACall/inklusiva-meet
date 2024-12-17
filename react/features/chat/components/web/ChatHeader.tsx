@@ -2,8 +2,10 @@ import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
+import { isMobileBrowser } from '../../../base/environment/utils';
 import Icon from '../../../base/icons/components/Icon';
 import { IconCloseLarge } from '../../../base/icons/svg';
+import { toggleToolboxVisible } from '../../../toolbox/actions.web';
 import { toggleChat } from '../../actions.web';
 
 interface IProps {
@@ -35,6 +37,9 @@ function ChatHeader({ className, isPollsEnabled }: IProps) {
 
     const onCancel = useCallback(() => {
         dispatch(toggleChat());
+        if (isMobileBrowser()) {
+            dispatch(toggleToolboxVisible());
+        }
     }, []);
 
     const onKeyPressHandler = useCallback(e => {
@@ -45,12 +50,11 @@ function ChatHeader({ className, isPollsEnabled }: IProps) {
     }, []);
 
     return (
-        <div
-            className = { className || 'chat-dialog-header' }>
+        <div className = { className || 'chat-dialog-header' }>
             <span
                 aria-level = { 1 }
                 role = 'heading'>
-                { t(isPollsEnabled ? 'chat.titleWithPolls' : 'chat.title') }
+                {t(isPollsEnabled ? 'chat.titleWithPolls' : 'chat.title')}
             </span>
             <Icon
                 ariaLabel = { t('toolbar.closeChat') }

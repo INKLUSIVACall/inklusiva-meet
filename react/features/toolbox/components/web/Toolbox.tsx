@@ -250,7 +250,7 @@ const Toolbox = ({
     }, [ _chatOpen, _chatCounter ]);
 
     useEffect(() => {
-        if (_dialog) {
+        if (_isMobile && _dialog) {
             dispatch(hideToolbox(true));
         }
     }, [ _dialog ]);
@@ -267,13 +267,13 @@ const Toolbox = ({
     }, [ _visible ]);
 
     useEffect(() => {
-        if (_chatOpen) {
+        if (_isMobile && _chatOpen) {
             dispatch(hideToolbox(true));
         }
     }, [ _chatOpen ]);
 
     useEffect(() => {
-        if (_participantsPaneOpen) {
+        if (_isMobile && _participantsPaneOpen) {
             dispatch(hideToolbox(true));
         }
     }, [ _participantsPaneOpen ]);
