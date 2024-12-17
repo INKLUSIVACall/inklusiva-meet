@@ -70,8 +70,8 @@ interface IProps {
     id?: string;
 
     /**
-    * Callback to invoke when the popover has closed.
-    */
+     * Callback to invoke when the popover has closed.
+     */
     onPopoverClose: Function;
 
     /**
@@ -140,7 +140,7 @@ class accessiblePopover extends Component<IProps, IState> {
         className: '',
         focusable: true,
         id: '',
-        trigger: 'hover'
+        trigger: 'click'
     };
 
     /**
@@ -234,8 +234,7 @@ class accessiblePopover extends Component<IProps, IState> {
             id,
             overflowDrawer,
             visible,
-            trigger
-        } = this.props;
+            trigger } = this.props;
 
         if (overflowDrawer) {
             return (
@@ -243,13 +242,13 @@ class accessiblePopover extends Component<IProps, IState> {
                     className = { className }
                     id = { id }
                     onClick = { this._onShowDialog }>
-                    { children }
+                    {children}
                     <JitsiPortal>
                         <Drawer
                             headingId = { headingId }
                             isOpen = { visible }
                             onClose = { this._onHideDialog }>
-                            { content }
+                            {content}
                         </Drawer>
                     </JitsiPortal>
                 </div>
@@ -262,24 +261,27 @@ class accessiblePopover extends Component<IProps, IState> {
                 id = { id }
                 onClick = { this._onClick }
                 onKeyPress = { this._onKeyPress }
-                { ...(trigger === 'hover' ? {
-                    onMouseEnter: this._onShowDialog,
-                    onMouseLeave: this._onHideDialog
-                } : {}) }
-                { ...(trigger === 'hover' && focusable && {
+                { ...(trigger === 'hover'
+                    ? {
+                        onMouseEnter: this._onShowDialog,
+                        onMouseLeave: this._onHideDialog
+                    }
+                    : {}) }
+                { ...(trigger === 'hover'
+                    && focusable && {
                     role: 'button',
                     tabIndex: 0
                 }) }
                 ref = { this._containerRef }>
-                { children }
-                { visible && (
+                {children}
+                {visible && (
                     <AccessibleDialogPortal
                         className = 'accessiblePopover'
                         getRef = { this._setContextMenuRef }
                         onVisible = { this._isInteractive() ? this._enableFocusLock : undefined }
                         setSize = { this._setContextMenuStyle }
                         style = { this.state.contextMenuStyle }
-                        targetSelector = '.popover-content'>
+                        targetSelector = '.popover-content' >
                         <FocusOn
                             className = 'focusOnPopover'
 
@@ -302,7 +304,6 @@ class accessiblePopover extends Component<IProps, IState> {
                             {this._renderContent()}
                         </FocusOn>
                     </AccessibleDialogPortal>
-
                 )}
             </div>
         );
@@ -342,12 +343,14 @@ class accessiblePopover extends Component<IProps, IState> {
      * @returns {void}
      */
     _onTouchStart(event: TouchEvent) {
-        if (this.props.visible
+        if (
+            this.props.visible
             && !this.props.overflowDrawer
             && this._contextMenuRef
             && this._contextMenuRef.contains
             && !this._contextMenuRef.contains(event.target as Node)
-            && !this._containerRef?.current?.contains(event.target as Node)) {
+            && !this._containerRef?.current?.contains(event.target as Node)
+        ) {
             this._onHideDialog();
         }
     }
@@ -484,7 +487,7 @@ class accessiblePopover extends Component<IProps, IState> {
                         role: 'dialog',
                         tabIndex: -1
                     }) }>
-                    { content }
+                    {content}
                 </div>
             </div>
         );

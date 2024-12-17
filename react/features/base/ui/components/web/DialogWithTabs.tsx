@@ -19,8 +19,7 @@ const useStyles = makeStyles()(theme => {
     return {
         dialog: {
             flexDirection: 'row',
-
-            // height: '780px',
+            marginTop: '-20px',
             height: '75vh',
 
             '@media (min-width: 608px) and (max-width: 712px)': {
@@ -46,6 +45,7 @@ const useStyles = makeStyles()(theme => {
             minWidth: '290px',
             maxWidth: '100%',
             borderRight: `1px solid ${theme.palette.ui03}`,
+            overflowY: 'auto',
 
             [`@media (max-width: ${MOBILE_BREAKPOINT}px)`]: {
                 width: '100%',
@@ -406,7 +406,8 @@ const DialogWithTabs = ({ className, defaultTab, titleKey, tabs }: IProps) => {
                     {/* But show the close button *after* tab panels when not on mobile (using tabs).
                     This is so that we can tab back and forth tab buttons and tab panels easily. */}
                     {!isMobile && <div className = { cx(classes.buttonContainer, classes.header) }>{closeIcon}</div>}
-                    <div className = { cx(classes.buttonContainer, classes.footer) }>
+                    <div
+                        className = { cx(classes.buttonContainer, classes.footer) }>
                         <Button
                             accessibilityLabel = { t('dialog.accessibilityLabel.Cancel') }
                             id = 'modal-dialog-cancel-button'

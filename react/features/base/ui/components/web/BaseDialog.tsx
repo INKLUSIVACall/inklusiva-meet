@@ -64,13 +64,13 @@ const useStyles = makeStyles()(theme => {
             height: 'auto',
             minHeight: '200px',
             maxHeight: '80vh',
-            marginTop: '64px',
+            marginTop: '0px',
             animation: `${keyframes`
                 0% {
                     margin-top: 85px
                 }
                 100% {
-                    margin-top: 64px
+                    margin-top: 50px
                 }
             `} 0.2s forwards ease-out`,
 
@@ -101,7 +101,7 @@ const useStyles = makeStyles()(theme => {
                 height: '100%',
                 margin: 0,
                 position: 'absolute',
-                top: 0,
+                top: '0px',
                 left: 0,
                 bottom: 0,
                 animation: `${keyframes`
@@ -163,7 +163,7 @@ const BaseDialog = ({
 
     const onBackdropClick = useCallback(() => {
         !disableBackdropClose && onClose?.();
-    }, [ disableBackdropClose, onClose ]);
+    }, [disableBackdropClose, onClose]);
 
     const handleKeyDown = useCallback((e: KeyboardEvent) => {
         if (e.key === 'Escape') {
@@ -181,13 +181,12 @@ const BaseDialog = ({
     }, []);
 
     return (
-        <div className = { cx(classes.container, isUnmounting && 'unmount') }>
-            <div className = { classes.backdrop } />
+        <div className={cx(classes.container, isUnmounting && 'unmount')}>
+            <div className={classes.backdrop} />
             <FocusOn
-                className = { classes.focusLock }
-                onClickOutside = { onBackdropClick }
-                returnFocus = {
-
+                className={classes.focusLock}
+                onClickOutside={onBackdropClick}
+                returnFocus={
                     // If we return the focus to an element outside the viewport the page will scroll to
                     // this element which in our case is undesirable and the element is outside of the
                     // viewport on purpose (to be hidden). For example if we return the focus to the toolbox
@@ -195,15 +194,17 @@ const BaseDialog = ({
                     // usually followed up with displaying the toolbox (because now it is on focus) but
                     // because of the animation the whole scenario looks like jumping large video.
                     isElementInTheViewport
-                }>
+                }
+            >
                 <div
-                    aria-description = { description }
-                    aria-label = { title ?? t(titleKey ?? '') }
-                    aria-modal = { true }
-                    className = { cx(classes.modal, isUnmounting && 'unmount', size, className) }
-                    data-autofocus = { true }
-                    role = 'dialog'
-                    tabIndex = { -1 }>
+                    aria-description={description}
+                    aria-label={title ?? t(titleKey ?? '')}
+                    aria-modal={true}
+                    className={cx(classes.modal, isUnmounting && 'unmount', size, className)}
+                    data-autofocus={true}
+                    role="dialog"
+                    tabIndex={-1}
+                >
                     {children}
                 </div>
             </FocusOn>

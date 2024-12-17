@@ -20,7 +20,6 @@ import MessageContainer from './MessageContainer';
 import MessageRecipient from './MessageRecipient';
 
 interface IProps extends AbstractProps {
-
     /**
      * Whether the chat is opened in a modal or not (computed based on window width).
      */
@@ -84,7 +83,6 @@ const useStyles = makeStyles()(theme => {
             backgroundColor: theme.palette.ui01,
             flexShrink: 0,
             overflow: 'hidden',
-            position: 'relative',
             transition: 'width .16s ease-in-out',
             width: `${CHAT_SIZE}px`,
             zIndex: 300,
@@ -95,7 +93,7 @@ const useStyles = makeStyles()(theme => {
                 left: 0,
                 right: 0,
                 top: 0,
-                width: 'auto'
+                width: '100vw'
             },
 
             '*': {
@@ -162,22 +160,22 @@ const Chat = ({
     const { classes, cx } = useStyles();
 
     /**
-    * Sends a text message.
-    *
-    * @private
-    * @param {string} text - The text message to be sent.
-    * @returns {void}
-    * @type {Function}
-    */
+     * Sends a text message.
+     *
+     * @private
+     * @param {string} text - The text message to be sent.
+     * @returns {void}
+     * @type {Function}
+     */
     const onSendMessage = useCallback((text: string) => {
         dispatch(sendMessage(text));
     }, []);
 
     /**
-    * Toggles the chat window.
-    *
-    * @returns {Function}
-    */
+     * Toggles the chat window.
+     *
+     * @returns {Function}
+     */
     const onToggleChat = useCallback(() => {
         dispatch(toggleChat());
     }, []);
@@ -188,13 +186,16 @@ const Chat = ({
      * @param {KeyboardEvent} event - Esc key click to close the popup.
      * @returns {void}
      */
-    const onEscClick = useCallback((event: React.KeyboardEvent) => {
-        if (event.key === 'Escape' && _isOpen) {
-            event.preventDefault();
-            event.stopPropagation();
-            onToggleChat();
-        }
-    }, [ _isOpen ]);
+    const onEscClick = useCallback(
+        (event: React.KeyboardEvent) => {
+            if (event.key === 'Escape' && _isOpen) {
+                event.preventDefault();
+                event.stopPropagation();
+                onToggleChat();
+            }
+        },
+        [ _isOpen ]
+    );
 
     /**
      * Change selected tab.
@@ -218,8 +219,8 @@ const Chat = ({
             <>
                 {_isPollsEnabled && renderTabs()}
                 <div
-                    aria-labelledby = { `${CHAT_TABS.CHAT}-panel` }
-                    className = { cx(
+                    aria-labelledby={`${CHAT_TABS.CHAT}-panel`}
+                    className={cx(
                         classes.chatPanel,
                         !_isPollsEnabled && classes.chatPanelNoTabs,
                         _isPollsTabFocused && 'hide'
@@ -227,11 +228,11 @@ const Chat = ({
                     id = { `${CHAT_TABS.CHAT}-panel` }
                     role = 'tabpanel'
                     tabIndex = { 0 }>
+
                     <MessageContainer
                         messages = { _messages } />
                     <MessageRecipient />
-                    <ChatInput
-                        onSend = { onSendMessage } />
+                    <ChatInput onSend = { onSendMessage } />
                 </div>
                 {_isPollsEnabled && (
                     <>
@@ -240,7 +241,7 @@ const Chat = ({
                             className = { cx(classes.pollsPanel, !_isPollsTabFocused && 'hide') }
                             id = { `${CHAT_TABS.POLLS}-panel` }
                             role = 'tabpanel'
-                            tabIndex = { 0 }>
+                            tabIndex = { 0 } >
                             <PollsPane />
                         </div>
                         <KeyboardAvoider />
@@ -262,37 +263,38 @@ const Chat = ({
                 accessibilityLabel = { t(_isPollsEnabled ? 'chat.titleWithPolls' : 'chat.title') }
                 onChange = { onChangeTab }
                 selected = { _isPollsTabFocused ? CHAT_TABS.POLLS : CHAT_TABS.CHAT }
-                tabs = { [ {
-                    accessibilityLabel: t('chat.tabs.chat'),
-                    countBadge: _isPollsTabFocused && _nbUnreadMessages > 0 ? _nbUnreadMessages : undefined,
-                    id: CHAT_TABS.CHAT,
-                    controlsId: `${CHAT_TABS.CHAT}-panel`,
-                    label: t('chat.tabs.chat')
-                }, {
-                    accessibilityLabel: t('chat.tabs.polls'),
-                    countBadge: !_isPollsTabFocused && _nbUnreadPolls > 0 ? _nbUnreadPolls : undefined,
-                    id: CHAT_TABS.POLLS,
-                    controlsId: `${CHAT_TABS.POLLS}-panel`,
-                    label: t('chat.tabs.polls')
-                }
+                tabs = { [
+                    {
+                        accessibilityLabel: t('chat.tabs.chat'),
+                        countBadge: _isPollsTabFocused && _nbUnreadMessages > 0 ? _nbUnreadMessages : undefined,
+                        id: CHAT_TABS.CHAT,
+                        controlsId: `${CHAT_TABS.CHAT}-panel`,
+                        label: t('chat.tabs.chat')
+                    },
+                    {
+                        accessibilityLabel: t('chat.tabs.polls'),
+                        countBadge: !_isPollsTabFocused && _nbUnreadPolls > 0 ? _nbUnreadPolls : undefined,
+                        id: CHAT_TABS.POLLS,
+                        controlsId: `${CHAT_TABS.POLLS}-panel`,
+                        label: t('chat.tabs.polls')
+                    }
                 ] } />
         );
     }
 
-    return (
-        _isOpen ? <div
+    return _isOpen ? (
+        <div
             className = { classes.container }
             id = 'sideToolbarContainer'
-            onKeyDown = { onEscClick } >
+            onKeyDown = { onEscClick }>
             <ChatHeader
                 className = { cx('chat-header', classes.chatHeader) }
                 isPollsEnabled = { _isPollsEnabled }
                 onCancel = { onToggleChat } />
             {_showNamePrompt
-                ? <DisplayNameForm isPollsEnabled = { _isPollsEnabled } />
-                : renderChat()}
-        </div> : null
-    );
+                ? <DisplayNameForm isPollsEnabled = { _isPollsEnabled } /> : renderChat()}
+        </div>
+    ) : null;
 };
 
 /**

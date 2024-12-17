@@ -128,6 +128,11 @@ interface IProps extends WithTranslation {
     _overflowMenuVisible: boolean;
 
     /**
+     *  Whether the participants-pane is visible or not.
+     */
+    _participantsPaneOpen: boolean;
+
+    /**
      * Whether or not to display reactions in separate button.
      */
     _reactionsButtonEnabled: boolean;
@@ -151,6 +156,8 @@ interface IProps extends WithTranslation {
      * The enabled buttons.
      */
     _toolbarButtons: Array<string>;
+
+    _toolboxWidth: number;
 
     /**
      * Flag showing whether toolbar is visible.
@@ -184,11 +191,13 @@ const useStyles = makeStyles()(() => {
             right: 'auto',
             display: 'flex',
             flexDirection: 'column',
-            rowGap: '8px',
             margin: 0,
-            padding: '16px',
+            padding: '10px',
             marginBottom: '4px',
-            left: '-50%'
+            left: '-90%',
+            '@media (min-width: 843px)': {
+                left: '-86%'
+            }
         }
     };
 });
@@ -217,12 +226,20 @@ const Toolbox = ({
     dispatch,
     t,
     toolbarButtons,
-    _distressButton
+    _distressButton,
+    _participantsPaneOpen,
+    _toolboxWidth
 }: IProps) => {
     const { classes, cx } = useStyles();
     const _toolboxRef = useRef<HTMLDivElement>(null);
 
     useKeyboardShortcuts(toolbarButtons);
+
+    useEffect(() => {
+        if (_dialog) {
+            dispatch(hideToolbox(true));
+        }
+    }, [ _dialog ]);
 
     useEffect(() => {
         if (!_visible) {
@@ -234,6 +251,18 @@ const Toolbox = ({
             }
         }
     }, [ _visible ]);
+
+    useEffect(() => {
+        if (_chatOpen) {
+            dispatch(hideToolbox(true));
+        }
+    }, [ _chatOpen ]);
+
+    useEffect(() => {
+        if (_participantsPaneOpen) {
+            dispatch(hideToolbox(true));
+        }
+    }, [ _participantsPaneOpen ]);
 
     /**
      * Sets the visibility of the hangup menu.
@@ -349,7 +378,7 @@ const Toolbox = ({
         }
 
         // order contains all buttons, that should be rendered right in the toolbar, based on clientWidth.
-        let { order } = thresholds.find(({ width }) => _clientWidth > width) || thresholds[thresholds.length - 1];
+        let { order } = thresholds.find(({ width }) => _toolboxWidth > width) || thresholds[thresholds.length - 1];
 
         const keys = Object.keys(buttons);
 
@@ -365,10 +394,10 @@ const Toolbox = ({
             // then extract the buttons that are disabled through the JWT or wont fit isToolbarButtonEnabled.
             ({ key, alias = NOT_APPLICABLE }) =>
                 !_jwtDisabledButtons.includes(key)
-                && (isToolbarButtonEnabled(key, _toolbarButtons) || isToolbarButtonEnabled(alias, _toolbarButtons))
+            && (isToolbarButtonEnabled(key, _toolbarButtons) || isToolbarButtonEnabled(alias, _toolbarButtons))
 
-                // only include buttons that are allowed for the current user role.
-                && (allowedButtons.includes(key) || allowedButtons.includes(alias))
+            // only include buttons that are allowed for the current user role.
+            && (allowedButtons.includes(key) || allowedButtons.includes(alias))
         );
 
         const filteredKeys = filtered.map(button => button.key);
@@ -529,35 +558,35 @@ const Toolbox = ({
                         )}
 
                         {isToolbarButtonEnabled('hangup', _toolbarButtons)
-                            && (_endConferenceSupported ? (
-                                <HangupMenuButton
-                                    ariaControls = 'hangup-menu'
-                                    isOpen = { _hangupMenuVisible }
-                                    key = 'hangup-menu'
-                                    notifyMode = { getButtonNotifyMode('hangup-menu', _buttonsWithNotifyClick) }
-                                    onVisibilityChange = { onSetHangupVisible }>
-                                    <ContextMenu
-                                        accessibilityLabel = { t(toolbarAccLabel) }
-                                        className = { classes.hangupMenu }
-                                        hidden = { false }
-                                        inDrawer = { _overflowDrawer }
-                                        onKeyDown = { onEscKey }>
-                                        <EndConferenceButton
-                                            buttonKey = 'end-meeting'
-                                            notifyMode = { getButtonNotifyMode('end-meeting', _buttonsWithNotifyClick) } />
-                                        <LeaveConferenceButton
-                                            buttonKey = 'hangup'
-                                            notifyMode = { getButtonNotifyMode('hangup', _buttonsWithNotifyClick) } />
-                                    </ContextMenu>
-                                </HangupMenuButton>
-                            ) : (
-                                <HangupButton
-                                    buttonKey = 'hangup'
-                                    customClass = 'hangup-button'
-                                    key = 'hangup-button'
-                                    notifyMode = { getButtonNotifyMode('hangup', _buttonsWithNotifyClick) }
-                                    visible = { isToolbarButtonEnabled('hangup', _toolbarButtons) } />
-                            ))}
+                        && (_endConferenceSupported ? (
+                            <HangupMenuButton
+                                ariaControls = 'hangup-menu'
+                                isOpen = { _hangupMenuVisible }
+                                key = 'hangup-menu'
+                                notifyMode = { getButtonNotifyMode('hangup-menu', _buttonsWithNotifyClick) }
+                                onVisibilityChange = { onSetHangupVisible } >
+                                <ContextMenu
+                                    accessibilityLabel = { t(toolbarAccLabel) }
+                                    className = { classes.hangupMenu }
+                                    hidden = { false }
+                                    inDrawer = { _overflowDrawer }
+                                    onKeyDown = { onEscKey } >
+                                    <EndConferenceButton
+                                        buttonKey = 'end-meeting'
+                                        notifyMode = { getButtonNotifyMode('end-meeting', _buttonsWithNotifyClick) } />
+                                    <LeaveConferenceButton
+                                        buttonKey = 'hangup'
+                                        notifyMode = { getButtonNotifyMode('hangup', _buttonsWithNotifyClick) } />
+                                </ContextMenu>
+                            </HangupMenuButton>
+                        ) : (
+                            <HangupButton
+                                buttonKey = 'hangup'
+                                customClass = 'hangup-button'
+                                key = 'hangup-button'
+                                notifyMode = { getButtonNotifyMode('hangup', _buttonsWithNotifyClick) }
+                                visible = { isToolbarButtonEnabled('hangup', _toolbarButtons) } />
+                        ))}
                     </div>
                 </div>
             </div>
@@ -597,7 +626,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
 
     const { customToolbarButtons, iAmRecorder, iAmSipGateway } = state['features/base/config'];
     const { hangupMenuVisible, overflowMenuVisible, overflowDrawer } = state['features/toolbox'];
-    const { clientWidth } = state['features/base/responsive-ui'];
+    const { clientWidth, toolboxWidth } = state['features/base/responsive-ui'];
     let toolbarButtons = ownProps.toolbarButtons || getToolbarButtons(state);
     const _reactionsEnabled = isReactionsEnabled(state);
 
@@ -610,6 +639,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
         _buttonsWithNotifyClick: getButtonsWithNotifyClick(state),
         _chatOpen: state['features/chat'].isOpen,
         _clientWidth: clientWidth,
+        _toolboxWidth: toolboxWidth,
         _customToolbarButtons: customToolbarButtons,
         _dialog: Boolean(state['features/base/dialog'].component),
         _disabled: Boolean(iAmRecorder || iAmSipGateway),
@@ -626,7 +656,8 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
         _toolbarButtons: toolbarButtons,
         _visible: isToolboxVisible(state),
         _distressButton: state['features/inklusiva/userdata'].distressbutton?.active ?? false,
-        _localUser: state['features/base/participants'].local
+        _localUser: state['features/base/participants'].local,
+        _participantsPaneOpen: state['features/participants-pane'].isOpen
     };
 }
 

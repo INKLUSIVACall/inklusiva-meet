@@ -37,14 +37,24 @@ export const THRESHOLDS = [
     },
     {
         width: 470,
-        order: [ 'rolematching', 'distress', 'microphone', 'camera', 'desktop', 'chat', 'raisehand', 'participants', 'help' ]
+        order: [
+            'rolematching',
+            'distress',
+            'microphone',
+            'camera',
+            'desktop',
+            'chat',
+            'raisehand',
+            'participants',
+            'help'
+        ]
     },
     {
         width: 420,
         order: [ 'rolematching', 'distress', 'microphone', 'camera', 'desktop', 'chat', 'participants', 'help' ]
     },
     {
-        width: 370,
+        width: 340,
         order: [ 'rolematching', 'distress', 'microphone', 'camera', 'chat', 'participants', 'help' ]
     },
     {
@@ -93,15 +103,15 @@ export const THRESHOLDS_MODERATOR = [
     },
     {
         width: 470,
-        order: [ 'distress', 'microphone', 'camera', 'desktop', 'chat', 'raisehand', 'participants', 'help' ]
+        order: [ 'distress', 'microphone', 'camera', 'desktop', 'chat', 'raisehand', 'participants', 'cc', 'help' ]
     },
     {
         width: 420,
-        order: [ 'distress', 'microphone', 'camera', 'desktop', 'chat', 'participants', 'help' ]
+        order: [ 'distress', 'microphone', 'camera', 'desktop', 'chat', 'participants', 'cc', 'help' ]
     },
     {
-        width: 370,
-        order: [ 'distress', 'microphone', 'camera', 'chat', 'participants', 'help' ]
+        width: 340,
+        order: [ 'distress', 'microphone', 'camera', 'chat', 'participants', 'cc', 'help' ]
     },
     {
         width: 225,
@@ -172,11 +182,11 @@ export const THRESHOLDS_USER = [
     },
     {
         width: 420,
-        order: [ 'rolematching', 'distress', 'microphone', 'camera', 'desktop', 'chat', 'participants', 'help' ]
+        order: [ 'rolematching', 'distress', 'microphone', 'camera', 'desktop', 'chat', 'participants', 'cc', 'help' ]
     },
     {
-        width: 370,
-        order: [ 'rolematching', 'distress', 'microphone', 'camera', 'chat', 'participants', 'help' ]
+        width: 340,
+        order: [ 'rolematching', 'distress', 'microphone', 'camera', 'chat', 'participants', 'cc', 'help' ]
     },
     {
         width: 225,
@@ -192,7 +202,7 @@ export const NOT_APPLICABLE = 'N/A';
 
 export const TOOLBAR_TIMEOUT = 4000;
 
-export const DRAWER_MAX_HEIGHT = '80vh - 64px';
+export const DRAWER_MAX_HEIGHT = '95vh - 50px';
 
 export const NOTIFY_CLICK_MODE = {
     ONLY_NOTIFY: 'ONLY_NOTIFY',
@@ -207,8 +217,8 @@ export const ZINDEX_DIALOG_PORTAL = 302;
  */
 export const SPINNER_COLOR = '#929292';
 
-
 export const BUTTONS_MODERATOR = [
+
     // 'rolematching',
     'distress',
     'microphone',
@@ -257,25 +267,27 @@ export const BUTTONS_USER = [
     'closedcaptions',
     'settings',
     'help',
-    //'profile',
-    //'invite',
-    //'tileview',
-    //'toggle-camera',
-    //'videoquality',
-    //'fullscreen',
-    //'security',
-    //'recording',
-    //'livestreaming',
-    //'linktosalesforce',
-    //'sharedvideo',
-    //'shareaudio',
-    //'noisesuppression',
-    //'whiteboard',
-    //'etherpad',
-    //'select-background',
-    //'stats',
-    'shortcuts',
-    //'embedmeeting',
-    //'feedback',
-    //'download'
+
+    // 'profile',
+    // 'invite',
+    // 'tileview',
+    // 'toggle-camera',
+    // 'videoquality',
+    // 'fullscreen',
+    // 'security',
+    // 'recording',
+    // 'livestreaming',
+    // 'linktosalesforce',
+    // 'sharedvideo',
+    // 'shareaudio',
+    // 'noisesuppression',
+    // 'whiteboard',
+    // 'etherpad',
+    // 'select-background',
+    // 'stats',
+    'shortcuts'
+
+    // 'embedmeeting',
+    // 'feedback',
+    // 'download'
 ];

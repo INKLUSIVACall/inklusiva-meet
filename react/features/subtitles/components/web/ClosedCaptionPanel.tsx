@@ -9,6 +9,7 @@ import { translate } from '../../../base/i18n/functions';
 import Icon from '../../../base/icons/components/Icon';
 import { IconCloseLarge } from '../../../base/icons/svg';
 import { withPixelLineHeight } from '../../../base/styles/functions.web';
+import { hideToolbox } from '../../../toolbox/actions.web';
 import { toggleCCHistoryPanel } from '../../actions.web';
 import { HISTORY_PANEL_SIZE } from '../../constants';
 
@@ -70,7 +71,10 @@ const useStyles = makeStyles()(theme => {
             backgroundColor: theme.palette.ui01,
             flexShrink: 0,
             overflow: 'hidden',
-            position: 'relative',
+            position: 'fixed',
+            top: 0,
+            right: 0,
+            height: '100vh',
             transition: 'width .16s ease-in-out',
             width: `${HISTORY_PANEL_SIZE}px`,
             zIndex: 300,
@@ -208,7 +212,7 @@ const ClosedCaptionHistory = ({
 
     useEffect(() => {
         createBottomListObserver();
-    });
+    }, []);
 
     useEffect(() => {
         if (state.isScrolledToBottom === true) {
@@ -221,6 +225,17 @@ const ClosedCaptionHistory = ({
         }
     }, [ _transcriptionHistoryLength ]);
 
+    useEffect(() => {
+        if (_isOpen) {
+            dispatch(hideToolbox(true));
+        }
+    }, [ _isOpen, dispatch ]);
+
+    useEffect(() => {
+        if (_isOpen) {
+            dispatch(hideToolbox(true));
+        }
+    }, [ _isOpen, dispatch ]);
 
     /**
      * Renders the panel header.
@@ -235,7 +250,7 @@ const ClosedCaptionHistory = ({
                 <span
                     aria-level = { 1 }
                     role = 'heading'>
-                    {t('cc.title')}
+                    { t('cc.title') }
                 </span>
                 <Icon
                     ariaLabel = { t('toolbar.closeChat') }
@@ -281,7 +296,7 @@ const ClosedCaptionHistory = ({
         <div
             className = { classes.container }
             id = 'sideToolbarContainerCC'
-            onKeyDown = { onEscClick }>
+            onKeyDown = { onEscClick } >
             {renderPanelHeader()}
             {renderPanel()}
         </div>
@@ -302,4 +317,3 @@ function _mapStateToProps(state: IReduxState, _ownProps: any) {
 }
 
 export default translate(connect(_mapStateToProps)(ClosedCaptionHistory));
-

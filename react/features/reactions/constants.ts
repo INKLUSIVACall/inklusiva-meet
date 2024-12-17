@@ -20,7 +20,7 @@ export const GIFS_MENU_HEIGHT_IN_OVERFLOW_MENU = 200;
 /**
  * Reactions menu height when displayed as part of drawer.
  */
-export const REACTIONS_MENU_HEIGHT_DRAWER = 144;
+export const REACTIONS_MENU_HEIGHT_DRAWER = 213;
 
 /**
  * Reactions menu height when displayed as part of overflow menu.
@@ -101,7 +101,6 @@ export const SILENCE_SOUND_ID = `${REACTION_SOUND}_SILENCE_`;
 export const RAISE_HAND_SOUND_ID = 'RAISE_HAND_SOUND';
 
 export interface IReactionEmojiProps {
-
     /**
      * Reaction to be displayed.
      */
@@ -113,7 +112,7 @@ export interface IReactionEmojiProps {
     uid: string;
 }
 
-export const SOUNDS_THRESHOLDS = [ 1, 4, 10 ];
+export const SOUNDS_THRESHOLDS = [1, 4, 10];
 
 interface IReactions {
     [key: string]: {

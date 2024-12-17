@@ -227,6 +227,19 @@ export const commonStyles = (theme: Theme) => {
                     backgroundColor: theme.palette.ui03
                 }
             },
+            '@media (max-width: 950px) and (min-width: 822px)': {
+                width: '3.9rem'
+            },
+            '@media (max-width: 821px) and (min-width: 819px)': {
+                width: '3.7rem'
+            },
+            '@media (max-width: 431px) and (min-width: 345px)': {
+                width: '3.5rem'
+            },
+            '@media (max-width: 344px)': {
+                width: '3.3rem'
+            },
+
             [theme.breakpoints.down(320)]: {
                 height: 36,
                 width: 36
@@ -264,12 +277,7 @@ export const commonStyles = (theme: Theme) => {
             boxShadow: '0px 2px 8px 4px rgba(0, 0, 0, 0.25), 0px 0px 0px 1px rgba(0, 0, 0, 0.15)',
 
             '& > div': {
-                marginRight: theme.spacing(2),
-                marginTop: theme.spacing(),
-
-                '&:last-of-type': {
-                    marginRight: 0
-                }
+                margin: '4px'
             }
         }
     };

@@ -47,6 +47,10 @@
     &.no-buttons {
         display: none;
     }
+
+    @media (max-width: 768px) {
+        bottom: calc((70px * 2) * -1);
+    }
 }
 
 .toolbox-content {
@@ -84,11 +88,11 @@
     margin: 0 auto;
     max-width: 100%;
     pointer-events: all;
-    border-radius: 6px;
 
     .toolbox-content-items {
         @include ltr;
         z-index: 0;
+        padding: 2px;
     }
 }
 
@@ -209,7 +213,8 @@ div.hangup-menu-button {
             @include ltr;
             border-radius: 0;
             display: flex;
-            justify-content: space-evenly;
+            justify-content: center;
+            flex-wrap: wrap;
             padding: 8px 0;
             width: 100%;
         }

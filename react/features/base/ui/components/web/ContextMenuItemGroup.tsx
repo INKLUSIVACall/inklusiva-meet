@@ -3,9 +3,7 @@ import { makeStyles } from 'tss-react/mui';
 
 import ContextMenuItem, { IProps as ItemProps } from './ContextMenuItem';
 
-
 interface IProps {
-
     /**
      * List of actions in this group.
      */
@@ -21,7 +19,7 @@ const useStyles = makeStyles()(theme => {
     return {
         contextMenuItemGroup: {
             '&:not(:empty)': {
-                padding: `${theme.spacing(2)} 0`
+                padding: `${theme.spacing(1)} 0`
             },
 
             '& + &:not(:empty)': {
@@ -39,19 +37,14 @@ const useStyles = makeStyles()(theme => {
     };
 });
 
-const ContextMenuItemGroup = ({
-    actions,
-    children
-}: IProps) => {
+const ContextMenuItemGroup = ({ actions, children }: IProps) => {
     const { classes: styles } = useStyles();
 
     return (
-        <div className = { styles.contextMenuItemGroup }>
+        <div className={styles.contextMenuItemGroup}>
             {children}
             {actions?.map(actionProps => (
-                <ContextMenuItem
-                    key = { actionProps.text }
-                    { ...actionProps } />
+                <ContextMenuItem key={actionProps.text} {...actionProps} />
             ))}
         </div>
     );

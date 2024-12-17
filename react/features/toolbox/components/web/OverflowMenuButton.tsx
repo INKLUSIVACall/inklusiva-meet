@@ -71,34 +71,33 @@ interface IProps {
 }
 
 const useStyles = makeStyles<{ overflowDrawer: boolean; reactionsMenuHeight: number; }>()(
-(_theme, { reactionsMenuHeight, overflowDrawer }) => {
-    return {
-        overflowMenuDrawer: {
-            overflow: 'hidden',
-            height: `calc(${DRAWER_MAX_HEIGHT} - ${reactionsMenuHeight}px - 16px)`
-        },
-        contextMenu: {
-            position: 'relative' as const,
-            right: 'auto',
-            margin: 0,
-            marginBottom: '8px',
-            maxHeight: overflowDrawer ? undefined : 'calc(100vh - 100px)',
-            paddingBottom: overflowDrawer ? undefined : 0,
-            minWidth: '240px',
-            overflow: 'hidden'
-        },
-        content: {
-            position: 'relative',
-            maxHeight: overflowDrawer
-                ? `calc(100% - ${reactionsMenuHeight}px - 16px)` : `calc(100vh - 100px - ${reactionsMenuHeight}px)`,
-            overflowY: 'auto'
-        },
-        footer: {
-            position: 'relative',
-            bottom: 0
-        }
-    };
-});
+    (_theme, { reactionsMenuHeight, overflowDrawer }) => {
+        return {
+            overflowMenuDrawer: {
+                overflow: 'auto'
+            },
+            contextMenu: {
+                position: 'relative' as const,
+                right: '230px',
+                margin: 0,
+                marginBottom: '8px',
+                maxHeight: overflowDrawer ? undefined : 'calc(100vh - 100px)',
+                paddingBottom: overflowDrawer ? undefined : 0,
+                minWidth: '240px',
+                overflow: 'hidden'
+            },
+            content: {
+                maxHeight: overflowDrawer ? 'calc(100% - 16px)' : 'calc(100vh - 100px)',
+                position: 'relative',
+                overflowY: 'auto'
+            },
+            footer: {
+                position: 'relative',
+                bottom: 0
+            }
+        };
+    }
+);
 
 const OverflowMenuButton = ({
     buttons,
@@ -124,13 +123,17 @@ const OverflowMenuButton = ({
         onVisibilityChange(true);
     }, [ onVisibilityChange ]);
 
-    const onEscClick = useCallback((event: React.KeyboardEvent) => {
-        if (event.key === 'Escape' && isOpen) {
-            event.preventDefault();
-            event.stopPropagation();
-            onCloseDialog();
-        }
-    }, [ onCloseDialog ]);
+
+    const onEscClick = useCallback(
+        (event: React.KeyboardEvent) => {
+            if (event.key === 'Escape' && isOpen) {
+                event.preventDefault();
+                event.stopPropagation();
+                onCloseDialog();
+            }
+        },
+        [ onCloseDialog ]
+    );
 
     const toggleDialogVisibility = useCallback(() => {
         sendAnalytics(createToolbarEvent('overflow'));
@@ -170,12 +173,12 @@ const OverflowMenuButton = ({
                     props.showLabel = true;
                 }
 
-                return (
-                    <Content
-                        { ...props }
-                        key = { key } />);
+                return (<Content
+                    { ...props }
+                    key = { key } />);
             })}
-        </ContextMenuItemGroup>));
+        </ContextMenuItemGroup>
+    ));
 
     const overflowMenu = groupsJSX && (
         <ContextMenu
@@ -185,18 +188,20 @@ const OverflowMenuButton = ({
             id = 'overflow-context-menu'
             inDrawer = { overflowDrawer }
             onKeyDown = { onToolboxEscKey }>
-            <div className = { classes.content }>
-                { groupsJSX }
+            <div className = { classes.content } >     {groupsJSX}
             </div>
-            {
-                showReactionsMenu && (<div className = { classes.footer }>
+            {showReactionsMenu && (
+                <div className = { classes.footer } >
                     <ReactionsMenu
+                        _transcriptionHistory = { [] }
                         parent = {
-                            overflowDrawer ? IReactionsMenuParent.OverflowDrawer : IReactionsMenuParent.OverflowMenu }
+                            overflowDrawer ? IReactionsMenuParent.OverflowDrawer : IReactionsMenuParent.OverflowMenu
+                        }
                         showRaisedHand = { showRaiseHandInReactionsMenu } />
-                </div>)
-            }
-        </ContextMenu>);
+                </div>
+            )}
+        </ContextMenu>
+    );
 
     if (overflowDrawer) {
         return (
@@ -211,18 +216,20 @@ const OverflowMenuButton = ({
                             isOpen = { isOpen }
                             onClose = { onCloseDialog }>
                             <>
-                                <div className = { classes.overflowMenuDrawer }>
-                                    { overflowMenu }
-                                </div>
+                                <div className = { classes.overflowMenuDrawer }>{overflowMenu}</div>
                             </>
                         </Drawer>
-                        {showReactionsMenu && <div className = 'reactions-animations-container'>
-                            {reactionsQueue.map(({ reaction, uid }, index) => (<ReactionEmoji
-                                index = { index }
-                                key = { uid }
-                                reaction = { reaction }
-                                uid = { uid } />))}
-                        </div>}
+                        {showReactionsMenu && (
+                            <div className = 'reactions-animations-container'>
+                                {reactionsQueue.map(({ reaction, uid }, index) =>
+                                    (<ReactionEmoji
+                                        index = { index }
+                                        key = { uid }
+                                        reaction = { reaction }
+                                        uid = { uid } />
+                                    ))}
+                            </div>
+                        )}
                     </AccessibleDialogPortal>
                 </>
             </div>
@@ -243,13 +250,17 @@ const OverflowMenuButton = ({
                     isOpen = { isOpen }
                     onKeyDown = { onEscClick } />
             </AccessiblePopover>
-            {showReactionsMenu && <div className = 'reactions-animations-container'>
-                {reactionsQueue.map(({ reaction, uid }, index) => (<ReactionEmoji
-                    index = { index }
-                    key = { uid }
-                    reaction = { reaction }
-                    uid = { uid } />))}
-            </div>}
+            {showReactionsMenu && (
+                <div className = 'reactions-animations-container'>
+                    {reactionsQueue.map(({ reaction, uid }, index) => (
+                        <ReactionEmoji
+                            index = { index }
+                            key = { uid }
+                            reaction = { reaction }
+                            uid = { uid } />
+                    ))}
+                </div>
+            )}
         </div>
     );
 };
