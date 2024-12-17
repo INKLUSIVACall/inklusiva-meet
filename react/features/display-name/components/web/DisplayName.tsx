@@ -4,15 +4,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
 
 import { IReduxState } from '../../../app/types';
+import Icon from '../../../base/icons/components/Icon';
+import { IconCheck, IconCloseLarge, IconHighlight } from '../../../base/icons/svg';
 import {
     getParticipantById,
     getParticipantDisplayName
 } from '../../../base/participants/functions';
 import { updateSettings } from '../../../base/settings/actions';
 import { withPixelLineHeight } from '../../../base/styles/functions.web';
-import Tooltip from '../../../base/tooltip/components/Tooltip';
-import { getIndicatorsTooltipPosition } from '../../../filmstrip/functions.web';
+import ClickableIcon from '../../../base/ui/components/web/ClickableIcon';
 import { appendSuffix } from '../../functions';
+
 
 /**
  * The type of the React {@code Component} props of {@link DisplayName}.
@@ -48,13 +50,20 @@ interface IProps {
 
 const useStyles = makeStyles()(theme => {
     return {
+        displayNameContainer: {
+            overflow: 'visible !important'
+        },
+
         displayName: {
             ...withPixelLineHeight(theme.typography.labelBold),
             color: theme.palette.text01,
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
-            fontSize: '0.75rem'
+            fontSize: '1rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem'
         },
 
         editDisplayName: {
@@ -65,6 +74,18 @@ const useStyles = makeStyles()(theme => {
             padding: 0,
             ...withPixelLineHeight(theme.typography.labelBold),
             color: theme.palette.text01
+        },
+
+        icon: {
+            padding: '2px',
+            backgroundColor: theme.palette.action03,
+            border: 0,
+            outline: 0,
+            borderRadius: `${theme.shape.borderRadius}px`,
+
+            '&:hover': {
+                backgroundColor: theme.palette.ui02
+            }
         }
     };
 });
@@ -73,12 +94,11 @@ const DisplayName = ({
     allowEditing,
     displayNameSuffix,
     elementID,
-    participantID,
-    thumbnailType
+    participantID
 }: IProps) => {
     const { classes } = useStyles();
-    const configuredDisplayName = useSelector((state: IReduxState) =>
-        getParticipantById(state, participantID))?.name ?? '';
+    const localStatus = useSelector((state: IReduxState) =>
+        getParticipantById(state, participantID))?.local ?? '';
     const nameToDisplay = useSelector((state: IReduxState) => getParticipantDisplayName(state, participantID));
     const [ editDisplayNameValue, setEditDisplayNameValue ] = useState('');
     const [ isEditing, setIsEditing ] = useState(false);
@@ -96,63 +116,113 @@ const DisplayName = ({
         e.stopPropagation();
     }, []);
 
+    const onBlur = useCallback((event: React.FocusEvent<HTMLInputElement>) => {
+        const target = event.relatedTarget as HTMLElement | null;
+
+        // Wenn auf Annehmen oder Abblehnen geklickt wird soll nicht automatisch dismissed werden
+        if (target?.id === 'display-name-accept-button' || target?.id === 'display-name-cancel-button') {
+            return;
+        }
+        setIsEditing(false);
+    }, []);
+
     const onChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         setEditDisplayNameValue(event.target.value);
     }, []);
 
     const onSubmit = useCallback(() => {
-        dispatch(updateSettings({
-            displayName: editDisplayNameValue
-        }));
+        // Name leer -> Verwerfen
+        if (editDisplayNameValue) {
+            dispatch(updateSettings({
+                displayName: editDisplayNameValue
+            }));
 
-        setEditDisplayNameValue('');
+            setEditDisplayNameValue('');
+            nameInputRef.current = null;
+        }
         setIsEditing(false);
-        nameInputRef.current = null;
     }, [ editDisplayNameValue, nameInputRef ]);
 
+    const onDismiss = useCallback(() => {
+        setIsEditing(false);
+    }, []);
+
+    // Enter speichert Änderungen, Escape verwirft
     const onKeyDown = useCallback((event: React.KeyboardEvent) => {
         if (event.key === 'Enter') {
             onSubmit();
         }
-    }, [ onSubmit ]);
+        if (event.key === 'Escape') {
+            onDismiss();
+        }
+    }, [ onSubmit, onDismiss ]);
 
-    const onStartEditing = useCallback((e: React.MouseEvent) => {
+    const onStartEditing = useCallback((e: React.MouseEvent | React.KeyboardEvent) => {
         if (allowEditing) {
             e.stopPropagation();
             setIsEditing(true);
-            setEditDisplayNameValue(configuredDisplayName);
+            setEditDisplayNameValue('');
         }
     }, [ allowEditing ]);
 
+    // Screenreader: Enter startet editing
+    const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLSpanElement>) => {
+        if (e.key === 'Enter') {
+            onStartEditing(e);
+        }
+    }, [ onStartEditing ]);
+
     if (allowEditing && isEditing) {
         return (
-            <input
-                autoFocus = { true }
-                className = { classes.editDisplayName }
-                id = 'editDisplayName'
-                onBlur = { onSubmit }
-                onChange = { onChange }
-                onClick = { onClick }
-                onKeyDown = { onKeyDown }
-                placeholder = { t('defaultNickname') }
-                ref = { nameInputRef }
-                spellCheck = { 'false' }
-                type = 'text'
-                value = { editDisplayNameValue } />
+            <div
+                onBlur = { onBlur }
+                onClick = { onClick }>
+                <input
+                    autoFocus = { true }
+                    className = { classes.editDisplayName }
+                    id = 'editDisplayName'
+                    onChange = { onChange }
+                    onKeyDown = { onKeyDown }
+                    placeholder = { t('defaultNickname') }
+                    ref = { nameInputRef }
+                    spellCheck = { 'false' }
+                    type = 'text'
+                    value = { editDisplayNameValue } />
+                <ClickableIcon
+                    accessibilityLabel = { t('dialog.accessibilityLabel.SaveName') }
+                    icon = { IconCheck }
+                    id = 'display-name-accept-button'
+                    onClick = { onSubmit } />
+                <ClickableIcon
+                    accessibilityLabel = { t('dialog.Cancel') }
+                    icon = { IconCloseLarge }
+                    id = 'display-name-cancel-button'
+                    onClick = { onDismiss } />
+            </div>
+
         );
     }
 
     return (
-        <Tooltip
-            content = { appendSuffix(nameToDisplay, displayNameSuffix) }
-            position = { getIndicatorsTooltipPosition(thumbnailType) }>
+        <div
+            className = { `displayNameContainer ${classes.displayNameContainer}` }>
             <span
+                aria-label = { t('dialog.accessibilityLabel.ChangeName', { name: nameToDisplay }) }
                 className = { `displayname ${classes.displayName}` }
                 id = { elementID }
-                onClick = { onStartEditing }>
+                onClick = { onStartEditing }
+                onKeyDown = { handleKeyDown }
+                role = 'button'
+                tabIndex = { 0 }>
                 {appendSuffix(nameToDisplay, displayNameSuffix)}
+                { localStatus
+                && <Icon
+                    className = { classes.icon }
+                    id = { 'display-name-change-button' }
+                    size = { 24 }
+                    src = { IconHighlight } />}
             </span>
-        </Tooltip>
+        </div>
     );
 };
 

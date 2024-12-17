@@ -272,7 +272,9 @@
             "Ok": "OK (Speichern und Popup schließen)",
             "close": "Popup schließen",
             "liveStreaming": "Livestream",
-            "sharingTabs": "Optionen zum Teilen"
+            "sharingTabs": "Optionen zum Teilen",
+            "SaveName": "Name Speichern",
+            "ChangeName": "Eigenen Namen bearbeiten, aktueller Name {{name}}"
         },
         "add": "Hinzufügen",
         "addMeetingNote": "Notiz zu dieser Konferenz hinzufügen",
