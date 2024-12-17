@@ -19,6 +19,9 @@ import { IconArrowDown, IconArrowUp } from '../../../base/icons/svg';
 import { isLocalParticipantModerator } from '../../../base/participants/functions';
 import { ILocalParticipant } from '../../../base/participants/types';
 import ContextMenu from '../../../base/ui/components/web/ContextMenu';
+import ChatCounter from '../../../chat/components/web/ChatCounter';
+import { getUnreadCount } from '../../../chat/functions';
+import { getUnreadPollCount } from '../../../polls/functions';
 import { isReactionsButtonEnabled, isReactionsEnabled } from '../../../reactions/functions.web';
 import { iAmVisitor } from '../../../visitors/functions';
 import {
@@ -58,7 +61,7 @@ interface IProps extends WithTranslation {
     _buttonsWithNotifyClick?: NotifyClickButton[];
 
     /**
-     * The number of unread chat messages.//!1.
+     * The number of unread chat messages.
      */
     _chatCounter: number;
 
@@ -520,11 +523,13 @@ const Toolbox = ({
                         <Icon
                             size = { 32 }
                             src = { closeIcon } />
-                        {!_visible && _chatCounter > 0 && (
-                            <div className = 'badge-round'>//!1
-                                { _chatCounter }//!1
+                        { !_visible && _chatCounter > 0 && !_chatOpen
+                            && <div className = 'chat-counter'>
+                                <ChatCounter />
                             </div>
-                        )}//!1
+
+
+                        }
                     </div>
 
                     <div
@@ -653,7 +658,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
     return {
         _recordingEnabled: state['features/inklusiva/sessiondata'].recordingEnabled,
         _buttonsWithNotifyClick: getButtonsWithNotifyClick(state),
-        _chatCounter: state['features/chat'].nbUnreadMessages,
+        _chatCounter: getUnreadCount(state) + getUnreadPollCount(state),
         _chatOpen: state['features/chat'].isOpen,
         _clientWidth: clientWidth,
         _toolboxWidth: toolboxWidth,
