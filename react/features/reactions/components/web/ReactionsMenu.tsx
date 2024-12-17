@@ -25,7 +25,6 @@ import {
     REACTIONS_MENU_HEIGHT_DRAWER,
     REACTIONS_MENU_HEIGHT_IN_OVERFLOW_MENU
 } from '../../constants';
-import { getClosedCaptionVisibility } from '../../subtitles/functions';
 import { IReactionsMenuParent } from '../../types';
 
 import ReactionButton from './ReactionButton';
@@ -56,8 +55,6 @@ interface IProps {
      * Whether or not the local participant's hand is raised.
      */
     _raisedHand: boolean;
-
-    _transcriptionHistory: any[];
 
     /**
      * The Redux Dispatch function.

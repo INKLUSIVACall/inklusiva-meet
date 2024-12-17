@@ -193,7 +193,6 @@ const OverflowMenuButton = ({
             {showReactionsMenu && (
                 <div className = { classes.footer } >
                     <ReactionsMenu
-                        _transcriptionHistory = { [] }
                         parent = {
                             overflowDrawer ? IReactionsMenuParent.OverflowDrawer : IReactionsMenuParent.OverflowMenu
                         }
