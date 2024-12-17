@@ -19,6 +19,9 @@ import { IconArrowDown, IconArrowUp } from '../../../base/icons/svg';
 import { isLocalParticipantModerator } from '../../../base/participants/functions';
 import { ILocalParticipant } from '../../../base/participants/types';
 import ContextMenu from '../../../base/ui/components/web/ContextMenu';
+import ChatCounter from '../../../chat/components/web/ChatCounter';
+import { getUnreadCount } from '../../../chat/functions';
+import { getUnreadPollCount } from '../../../polls/functions';
 import { isReactionsButtonEnabled, isReactionsEnabled } from '../../../reactions/functions.web';
 import { iAmVisitor } from '../../../visitors/functions';
 import {
@@ -56,6 +59,11 @@ interface IProps extends WithTranslation {
      * Toolbar buttons which have their click exposed through the API.
      */
     _buttonsWithNotifyClick?: NotifyClickButton[];
+
+    /**
+     * The number of unread chat messages.
+     */
+    _chatCounter: number;
 
     /**
      * Whether or not the chat feature is currently displayed.
@@ -228,12 +236,18 @@ const Toolbox = ({
     toolbarButtons,
     _distressButton,
     _participantsPaneOpen,
-    _toolboxWidth
+    _toolboxWidth,
+    _chatCounter
 }: IProps) => {
     const { classes, cx } = useStyles();
     const _toolboxRef = useRef<HTMLDivElement>(null);
 
     useKeyboardShortcuts(toolbarButtons);
+
+    useEffect(() => {
+        console.log('chatOpen:', _chatOpen);
+        console.log('chatCounter:', _chatCounter);
+    }, [ _chatOpen, _chatCounter ]);
 
     useEffect(() => {
         if (_dialog) {
@@ -509,6 +523,13 @@ const Toolbox = ({
                         <Icon
                             size = { 32 }
                             src = { closeIcon } />
+                        { !_visible && _chatCounter > 0 && !_chatOpen
+                            && <div className = 'chat-counter'>
+                                <ChatCounter />
+                            </div>
+
+
+                        }
                     </div>
 
                     <div
@@ -637,6 +658,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
     return {
         _recordingEnabled: state['features/inklusiva/sessiondata'].recordingEnabled,
         _buttonsWithNotifyClick: getButtonsWithNotifyClick(state),
+        _chatCounter: getUnreadCount(state) + getUnreadPollCount(state),
         _chatOpen: state['features/chat'].isOpen,
         _clientWidth: clientWidth,
         _toolboxWidth: toolboxWidth,

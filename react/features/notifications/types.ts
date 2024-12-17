@@ -6,6 +6,10 @@ export interface INotificationProps {
     customActionHandler?: Function[];
     customActionNameKey?: string[];
     customActionType?: string[];
+    customChatNotificationAction?: {
+        onClick: () => void;
+        text: string;
+    };
     description?: string | React.ReactNode;
     descriptionArguments?: Object;
     descriptionKey?: string;

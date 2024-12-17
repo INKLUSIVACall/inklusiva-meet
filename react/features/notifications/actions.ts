@@ -4,6 +4,7 @@ import { IStore } from '../app/types';
 import { NOTIFICATIONS_ENABLED } from '../base/flags/constants';
 import { getFeatureFlag } from '../base/flags/functions';
 import { getParticipantCount } from '../base/participants/functions';
+import { SHOW_NOTIFICATION_AS_MESSAGE } from '../chat/actionTypes';
 
 import {
     CLEAR_NOTIFICATIONS,
@@ -20,7 +21,6 @@ import {
     SILENT_LEFT_THRESHOLD
 } from './constants';
 import { INotificationProps } from './types';
-import { SHOW_NOTIFICATION_AS_MESSAGE } from '../chat/actionTypes';
 
 /**
  * Function that returns notification timeout value based on notification timeout type.
@@ -117,7 +117,7 @@ export function showNotification(props: INotificationProps = {}, type?: string) 
         const { disabledNotifications = [], notifications, notificationTimeouts } = getState()['features/base/config'];
         const enabledFlag = getFeatureFlag(getState(), NOTIFICATIONS_ENABLED, true);
 
-        const { descriptionKey, titleKey } = props;
+        const { descriptionKey, titleKey, customChatNotificationAction } = props;
 
         const shouldDisplay = enabledFlag
             && !(disabledNotifications.includes(descriptionKey ?? '')

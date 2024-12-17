@@ -16,6 +16,7 @@ import {
 import MiddlewareRegistry from '../base/redux/MiddlewareRegistry';
 import StateListenerRegistry from '../base/redux/StateListenerRegistry';
 import { PARTICIPANTS_PANE_OPEN } from '../participants-pane/actionTypes';
+import { isToolboxVisible } from '../toolbox/functions.web';
 
 import {
     CLEAR_NOTIFICATIONS,
@@ -55,7 +56,7 @@ const createTimeoutId = (notification: { timeout: number; uid: string; }, dispat
         uid
     } = notification;
 
-    if (timeout) {
+    if (timeout !== 0) {
         const timerID = setTimeout(() => {
             dispatch(hideNotification(uid));
         }, timeout);
@@ -110,7 +111,16 @@ MiddlewareRegistry.register(store => next => action => {
             timers.delete(action.uid);
         }
 
-        createTimeoutId(action, dispatch);
+
+        // Check if the toolbox is visible
+        const isToolboxVisibleState = isToolboxVisible(state);
+        const isChatNotification = action.props.titleKey === 'notify.chatMessages';
+        const notification = {
+            ...action,
+            timeout: isChatNotification && !isToolboxVisibleState ? 0 : action.timeout || 5000
+        };
+
+        createTimeoutId(notification, dispatch);
         break;
     }
     case HIDE_NOTIFICATION: {
