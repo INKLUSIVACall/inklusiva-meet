@@ -33,7 +33,7 @@ export class AbstractCaptions<P extends IAbstractCaptionsProps> extends Componen
      * @inheritdoc
      * @returns {ReactElement}
      */
-    // ! MOCK-MODE
+
     render(): any {
         const { _requestingSubtitles, _transcripts, isMockMode } = this.props;
 
@@ -48,25 +48,6 @@ export class AbstractCaptions<P extends IAbstractCaptionsProps> extends Componen
 
         return this._renderSubtitlesContainer(paragraphs);
     }
-
-    // ! Richtige Implementierung
-    // render(): any {
-    //     const { _requestingSubtitles, _transcripts } = this.props;
-
-    //     if (!_requestingSubtitles || !_transcripts || !_transcripts.size) {
-    //         return null;
-    //     }
-
-    //     const paragraphs = [];
-
-    //     // @ts-ignore
-    //     for (const [ id, text ] of _transcripts ?? []) {
-    //         paragraphs.push(this._renderParagraph(id, text));
-    //     }
-
-    //     // @ts-ignore
-    //     return this._renderSubtitlesContainer(paragraphs);
-    // }
 
     /**
      * Renders the transcription text.

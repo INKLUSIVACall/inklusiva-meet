@@ -292,7 +292,9 @@ class Conference extends AbstractConference<IProps, any> {
                     <AssisteesPanel />
                     <AssistancePanel />
                     <CalleeInfoContainer />
-
+                    {/* Mock-Transkirption:
+                    wenn isMockMode auf true gesetzt wird, in Captions.tsx
+                    den auskommentierten Codeblock entkommentieren */}
                     { interfaceConfig.DISABLE_TRANSCRIPTION_SUBTITLES
                     || <Captions isMockMode = { true } /> }
                     { _showPrejoin && <Prejoin />}
