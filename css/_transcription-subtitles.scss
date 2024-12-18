@@ -4,7 +4,7 @@
     font-weight: 400;
     left: 50%;
     max-width: 80vw;
-    opacity: 0.80;
+    background-color: rgba(0,0,0,0);
     overflow-wrap: break-word;
     pointer-events: none;
     position: absolute;
@@ -14,13 +14,28 @@
     0px 0px 1px rgba(0,0,0,0.3);
     transform: translateX(-50%);
     z-index: 7;
-
+    
     &.lifted {
         // Lift subtitle above toolbar+dominant speaker box.
         bottom: 10rem;
     }
-
     span {
         background: black;
+    }
+    .fontsize-container {
+        opacity: 1;
+        background: black;
+        display: flex;
+        justify-content: end;
+        border-radius: 9px;
+        pointer-events: auto;
+        button {
+            margin: 3px;
+            border: 2px solid white;
+            span {
+                font-size: 15px;
+                background: transparent;
+            }
+        }
     }
 }
