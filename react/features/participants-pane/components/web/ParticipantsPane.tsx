@@ -6,6 +6,7 @@ import { makeStyles } from 'tss-react/mui';
 import { IReduxState } from '../../../app/types';
 import participantsPaneTheme from '../../../base/components/themes/participantsPaneTheme.json';
 import { openDialog } from '../../../base/dialog/actions';
+import { isMobileBrowser } from '../../../base/environment/utils';
 import { IconCloseLarge, IconDotsHorizontal } from '../../../base/icons/svg';
 import { isLocalParticipantModerator } from '../../../base/participants/functions';
 import BaseDialog from '../../../base/ui/components/web/BaseDialog';
@@ -14,6 +15,7 @@ import ClickableIcon from '../../../base/ui/components/web/ClickableIcon';
 import { BUTTON_TYPES } from '../../../base/ui/constants.web';
 import { findAncestorByClass } from '../../../base/ui/functions.web';
 import { isAddBreakoutRoomButtonVisible } from '../../../breakout-rooms/functions';
+import { toggleToolboxVisible } from '../../../toolbox/actions.any';
 import MuteEveryoneDialog from '../../../video-menu/components/web/MuteEveryoneDialog';
 import { close } from '../../actions.web';
 import { BREAKOUTROOM_BUTTON_STATUS, BREAKOUTROOM_LIST_STATUS } from '../../constants';
@@ -23,8 +25,6 @@ import { RoomList } from '../breakout-rooms/components/web/RoomList';
 
 import AllParticipants from './AllParticipants';
 import { FooterContextMenu } from './FooterContextMenu';
-import { isMobileBrowser } from '../../../base/environment/utils';
-import { toggleToolboxVisible } from '../../../toolbox/actions.any';
 
 const useStyles = makeStyles()(theme => {
     return {
@@ -150,7 +150,10 @@ const ParticipantsPane = () => {
                     icon = { IconCloseLarge }
                     onClick = { onClosePane } />
             </div>
-            <div className = { classes.container }>
+            <div
+                aria-label = { t('participantsPane.allParticipants') }
+                className = { classes.container }
+                tabIndex = { 0 }>
                 <AllParticipants
                     searchString = { searchString }
                     setSearchString = { setSearchString } />

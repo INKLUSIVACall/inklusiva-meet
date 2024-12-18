@@ -791,6 +791,7 @@
     },
     "opacityAdjustSlider": "Kacheln verdunkeln",
     "participantsPane": {
+        "allParticipants": "Liste aller Teilnehmer",
         "actions": {
             "allow": "Anwesenden erlauben:",
             "allowVideo": "Kamera einschalten",

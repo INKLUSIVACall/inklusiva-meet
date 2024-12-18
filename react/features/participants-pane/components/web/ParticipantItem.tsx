@@ -205,7 +205,9 @@ function ParticipantItem({
 
     const text = (
         <>
-            <div className = { classes.nameContainer }>
+            <div
+                tabIndex = { 0 }
+                className = { classes.nameContainer }>
                 {inLobby && <div className = { clsx(classes.name, 'lobby-participant-name') }>{displayName}</div>}
                 {!inLobby && <div className = { classes.name }>{displayName}</div>}
                 {local ? <span>&nbsp;({youText})</span> : null}
