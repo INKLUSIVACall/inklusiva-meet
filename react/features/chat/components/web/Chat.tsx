@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
 
 import { IReduxState } from '../../../app/types';
+import { isMobileBrowser } from '../../../base/environment/utils';
 import { translate } from '../../../base/i18n/functions';
 import { getLocalParticipant } from '../../../base/participants/functions';
 import { withPixelLineHeight } from '../../../base/styles/functions.web';
@@ -20,6 +21,7 @@ import MessageContainer from './MessageContainer';
 import MessageRecipient from './MessageRecipient';
 
 interface IProps extends AbstractProps {
+
     /**
      * Whether the chat is opened in a modal or not (computed based on window width).
      */
@@ -100,6 +102,10 @@ const useStyles = makeStyles()(theme => {
                 userSelect: 'text',
                 '-webkit-user-select': 'text'
             }
+        },
+
+        containerMobile: {
+            zIndex: 303
         },
 
         chatHeader: {
@@ -219,8 +225,8 @@ const Chat = ({
             <>
                 {_isPollsEnabled && renderTabs()}
                 <div
-                    aria-labelledby={`${CHAT_TABS.CHAT}-panel`}
-                    className={cx(
+                    aria-labelledby = { `${CHAT_TABS.CHAT}-panel` }
+                    className = { cx(
                         classes.chatPanel,
                         !_isPollsEnabled && classes.chatPanelNoTabs,
                         _isPollsTabFocused && 'hide'
@@ -284,7 +290,7 @@ const Chat = ({
 
     return _isOpen ? (
         <div
-            className = { classes.container }
+            className = { `${classes.container} ${isMobileBrowser() ? classes.containerMobile : ''}` }
             id = 'sideToolbarContainer'
             onKeyDown = { onEscClick }>
             <ChatHeader

@@ -29,8 +29,7 @@ import Prejoin from '../../../prejoin/components/web/Prejoin';
 import { isPrejoinPageVisible } from '../../../prejoin/functions';
 import Captions from '../../../subtitles/components/web/Captions';
 import ClosedCaptionPanel from '../../../subtitles/components/web/ClosedCaptionPanel';
-import { toggleToolboxVisible } from '../../../toolbox/actions.any';
-import { fullScreenChanged, showToolbox } from '../../../toolbox/actions.web';
+import { fullScreenChanged } from '../../../toolbox/actions.web';
 import JitsiPortal from '../../../toolbox/components/web/JitsiPortal';
 import Toolbox from '../../../toolbox/components/web/Toolbox';
 import { LAYOUT_CLASSNAMES } from '../../../video-layout/constants';
@@ -45,7 +44,6 @@ import type { AbstractProps } from '../AbstractConference';
 
 import ConferenceInfo from './ConferenceInfo';
 import { default as Notice } from './Notice';
-import HelpDialog from '../../../toolbox/components/HelpDialog';
 
 /**
  * DOM events for when full screen mode has changed. Different browsers need
