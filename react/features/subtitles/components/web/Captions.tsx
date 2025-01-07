@@ -1,7 +1,10 @@
 import React, { ReactElement } from 'react';
 import { connect } from 'react-redux';
+import { Rnd } from 'react-rnd';
 
 import { IReduxState } from '../../../app/types';
+import Icon from '../../../base/icons/components/Icon';
+import { IconMove } from '../../../base/icons/svg';
 import { getLocalParticipant } from '../../../base/participants/functions';
 import Button from '../../../base/ui/components/web/Button';
 import { getLargeVideoParticipant } from '../../../large-video/functions';
@@ -39,15 +42,20 @@ interface IState {
 class Captions extends AbstractCaptions<IProps> {
 
     state: IState = {
-        fontSize: 16
+        fontSize: 24
     };
 
-    _onIncreaseFontSize = () => {
+    _onIncreaseFontSize = (e: React.TouchEvent | React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
         this.setState({ fontSize: this.state.fontSize + 2 });
     };
-    _onDecreaseFontSize = () => {
+    _onDecreaseFontSize = (e: React.TouchEvent | React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
         this.setState({ fontSize: this.state.fontSize - 2 });
     };
+
 
     /**
      * Renders the transcription text.
@@ -62,6 +70,7 @@ class Captions extends AbstractCaptions<IProps> {
     _renderParagraph(id: string, text: string): ReactElement {
         return (
             <p
+                className = { 'transcription-text' }
                 key = { id }
                 style = {{ fontSize: `${this.state.fontSize}px` }}>
                 <span>{ text }</span>
@@ -78,9 +87,11 @@ class Captions extends AbstractCaptions<IProps> {
     _generateMockParagraphs(): Array<ReactElement> {
         const mockData = [
             { id: '1',
-                text: 'Dies ist ein Testuntertitel.' },
+                text: 'Dies ist ein Testuntertitel. Dies ist ein Testuntertitel. Dies ist ein Testuntertitel.' },
             { id: '2',
-                text: 'Hier ist ein weiterer Testuntertitel.' }
+                text: 'Hier ist ein weiterer Testuntertitel.' },
+            { id: '3',
+                text: 'Und hier kommt ein letzter Untertitel.' }
         ];
 
         return mockData.map(data => this._renderParagraph(data.id, data.text));
@@ -98,37 +109,82 @@ class Captions extends AbstractCaptions<IProps> {
         const className = this.props._isLifted
             ? 'transcription-subtitles lifted'
             : 'transcription-subtitles';
+        const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
+        const defaultWidth = windowWidth * 0.8;
+        const defaultHeight = windowWidth * 0.3;
+        const defaultX = (windowWidth - defaultWidth) / 2;
+        const defaultY = (windowHeight - defaultHeight) / 2;
 
         return (
-            <div
-                aria-hidden = { true }
-                className = { className }>
-                <div className = 'fontsize-container'>
-                    <Button
-                        className = ''
-                        label = '+'
-                        onClick = { this._onIncreaseFontSize }
-                        size = 'small' />
-                    <Button
-                        className = ''
-                        label = '-'
-                        onClick = { this._onDecreaseFontSize }
-                        size = 'small' />
-                </div>
-                { paragraphs }
-            </div>
+            <>
+                <Rnd
+                    bounds = 'parent'
+                    className = 'rnd-container'
+                    default = {{
+                        x: defaultX,
+                        y: defaultY,
+                        width: defaultWidth,
+                        height: defaultHeight
+                    }}
+                    enableResizing = {{
+                        topRight: true,
+                        bottomRight: true,
+                        bottomLeft: true,
+                        topLeft: true,
+                        top: true,
+                        right: true,
+                        left: true,
+                        bottom: true
+                    }}
+                    enableTouchSupport = { true }
+
+                    maxHeight = { window.innerHeight }
+                    maxWidth = { window.innerWidth }
+                    minHeight = { '30vw' }
+                    minWidth = { '60vw' }
+                    touchDragContainer = { document.body }>
+                    <div
+                        aria-hidden = { true }
+                        className = { className }>
+
+
+                        <div className = 'fontsize-container'>
+                            <Icon
+                                className = 'icon-left'
+                                size = { 30 }
+                                src = { IconMove } />
+                            <Button
+                                className = 'button-text'
+                                label = '+'
+                                onClick = { this._onIncreaseFontSize }
+                                onTouchEnd = { this._onIncreaseFontSize }
+                                size = 'small' />
+                            <Button
+                                className = 'button-text'
+                                label = '-'
+                                onClick = { this._onDecreaseFontSize }
+                                onTouchEnd = { this._onDecreaseFontSize }
+                                size = 'small' />
+                        </div>
+                        { paragraphs }
+                    </div>
+                </Rnd>
+            </>
         );
     }
 
-    render() {
-        console.log('xxy current fontsize:', this.state.fontSize);
+    // Mock-Transkription:
+    // wenn isMockMode in Conference.tsx auf true gesetzt wird, bitte die render()-funktion entkommentieren
+    // render() {
+    //     console.log('xxy current fontsize:', this.state.fontSize);
 
-        const paragraphs = this.props.isMockMode
-            ? this._generateMockParagraphs()
-            : Array.from(this.props._transcripts!.entries()).map(([ id, text ]) => this._renderParagraph(id, text));
+    //     const paragraphs = this.props.isMockMode
+    //         ? this._generateMockParagraphs()
+    //         : Array.from(this.props._transcripts!.entries()).map(([ id, text ]) => this._renderParagraph(id, text));
 
-        return this._renderSubtitlesContainer(paragraphs);
-    }
+    //     return this._renderSubtitlesContainer(paragraphs);
+    // }
 }
 
 /**

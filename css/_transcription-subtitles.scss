@@ -1,20 +1,28 @@
 .transcription-subtitles {
-    bottom: 9rem;
-    font-size: 1.5rem;
+    font-size: 3rem;
     font-weight: 400;
-    left: 50%;
     max-width: 80vw;
+    min-width: 60vw;
     background-color: rgba(0,0,0,0);
     overflow-wrap: break-word;
-    pointer-events: auto;
-    //pointer-events: none;
-    position: absolute;
+    pointer-events: none;    
+    flex-direction: column;
+    display: flex;
+    flex: 1 1 auto;
     text-shadow: 0px 0px 1px rgba(0,0,0,0.3),
     0px 1px 1px rgba(0,0,0,0.3),
     1px 0px 1px rgba(0,0,0,0.3),
     0px 0px 1px rgba(0,0,0,0.3);
-    transform: translateX(-50%);
     z-index: 7;
+    .transcription-text {
+        max-width: 80vw;
+        background-color: rgba(100, 98, 98, 0.711);
+        padding: 6px;
+        backdrop-filter: blur(10px);
+       &:last-of-type {
+            border-radius:0px 0px 9px 9px ;
+        }
+    }
     
     &.lifted {
         // Lift subtitle above toolbar+dominant speaker box.
@@ -25,20 +33,25 @@
     }
     .fontsize-container {
         opacity: 1;
-        background: black;
-        min-width: auto;
+        background: #161616;
         display: flex;
         justify-content: flex-end;
-        border-radius: 9px;
+        border-radius:9px 9px 0 0;
         pointer-events: auto;
         button {
-            margin: 3px;
-            border: 2px solid white;
+            margin: 6px 6px 6px 0;
+            color: #161616;
+            background-color: #DDDDE9;
+            
             span {
+                display: flex;
+                justify-items: center;
+                align-items: center;
                 font-size: 15px;
                 background: transparent;
             }
         }
+        
         .icon-left {
             margin-right: auto;
             display: flex;
@@ -47,3 +60,4 @@
         }
     }
 }
+
