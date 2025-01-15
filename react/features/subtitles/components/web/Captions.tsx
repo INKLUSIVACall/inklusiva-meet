@@ -109,8 +109,8 @@ class Captions extends AbstractCaptions<IProps> {
         const className = this.props._isLifted
             ? 'transcription-subtitles lifted'
             : 'transcription-subtitles';
-        const windowWidth = window.innerWidth;
-        const windowHeight = window.innerHeight;
+        const windowWidth = window.innerWidth - 50;
+        const windowHeight = window.innerHeight - 50;
         const defaultWidth = windowWidth * 0.8;
         const defaultHeight = windowWidth * 0.3;
         const defaultX = (windowWidth - defaultWidth) / 2;
@@ -119,30 +119,27 @@ class Captions extends AbstractCaptions<IProps> {
         return (
             <>
                 <Rnd
-                    bounds = 'parent'
+                    bounds = 'window'
                     className = 'rnd-container'
-                    default = {{
-                        x: defaultX,
-                        y: defaultY,
-                        width: defaultWidth,
-                        height: defaultHeight
-                    }}
-                    enableResizing = {{
-                        topRight: true,
-                        bottomRight: true,
-                        bottomLeft: true,
-                        topLeft: true,
-                        top: true,
-                        right: true,
-                        left: true,
-                        bottom: true
-                    }}
+
+                    // default = {{
+                    //     x: defaultX,
+                    //     y: defaultY,
+                    //     width: defaultWidth,
+                    //     height: defaultHeight
+                    // }}
+                    // enableResizing = {{
+                    //     topRight: true,
+                    //     bottomRight: true,
+                    //     bottomLeft: true,
+                    //     topLeft: true
+                    // }}
                     enableTouchSupport = { true }
 
-                    maxHeight = { window.innerHeight }
-                    maxWidth = { window.innerWidth }
-                    minHeight = { '30vw' }
-                    minWidth = { '60vw' }
+                    maxHeight = { windowHeight }
+                    maxWidth = { windowWidth }
+                    minHeight = { '10vw' }
+                    minWidth = { '13vw' }
                     touchDragContainer = { document.body }>
                     <div
                         aria-hidden = { true }

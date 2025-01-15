@@ -296,7 +296,7 @@ class Conference extends AbstractConference<IProps, any> {
                     wenn isMockMode auf true gesetzt wird, in Captions.tsx
                     den auskommentierten Codeblock entkommentieren */}
                     { interfaceConfig.DISABLE_TRANSCRIPTION_SUBTITLES
-                    || <Captions isMockMode = { false } /> }
+                    || <Captions isMockMode = { true } /> }
                     { _showPrejoin && <Prejoin />}
                     { _showLobby && <LobbyScreen />}
                 </div>
