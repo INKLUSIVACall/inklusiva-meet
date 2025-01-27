@@ -1,4 +1,3 @@
-
 /**
  * The type of (redux) action which indicates that an endpoint message
  * sent by another participant to the data channel is received.
@@ -7,7 +6,7 @@
  *     type: ENDPOINT_MESSAGE_RECEIVED,
  *     participant: Object,
  *     json: Object
- * }
+ * }.
  */
 export const ENDPOINT_MESSAGE_RECEIVED = 'ENDPOINT_MESSAGE_RECEIVED';
 
@@ -18,7 +17,7 @@ export const ENDPOINT_MESSAGE_RECEIVED = 'ENDPOINT_MESSAGE_RECEIVED';
  * {
  *      type: REMOVE_TRANSCRIPT_MESSAGE,
  *      transciptMessageID: string,
- * }
+ * }.
  */
 export const REMOVE_TRANSCRIPT_MESSAGE = 'REMOVE_TRANSCRIPT_MESSAGE';
 
@@ -30,7 +29,7 @@ export const REMOVE_TRANSCRIPT_MESSAGE = 'REMOVE_TRANSCRIPT_MESSAGE';
  *      type: UPDATE_TRANSCRIPT_MESSAGE,
  *      transcriptMessageID: string,
  *      newTranscriptMessage: Object
- * }
+ * }.
  */
 export const UPDATE_TRANSCRIPT_MESSAGE = 'UPDATE_TRANSCRIPT_MESSAGE';
 
@@ -42,7 +41,7 @@ export const UPDATE_TRANSCRIPT_MESSAGE = 'UPDATE_TRANSCRIPT_MESSAGE';
  *      type: UPDATE_TRANSLATION_LANGUAGE,
  *      transcriptMessageID: string,
  *      newTranscriptMessage: Object
- * }
+ * }.
  */
 export const UPDATE_TRANSLATION_LANGUAGE = 'UPDATE_TRANSLATION_LANGUAGE';
 
@@ -53,7 +52,7 @@ export const UPDATE_TRANSLATION_LANGUAGE = 'UPDATE_TRANSLATION_LANGUAGE';
  *
  * {
  *      type: TOGGLE_REQUESTING_SUBTITLES
- * }
+ * }.
  */
 export const TOGGLE_REQUESTING_SUBTITLES
     = 'TOGGLE_REQUESTING_SUBTITLES';
@@ -65,7 +64,7 @@ export const TOGGLE_REQUESTING_SUBTITLES
  * {
  *      type: SET_REQUESTING_SUBTITLES
  *      enabled: boolean
- * }
+ * }.
  */
 export const SET_REQUESTING_SUBTITLES
     = 'SET_REQUESTING_SUBTITLES';
@@ -78,7 +77,7 @@ export const SET_REQUESTING_SUBTITLES
  *     type: SET_OLD_TRANSCRIPT_MESSAGE,
        oldTranscriptMessageKey,
        oldTranscriptMessageValue
- * }
+ * }.
  */
 export const SET_OLD_TRANSCRIPT_MESSAGE = 'SET_OLD_TRANSCRIPT_MESSAGE';
 
@@ -89,27 +88,32 @@ export const SET_OLD_TRANSCRIPT_MESSAGE = 'SET_OLD_TRANSCRIPT_MESSAGE';
  * {
  *     type: UPDATE_TRANSCRIPTION_HISTORY,
        transcriptionHistory
- * }
+ * }.
  */
 export const UPDATE_TRANSCRIPTION_HISTORY = 'UPDATE_TRANSCRIPTION_HISTORY';
 
 /**
- * The type of (redux) action which sets the popup visibility,
+ * The type of (redux) action which sets the popup visibility,.
  *
  * {
  *     type: SET_POPUP_VISIBILITY,
        visibility
- * }
+ * }.
  */
 export const SET_POPUP_VISIBILITY = 'SET_POPUP_VISIBILITY';
 
 /**
  * The type of (redux) action which indicates that the button to open the CC history
  * has been clicked.
- * 
+ *
  * {
  *     type: SET_HISTORY_VISIBILITY,
        historyVisibility
- * }
+ * }.
  */
 export const SET_HISTORY_VISIBILITY = 'SET_HISTORY_VISIBILITY';
+
+/**
+ * The type of (redux) action which indicates that the cc-window is visible or not.
+ */
+export const SET_TRANSCRIPT_WINDOW_VISIBILITY = 'SET_TRANSCRIPT_WINDOW_VISIBILITY';

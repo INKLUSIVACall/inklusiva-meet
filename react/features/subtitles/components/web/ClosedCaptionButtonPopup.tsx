@@ -3,18 +3,20 @@ import { WithTranslation } from 'react-i18next';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
 
+
 import { IReduxState } from '../../../app/types';
 import { getConferenceName } from '../../../base/conference/functions';
 import { translate } from '../../../base/i18n/functions';
-import { IconBubble, IconDownload } from '../../../base/icons/svg';
+import { IconBubble, IconDownload, IconSubtitles, IconSubtitlesDeactivated } from '../../../base/icons/svg';
 import { SMALL_MOBILE_WIDTH } from '../../../base/responsive-ui/constants';
 import Button from '../../../base/ui/components/web/Button';
 import ContextMenu from '../../../base/ui/components/web/ContextMenu';
 import AccessiblePopover from '../../../inklusiva/accessiblePopover/accessiblePopover';
+import { setTranscriptWindowVisibility } from '../../actions.any';
 import { toggleCCHistoryPanel, toggleClosedCaptionPopup } from '../../actions.web';
 import { getClosedCaptionVisibility } from '../../functions';
-
 interface IProps extends WithTranslation {
+
     /**
      * The name of the conference.
      */
@@ -99,9 +101,16 @@ function ClosedCaptionButtonPopup({
     t
 }: IProps) {
     const { classes } = useStyles();
+    const dispatch = useDispatch();
+    const _isTranscriptionVisible = useSelector((state:
+        IReduxState) => state['features/subtitles']._isTranscriptionWindowVisible);
 
     const _onClickHistory = () => {
         onClickHistory();
+    };
+
+    const _onToggleTranscription = () => {
+        dispatch(setTranscriptWindowVisibility(!_isTranscriptionVisible));
     };
 
     const _onClickDownload = () => {
@@ -115,7 +124,7 @@ function ClosedCaptionButtonPopup({
         const content = formattedMessages.join('\n');
 
         const element = document.createElement('a');
-        const file = new Blob([content], { type: 'text/plain' } as BlobOptions);
+        const file = new Blob([ content ], { type: 'text/plain' } as BlobOptions);
 
         element.href = URL.createObjectURL(file);
         element.download = `${_conferenceName}_transkript.txt`;
@@ -134,26 +143,38 @@ function ClosedCaptionButtonPopup({
             role = 'radiogroup'
             tabIndex = { -1 } >
             <Button
-                accessibilityLabel={t('toolbar.accessibilityLabel.ccHistory')}
-                className={classes.button}
-                icon={IconBubble}
-                label={t('toolbar.ccHistory')}
+                accessibilityLabel = { t('toolbar.accessibilityLabel.ccHistory') }
+                className = { classes.button }
+                icon = { IconBubble }
+                label = { t('toolbar.ccHistory') }
                 // eslint-disable-next-line react/jsx-no-bind
                 onClick = { _onClickHistory } />
             {_transcriptionHistory.length > 0 && (
-                <Button
-                    accessibilityLabel={t('toolbar.accessibilityLabel.ccDownload')}
-                    className={classes.button}
-                    icon={IconDownload}
-                    label={t('toolbar.ccDownload')}
-                    // eslint-disable-next-line react/jsx-no-bind
-                    onClick = { _onClickDownload } />
+                <>
+                    <Button
+                        accessibilityLabel = { t('toolbar.accessibilityLabel.ccDownload') }
+                        className = { classes.button }
+                        icon = { IconDownload }
+                        label = { t('toolbar.ccDownload') }
+                        // eslint-disable-next-line react/jsx-no-bind
+                        onClick = { _onClickDownload } />
+                    <Button
+                        accessibilityLabel = { _isTranscriptionVisible
+                            ? 'In-Bild-Transkribierung ausblenden' : 'In-Bild-Transkribierung einblenden' }
+                        className = { classes.button }
+                        icon = { _isTranscriptionVisible ? IconSubtitlesDeactivated : IconSubtitles }
+                        label = { _isTranscriptionVisible
+                            ? 'In-Bild-Transkribierung ausblenden' : 'In-Bild-Transkribierung einblenden' }
+                        // eslint-disable-next-line react/jsx-no-bind
+                        onClick = { _onToggleTranscription } />
+                </>
             )}
+
         </ContextMenu>
     );
 
     return (
-        <div className={classes.container}>
+        <div className = { classes.container }>
             <AccessiblePopover
                 allowClick = { true }
                 content = { content }
@@ -187,7 +208,8 @@ function mapStateToProps(state: IReduxState) {
 
 const mapDispatchToProps = {
     onClickHistory: toggleCCHistoryPanel,
-    onClose: toggleClosedCaptionPopup
+    onClose: toggleClosedCaptionPopup,
+    setTranscriptWindowVisibility
 };
 
 export default translate(connect(mapStateToProps, mapDispatchToProps)(ClosedCaptionButtonPopup));

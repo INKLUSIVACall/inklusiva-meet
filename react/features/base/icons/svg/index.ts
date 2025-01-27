@@ -94,6 +94,7 @@ export { default as IconSites } from './sites.svg';
 export { default as IconStop } from './stop.svg';
 export { default as IconStopScreenshare } from './stop-screenshare.svg';
 export { default as IconSubtitles } from './subtitles.svg';
+export { default as IconSubtitlesDeactivated } from './subtitles-deactivated.svg';
 export { default as IconTileView } from './tile-view.svg';
 export { default as IconTrash } from './trash.svg';
 export { default as IconUserDeleted } from './user-deleted.svg';

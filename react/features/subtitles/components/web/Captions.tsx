@@ -24,6 +24,11 @@ interface IProps extends IAbstractCaptionsProps {
     _isLifted: boolean | undefined;
 
     /**
+     * The visibility of the transcription window.
+     */
+    _isTranscriptionWindowVisible: boolean;
+
+    /**
      * Whether the component is in mock mode.
      */
     isMockMode?: boolean;
@@ -38,11 +43,20 @@ interface IProps extends IAbstractCaptionsProps {
 
 interface IState {
     fontSize: number;
+    height: number | string;
+    width: number;
+    x: number;
+    y: number;
 }
 class Captions extends AbstractCaptions<IProps> {
 
     state: IState = {
-        fontSize: 24
+        fontSize: 24,
+        width: window.innerWidth * 0.6,
+        height: 'auto',
+        x: (window.innerWidth - (window.innerWidth * 0.6)) / 2,
+        y: window.innerHeight / 2
+
     };
 
     _onIncreaseFontSize = (e: React.TouchEvent | React.MouseEvent) => {
@@ -56,6 +70,20 @@ class Captions extends AbstractCaptions<IProps> {
         this.setState({ fontSize: this.state.fontSize - 2 });
     };
 
+    _onDragStop = (e, d) => {
+        this.setState({ x: d.x,
+            y: d.y });
+    };
+
+    // eslint-disable-next-line max-params
+    _onResizeStop = (e, direction, ref, delta, position) => {
+        this.setState({
+            width: parseFloat(ref.style.width),
+            height: parseFloat(ref.style.height),
+            x: position.x,
+            y: position.y
+        });
+    };
 
     /**
      * Renders the transcription text.
@@ -106,46 +134,51 @@ class Captions extends AbstractCaptions<IProps> {
      * @returns {ReactElement} - The subtitles container.
      */
     _renderSubtitlesContainer(paragraphs: Array<ReactElement>): ReactElement {
+        const { _isTranscriptionWindowVisible } = this.props;
+
+        console.log('xxy isTranscriptionWindowVisible:', _isTranscriptionWindowVisible);
+        if (!_isTranscriptionWindowVisible) {
+            return <></>;
+        }
+
         const className = this.props._isLifted
             ? 'transcription-subtitles lifted'
             : 'transcription-subtitles';
         const windowWidth = window.innerWidth - 50;
         const windowHeight = window.innerHeight - 50;
-        const defaultWidth = windowWidth * 0.8;
-        const defaultHeight = windowWidth * 0.3;
+        const defaultWidth = windowWidth * 0.6;
+        const defaultHeight = windowHeight * 0.3;
         const defaultX = (windowWidth - defaultWidth) / 2;
         const defaultY = (windowHeight - defaultHeight) / 2;
 
         return (
             <>
                 <Rnd
-                    bounds = 'window'
+                    bounds = 'parent'
                     className = 'rnd-container'
-
-                    // default = {{
-                    //     x: defaultX,
-                    //     y: defaultY,
-                    //     width: defaultWidth,
-                    //     height: defaultHeight
-                    // }}
-                    // enableResizing = {{
-                    //     topRight: true,
-                    //     bottomRight: true,
-                    //     bottomLeft: true,
-                    //     topLeft: true
-                    // }}
+                    enableResizing = {{ top: false,
+                        right: true,
+                        bottom: false,
+                        left: true,
+                        topRight: false,
+                        bottomRight: false,
+                        bottomLeft: false,
+                        topLeft: false }}
                     enableTouchSupport = { true }
 
-                    maxHeight = { windowHeight }
-                    maxWidth = { windowWidth }
+                    height = { 'auto' }
                     minHeight = { '10vw' }
                     minWidth = { '13vw' }
+                    onDragStop = { this._onDragStop }
+                    onResizeStop = { this._onResizeStop }
+                    position = {{ x: this.state.x ?? defaultX,
+                        y: this.state.y ?? defaultY }}
+                    size = {{ width: this.state.width,
+                        height: this.state.height }}
                     touchDragContainer = { document.body }>
                     <div
                         aria-hidden = { true }
                         className = { className }>
-
-
                         <div className = 'fontsize-container'>
                             <Icon
                                 className = 'icon-left'
@@ -199,7 +232,8 @@ function mapStateToProps(state: IReduxState) {
 
     return {
         ..._abstractMapStateToProps(state),
-        _isLifted: Boolean(largeVideoParticipant && largeVideoParticipant?.id !== localParticipant?.id && !isTileView)
+        _isLifted: Boolean(largeVideoParticipant && largeVideoParticipant?.id !== localParticipant?.id && !isTileView),
+        _isTranscriptionWindowVisible: state['features/subtitles']._isTranscriptionWindowVisible
     };
 }
 
