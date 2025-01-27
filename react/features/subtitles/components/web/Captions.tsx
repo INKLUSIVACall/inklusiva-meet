@@ -136,7 +136,6 @@ class Captions extends AbstractCaptions<IProps> {
     _renderSubtitlesContainer(paragraphs: Array<ReactElement>): ReactElement {
         const { _isTranscriptionWindowVisible } = this.props;
 
-        console.log('xxy isTranscriptionWindowVisible:', _isTranscriptionWindowVisible);
         if (!_isTranscriptionWindowVisible) {
             return <></>;
         }
@@ -203,18 +202,6 @@ class Captions extends AbstractCaptions<IProps> {
             </>
         );
     }
-
-    // Mock-Transkription:
-    // wenn isMockMode in Conference.tsx auf true gesetzt wird, bitte die render()-funktion entkommentieren
-    // render() {
-    //     console.log('xxy current fontsize:', this.state.fontSize);
-
-    //     const paragraphs = this.props.isMockMode
-    //         ? this._generateMockParagraphs()
-    //         : Array.from(this.props._transcripts!.entries()).map(([ id, text ]) => this._renderParagraph(id, text));
-
-    //     return this._renderSubtitlesContainer(paragraphs);
-    // }
 }
 
 /**

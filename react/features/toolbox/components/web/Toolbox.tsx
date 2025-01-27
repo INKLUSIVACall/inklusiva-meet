@@ -245,11 +245,6 @@ const Toolbox = ({
     useKeyboardShortcuts(toolbarButtons);
 
     useEffect(() => {
-        console.log('chatOpen:', _chatOpen);
-        console.log('chatCounter:', _chatCounter);
-    }, [ _chatOpen, _chatCounter ]);
-
-    useEffect(() => {
         if (_dialog) {
             dispatch(hideToolbox(true));
         }
