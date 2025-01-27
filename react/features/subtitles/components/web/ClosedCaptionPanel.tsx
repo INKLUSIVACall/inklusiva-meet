@@ -9,6 +9,7 @@ import { translate } from '../../../base/i18n/functions';
 import Icon from '../../../base/icons/components/Icon';
 import { IconCloseLarge } from '../../../base/icons/svg';
 import { withPixelLineHeight } from '../../../base/styles/functions.web';
+import { setFilmstripWidth } from '../../../filmstrip/actions.web';
 import { hideToolbox } from '../../../toolbox/actions.web';
 import { toggleCCHistoryPanel } from '../../actions.web';
 import { HISTORY_PANEL_SIZE } from '../../constants';
@@ -70,8 +71,11 @@ const useStyles = makeStyles()(theme => {
         container: {
             backgroundColor: theme.palette.ui01,
             flexShrink: 0,
-            overflow: 'hidden',
-            position: 'fixed',
+
+            // overflow: 'hidden',
+            // position: 'fixed',
+            overflow: 'auto',
+            position: 'relative',
             top: 0,
             right: 0,
             height: '100vh',
@@ -237,6 +241,14 @@ const ClosedCaptionHistory = ({
         }
     }, [ _isOpen, dispatch ]);
 
+    useEffect(() => {
+        if (_isOpen) {
+            dispatch(setFilmstripWidth(window.innerWidth - HISTORY_PANEL_SIZE));
+        } else {
+            dispatch(setFilmstripWidth(window.innerWidth));
+        }
+    }, [ _isOpen, dispatch ]);
+
     /**
      * Renders the panel header.
      *
@@ -296,7 +308,8 @@ const ClosedCaptionHistory = ({
         <div
             className = { classes.container }
             id = 'sideToolbarContainerCC'
-            onKeyDown = { onEscClick } >
+            onKeyDown = { onEscClick }
+            style = {{ width: `${HISTORY_PANEL_SIZE}px` }} >
             {renderPanelHeader()}
             {renderPanel()}
         </div>
