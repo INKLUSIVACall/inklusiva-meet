@@ -7,14 +7,14 @@ import { createReactionMenuEvent, createToolbarEvent } from '../../../analytics/
 import { sendAnalytics } from '../../../analytics/functions';
 import { IReduxState, IStore } from '../../../app/types';
 import Icon from '../../../base/icons/components/Icon';
-import { IconBubble, IconDownload } from '../../../base/icons/svg';
+import { IconBubble, IconDownload, IconSubtitles, IconSubtitlesDeactivated } from '../../../base/icons/svg';
 import { raiseHand } from '../../../base/participants/actions';
 import { getLocalParticipant, hasRaisedHand } from '../../../base/participants/functions';
 import Button from '../../../base/ui/components/web/Button';
 import GifsMenu from '../../../gifs/components/web/GifsMenu';
 import GifsMenuButton from '../../../gifs/components/web/GifsMenuButton';
 import { isGifEnabled, isGifsMenuOpen } from '../../../gifs/functions';
-import { toggleCCHistoryPanel } from '../../../subtitles/actions.web';
+import { setTranscriptWindowVisibility, toggleCCHistoryPanel } from '../../../subtitles/actions.web';
 import { dockToolbox, hideToolbox, setOverflowMenuVisible } from '../../../toolbox/actions.web';
 import { addReactionToBuffer } from '../../actions.any';
 import { toggleReactionsMenuVisibility } from '../../actions.web';
@@ -173,7 +173,9 @@ const ReactionsMenu = (props: IProps) => {
         _raisedHand,
         dispatch,
         parent,
-        showRaisedHand = false
+        showRaisedHand = false,
+        _isTranscriptionVisible,
+        setTranscriptWindowVisibility
     } = props;
     const isInOverflowMenu
         = parent === IReactionsMenuParent.OverflowDrawer || parent === IReactionsMenuParent.OverflowMenu;
@@ -197,6 +199,11 @@ const ReactionsMenu = (props: IProps) => {
         _doToggleRaiseHand();
         dispatch(toggleReactionsMenuVisibility());
     }, [ _raisedHand ]);
+
+    const _onToggleTranscription = useCallback(() => {
+        setTranscriptWindowVisibility(!_isTranscriptionVisible);
+    }, [ _isTranscriptionVisible, setTranscriptWindowVisibility ]);
+
 
     const buttons = _getReactionButtons(dispatch, t);
 
@@ -247,6 +254,22 @@ const ReactionsMenu = (props: IProps) => {
                         toggled = { true } />
                 </div>
             )}
+            {/* wenn die transkribierung aktiviert ist, soll hier
+            der button eingeblendet werden, der die in-bild-transkribierung ein- bzw. ausblendet  */}
+            {isInOverflowMenu && (
+                <div className = 'raise-hand-row'>
+                    <ReactionButton
+                        accessibilityLabel = { _isTranscriptionVisible
+                            ? 'In-Bild-Transkribierung ausblenden' : 'In-Bild-Transkribierung einblenden' }
+                        icon = { _isTranscriptionVisible
+                            ? <Icon src = { IconSubtitlesDeactivated } /> : <Icon src = { IconSubtitles } /> }
+                        key = 'toggleTranscription'
+                        label = { _isTranscriptionVisible
+                            ? 'In-Bild-Transkribierung ausblenden' : 'In-Bild-Transkribierung einblenden' }
+                        onClick = { _onToggleTranscription }
+                        toggled = { true } />
+                </div>
+            )}
         </div>
     );
 };
@@ -264,7 +287,8 @@ function mapStateToProps(state: IReduxState) {
         _localParticipantID: localParticipant?.id,
         _isGifEnabled: isGifEnabled(state),
         _isGifMenuVisible: isGifsMenuOpen(state),
-        _raisedHand: hasRaisedHand(localParticipant)
+        _raisedHand: hasRaisedHand(localParticipant),
+        _isTranscriptionVisible: state['features/subtitles']._isTranscriptionWindowVisible
     };
 }
 
@@ -277,7 +301,8 @@ function mapStateToProps(state: IReduxState) {
 function mapDispatchToProps(dispatch: IStore['dispatch']) {
     return {
         dispatch,
-        _dockToolbox: (dock: boolean) => dispatch(dockToolbox(dock))
+        _dockToolbox: (dock: boolean) => dispatch(dockToolbox(dock)),
+        setTranscriptWindowVisibility: (visible: boolean) => dispatch(setTranscriptWindowVisibility(visible))
     };
 }
 

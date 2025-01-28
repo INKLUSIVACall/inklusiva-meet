@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, createRef } from 'react';
 import { connect } from 'react-redux';
 import { Rnd } from 'react-rnd';
 
@@ -48,16 +48,55 @@ interface IState {
     x: number;
     y: number;
 }
+
+interface IRndSize {
+    height: number | string;
+    width: number | string;
+}
 class Captions extends AbstractCaptions<IProps> {
+    state: IState;
+    private _resizeObserver?: ResizeObserver;
+    parentContainerRef = createRef<HTMLDivElement>();
 
-    state: IState = {
-        fontSize: 24,
-        width: window.innerWidth * 0.6,
-        height: 'auto',
-        x: (window.innerWidth - (window.innerWidth * 0.6)) / 2,
-        y: window.innerHeight / 2
+    constructor(props: IProps) {
+        super(props);
 
-    };
+        this.state = {
+            fontSize: 24,
+            width: 0,
+            height: 'auto',
+            x: 0,
+            y: 0
+        } as IState;
+    }
+
+    componentDidMount() {
+        if (this.parentContainerRef.current) {
+            const parentWidth = this.parentContainerRef.current.offsetWidth;
+            const desiredWidth = parentWidth * 0.6;
+
+            this.setState({
+                width: desiredWidth,
+                x: (parentWidth - desiredWidth) / 2,
+                y: window.innerHeight / 2
+            });
+
+            const resizeObserver = new ResizeObserver(entries => {
+                for (const entry of entries) {
+                    const newParentWidth = entry.contentRect.width;
+                    const newWidth = newParentWidth * 0.6;
+
+                    this.setState({
+                        width: newWidth,
+                        x: (newParentWidth - newWidth) / 2
+                    });
+                }
+            });
+
+            resizeObserver.observe(this.parentContainerRef.current);
+            this._resizeObserver = resizeObserver;
+        }
+    }
 
     _onIncreaseFontSize = (e: React.TouchEvent | React.MouseEvent) => {
         e.preventDefault();
@@ -70,19 +109,38 @@ class Captions extends AbstractCaptions<IProps> {
         this.setState({ fontSize: this.state.fontSize - 2 });
     };
 
-    _onDragStop = (e, d) => {
-        this.setState({ x: d.x,
-            y: d.y });
-    };
-
-    // eslint-disable-next-line max-params
-    _onResizeStop = (e, direction, ref, delta, position) => {
+    _onDragStop = (_e: any, d: { x: number; y: number; }) => {
         this.setState({
-            width: parseFloat(ref.style.width),
+            x: d.x,
+            y: d.y
+        });
+    };
+    // eslint-disable-next-line max-params
+    _onResizeStop = (_e: any, _direction: any, ref: HTMLElement, _delta: any, position: { x: number; y: number; }) => {
+        const parentWidth = this.parentContainerRef.current?.offsetWidth ?? window.innerWidth;
+        const newWidth = parseFloat(ref.style.width);
+        const constrainedWidth = Math.min(newWidth, parentWidth);
+
+        this.setState({
+            width: constrainedWidth,
             height: parseFloat(ref.style.height),
-            x: position.x,
+            x: Math.min(position.x, parentWidth - constrainedWidth),
             y: position.y
         });
+    };
+    getAvailableWidth = () => {
+        const parentContainer = this.parentContainerRef.current;
+
+        if (parentContainer) {
+            const parentWidth = parentContainer.offsetWidth;
+
+            console.log('xxy parentContainer is available, using width:', parentWidth);
+
+            return parentWidth;
+        }
+        console.log('xxy parentContainer is not available, using default-value');
+
+        return window.innerWidth * 0.6;
     };
 
     /**
@@ -143,62 +201,70 @@ class Captions extends AbstractCaptions<IProps> {
         const className = this.props._isLifted
             ? 'transcription-subtitles lifted'
             : 'transcription-subtitles';
-        const windowWidth = window.innerWidth - 50;
-        const windowHeight = window.innerHeight - 50;
-        const defaultWidth = windowWidth * 0.6;
-        const defaultHeight = windowHeight * 0.3;
-        const defaultX = (windowWidth - defaultWidth) / 2;
-        const defaultY = (windowHeight - defaultHeight) / 2;
+
+        const parentWidth = this.parentContainerRef.current?.offsetWidth ?? window.innerWidth;
+        const defaultWidth = parentWidth * 0.9;
+
 
         return (
             <>
-                <Rnd
-                    bounds = 'parent'
-                    className = 'rnd-container'
-                    enableResizing = {{ top: false,
-                        right: true,
-                        bottom: false,
-                        left: true,
-                        topRight: false,
-                        bottomRight: false,
-                        bottomLeft: false,
-                        topLeft: false }}
-                    enableTouchSupport = { true }
+                <div
+                    className = 'transcription-wrapper'
+                    ref = { this.parentContainerRef }>
+                    <Rnd
+                        bounds = 'parent'
+                        className = 'rnd-container'
+                        default = {{
+                            x: ((this.parentContainerRef.current?.offsetWidth
+                                ?? window.innerWidth) / 2) - (this.state.width / 2),
+                            y: (window.innerHeight / 2) - 50,
+                            width: this.state.width,
+                            height: 'auto'
+                        }}
+                        enableResizing = {{ top: false,
+                            right: true,
+                            bottom: false,
+                            left: true,
+                            topRight: false,
+                            bottomRight: false,
+                            bottomLeft: false,
+                            topLeft: false }}
+                        enableTouchSupport = { true }
+                        height = { 'auto' }
+                        maxWidth = { defaultWidth }
+                        minHeight = { '10vw' }
+                        minWidth = { '17vw' }
+                        onDragStop = { this._onDragStop }
+                        onResizeStop = { this._onResizeStop }
 
-                    height = { 'auto' }
-                    minHeight = { '10vw' }
-                    minWidth = { '13vw' }
-                    onDragStop = { this._onDragStop }
-                    onResizeStop = { this._onResizeStop }
-                    position = {{ x: this.state.x ?? defaultX,
-                        y: this.state.y ?? defaultY }}
-                    size = {{ width: this.state.width,
-                        height: this.state.height }}
-                    touchDragContainer = { document.body }>
-                    <div
-                        aria-hidden = { true }
-                        className = { className }>
-                        <div className = 'fontsize-container'>
-                            <Icon
-                                className = 'icon-left'
-                                size = { 30 }
-                                src = { IconMove } />
-                            <Button
-                                className = 'button-text'
-                                label = '+'
-                                onClick = { this._onIncreaseFontSize }
-                                onTouchEnd = { this._onIncreaseFontSize }
-                                size = 'small' />
-                            <Button
-                                className = 'button-text'
-                                label = '-'
-                                onClick = { this._onDecreaseFontSize }
-                                onTouchEnd = { this._onDecreaseFontSize }
-                                size = 'small' />
+                        size = { this.state as IRndSize }
+
+                        touchDragContainer = { document.body }>
+                        <div
+                            aria-hidden = { true }
+                            className = { className }>
+                            <div className = 'fontsize-container'>
+                                <Icon
+                                    className = 'icon-left'
+                                    size = { 30 }
+                                    src = { IconMove } />
+                                <Button
+                                    className = 'button-text'
+                                    label = '+'
+                                    onClick = { this._onIncreaseFontSize }
+                                    onTouchEnd = { this._onIncreaseFontSize }
+                                    size = 'small' />
+                                <Button
+                                    className = 'button-text'
+                                    label = '-'
+                                    onClick = { this._onDecreaseFontSize }
+                                    onTouchEnd = { this._onDecreaseFontSize }
+                                    size = 'small' />
+                            </div>
+                            { paragraphs }
                         </div>
-                        { paragraphs }
-                    </div>
-                </Rnd>
+                    </Rnd>
+                </div>
             </>
         );
     }

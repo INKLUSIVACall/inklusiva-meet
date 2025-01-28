@@ -294,7 +294,7 @@ class Conference extends AbstractConference<IProps, any> {
                     <CalleeInfoContainer />
                     {/* Mock-Transkirption: auf true setzen, um eine Mock-Transkribierung einzublenden */}
                     { interfaceConfig.DISABLE_TRANSCRIPTION_SUBTITLES
-                    || <Captions isMockMode = { true } /> }
+                    || <Captions isMockMode = { false } /> }
                     { _showPrejoin && <Prejoin />}
                     { _showLobby && <LobbyScreen />}
                 </div>

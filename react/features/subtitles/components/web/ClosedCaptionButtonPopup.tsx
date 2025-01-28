@@ -3,7 +3,6 @@ import { WithTranslation } from 'react-i18next';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
 
-
 import { IReduxState } from '../../../app/types';
 import { getConferenceName } from '../../../base/conference/functions';
 import { translate } from '../../../base/i18n/functions';
@@ -15,6 +14,7 @@ import AccessiblePopover from '../../../inklusiva/accessiblePopover/accessiblePo
 import { setTranscriptWindowVisibility } from '../../actions.any';
 import { toggleCCHistoryPanel, toggleClosedCaptionPopup } from '../../actions.web';
 import { getClosedCaptionVisibility } from '../../functions';
+
 interface IProps extends WithTranslation {
 
     /**
@@ -64,12 +64,12 @@ const useStyles = makeStyles()(theme => {
         },
         buttonContainer: {
             position: 'relative',
-            right: '50px',
+            right: '215px',
             margin: 0,
             marginBottom: theme.spacing(1),
             maxHeight: 'calc(100vh - 100px)',
             overflow: 'auto',
-            width: '300px'
+            width: '250px'
         },
         button: {
             width: 'fit-content',

@@ -308,8 +308,7 @@ const ClosedCaptionHistory = ({
         <div
             className = { classes.container }
             id = 'sideToolbarContainerCC'
-            onKeyDown = { onEscClick }
-            style = {{ width: `${HISTORY_PANEL_SIZE}px` }} >
+            onKeyDown = { onEscClick } >
             {renderPanelHeader()}
             {renderPanel()}
         </div>
