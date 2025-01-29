@@ -44,15 +44,11 @@ interface IProps extends IAbstractCaptionsProps {
 interface IState {
     fontSize: number;
     height: number | string;
-    width: number;
+    width: number | string;
     x: number;
     y: number;
 }
 
-interface IRndSize {
-    height: number | string;
-    width: number | string;
-}
 class Captions extends AbstractCaptions<IProps> {
     state: IState;
     private _resizeObserver?: ResizeObserver;
@@ -63,7 +59,10 @@ class Captions extends AbstractCaptions<IProps> {
 
         this.state = {
             fontSize: 24,
-            width: 0,
+
+            // width: 0,
+            // height: 'auto',
+            width: '60vw',
             height: 'auto',
             x: 0,
             y: 0
@@ -72,23 +71,31 @@ class Captions extends AbstractCaptions<IProps> {
 
     componentDidMount() {
         if (this.parentContainerRef.current) {
+
             const parentWidth = this.parentContainerRef.current.offsetWidth;
-            const desiredWidth = parentWidth * 0.6;
+            const desiredWidth = parentWidth * 0.85;
+            const desiredX = (parentWidth - desiredWidth) / 2;
+            const desiredY = 250;
 
             this.setState({
                 width: desiredWidth,
-                x: (parentWidth - desiredWidth) / 2,
-                y: window.innerHeight / 2
+                height: 'auto',
+                x: desiredX,
+                y: desiredY
             });
 
             const resizeObserver = new ResizeObserver(entries => {
                 for (const entry of entries) {
                     const newParentWidth = entry.contentRect.width;
-                    const newWidth = newParentWidth * 0.6;
+                    const newWidth = newParentWidth * 0.85;
+                    const newVerticalCenter = window.innerHeight / 2;
+                    const newY = newVerticalCenter - 250;
+                    const newX = (newParentWidth - newWidth) / 2;
 
                     this.setState({
                         width: newWidth,
-                        x: (newParentWidth - newWidth) / 2
+                        x: newX,
+                        y: newY
                     });
                 }
             });
@@ -97,6 +104,28 @@ class Captions extends AbstractCaptions<IProps> {
             this._resizeObserver = resizeObserver;
         }
     }
+
+    componentWillUnmount() {
+        this._resizeObserver?.disconnect();
+    }
+
+    // eslint-disable-next-line max-params
+    handleResizeStop = (e: any, direction: any, ref: any, delta: any, position: any) => {
+
+        this.setState({
+            width: ref.offsetWidth,
+            height: ref.offsetHeight,
+            x: position.x,
+            y: position.y
+        });
+    };
+    handleDragStop = (e: any, data: any) => {
+
+        this.setState({
+            x: data.x,
+            y: data.y
+        });
+    };
 
     _onIncreaseFontSize = (e: React.TouchEvent | React.MouseEvent) => {
         e.preventDefault();
@@ -110,9 +139,12 @@ class Captions extends AbstractCaptions<IProps> {
     };
 
     _onDragStop = (_e: any, d: { x: number; y: number; }) => {
+        const maxY = window.innerHeight - 200;
+        const minY = 0;
+
         this.setState({
             x: d.x,
-            y: d.y
+            y: Math.min(Math.max(d.y, minY), maxY)
         });
     };
     // eslint-disable-next-line max-params
@@ -120,28 +152,16 @@ class Captions extends AbstractCaptions<IProps> {
         const parentWidth = this.parentContainerRef.current?.offsetWidth ?? window.innerWidth;
         const newWidth = parseFloat(ref.style.width);
         const constrainedWidth = Math.min(newWidth, parentWidth);
+        const newX = (parentWidth - constrainedWidth) / 2;
 
         this.setState({
             width: constrainedWidth,
             height: parseFloat(ref.style.height),
-            x: Math.min(position.x, parentWidth - constrainedWidth),
+            x: newX,
             y: position.y
         });
     };
-    getAvailableWidth = () => {
-        const parentContainer = this.parentContainerRef.current;
 
-        if (parentContainer) {
-            const parentWidth = parentContainer.offsetWidth;
-
-            console.log('xxy parentContainer is available, using width:', parentWidth);
-
-            return parentWidth;
-        }
-        console.log('xxy parentContainer is not available, using default-value');
-
-        return window.innerWidth * 0.6;
-    };
 
     /**
      * Renders the transcription text.
@@ -203,8 +223,6 @@ class Captions extends AbstractCaptions<IProps> {
             : 'transcription-subtitles';
 
         const parentWidth = this.parentContainerRef.current?.offsetWidth ?? window.innerWidth;
-        const defaultWidth = parentWidth * 0.9;
-
 
         return (
             <>
@@ -214,13 +232,6 @@ class Captions extends AbstractCaptions<IProps> {
                     <Rnd
                         bounds = 'parent'
                         className = 'rnd-container'
-                        default = {{
-                            x: ((this.parentContainerRef.current?.offsetWidth
-                                ?? window.innerWidth) / 2) - (this.state.width / 2),
-                            y: (window.innerHeight / 2) - 50,
-                            width: this.state.width,
-                            height: 'auto'
-                        }}
                         enableResizing = {{ top: false,
                             right: true,
                             bottom: false,
@@ -231,15 +242,20 @@ class Captions extends AbstractCaptions<IProps> {
                             topLeft: false }}
                         enableTouchSupport = { true }
                         height = { 'auto' }
-                        maxWidth = { defaultWidth }
+                        maxWidth = { parentWidth * 0.9 }
                         minHeight = { '10vw' }
-                        minWidth = { '17vw' }
+                        minWidth = { parentWidth * 0.5 }
                         onDragStop = { this._onDragStop }
                         onResizeStop = { this._onResizeStop }
 
-                        size = { this.state as IRndSize }
+                        position = {{ x: this.state.x,
+                            y: this.state.y }}
+                        size = {{ width: this.state.width,
+                            height: this.state.height }}
 
-                        touchDragContainer = { document.body }>
+
+                        touchDragContainer = { document.body }
+                        width = { this.state.width || parentWidth * 0.85 }>
                         <div
                             aria-hidden = { true }
                             className = { className }>
