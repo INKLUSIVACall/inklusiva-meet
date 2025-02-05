@@ -59,9 +59,6 @@ class Captions extends AbstractCaptions<IProps> {
 
         this.state = {
             fontSize: 24,
-
-            // width: 0,
-            // height: 'auto',
             width: '60vw',
             height: 'auto',
             x: 0,
@@ -120,7 +117,6 @@ class Captions extends AbstractCaptions<IProps> {
         });
     };
     handleDragStop = (e: any, data: any) => {
-
         this.setState({
             x: data.x,
             y: data.y
