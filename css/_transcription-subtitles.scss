@@ -1,24 +1,22 @@
 .transcription-wrapper {
     box-sizing: border-box;
-    border: 2px dashed turquoise;
     pointer-events: none;
     position: fixed;
     top: 0;
     left: 0;
     display: flex;
     width: 100%;
-    height: 100vh; 
-    
+    height: 100vh;
+
 }
     .rnd-container {
-        border: 1px dashed orange;
         height: auto;
         position: absolute;
         left: calc(50vw - 300px);
         top: calc(50% + 280px);
         pointer-events: auto;
         width: 100%;
-    
+
         .transcription-subtitles {
             position: relative;
             font-size: 3rem;
@@ -33,7 +31,7 @@
             0px 0px 1px rgba(0,0,0,0.3);
             z-index: 7;
             &:hover .fontsize-container {
-                transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out; 
+                transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out;
                 opacity: 1;
             }
 
@@ -47,7 +45,7 @@
                     transition: border-radius 0.2s ease-in-out;
                 }
             }
-            
+
             .fontsize-container {
                 opacity: 0;
                 background: #161616;
@@ -72,7 +70,7 @@
                         margin: 6px 6px 6px 0;
                         color: #161616;
                         background-color: #DDDDE9;
-                        
+
                         span {
                             display: flex;
                             justify-items: center;
@@ -81,7 +79,7 @@
                             background: transparent;
                         }
                     }
-                
+
                     .icon-left {
                         margin-right: auto;
                         display: flex;
@@ -89,16 +87,16 @@
                         padding-left: 5px;
                     }
                 }
-            
+
             .transcription-text {
                 background-color: rgba(100, 98, 98, 0.45);
-                backdrop-filter: blur(10px);                
+                backdrop-filter: blur(10px);
                 padding: 6px;
                 &:first-of-type {
-                    transition: border-radius 0.2s ease-in-out;    
+                    transition: border-radius 0.2s ease-in-out;
                     border-radius:9px 9px 0px 0px ;
                 }
-                
+
                 &:last-of-type {
                     transition: border-radius 0.2s ease-in-out;
                     border-radius:0px 0px 9px 9px ;
@@ -117,7 +115,7 @@
                     }
                 }
             }
-        
+
                 &.lifted {
                     // Lift subtitle above toolbar+dominant speaker box.
                     bottom: 10rem;
@@ -125,5 +123,5 @@
                 span {
                     background: black;
                 }
-        } 
+        }
     }

@@ -70,6 +70,7 @@ interface IProps extends WithTranslation {
      * Whether or not to show the raise hand button.
      */
     showRaiseHand?: boolean;
+
 }
 
 

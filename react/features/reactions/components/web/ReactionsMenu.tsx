@@ -25,7 +25,6 @@ import {
     REACTIONS_MENU_HEIGHT_DRAWER,
     REACTIONS_MENU_HEIGHT_IN_OVERFLOW_MENU
 } from '../../constants';
-import { getClosedCaptionVisibility } from '../../subtitles/functions';
 import { IReactionsMenuParent } from '../../types';
 
 import ReactionButton from './ReactionButton';
@@ -48,6 +47,11 @@ interface IProps {
     _isGifMenuVisible: boolean;
 
     /**
+     * Is the transcription window visible.
+     */
+    _isTranscriptionVisible: boolean;
+
+    /**
      * The ID of the local participant.
      */
     _localParticipantID?: string;
@@ -56,8 +60,6 @@ interface IProps {
      * Whether or not the local participant's hand is raised.
      */
     _raisedHand: boolean;
-
-    _transcriptionHistory: any[];
 
     /**
      * The Redux Dispatch function.
@@ -68,6 +70,11 @@ interface IProps {
      * Indicates the parent of the reactions menu.
      */
     parent: IReactionsMenuParent;
+
+    /**
+     * Sets the visibility of the transcription window.
+     */
+    setTranscriptWindowVisibility: Function;
 
     /**
      * Whether to show the raised hand button.

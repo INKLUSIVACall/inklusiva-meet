@@ -35,16 +35,13 @@ export class AbstractCaptions<P extends IAbstractCaptionsProps> extends Componen
      */
 
     render(): any {
-        const { _requestingSubtitles, _transcripts, isMockMode } = this.props;
+        const { _requestingSubtitles, _transcripts } = this.props;
 
-        // Zeige die Untertitel immer an, wenn der Mock-Modus aktiviert ist
-        if (!isMockMode && (!_requestingSubtitles || !_transcripts || !_transcripts.size)) {
+        if (!_requestingSubtitles || !_transcripts || !_transcripts.size) {
             return null;
         }
 
-        const paragraphs = isMockMode
-            ? this._generateMockParagraphs()
-            : Array.from(_transcripts!.entries()).map(([ id, text ]) => this._renderParagraph(id, text));
+        const paragraphs = Array.from(_transcripts!.entries()).map(([ id, text ]) => this._renderParagraph(id, text));
 
         return this._renderSubtitlesContainer(paragraphs);
     }
