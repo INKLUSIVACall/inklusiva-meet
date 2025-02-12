@@ -177,6 +177,7 @@ import { setPreferredVideoQuality } from './react/features/video-quality/actions
 import { VIDEO_QUALITY_LEVELS } from './react/features/video-quality/constants';
 import { iAmVisitor } from './react/features/visitors/functions';
 import UIEvents from './service/UI/UIEvents';
+import { setVolume } from './react/features/filmstrip/actions.web';
 
 
 const logger = Logger.getLogger(__filename);
@@ -693,6 +694,19 @@ export default {
                 titleKey: 'notify.startSilentTitle'
             }, NOTIFICATION_TIMEOUT_TYPE.LONG));
         }
+
+        // set audio volume for other participants from local storage
+        const volumeSettings = JSON.parse(localStorage.getItem('volumeSettings') || '{}');
+
+        for (const participantId in volumeSettings) {
+            if (volumeSettings.hasOwnProperty(participantId)) {
+                const volume = volumeSettings[participantId];
+
+                APP.store.dispatch(setVolume(participantId, volume));
+                console.log(`Participant ID: ${participantId}, Volume: ${volume}`);
+            }
+        }
+
 
         // XXX The API will take care of disconnecting from the XMPP
         // server (and, thus, leaving the room) on unload.
