@@ -386,6 +386,12 @@ export function clickOnVideo(n: number) {
  * }}
  */
 export function setVolume(participantId: string, volume: number) {
+    console.log('SET VOLUME', participantId, volume);
+    const volumeSettings: Record<string, number> = {};
+
+    volumeSettings[participantId] = volume;
+    localStorage.setItem('volumeSettings', JSON.stringify(volumeSettings));
+
     return {
         type: SET_VOLUME,
         participantId,
