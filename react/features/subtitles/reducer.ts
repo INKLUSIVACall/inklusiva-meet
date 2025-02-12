@@ -6,6 +6,7 @@ import {
     SET_OLD_TRANSCRIPT_MESSAGE,
     SET_POPUP_VISIBILITY,
     SET_REQUESTING_SUBTITLES,
+    SET_TRANSCRIPT_WINDOW_VISIBILITY,
     UPDATE_TRANSCRIPTION_HISTORY,
     UPDATE_TRANSCRIPT_MESSAGE,
     UPDATE_TRANSLATION_LANGUAGE
@@ -22,7 +23,8 @@ const defaultState = {
     _popupVisibility: false,
     _transcriptionHistory: [],
     _historyVisibility: false,
-    _visibility: false
+    _visibility: false,
+    _isTranscriptionWindowVisible: true
 };
 
 interface ITranscriptMessage {
@@ -34,6 +36,7 @@ interface ITranscriptMessage {
 
 export interface ISubtitlesState {
     _historyVisibility: boolean;
+    _isTranscriptionWindowVisible: boolean;
     _language: string;
     _oldTranscriptMessage: any;
     _popupVisibility: boolean;
@@ -80,9 +83,14 @@ ReducerRegistry.register<ISubtitlesState>('features/subtitles', (state = default
             ...state,
             _historyVisibility: action.historyVisibility
         };
+    case SET_TRANSCRIPT_WINDOW_VISIBILITY:
+        return {
+            ...state,
+            _isTranscriptionWindowVisible: action.isTranscriptionWindowVisible
+        };
+    default:
+        return state;
     }
-
-    return state;
 });
 
 /**
@@ -132,8 +140,8 @@ function _updateTranscriptMessage(state: ISubtitlesState, { transcriptMessageID,
  * Reduces a specific Redux action UPDATE_TRANSCRIPTION_HISTORY of the feature
  * transcription.
  *
- * @param {Object} state
- * @param {any} transcriptionHistory
+ * @param {Object} state - The Redux state of the feature transcription.
+ * @param {any} transcriptionHistory - The transcription history to be updated.
  * @returns {Object} The new state of the feature transcription after the
  * reduction of the specified action.
  */

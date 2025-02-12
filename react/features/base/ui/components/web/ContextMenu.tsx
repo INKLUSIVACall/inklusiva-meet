@@ -35,6 +35,7 @@ const getComputedOuterHeight = (element: HTMLElement) => {
 };
 
 interface IProps {
+
     /**
      * ARIA attributes.
      */
@@ -137,7 +138,7 @@ const useStyles = makeStyles()(theme => {
             right: `${participantsPaneTheme.panePadding}px`,
             top: 0,
             zIndex: 2,
-            maxWidth: '280px',
+            maxWidth: '310px',
             maxHeight: `${MAX_HEIGHT}vh`,
             overflowY: 'auto',
             padding: `${theme.spacing(2)} 0`
@@ -179,7 +180,7 @@ const ContextMenu = ({
     tabIndex,
     ...aria
 }: IProps) => {
-    const [isHidden, setIsHidden] = useState(true);
+    const [ isHidden, setIsHidden ] = useState(true);
     const containerRef = useRef<HTMLDivElement | null>(null);
     const { classes: styles, cx } = useStyles();
     const _overflowDrawer = useSelector(showOverflowDrawer);
@@ -189,11 +190,11 @@ const ContextMenu = ({
             return;
         }
         if (
-            entity &&
-            offsetTarget &&
-            containerRef.current &&
-            offsetTarget?.offsetParent &&
-            offsetTarget.offsetParent instanceof HTMLElement
+            entity
+            && offsetTarget
+            && containerRef.current
+            && offsetTarget?.offsetParent
+            && offsetTarget.offsetParent instanceof HTMLElement
         ) {
             const { current: container } = containerRef;
 
@@ -222,13 +223,13 @@ const ContextMenu = ({
         } else {
             hidden === undefined && setIsHidden(true);
         }
-    }, [entity, offsetTarget, _overflowDrawer]);
+    }, [ entity, offsetTarget, _overflowDrawer ]);
 
     useEffect(() => {
         if (hidden !== undefined) {
             setIsHidden(hidden);
         }
-    }, [hidden]);
+    }, [ hidden ]);
 
     if (_overflowDrawer && inDrawer) {
         return (

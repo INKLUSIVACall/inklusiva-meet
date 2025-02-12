@@ -33,6 +33,7 @@ export class AbstractCaptions<P extends IAbstractCaptionsProps> extends Componen
      * @inheritdoc
      * @returns {ReactElement}
      */
+
     render(): any {
         const { _requestingSubtitles, _transcripts } = this.props;
 
@@ -40,14 +41,8 @@ export class AbstractCaptions<P extends IAbstractCaptionsProps> extends Componen
             return null;
         }
 
-        const paragraphs = [];
+        const paragraphs = Array.from(_transcripts!.entries()).map(([ id, text ]) => this._renderParagraph(id, text));
 
-        // @ts-ignore
-        for (const [ id, text ] of _transcripts ?? []) {
-            paragraphs.push(this._renderParagraph(id, text));
-        }
-
-        // @ts-ignore
         return this._renderSubtitlesContainer(paragraphs);
     }
 

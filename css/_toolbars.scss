@@ -2,7 +2,7 @@
  * Round badge.
  */
 .badge-round {
-    background-color: #165ecc;
+    background-color: #CB2233;
     border-radius: 50%;
     box-sizing: border-box;
     color: #ffffff;
@@ -17,6 +17,8 @@
     text-align: center;
     text-overflow: ellipsis;
     vertical-align: middle;
+    position: absolute;
+    top: -10px;
 }
 
 /**
@@ -36,12 +38,13 @@
         display: flex;
         justify-content: end;
         > span {
-            min-width: 20px;
-            min-height: 20px;
+            min-width: 30px;
+            min-height: 30px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 13px;
+            font-size: 18px;
+            
         }
     }
 
@@ -78,20 +81,21 @@
     .toolbox-button-wth-dialog {
         display: inline-block;
     }
-}
 
-.toolbar-button-with-badge {
-    display: inline-block;
-    position: relative;
 
-    .badge-round {
-        bottom: 35px;
-        font-size: 14px;
-        line-height: 20px;
-        min-width: 20px;
-        pointer-events: none;
-        position: absolute;
-        right: -5px;
+    .toolbar-button-with-badge {
+        display: inline-block;
+        position: relative;
+
+        .badge-round {
+            //bottom: 35px;
+            font-size: 14px;
+            line-height: 20px;
+            min-width: 20px;
+            pointer-events: none;
+            position: absolute;
+            right: -5px;
+        }
     }
 }
 

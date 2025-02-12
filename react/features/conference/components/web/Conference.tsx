@@ -290,7 +290,7 @@ class Conference extends AbstractConference<IProps, any> {
                     <AssisteesPanel />
                     <AssistancePanel />
                     <CalleeInfoContainer />
-
+                    {/* Mock-Transkirption: auf true setzen, um eine Mock-Transkribierung einzublenden */}
                     { interfaceConfig.DISABLE_TRANSCRIPTION_SUBTITLES
                     || <Captions /> }
                     { _showPrejoin && <Prejoin />}

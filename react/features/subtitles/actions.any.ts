@@ -5,10 +5,10 @@ import {
     SET_OLD_TRANSCRIPT_MESSAGE,
     SET_POPUP_VISIBILITY,
     SET_REQUESTING_SUBTITLES,
+    SET_TRANSCRIPT_WINDOW_VISIBILITY,
     TOGGLE_REQUESTING_SUBTITLES,
     UPDATE_TRANSCRIPTION_HISTORY,
-    UPDATE_TRANSCRIPT_MESSAGE,
-    UPDATE_TRANSLATION_LANGUAGE
+    UPDATE_TRANSCRIPT_MESSAGE, UPDATE_TRANSLATION_LANGUAGE
 } from './actionTypes';
 
 /**
@@ -124,12 +124,12 @@ export function setOldTranscriptMessage(oldTranscriptMessage: any) {
     return {
         type: SET_OLD_TRANSCRIPT_MESSAGE,
         oldTranscriptMessage
-    }
+    };
 }
 
 /**
  * The complete history of the meeting's transcription.
- * 
+ *
  * @param {any[]} transcriptionHistory - The whole history of the meeting's transcript.
  * @returns {{
  *      type: UPDATE_TRANSCRIPTION_HISTORY,
@@ -140,12 +140,12 @@ export function updateTranscriptionHistory(transcriptionHistory: any[]) {
     return {
         type: UPDATE_TRANSCRIPTION_HISTORY,
         transcriptionHistory
-    }
+    };
 }
 
 /**
  * Sets the visibility of the popup.
- * 
+ *
  * @param {boolean} visibility - The visibility of the popup.
  * @returns {{
  *      type: SET_POPUP_VISIBILITY,
@@ -156,13 +156,13 @@ export function setPopupVisibility(visibility: boolean) {
     return {
         type: SET_POPUP_VISIBILITY,
         visibility
-    }
+    };
 }
 
 /**
  * Sets the visibility of the history panel.
- * 
- * @param {boolean} historyVisibility 
+ *
+ * @param {boolean} historyVisibility
  * @returns {{
  *      type: SET_HISTORY_VISIBILITY,
  *      historyVisibility
@@ -172,5 +172,21 @@ export function setHistoryVisibility(historyVisibility: boolean) {
     return {
         type: SET_HISTORY_VISIBILITY,
         historyVisibility
-    }
+    };
+}
+
+/**
+ * Sets the visibility of the transcription window.
+ *
+ * @param {boolean} visibility - The visibility of the transcription window.
+ * @returns {{
+ *     type: SET_TRANSCRIPT_WINDOW_VISIBILITY,
+ *     isTranscriptionWindowVisible: boolean
+ * }}
+ */
+export function setTranscriptWindowVisibility(visibility: boolean) {
+    return {
+        type: SET_TRANSCRIPT_WINDOW_VISIBILITY,
+        isTranscriptionWindowVisible: visibility
+    };
 }
