@@ -2,6 +2,7 @@ import debounce from 'lodash/debounce';
 
 import { IReduxState, IStore } from '../app/types';
 import { _handleParticipantError } from '../base/conference/functions';
+import { IC_ROLES } from '../base/conference/icRoles';
 import { getSsrcRewritingFeatureFlag } from '../base/config/functions.any';
 import { MEDIA_TYPE } from '../base/media/constants';
 import { getLocalParticipant, getSourceNamesByMediaType } from '../base/participants/functions';
@@ -34,7 +35,6 @@ import { MAX_VIDEO_QUALITY, VIDEO_QUALITY_LEVELS, VIDEO_QUALITY_UNLIMITED } from
 import { getReceiverVideoQualityLevel } from './functions';
 import logger from './logger';
 import { getMinHeightForQualityLvlMap } from './selector';
-import { IC_ROLES } from '../base/conference/icRoles';
 
 /**
  * Handles changes in the visible participants in the filmstrip. The listener is debounced
@@ -287,8 +287,7 @@ StateListenerRegistry.register(
 
                         if (
                             activeParticipantsCount
-                            > maxFullResolutionParticipants
-                            - (isScreenSharingFilmstripParticipantFullResolution ? 1 : 0)
+                            > maxFullResolutionParticipants - (isScreenSharingFilmstripParticipantFullResolution ? 1 : 0)
                         ) {
                             newMaxRecvVideoQualityForStageFilmstrip = VIDEO_QUALITY_LEVELS.STANDARD;
                             newMaxRecvVideoQualityForVerticalFilmstrip = Math.min(
@@ -317,6 +316,7 @@ StateListenerRegistry.register(
 
                 // console.log('VQ', 'Stage Filmstrip', newMaxRecvVideoQualityForStageFilmstrip);
                 dispatch(setMaxReceiverVideoQualityForStageFilmstrip(newMaxRecvVideoQualityForStageFilmstrip));
+
                 // ugly hack to avoid setting the max quality to high
                 // dispatch(setMaxReceiverVideoQualityForStageFilmstrip(VIDEO_QUALITY_LEVELS.HIGH));
             }
@@ -326,6 +326,7 @@ StateListenerRegistry.register(
 
                 // console.log('VQ', 'Vertical Filmstrip', newMaxRecvVideoQualityForVerticalFilmstrip);
                 dispatch(setMaxReceiverVideoQualityForVerticalFilmstrip(newMaxRecvVideoQualityForVerticalFilmstrip));
+
                 // ugly hack to avoid setting the max quality to high
                 // dispatch(setMaxReceiverVideoQualityForVerticalFilmstrip(VIDEO_QUALITY_LEVELS.HIGH));
             }
@@ -336,6 +337,7 @@ StateListenerRegistry.register(
                 // console.log('VQ', 'Large Video', newMaxRecvVideoQualityForLargeVideo);
                 // ugly hack to avoid setting the max quality to high
                 dispatch(setMaxReceiverVideoQualityForLargeVideo(newMaxRecvVideoQualityForLargeVideo));
+
                 // dispatch(setMaxReceiverVideoQualityForLargeVideo(VIDEO_QUALITY_LEVELS.HIGH));
             }
 
@@ -346,8 +348,9 @@ StateListenerRegistry.register(
                 dispatch(
                     setMaxReceiverVideoQualityForScreenSharingFilmstrip(newMaxRecvVideoQualityForScreenSharingFilmstrip)
                 );
+
                 // ugly hack to avoid setting the max quality to high
-                //dispatch(setMaxReceiverVideoQualityForScreenSharingFilmstrip(VIDEO_QUALITY_LEVELS.HIGH));
+                // dispatch(setMaxReceiverVideoQualityForScreenSharingFilmstrip(VIDEO_QUALITY_LEVELS.HIGH));
             }
         }
 
@@ -429,7 +432,7 @@ function _updateReceiverVideoConstraints({ getState }: IStore) {
     if (!conference) {
         return;
     }
-    let { lastN } = state['features/base/lastn'];
+    const { lastN } = state['features/base/lastn'];
     const {
         maxReceiverVideoQualityForTileView,
         maxReceiverVideoQualityForStageFilmstrip,
@@ -451,10 +454,8 @@ function _updateReceiverVideoConstraints({ getState }: IStore) {
         preferredVideoQuality
     );
     const { remoteScreenShares } = state['features/video-layout'];
-    const {
-        visibleRemoteParticipants: visibleRemoteParticipantsOriginal,
-        remoteParticipants
-    } = state['features/filmstrip'];
+    const { visibleRemoteParticipants: visibleRemoteParticipantsOriginal, remoteParticipants }
+        = state['features/filmstrip'];
     const tracks = state['features/base/tracks'];
     const localParticipantId = getLocalParticipant(state)?.id;
     const activeParticipantsIds = getActiveParticipantsIds(state);
@@ -532,11 +533,12 @@ function _updateReceiverVideoConstraints({ getState }: IStore) {
 
         visibleRemoteTrackSourceNames.forEach(sourceName => {
             // Sign language translators should always be displayed in high quality if they use the window display mode.
-            if (signLanguageParticipantSources.includes(sourceName)) {
-                receiverConstraints.constraints[sourceName] = { maxHeight: VIDEO_QUALITY_LEVELS.HIGH };
-            } else {
-                receiverConstraints.constraints[sourceName] = { maxHeight: maxFrameHeightForTileView };
-            }
+            // if (signLanguageParticipantSources.includes(sourceName)) {
+            //     receiverConstraints.constraints[sourceName] = { maxHeight: VIDEO_QUALITY_LEVELS.HIGH };
+            // } else {
+            //     receiverConstraints.constraints[sourceName] = { maxHeight: maxFrameHeightForTileView };
+            // }
+            receiverConstraints.constraints[sourceName] = { maxHeight: maxFrameHeightForTileView };
         });
 
         const selectedSources: string[] = [];
@@ -568,11 +570,12 @@ function _updateReceiverVideoConstraints({ getState }: IStore) {
             visibleRemoteTrackSourceNames.forEach(sourceName => {
                 // Sign language translators should always be displayed in high quality if they use the window
                 // display mode.
-                if (signLanguageParticipantSources.includes(sourceName)) {
-                    receiverConstraints.constraints[sourceName] = { maxHeight: VIDEO_QUALITY_LEVELS.HIGH };
-                } else {
-                    receiverConstraints.constraints[sourceName] = { maxHeight: maxFrameHeightForVerticalFilmstrip };
-                }
+                // if (signLanguageParticipantSources.includes(sourceName)) {
+                //     receiverConstraints.constraints[sourceName] = { maxHeight: VIDEO_QUALITY_LEVELS.HIGH };
+                // } else {
+                //     receiverConstraints.constraints[sourceName] = { maxHeight: maxFrameHeightForVerticalFilmstrip };
+                // }
+                receiverConstraints.constraints[sourceName] = { maxHeight: maxFrameHeightForVerticalFilmstrip };
             });
         }
 
@@ -596,13 +599,15 @@ function _updateReceiverVideoConstraints({ getState }: IStore) {
 
             activeSources.forEach(sourceName => {
                 const isScreenSharing = remoteScreenShares.includes(sourceName);
-                const isSignLanguage = signLanguageParticipantSources.includes(sourceName);
+
+                // const isSignLanguage = signLanguageParticipantSources.includes(sourceName);
                 const quality
                     = isScreenSharing && preferredVideoQuality >= MAX_VIDEO_QUALITY
                         ? VIDEO_QUALITY_UNLIMITED
-                        : isSignLanguage
-                            ? VIDEO_QUALITY_LEVELS.HIGH
-                            : maxFrameHeightForStageFilmstrip;
+
+                        // : isSignLanguage
+                        //   ? VIDEO_QUALITY_LEVELS.HIGH
+                        : maxFrameHeightForStageFilmstrip;
 
                 receiverConstraints.constraints[sourceName] = { maxHeight: quality };
             });
@@ -633,10 +638,10 @@ function _updateReceiverVideoConstraints({ getState }: IStore) {
             const selectedSources: string[] = [ largeVideoSourceName ];
 
             // If there is a sign language translator in the large video, it should be displayed in high quality.
-            signLanguageParticipantSources.forEach(sourceName => {
-                receiverConstraints.constraints[sourceName] = { maxHeight: VIDEO_QUALITY_LEVELS.HIGH };
-                selectedSources.push(sourceName);
-            });
+            // signLanguageParticipantSources.forEach(sourceName => {
+            //     // receiverConstraints.constraints[sourceName] = { maxHeight: VIDEO_QUALITY_LEVELS.HIGH };
+            //     selectedSources.push(sourceName);
+            // });
 
             if (selectedSources.length > 1) {
                 receiverConstraints.selectedSources = selectedSources;
