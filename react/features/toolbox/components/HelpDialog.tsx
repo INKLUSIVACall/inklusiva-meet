@@ -60,7 +60,7 @@ const HelpDialog = ({ t }: IProps) => {
 
             <iframe
                 className={classes.contentContainer}
-                src="https://conference.inklusiva-call.de/help/meeting/"
+                src="https://conference.inklusiva-call.de/help/einstellungen-im-meeting/"
                 title={t('toolbar.helpDialogTitle')}
             />
         </BaseDialog>
