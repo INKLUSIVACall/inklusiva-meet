@@ -28,7 +28,7 @@ var interfaceConfig = {
 
     CLOSE_PAGE_GUEST_HINT: false, // A html text to be shown to guests on the close page, false disables it
     // CLOSE_PAGE_ROOT_URL: 'http://127.0.0.1/endscreen/',
-    CLOSE_PAGE_ROOT_URL: 'https://conference.inklusiva-call.de/backend/endscreen',
+    CLOSE_PAGE_ROOT_URL: 'https://conference.inklusiva-call.de/backend/feedback',
 
     DEFAULT_BACKGROUND: '#040404',
     DEFAULT_WELCOME_PAGE_LOGO_URL: 'images/watermark.svg',
