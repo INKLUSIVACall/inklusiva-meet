@@ -168,6 +168,17 @@ const useStyles = makeStyles()((theme: Theme) => {
 
         closeIcon: {
             cursor: 'pointer'
+        },
+
+        visuallyHidden: {
+            position: 'absolute',
+            width: '1px',
+            height: '1px',
+            margin: '-1px',
+            padding: 0,
+            overflow: 'hidden',
+            clip: 'rect(0 0 0 0)',
+            border: 0
         }
     };
 });
@@ -332,6 +343,12 @@ const Notification = ({
                 <div className = { classes.textContainer }>
                     <span className = { classes.title }>{title || t(titleKey ?? '', titleArguments)}</span>
                     {renderDescription()}
+                    <div
+                        aria-live = 'polite'
+                        className = { classes.visuallyHidden } >
+                        <span >{title || t(titleKey ?? '', titleArguments)}</span>
+                        {renderDescription()}
+                    </div>
                     <div className = { classes.actionsContainer }>
                         {mapAppearanceToButtons().map(({ content, onClick, type, testId }) => (
                             <button

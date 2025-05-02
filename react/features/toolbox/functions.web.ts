@@ -435,12 +435,12 @@ export function getAllToolboxButtons(_customToolbarButtons?: {
     }, {});
 
     return {
+        raisehand,
         microphone,
         camera,
         profile,
         desktop,
         chat,
-        raisehand,
         reactions,
         participants,
         invite,

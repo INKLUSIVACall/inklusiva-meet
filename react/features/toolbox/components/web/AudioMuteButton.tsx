@@ -74,9 +74,8 @@ class AudioMuteButton extends AbstractAudioMuteButton<IProps> {
      */
     componentDidMount() {
         this.props.dispatch(registerShortcut({
-            character: 'M',
+            character: 'A',
             alt: true,
-            shift: true,
             helpDescription: this.accessibilityLabelShortcut,
             handler: this._onKeyboardShortcut
         }));

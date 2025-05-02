@@ -203,44 +203,44 @@ export const useKeyboardShortcuts = (toolbarButtons: Array<string>) => {
                 helpDescription: 'toolbar.callQuality'
             },
             isToolbarButtonEnabled('chat', _toolbarButtons) && {
-                character: 'P',
+                character: 'H',
                 alt: true,
-                shift: true,
+                shift: false,
                 exec: onToggleChat,
                 helpDescription: 'keyboardShortcuts.toggleChat'
             },
             isToolbarButtonEnabled('desktop', _toolbarButtons) && {
-                character: 'D',
+                character: 'S',
                 alt: true,
-                shift: true,
+                shift: false,
                 exec: onToggleScreenshare,
                 helpDescription: 'keyboardShortcuts.toggleScreensharing'
             },
             isToolbarButtonEnabled('participants-pane', _toolbarButtons) && {
                 character: 'U',
-                shift: true,
+                shift: false,
                 alt: true,
                 exec: onToggleParticipantsPane,
                 helpDescription: 'keyboardShortcuts.toggleParticipantsPane'
             },
             isToolbarButtonEnabled('raisehand', _toolbarButtons) && {
-                character: 'R',
+                character: 'Y',
                 alt: true,
-                shift: true,
+                shift: false,
                 exec: onToggleRaiseHand,
                 helpDescription: 'keyboardShortcuts.raiseHand'
             },
             isToolbarButtonEnabled('fullscreen', _toolbarButtons) && {
-                character: 'S',
+                character: 'F',
                 alt: true,
-                shift: true,
+                shift: false,
                 exec: onToggleFullScreen,
                 helpDescription: 'keyboardShortcuts.fullScreen'
             },
             isToolbarButtonEnabled('tileview', _toolbarButtons) && {
-                character: 'W',
+                character: 'F2',
                 alt: true,
-                shift: true,
+                shift: false,
                 exec: onToggleTileView,
                 helpDescription: 'toolbar.tileViewToggle'
             },

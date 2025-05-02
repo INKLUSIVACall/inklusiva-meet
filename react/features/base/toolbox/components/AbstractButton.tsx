@@ -315,15 +315,13 @@ export default class AbstractButton<P extends IProps, S = any> extends Component
      * @returns {string}
      */
     _getAccessibilityLabel() {
-        /*
         return (this._isToggled()
             ? this.toggledAccessibilityLabel
             : this.accessibilityLabel
         ) || this.accessibilityLabel;
-        */
 
         // For Inklusiva-Call, we never want to toogle the accessibility label.
-        return this.accessibilityLabel;
+        // return this.accessibilityLabel;
     }
 
     /**
