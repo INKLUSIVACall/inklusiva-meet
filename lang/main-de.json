@@ -1350,7 +1350,7 @@
             "videoblur": "Unscharfer Hintergrund ein-/ausschalten",
             "videomute": "Video ausschalten, Tasten-Kürzel {{shortcut}}",
             "videomuteGUMPending": "Verbinde Ihre Kamera",
-            "videounmute": "Kamera einschalten {{shortcut}}",
+            "videounmute": "Kamera einschalten {{shortcut}}"
         },
         "activateOwnAudio": "Audio-Übertragung aktiv",
         "activateOthersAudio": "Ton der Teilnehmenden an / aus",
