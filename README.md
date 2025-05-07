@@ -38,6 +38,11 @@ Personal settings for INKLUSIVA Call can be determined before joining a meeting,
 * The next time INKLUSIVA Call is used, the file with the settings can be uploaded again. Then the settings will be restored.
 * The Accessibility Assistant can also be skipped. In this case, standard settings are active.
 <br/>
+### Dependencies
+* Prosody:  0.12.5-1~focal1
+* Jitsi-Videobridge: 2.3-220-g7cda0a66-1
+* Jigasi: 1.1-358-ge637034-1
+* Jicofo: 1.0-1090-1
 <br/>
 <footer>
 ❤️  A big thank you to the Jitsi team at <a href="https://8x8.com" target="_blank">8x8</a> for creating such great software for so many years.
